@@ -1,8 +1,8 @@
 export default {
-  displayName: 'ngx-devtoolbar-demo',
+  displayName: 'ngx-dev-toolbar-demo',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../coverage/apps/ngx-devtoolbar-demo',
+  coverageDirectory: '../../coverage/apps/ngx-dev-toolbar-demo',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
+import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NxWelcomeComponent } from './nx-welcome.component';
-import { RouterModule } from '@angular/router';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -15,13 +15,13 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('h1')?.textContent).toContain(
-      'Welcome ngx-devtoolbar-demo'
+      'Welcome ngx-dev-toolbar-demo'
     );
   });
 
-  it(`should have as title 'ngx-devtoolbar-demo'`, () => {
+  it(`should have as title 'ngx-dev-toolbar-demo'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('ngx-devtoolbar-demo');
+    expect(app.title).toEqual('ngx-dev-toolbar-demo');
   });
 });

@@ -1,0 +1,9 @@
+{
+  "name": "ngx-dev-toolbar-demo-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/ngx-dev-toolbar-demo-e2e/src",
+  "implicitDependencies": ["ngx-dev-toolbar-demo"],
+  "// targets": "to see all targets run: nx show project ngx-dev-toolbar-demo-e2e --web",
+  "targets": {}
+}

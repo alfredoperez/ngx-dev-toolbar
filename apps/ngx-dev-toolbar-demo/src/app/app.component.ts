@@ -9,5 +9,5 @@ import { NxWelcomeComponent } from './nx-welcome.component';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'ngx-devtoolbar-demo';
+  title = 'ngx-dev-toolbar-demo';
 }
