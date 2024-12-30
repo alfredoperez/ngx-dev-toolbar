@@ -84,5 +84,11 @@
     "@nx/angular:component": {
       "style": "scss"
     }
+  },
+  "release": {
+    "projects": ["*"],
+    "version": {
+      "conventionalCommits": true
+    }
   }
 }

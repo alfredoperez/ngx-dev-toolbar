@@ -1,0 +1,122 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "📦 [Lib] Build",
+      "type": "shell",
+      "command": "nx",
+      "args": ["run", "ngx-dev-toolbar:build:production"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$tsc"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "lib-tasks",
+        "close": false
+      }
+    },
+    {
+      "label": "🚀 [Demo] Build",
+      "type": "shell",
+      "command": "nx",
+      "args": ["run", "ngx-dev-toolbar-demo:build:production"],
+      "problemMatcher": ["$tsc"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "demo-tasks",
+        "close": false
+      }
+    },
+    {
+      "label": "🔍 [Lib] Lint",
+      "type": "shell",
+      "command": "nx",
+      "args": ["lint", "ngx-dev-toolbar"],
+      "problemMatcher": ["$eslint-stylish"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "lib-tasks",
+        "close": false
+      }
+    },
+    {
+      "label": "🔍 [Demo] Lint",
+      "type": "shell",
+      "command": "nx",
+      "args": ["lint", "ngx-dev-toolbar-demo"],
+      "problemMatcher": ["$eslint-stylish"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "demo-tasks",
+        "close": false
+      }
+    },
+    {
+      "label": "🧪 [Lib] Test",
+      "type": "shell",
+      "command": "nx",
+      "args": ["test", "ngx-dev-toolbar"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "lib-tasks",
+        "close": false
+      }
+    },
+    {
+      "label": "🧪 [Demo] Test",
+      "type": "shell",
+      "command": "nx",
+      "args": ["test", "ngx-dev-toolbar-demo"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "demo-tasks",
+        "close": false
+      }
+    },
+    {
+      "label": "⚡ Commit Prep",
+      "dependsOrder": "parallel",
+      "dependsOn": ["Lib Tasks", "Demo Tasks"],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "group": "commit-prep"
+      }
+    },
+    {
+      "label": "Lib Tasks",
+      "dependsOrder": "sequence",
+      "dependsOn": ["🔍 [Lib] Lint", "🧪 [Lib] Test", "📦 [Lib] Build"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "lib-tasks",
+        "close": false,
+        "showReuseMessage": false
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Demo Tasks",
+      "dependsOrder": "sequence",
+      "dependsOn": ["🔍 [Demo] Lint", "🧪 [Demo] Test", "🚀 [Demo] Build"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "demo-tasks",
+        "close": false,
+        "showReuseMessage": false
+      },
+      "problemMatcher": []
+    }
+  ]
+}

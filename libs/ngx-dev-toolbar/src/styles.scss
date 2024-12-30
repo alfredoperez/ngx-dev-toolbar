@@ -1,0 +1,372 @@
+// Color primitives
+$color-black-900: rgb(17, 24, 39); // darkest
+$color-black-800: rgb(19, 21, 26);
+$color-gray-700: rgb(55, 65, 81);
+$color-gray-600: rgb(107, 114, 128);
+$color-gray-500: rgb(156, 163, 175);
+$color-gray-300: rgb(229, 231, 235);
+$color-gray-200: rgb(243, 244, 246);
+$color-white: rgb(255, 255, 255);
+$color-red-600: rgb(220, 38, 38); // dark red
+$color-red-500: rgb(239, 68, 68); // light red
+$color-blue-100: rgb(219, 234, 254);
+$color-blue-600: rgb(37, 99, 235);
+$color-yellow-100: rgb(254, 249, 195);
+$color-yellow-600: rgb(202, 138, 4);
+$color-red-100: rgb(254, 226, 226);
+// Colors and Themes
+$colors: (
+  dark: (
+    background: (
+      primary: $color-black-900,
+      gradient:
+        linear-gradient(
+          180deg,
+          $color-black-800 0%,
+          rgba($color-black-800, 0.88) 100%
+        ),
+    ),
+    text: (
+      primary: $color-white,
+      secondary: $color-gray-300,
+      muted: $color-gray-500,
+    ),
+    border: (
+      primary: #343841,
+      subtle: rgba($color-white, 0.1),
+    ),
+    hover: (
+      background: rgba($color-white, 0.12),
+      danger: $color-red-600,
+    ),
+    annotation: (
+      note: (
+        background: rgba($color-blue-600, 0.15),
+        border: rgba($color-blue-600, 0.3),
+      ),
+      warning: (
+        background: rgba($color-yellow-600, 0.15),
+        border: rgba($color-yellow-600, 0.3),
+      ),
+      error: (
+        background: rgba($color-red-600, 0.15),
+        border: rgba($color-red-600, 0.3),
+      ),
+    ),
+  ),
+  light: (
+    background: (
+      primary: $color-white,
+      gradient:
+        linear-gradient(
+          180deg,
+          $color-gray-200 0%,
+          rgba($color-gray-200, 0.88) 100%
+        ),
+    ),
+    text: (
+      primary: $color-black-900,
+      secondary: $color-gray-700,
+      muted: $color-gray-600,
+    ),
+    border: (
+      primary: #e5e7eb,
+      subtle: rgba($color-black-900, 0.1),
+    ),
+    hover: (
+      background: rgba($color-black-900, 0.05),
+      danger: $color-red-500,
+    ),
+    annotation: (
+      note: (
+        background: $color-blue-100,
+        border: rgba($color-blue-600, 0.2),
+      ),
+      warning: (
+        background: $color-yellow-100,
+        border: rgba($color-yellow-600, 0.2),
+      ),
+      error: (
+        background: $color-red-100,
+        border: rgba($color-red-600, 0.2),
+      ),
+    ),
+  ),
+);
+
+// Shadows
+$shadow-themes: (
+  dark: (
+    toolbar: 0 2px 8px rgba(19, 21, 26, 0.3),
+    tooltip: (
+      0 0 0 1px rgba(255, 255, 255, 0.1),
+      0 4px 8px rgba(0, 0, 0, 0.4),
+      0 2px 4px rgba(0, 0, 0, 0.3),
+    ),
+    window: (
+      0px 0px 0px 0px rgba(19, 21, 26, 0.3),
+      0px 1px 2px 0px rgba(19, 21, 26, 0.29),
+      0px 4px 4px 0px rgba(19, 21, 26, 0.26),
+      0px 10px 6px 0px rgba(19, 21, 26, 0.15),
+      0px 17px 7px 0px rgba(19, 21, 26, 0.04),
+      0px 26px 7px 0px rgba(19, 21, 26, 0.01),
+    ),
+  ),
+  light: (
+    toolbar: 0 2px 8px rgba(156, 163, 175, 0.2),
+    tooltip: (
+      0 0 0 1px rgba(17, 24, 39, 0.05),
+      0 4px 8px rgba(107, 114, 128, 0.15),
+      0 2px 4px rgba(107, 114, 128, 0.1),
+    ),
+    window: (
+      0px 0px 0px 0px rgba(156, 163, 175, 0.1),
+      0px 1px 2px 0px rgba(156, 163, 175, 0.12),
+      0px 4px 4px 0px rgba(156, 163, 175, 0.1),
+      0px 10px 6px 0px rgba(156, 163, 175, 0.08),
+      0px 17px 7px 0px rgba(156, 163, 175, 0.05),
+      0px 26px 7px 0px rgba(156, 163, 175, 0.02),
+    ),
+  ),
+);
+
+// Typography
+$font-family:
+  ui-sans-serif,
+  system-ui,
+  -apple-system,
+  BlinkMacSystemFont,
+  'Segoe UI',
+  Roboto,
+  'Helvetica Neue',
+  Arial,
+  'Noto Sans',
+  sans-serif,
+  'Apple Color Emoji',
+  'Segoe UI Emoji',
+  'Segoe UI Symbol',
+  'Noto Color Emoji';
+
+// Add font size variables
+$font-sizes: (
+  xs: 0.75rem,
+  sm: 0.875rem,
+  md: 1rem,
+  lg: 1.25rem,
+  xl: 2rem,
+);
+
+// Dimensions
+$dimensions: (
+  toolbar-height: 40px,
+  toolbar-button-width: 44px,
+  window-max-width: 640px,
+  window-max-height: 480px,
+  border-radius: (
+    small: 4px,
+    medium: 8px,
+    large: 12px,
+    full: 9999px,
+  ),
+);
+
+// Transitions
+$transitions: (
+  default: all 0.2s ease-out,
+  smooth: all 0.2s ease-in-out,
+);
+
+// Z-indices
+$z-indices: (
+  toolbar: 999999,
+  window: 999999999,
+);
+
+.dev-toolbar {
+  // Border radius variables
+  --devtools-border-radius-small: #{map-get(
+      map-get($dimensions, border-radius),
+      small
+    )};
+  --devtools-border-radius-medium: #{map-get(
+      map-get($dimensions, border-radius),
+      medium
+    )};
+  --devtools-border-radius-large: #{map-get(
+      map-get($dimensions, border-radius),
+      large
+    )};
+
+  // Transition variables
+  --devtools-transition-default: #{map-get($transitions, default)};
+  --devtools-transition-smooth: #{map-get($transitions, smooth)};
+
+  // Default light theme
+  --devtools-bg-primary: #{map-get(map-get($colors, light), background, primary)};
+  --devtools-bg-gradient: #{map-get(
+      map-get($colors, light),
+      background,
+      gradient
+    )};
+  --devtools-text-primary: #{map-get(map-get($colors, light), text, primary)};
+  --devtools-text-secondary: #{map-get(map-get($colors, light), text, secondary)};
+  --devtools-text-muted: #{map-get(map-get($colors, light), text, muted)};
+  --devtools-border-primary: #{map-get(map-get($colors, light), border, primary)};
+  --devtools-border-subtle: #{map-get(map-get($colors, light), border, subtle)};
+  --devtools-hover-bg: #{map-get(map-get($colors, light), hover, background)};
+  --devtools-hover-danger: #{map-get(map-get($colors, light), hover, danger)};
+  --devtools-shadow-toolbar: #{map-get(map-get($shadow-themes, light), toolbar)};
+  --devtools-shadow-tooltip: #{map-get(map-get($shadow-themes, light), tooltip)};
+  --devtools-shadow-window: #{map-get(map-get($shadow-themes, light), window)};
+
+  // Add these spacing variables
+  --devtools-spacing-xs: 4px;
+  --devtools-spacing-sm: 8px;
+  --devtools-spacing-md: 16px;
+  --devtools-window-padding: 24px;
+
+  // Add font size CSS variables
+  --devtools-font-size-xs: #{map-get($font-sizes, xs)};
+  --devtools-font-size-sm: #{map-get($font-sizes, sm)};
+  --devtools-font-size-md: #{map-get($font-sizes, md)};
+  --devtools-font-size-lg: #{map-get($font-sizes, lg)};
+  --devtools-font-size-xl: #{map-get($font-sizes, xl)};
+
+  // Background colors
+  --devtools-background-secondary: var(--devtools-bg-primary);
+  --devtools-background-hover: var(--devtools-hover-bg);
+
+  // Primary color for active states
+  --devtools-primary: #df30d4; // You can adjust this color value
+  --devtools-text-on-primary: #{$color-white};
+
+  // Border color
+  --devtools-border-color: var(--devtools-border-primary);
+
+  // Typography styles
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    font-weight: 600;
+    color: var(--devtools-text-primary);
+  }
+
+  h1 {
+    font-size: var(--devtools-font-size-xl);
+  }
+  h2 {
+    font-size: var(--devtools-font-size-lg);
+  }
+  h3 {
+    font-size: var(--devtools-font-size-md);
+  }
+  h4 {
+    font-size: var(--devtools-font-size-sm);
+  }
+  h5 {
+    font-size: var(--devtools-font-size-xs);
+  }
+
+  hr {
+    border: 1px solid var(--devtools-border-subtle);
+    margin: 1em 0;
+  }
+
+  p {
+    line-height: 1.5em;
+  }
+  --devtools-note-background: #{map-get(
+      map-get(map-get($colors, light), annotation),
+      note,
+      background
+    )};
+  --devtools-note-border: #{map-get(
+      map-get(map-get($colors, light), annotation),
+      note,
+      border
+    )};
+  --devtools-warning-background: #{map-get(
+      map-get(map-get($colors, light), annotation),
+      warning,
+      background
+    )};
+  --devtools-warning-border: #{map-get(
+      map-get(map-get($colors, light), annotation),
+      warning,
+      border
+    )};
+  --devtools-error-background: #{map-get(
+      map-get(map-get($colors, light), annotation),
+      error,
+      background
+    )};
+  --devtools-error-border: #{map-get(
+      map-get(map-get($colors, light), annotation),
+      error,
+      border
+    )};
+
+  &[data-theme='dark'] {
+    --devtools-bg-primary: #{map-get(
+        map-get($colors, dark),
+        background,
+        primary
+      )};
+    --devtools-bg-gradient: #{map-get(
+        map-get($colors, dark),
+        background,
+        gradient
+      )};
+    --devtools-text-primary: #{map-get(map-get($colors, dark), text, primary)};
+    --devtools-text-secondary: #{map-get(
+        map-get($colors, dark),
+        text,
+        secondary
+      )};
+    --devtools-text-muted: #{map-get(map-get($colors, dark), text, muted)};
+    --devtools-border-primary: #{map-get(
+        map-get($colors, dark),
+        border,
+        primary
+      )};
+    --devtools-border-subtle: #{map-get(map-get($colors, dark), border, subtle)};
+    --devtools-hover-bg: #{map-get(map-get($colors, dark), hover, background)};
+    --devtools-hover-danger: #{map-get(map-get($colors, dark), hover, danger)};
+    --devtools-shadow-toolbar: #{map-get(map-get($shadow-themes, dark), toolbar)};
+    --devtools-shadow-tooltip: #{map-get(map-get($shadow-themes, dark), tooltip)};
+    --devtools-shadow-window: #{map-get(map-get($shadow-themes, dark), window)};
+
+    --devtools-note-background: #{map-get(
+        map-get(map-get($colors, dark), annotation),
+        note,
+        background
+      )};
+    --devtools-note-border: #{map-get(
+        map-get(map-get($colors, dark), annotation),
+        note,
+        border
+      )};
+    --devtools-warning-background: #{map-get(
+        map-get(map-get($colors, dark), annotation),
+        warning,
+        background
+      )};
+    --devtools-warning-border: #{map-get(
+        map-get(map-get($colors, dark), annotation),
+        warning,
+        border
+      )};
+    --devtools-error-background: #{map-get(
+        map-get(map-get($colors, dark), annotation),
+        error,
+        background
+      )};
+    --devtools-error-border: #{map-get(
+        map-get(map-get($colors, dark), annotation),
+        error,
+        border
+      )};
+  }
+}

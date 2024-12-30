@@ -1,0 +1,95 @@
+@import '../../styles';
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.window {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: var(--devtools-bg-primary);
+  border: 1px solid var(--devtools-border-primary);
+  border-radius: var(--devtools-border-radius-large);
+  padding: var(--devtools-window-padding);
+  font-family: $font-family;
+  color: var(--devtools-text-secondary);
+  z-index: #{map-get($z-indices, window)};
+  box-shadow: var(--devtools-shadow-window);
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__controls {
+    display: flex;
+    gap: var(--devtools-spacing-sm);
+  }
+
+  &__description {
+    font-size: var(--devtools-font-size-sm);
+    color: var(--devtools-text-muted);
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: var(--devtools-spacing-sm);
+
+    .beta-tag {
+      font-size: var(--devtools-font-size-xxs, 0.65rem);
+      background: var(--devtools-purple, #8b5cf6);
+      color: var(--devtools-text-on-primary);
+      padding: 1px 4px;
+      margin-left: var(--devtools-spacing-xs);
+      border-radius: var(--devtools-border-radius-small);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+}
+
+.content {
+  flex: 1;
+  overflow: auto;
+}
+
+.divider {
+  height: 1px;
+  background-color: var(--devtools-border-primary);
+  margin-bottom: var(--devtools-spacing-md);
+  margin-top: var(--devtools-spacing-md);
+}
+
+.control {
+  background: none;
+  border: none;
+  color: var(--devtools-text-secondary);
+  cursor: pointer;
+  padding: var(--devtools-spacing-xs) var(--devtools-spacing-sm);
+  border-radius: var(--devtools-border-radius-small);
+  font-size: var(--devtools-font-size-md);
+  line-height: 1;
+  transition: var(--devtools-transition-smooth);
+
+  &:hover {
+    background: var(--devtools-hover-bg);
+    color: var(--devtools-text-primary);
+  }
+
+  &--close:hover {
+    background: var(--devtools-hover-danger);
+  }
+}

@@ -1,0 +1,61 @@
+@import '../../styles';
+
+.settings {
+  padding: var(--devtools-spacing-md);
+}
+
+.instruction {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--devtools-spacing-md);
+
+  &__label {
+    display: flex;
+    flex-direction: column;
+    gap: var(--devtools-spacing-xs);
+
+    &-text {
+      color: var(--devtools-text-primary);
+      font-size: var(--devtools-font-size-sm);
+      font-weight: 500;
+    }
+
+    &-description {
+      color: var(--devtools-text-muted);
+      font-size: var(--devtools-font-size-xs);
+    }
+  }
+}
+
+.theme {
+  display: flex;
+  gap: var(--devtools-spacing-xs);
+
+  &__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--devtools-spacing-xs);
+    border-radius: var(--devtools-border-radius-small);
+    border: 1px solid var(--devtools-border-subtle);
+    background: var(--devtools-bg-primary);
+    color: var(--devtools-text-primary);
+    cursor: pointer;
+    transition: var(--devtools-transition-default);
+
+    &:hover {
+      background: var(--devtools-hover-bg);
+    }
+
+    &--active {
+      background: var(--devtools-primary);
+      color: var(--devtools-text-on-primary);
+      border-color: var(--devtools-primary);
+
+      &:hover {
+        background: var(--devtools-primary);
+      }
+    }
+  }
+}

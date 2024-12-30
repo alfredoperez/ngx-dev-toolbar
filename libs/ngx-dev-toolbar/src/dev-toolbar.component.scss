@@ -1,0 +1,20 @@
+@use './styles' as devtools;
+
+.dev-toolbar {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  z-index: map-get(devtools.$z-indices, toolbar);
+  transform: translateX(-50%);
+  display: flex;
+  pointer-events: auto;
+  background: var(--devtools-bg-gradient);
+  border: 1px solid var(--devtools-border-primary);
+  border-radius: map-get(map-get(devtools.$dimensions, border-radius), full);
+  box-shadow: var(--devtools-shadow-toolbar);
+  height: map-get(devtools.$dimensions, toolbar-height);
+
+  &--active {
+    opacity: 1;
+  }
+}

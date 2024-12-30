@@ -1,0 +1,36 @@
+@use '../../styles' as devtools;
+
+.button {
+  display: flex;
+  padding: var(--devtools-spacing-xs) var(--devtools-spacing-sm);
+  border: 1px solid var(--devtools-border-color);
+  border-radius: var(--devtools-border-radius);
+  background: var(--devtools-background-secondary);
+  color: var(--devtools-text-primary);
+  cursor: pointer;
+  transition: var(--devtools-transition-fast);
+
+  &:hover {
+    background:  var(--devtools-background-hover);
+  }
+
+  &:focus {
+    outline: none;
+    background:  var(--devtools-background-hover);
+    box-shadow: 0 0 0 2px var(--devtools-focus-ring);
+  }
+
+  &--active {
+    background: var(--devtools-primary);
+    color: var(--devtools-text-on-primary);
+    border-color: var(--devtools-primary);
+  }
+
+  &--icon {
+    padding: var(--devtools-spacing-xs);
+  }
+
+  &__label {
+    font-size: var(--devtools-font-size-sm);
+  }
+}
