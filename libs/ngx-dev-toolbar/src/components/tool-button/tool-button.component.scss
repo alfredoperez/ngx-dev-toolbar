@@ -1,13 +1,13 @@
 @use '../../styles' as devtools;
-
+@use 'sass:map';
 $dimensions: devtools.$dimensions;
 
 .tool-button {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: map-get($dimensions, toolbar-button-width);
-  height: map-get($dimensions, toolbar-height);
+  width: map.get($dimensions, toolbar-button-width);
+  height: map.get($dimensions, toolbar-height);
   border: 0;
   background: transparent;
   color: var(--devtools-text-primary);

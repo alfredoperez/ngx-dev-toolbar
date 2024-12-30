@@ -18,7 +18,7 @@ type ThemeType = 'light' | 'dark';
   standalone: true,
   imports: [DevToolbarToolComponent, FormsModule, DevToolbarButtonComponent],
   template: `
-    <ngx-dev-toolbar-tool
+    <ndt-toolbar-tool
       [windowConfig]="windowConfig"
       title="Settings"
       icon="gear"
@@ -51,7 +51,7 @@ type ThemeType = 'light' | 'dark';
           </div>
         </div>
       </section>
-    </ngx-dev-toolbar-tool>
+    </ndt-toolbar-tool>
   `,
   styleUrls: ['./settings-tool.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

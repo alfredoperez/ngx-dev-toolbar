@@ -117,6 +117,33 @@
         "showReuseMessage": false
       },
       "problemMatcher": []
+    },
+    {
+      "label": "▶️ [Demo] Serve",
+      "type": "shell",
+      "command": "nx",
+      "args": ["serve", "ngx-dev-toolbar-demo"],
+      "problemMatcher": ["$tsc-watch"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "demo-tasks",
+        "close": false
+      },
+      "isBackground": true
+    },
+    {
+      "label": "🔄 Affected Tasks",
+      "type": "shell",
+      "command": "nx",
+      "args": ["affected", "-t", "lint,test,build,e2e"],
+
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "affected-tasks",
+        "close": false
+      }
     }
   ]
 }

@@ -1,3 +1,4 @@
+@use 'sass:map';
 // Color primitives
 $color-black-900: rgb(17, 24, 39); // darkest
 $color-black-800: rgb(19, 21, 26);
@@ -131,21 +132,9 @@ $shadow-themes: (
 );
 
 // Typography
-$font-family:
-  ui-sans-serif,
-  system-ui,
-  -apple-system,
-  BlinkMacSystemFont,
-  'Segoe UI',
-  Roboto,
-  'Helvetica Neue',
-  Arial,
-  'Noto Sans',
-  sans-serif,
-  'Apple Color Emoji',
-  'Segoe UI Emoji',
-  'Segoe UI Symbol',
-  'Noto Color Emoji';
+$font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+  'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+  'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
 // Add font size variables
 $font-sizes: (
@@ -184,40 +173,40 @@ $z-indices: (
 
 .dev-toolbar {
   // Border radius variables
-  --devtools-border-radius-small: #{map-get(
-      map-get($dimensions, border-radius),
+  --devtools-border-radius-small: #{map.get(
+      map.get($dimensions, border-radius),
       small
     )};
-  --devtools-border-radius-medium: #{map-get(
-      map-get($dimensions, border-radius),
+  --devtools-border-radius-medium: #{map.get(
+      map.get($dimensions, border-radius),
       medium
     )};
-  --devtools-border-radius-large: #{map-get(
-      map-get($dimensions, border-radius),
+  --devtools-border-radius-large: #{map.get(
+      map.get($dimensions, border-radius),
       large
     )};
 
   // Transition variables
-  --devtools-transition-default: #{map-get($transitions, default)};
-  --devtools-transition-smooth: #{map-get($transitions, smooth)};
+  --devtools-transition-default: #{map.get($transitions, default)};
+  --devtools-transition-smooth: #{map.get($transitions, smooth)};
 
   // Default light theme
-  --devtools-bg-primary: #{map-get(map-get($colors, light), background, primary)};
-  --devtools-bg-gradient: #{map-get(
-      map-get($colors, light),
+  --devtools-bg-primary: #{map.get(map.get($colors, light), background, primary)};
+  --devtools-bg-gradient: #{map.get(
+      map.get($colors, light),
       background,
       gradient
     )};
-  --devtools-text-primary: #{map-get(map-get($colors, light), text, primary)};
-  --devtools-text-secondary: #{map-get(map-get($colors, light), text, secondary)};
-  --devtools-text-muted: #{map-get(map-get($colors, light), text, muted)};
-  --devtools-border-primary: #{map-get(map-get($colors, light), border, primary)};
-  --devtools-border-subtle: #{map-get(map-get($colors, light), border, subtle)};
-  --devtools-hover-bg: #{map-get(map-get($colors, light), hover, background)};
-  --devtools-hover-danger: #{map-get(map-get($colors, light), hover, danger)};
-  --devtools-shadow-toolbar: #{map-get(map-get($shadow-themes, light), toolbar)};
-  --devtools-shadow-tooltip: #{map-get(map-get($shadow-themes, light), tooltip)};
-  --devtools-shadow-window: #{map-get(map-get($shadow-themes, light), window)};
+  --devtools-text-primary: #{map.get(map.get($colors, light), text, primary)};
+  --devtools-text-secondary: #{map.get(map.get($colors, light), text, secondary)};
+  --devtools-text-muted: #{map.get(map.get($colors, light), text, muted)};
+  --devtools-border-primary: #{map.get(map.get($colors, light), border, primary)};
+  --devtools-border-subtle: #{map.get(map.get($colors, light), border, subtle)};
+  --devtools-hover-bg: #{map.get(map.get($colors, light), hover, background)};
+  --devtools-hover-danger: #{map.get(map.get($colors, light), hover, danger)};
+  --devtools-shadow-toolbar: #{map.get(map.get($shadow-themes, light), toolbar)};
+  --devtools-shadow-tooltip: #{map.get(map.get($shadow-themes, light), tooltip)};
+  --devtools-shadow-window: #{map.get(map.get($shadow-themes, light), window)};
 
   // Add these spacing variables
   --devtools-spacing-xs: 4px;
@@ -226,11 +215,11 @@ $z-indices: (
   --devtools-window-padding: 24px;
 
   // Add font size CSS variables
-  --devtools-font-size-xs: #{map-get($font-sizes, xs)};
-  --devtools-font-size-sm: #{map-get($font-sizes, sm)};
-  --devtools-font-size-md: #{map-get($font-sizes, md)};
-  --devtools-font-size-lg: #{map-get($font-sizes, lg)};
-  --devtools-font-size-xl: #{map-get($font-sizes, xl)};
+  --devtools-font-size-xs: #{map.get($font-sizes, xs)};
+  --devtools-font-size-sm: #{map.get($font-sizes, sm)};
+  --devtools-font-size-md: #{map.get($font-sizes, md)};
+  --devtools-font-size-lg: #{map.get($font-sizes, lg)};
+  --devtools-font-size-xl: #{map.get($font-sizes, xl)};
 
   // Background colors
   --devtools-background-secondary: var(--devtools-bg-primary);
@@ -277,94 +266,94 @@ $z-indices: (
   p {
     line-height: 1.5em;
   }
-  --devtools-note-background: #{map-get(
-      map-get(map-get($colors, light), annotation),
+  --devtools-note-background: #{map.get(
+      map.get(map.get($colors, light), annotation),
       note,
       background
     )};
-  --devtools-note-border: #{map-get(
-      map-get(map-get($colors, light), annotation),
+  --devtools-note-border: #{map.get(
+      map.get(map.get($colors, light), annotation),
       note,
       border
     )};
-  --devtools-warning-background: #{map-get(
-      map-get(map-get($colors, light), annotation),
+  --devtools-warning-background: #{map.get(
+      map.get(map.get($colors, light), annotation),
       warning,
       background
     )};
-  --devtools-warning-border: #{map-get(
-      map-get(map-get($colors, light), annotation),
+  --devtools-warning-border: #{map.get(
+      map.get(map.get($colors, light), annotation),
       warning,
       border
     )};
-  --devtools-error-background: #{map-get(
-      map-get(map-get($colors, light), annotation),
+  --devtools-error-background: #{map.get(
+      map.get(map.get($colors, light), annotation),
       error,
       background
     )};
-  --devtools-error-border: #{map-get(
-      map-get(map-get($colors, light), annotation),
+  --devtools-error-border: #{map.get(
+      map.get(map.get($colors, light), annotation),
       error,
       border
     )};
 
   &[data-theme='dark'] {
-    --devtools-bg-primary: #{map-get(
-        map-get($colors, dark),
+    --devtools-bg-primary: #{map.get(
+        map.get($colors, dark),
         background,
         primary
       )};
-    --devtools-bg-gradient: #{map-get(
-        map-get($colors, dark),
+    --devtools-bg-gradient: #{map.get(
+        map.get($colors, dark),
         background,
         gradient
       )};
-    --devtools-text-primary: #{map-get(map-get($colors, dark), text, primary)};
-    --devtools-text-secondary: #{map-get(
-        map-get($colors, dark),
+    --devtools-text-primary: #{map.get(map.get($colors, dark), text, primary)};
+    --devtools-text-secondary: #{map.get(
+        map.get($colors, dark),
         text,
         secondary
       )};
-    --devtools-text-muted: #{map-get(map-get($colors, dark), text, muted)};
-    --devtools-border-primary: #{map-get(
-        map-get($colors, dark),
+    --devtools-text-muted: #{map.get(map.get($colors, dark), text, muted)};
+    --devtools-border-primary: #{map.get(
+        map.get($colors, dark),
         border,
         primary
       )};
-    --devtools-border-subtle: #{map-get(map-get($colors, dark), border, subtle)};
-    --devtools-hover-bg: #{map-get(map-get($colors, dark), hover, background)};
-    --devtools-hover-danger: #{map-get(map-get($colors, dark), hover, danger)};
-    --devtools-shadow-toolbar: #{map-get(map-get($shadow-themes, dark), toolbar)};
-    --devtools-shadow-tooltip: #{map-get(map-get($shadow-themes, dark), tooltip)};
-    --devtools-shadow-window: #{map-get(map-get($shadow-themes, dark), window)};
+    --devtools-border-subtle: #{map.get(map.get($colors, dark), border, subtle)};
+    --devtools-hover-bg: #{map.get(map.get($colors, dark), hover, background)};
+    --devtools-hover-danger: #{map.get(map.get($colors, dark), hover, danger)};
+    --devtools-shadow-toolbar: #{map.get(map.get($shadow-themes, dark), toolbar)};
+    --devtools-shadow-tooltip: #{map.get(map.get($shadow-themes, dark), tooltip)};
+    --devtools-shadow-window: #{map.get(map.get($shadow-themes, dark), window)};
 
-    --devtools-note-background: #{map-get(
-        map-get(map-get($colors, dark), annotation),
+    --devtools-note-background: #{map.get(
+        map.get(map.get($colors, dark), annotation),
         note,
         background
       )};
-    --devtools-note-border: #{map-get(
-        map-get(map-get($colors, dark), annotation),
+    --devtools-note-border: #{map.get(
+        map.get(map.get($colors, dark), annotation),
         note,
         border
       )};
-    --devtools-warning-background: #{map-get(
-        map-get(map-get($colors, dark), annotation),
+    --devtools-warning-background: #{map.get(
+        map.get(map.get($colors, dark), annotation),
         warning,
         background
       )};
-    --devtools-warning-border: #{map-get(
-        map-get(map-get($colors, dark), annotation),
+    --devtools-warning-border: #{map.get(
+        map.get(map.get($colors, dark), annotation),
         warning,
         border
       )};
-    --devtools-error-background: #{map-get(
-        map-get(map-get($colors, dark), annotation),
+    --devtools-error-background: #{map.get(
+        map.get(map.get($colors, dark), annotation),
         error,
         background
       )};
-    --devtools-error-border: #{map-get(
-        map-get(map-get($colors, dark), annotation),
+    --devtools-error-border: #{map.get(
+        map.get(map.get($colors, dark), annotation),
         error,
         border
       )};

@@ -23,7 +23,7 @@ import { DevToolbarFeatureFlagsService } from './feature-flags.service';
     DevToolbarSelectComponent,
   ],
   template: `
-    <ngx-dev-toolbar-tool
+    <ndt-toolbar-tool
       [windowConfig]="windowConfig"
       title="Feature Flags"
       icon="toggle-left"
@@ -44,31 +44,31 @@ import { DevToolbarFeatureFlagsService } from './feature-flags.service';
         </div>
 
         @if (hasNoFlags()) {
-          <div class="empty">
-            <p>No flags found</p>
-          </div>
+        <div class="empty">
+          <p>No flags found</p>
+        </div>
         } @else {
-          <div class="flag-list">
-            @for (flag of filteredFlags(); track flag.id) {
-              <div class="flag">
-                <div class="info">
-                  <h3>{{ flag.name }}</h3>
-                  <p>{{ flag?.description }}</p>
-                </div>
+        <div class="flag-list">
+          @for (flag of filteredFlags(); track flag.id) {
+          <div class="flag">
+            <div class="info">
+              <h3>{{ flag.name }}</h3>
+              <p>{{ flag?.description }}</p>
+            </div>
 
-                <ndt-select
-                  [value]="getFlagValue(flag)"
-                  [options]="flagValueOptions"
-                  [ariaLabel]="'Set value for ' + flag.name"
-                  (valueChange)="onFlagChange(flag.id, $event ?? '')"
-                  size="small"
-                />
-              </div>
-            }
+            <ndt-select
+              [value]="getFlagValue(flag)"
+              [options]="flagValueOptions"
+              [ariaLabel]="'Set value for ' + flag.name"
+              (valueChange)="onFlagChange(flag.id, $event ?? '')"
+              size="small"
+            />
           </div>
+          }
+        </div>
         }
       </div>
-    </ngx-dev-toolbar-tool>
+    </ndt-toolbar-tool>
   `,
   styles: [
     `
