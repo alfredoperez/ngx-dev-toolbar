@@ -86,7 +86,7 @@
     }
   },
   "release": {
-    "projects": ["*"],
+    "projects": ["ngx-dev-toolbar"],
     "version": {
       "conventionalCommits": true
     }
