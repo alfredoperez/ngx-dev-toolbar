@@ -14,14 +14,14 @@ import { SettingsService } from './settings.service';
 type ThemeType = 'light' | 'dark';
 
 @Component({
-  selector: 'ndt-settings-tool',
+  selector: 'ndt-home-tool',
   standalone: true,
   imports: [DevToolbarToolComponent, FormsModule, DevToolbarButtonComponent],
   template: `
     <ndt-toolbar-tool
       [windowConfig]="windowConfig"
-      title="Settings"
-      icon="gear"
+      [title]="title"
+      icon="angular"
     >
       <section class="settings">
         <div class="instruction">
@@ -50,19 +50,21 @@ type ThemeType = 'light' | 'dark';
       </section>
     </ndt-toolbar-tool>
   `,
-  styleUrls: ['./settings-tool.component.scss'],
+  styleUrls: ['./home-tool.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DevToolbarSettingsToolComponent {
+export class DevToolbarHomeToolComponent {
   state = inject(DevToolbarStateService);
   settingsService = inject(SettingsService);
 
   readonly badge = input<string | number>();
+  readonly title = `Angular Dev Toolbar`;
   readonly windowConfig: WindowConfig = {
-    title: 'Settings',
+    title: this.title,
     isClosable: true,
-    id: 'ndt-settings',
-    description: 'Configure the settings for the Dev Toolbar',
+    id: 'ndt-home',
+    size: 'medium',
+    description: '',
     isBeta: true,
   };
 

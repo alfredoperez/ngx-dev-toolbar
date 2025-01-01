@@ -15,24 +15,16 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { fromEvent } from 'rxjs';
 import { filter, throttleTime } from 'rxjs/operators';
-import { DevToolbarIconComponent } from './components/icons/icon.component';
-import { DevToolbarToolButtonComponent } from './components/tool-button/tool-button.component';
 import { DevToolbarStateService } from './dev-toolbar-state.service';
 import { DevToolbarFeatureFlagsToolComponent } from './tools/feature-flags-tool/feature-flags-tool.component';
-import { DevToolbarSettingsToolComponent } from './tools/settings-tool/settings-tool.component';
-import { SettingsService } from './tools/settings-tool/settings.service';
+import { DevToolbarHomeToolComponent } from './tools/home-tool/home-tool.component';
+import { SettingsService } from './tools/home-tool/settings.service';
 
 @Component({
   standalone: true,
   selector: 'ndt-toolbar',
   styleUrls: ['./dev-toolbar.component.scss'],
-  imports: [
-    DevToolbarToolButtonComponent,
-    DevToolbarFeatureFlagsToolComponent,
-    DevToolbarSettingsToolComponent,
-    DevToolbarIconComponent,
-  ],
-
+  imports: [DevToolbarHomeToolComponent, DevToolbarFeatureFlagsToolComponent],
   template: `
     @if (isDevMode) {
     <div
@@ -44,11 +36,8 @@ import { SettingsService } from './tools/settings-tool/settings.service';
       [class.dev-toolbar--active]="state.isVisible()"
       (mouseenter)="onMouseEnter()"
     >
-      <ndt-tool-button title="Home" toolId="ndt-home">
-        <ndt-icon name="angular" />
-      </ndt-tool-button>
+      <ndt-home-tool />
       <ndt-feature-flags-tool />
-      <ndt-settings-tool />
     </div>
     }
   `,

@@ -22,12 +22,17 @@ export class DevToolbarStateService {
   });
 
   // Selectors
-  readonly isVisible = computed(() => !this.state().isHidden);
+  readonly isVisible = computed(
+    () => !this.state().isHidden || this.hasActiveTool()
+  );
   readonly isDarkTheme = computed(() => this.state().theme === 'dark');
   readonly activeToolId = computed(() => this.state().activeToolId);
   readonly hasActiveTool = computed(() => this.state().activeToolId !== null);
   readonly error = computed(() => this.state().error);
   readonly theme = computed(() => this.state().theme);
+  /**
+   * The delay to hide the toolbar
+   */
   readonly delay = computed(() => this.state().delay);
 
   // State updates
