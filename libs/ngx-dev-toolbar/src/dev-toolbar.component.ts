@@ -40,9 +40,6 @@ import { SettingsService } from './tools/settings-tool/settings.service';
       <ndt-tool-button title="Home" toolId="ndt-home">
         <ndt-icon name="angular" />
       </ndt-tool-button>
-      <ndt-tool-button title="Performance" toolId="ndt-performance">
-        <ndt-icon name="gauge" />
-      </ndt-tool-button>
       <ndt-feature-flags-tool />
       <ndt-settings-tool />
     </div>
