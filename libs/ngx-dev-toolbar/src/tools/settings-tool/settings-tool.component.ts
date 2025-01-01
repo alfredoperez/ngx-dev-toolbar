@@ -34,18 +34,15 @@ type ThemeType = 'light' | 'dark';
           <div class="instruction__control">
             <div class="theme">
               <ndt-button
-                [isActive]="!state.isDarkTheme()"
-                (click)="onThemeSelect('light')"
+                [isActive]="true"
+                (click)="onToggleTheme()"
                 variant="icon"
-                ariaLabel="Switch to light theme"
-                icon="sun"
-              />
-              <ndt-button
-                [isActive]="state.isDarkTheme()"
-                (click)="onThemeSelect('dark')"
-                variant="icon"
-                ariaLabel="Switch to dark theme"
-                icon="moon"
+                [ariaLabel]="
+                  state.isDarkTheme()
+                    ? 'Switch to light theme'
+                    : 'Switch to dark theme'
+                "
+                [icon]="state.isDarkTheme() ? 'sun' : 'moon'"
               />
             </div>
           </div>
@@ -69,8 +66,9 @@ export class DevToolbarSettingsToolComponent {
     isBeta: true,
   };
 
-  onThemeSelect(theme: ThemeType): void {
-    this.settingsService.setSettings({ isDarkMode: theme === 'dark' });
-    this.state.setTheme(theme);
+  onToggleTheme(): void {
+    const newTheme: ThemeType = this.state.isDarkTheme() ? 'light' : 'dark';
+    this.settingsService.setSettings({ isDarkMode: newTheme === 'dark' });
+    this.state.setTheme(newTheme);
   }
 }
