@@ -78,11 +78,9 @@ export class DevToolbarToolButtonComponent {
   readonly open = output<void>();
 
   // Signals
-  readonly isActive = computed(() => {
-    const isActive = this.state.activeToolId() === this.toolId();
-    console.log(this.toolId(), isActive);
-    return this.state.activeToolId() === this.toolId();
-  });
+  readonly isActive = computed(
+    () => this.state.activeToolId() === this.toolId()
+  );
   readonly isToolbarVisible = this.state.isVisible;
 
   readonly isFocused = signal(false);

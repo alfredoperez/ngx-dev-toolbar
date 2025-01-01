@@ -47,6 +47,10 @@ import { FeatureFlagFilter, Flag } from './feature-flags.models';
         <div class="empty">
           <p>No flags found</p>
         </div>
+        } @else if (hasNoFilteredFlags()) {
+        <div class="empty">
+          <p>No flags found matching your filter</p>
+        </div>
         } @else {
         <div class="flag-list">
           @for (flag of filteredFlags(); track flag.id) {
@@ -197,6 +201,9 @@ export class DevToolbarFeatureFlagsToolComponent {
       return matchesSearch && matchesFilter;
     });
   });
+  protected readonly hasNoFilteredFlags = computed(
+    () => this.filteredFlags().length === 0
+  );
 
   // Other properties
   protected readonly windowConfig = {
@@ -216,7 +223,7 @@ export class DevToolbarFeatureFlagsToolComponent {
   ];
 
   protected readonly flagValueOptions = [
-    { value: 'not-forced', label: 'Select an override' },
+    { value: 'not-forced', label: 'Not Forced' },
     { value: 'off', label: 'Forced Off (false)' },
     { value: 'on', label: 'Forced On (true)' },
   ];

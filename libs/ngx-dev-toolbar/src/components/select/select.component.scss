@@ -1,4 +1,6 @@
-.select {
+@use '../../styles' as devtools;
+
+select.select {
   width: 100%;
   cursor: pointer;
   min-width: 100px;
@@ -45,19 +47,36 @@
   &:invalid {
     border-color: var(--devtools-border-error, #ff4444);
   }
+
+  option {
+    background-color: var(--devtools-bg-primary);
+    color: var(--devtools-text-primary);
+    padding: var(--devtools-spacing-sm);
+    font-size: var(--devtools-font-size-sm);
+
+    &:hover,
+    &:focus {
+      background-color: var(--devtools-background-hover);
+    }
+  }
 }
 
 /* Style for Firefox */
 @-moz-document url-prefix() {
-  .select {
+  select.select {
     text-indent: 0.01px;
     text-overflow: '';
     padding-right: 2.5em;
+
+    option {
+      background-color: var(--devtools-bg-primary) !important;
+      color: var(--devtools-text-primary) !important;
+    }
   }
 }
 
 /* Style for Webkit browsers */
-.select::-ms-expand {
+select.select::-ms-expand {
   display: none;
 }
 
@@ -67,9 +86,9 @@ select::-ms-expand {
 }
 
 /* For Webkit browsers (Chrome, Safari) */
-select:-webkit-autofill,
-select:-webkit-autofill:hover,
-select:-webkit-autofill:focus {
+select.select:-webkit-autofill,
+select.select:-webkit-autofill:hover,
+select.select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px var(--devtools-bg-primary) inset !important;
   -webkit-text-fill-color: var(--devtools-text-primary) !important;
 }
