@@ -4,7 +4,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterOutlet } from '@angular/router';
 import {
   DevToolbarComponent,
-  DevToolbarFeatureFlagsService,
+  DevToolbarFeatureFlagService,
   Flag,
 } from 'ngx-dev-toolbar';
 import { firstValueFrom, map } from 'rxjs';
@@ -62,7 +62,7 @@ import { FeatureFlagsService } from './services/feature-flags.service';
 })
 export class AppComponent implements OnInit {
   featureFlagsService = inject(FeatureFlagsService);
-  devToolbarFeatureFlagsService = inject(DevToolbarFeatureFlagsService);
+  devToolbarFeatureFlagsService = inject(DevToolbarFeatureFlagService);
 
   useNewLayout = toSignal(
     this.featureFlagsService.select('newDemoApplicationLayout')
@@ -89,6 +89,6 @@ export class AppComponent implements OnInit {
         )
       )
     );
-    this.devToolbarFeatureFlagsService.set(flags);
+    this.devToolbarFeatureFlagsService.setAvailableOptions(flags);
   }
 }

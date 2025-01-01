@@ -23,7 +23,6 @@ import { DevToolbarStateService } from '../../dev-toolbar-state.service';
   template: `
     <button
       class="tool-button"
-      [class.tool-button--toolbar-visible]="isToolbarVisible()"
       [class.tool-button--active]="isActive()"
       [class.tool-button--focus]="isFocused()"
       (mouseenter)="onMouseEnter()"
@@ -74,14 +73,16 @@ export class DevToolbarToolButtonComponent {
   // Inputs
   readonly title = input.required<string>();
   readonly toolId = input.required<string>();
+
   // Outputs
-  // eslint-disable-next-line @angular-eslint/no-output-native
-  readonly click = output<void>();
+  readonly open = output<void>();
 
   // Signals
-  readonly isActive = computed(
-    () => this.state.activeToolId() === this.toolId()
-  );
+  readonly isActive = computed(() => {
+    const isActive = this.state.activeToolId() === this.toolId();
+    console.log(this.toolId(), isActive);
+    return this.state.activeToolId() === this.toolId();
+  });
   readonly isToolbarVisible = this.state.isVisible;
 
   readonly isFocused = signal(false);
@@ -102,7 +103,7 @@ export class DevToolbarToolButtonComponent {
   // Public methods
   onClick(): void {
     this.isFocused.set(false);
-    this.click.emit();
+    this.open.emit();
   }
 
   onMouseEnter(): void {

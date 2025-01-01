@@ -10,8 +10,8 @@ import { DevToolbarInputComponent } from '../../components/input/input.component
 import { DevToolbarSelectComponent } from '../../components/select/select.component';
 import { DevToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
 import { WindowSize } from '../../components/window/window.models';
+import { DevToolbarInternalFeatureFlagService } from './feature-flags-internal.service';
 import { FeatureFlagFilter, Flag } from './feature-flags.models';
-import { DevToolbarFeatureFlagsService } from './feature-flags.service';
 
 @Component({
   selector: 'ndt-feature-flags-tool',
@@ -169,7 +169,7 @@ import { DevToolbarFeatureFlagsService } from './feature-flags.service';
 })
 export class DevToolbarFeatureFlagsToolComponent {
   // Injects
-  private readonly featureFlags = inject(DevToolbarFeatureFlagsService);
+  private readonly featureFlags = inject(DevToolbarInternalFeatureFlagService);
 
   // Signals
   protected readonly activeFilter = signal<FeatureFlagFilter>('all');

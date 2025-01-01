@@ -16,13 +16,13 @@ $dimensions: devtools.$dimensions;
   opacity: 0.5;
   position: relative;
 
-  &:hover {
+  &--active {
     background: var(--devtools-hover-bg);
     opacity: 1;
   }
 
-  &--toolbar-visible {
-    background: transparent;
+  &:hover {
+    background: var(--devtools-hover-bg);
     opacity: 1;
   }
 

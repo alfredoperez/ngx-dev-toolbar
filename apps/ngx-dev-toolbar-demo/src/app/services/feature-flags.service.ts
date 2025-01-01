@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { DevToolbarFeatureFlagsService } from 'ngx-dev-toolbar';
+import { DevToolbarFeatureFlagService } from 'ngx-dev-toolbar';
 import { BehaviorSubject, Observable, combineLatest, map } from 'rxjs';
 
 export interface FeatureFlag {
@@ -12,7 +12,7 @@ export interface FeatureFlag {
   providedIn: 'root',
 })
 export class FeatureFlagsService {
-  devToolbarFeatureFlags = inject(DevToolbarFeatureFlagsService);
+  devToolbarFeatureFlags = inject(DevToolbarFeatureFlagService);
 
   private featureFlags: FeatureFlag[] = [
     {
@@ -34,12 +34,12 @@ export class FeatureFlagsService {
   select(flagName: string): Observable<boolean> {
     return combineLatest([
       this.flags$,
-      this.devToolbarFeatureFlags.flags$,
+      this.devToolbarFeatureFlags.getForcedValues(),
     ]).pipe(
       map(([flags, forcedFlags]) => {
         const flag = flags.find((f) => f.name === flagName);
         const forcedFlag = forcedFlags.find((f) => f.id === flagName);
-        const isForced = forcedFlag?.isEnabled ?? false;
+        const isForced = forcedFlag?.isForced ?? false;
         if (isForced) {
           return forcedFlag?.isEnabled ?? false;
         }
