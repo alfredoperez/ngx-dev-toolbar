@@ -18,11 +18,7 @@ type ThemeType = 'light' | 'dark';
   standalone: true,
   imports: [DevToolbarToolComponent, FormsModule, DevToolbarButtonComponent],
   template: `
-    <ndt-toolbar-tool
-      [windowConfig]="windowConfig"
-      [title]="title"
-      icon="angular"
-    >
+    <ndt-toolbar-tool [windowConfig]="windowConfig" title="Home" icon="angular">
       <section class="settings">
         <div class="instruction">
           <div class="instruction__label">

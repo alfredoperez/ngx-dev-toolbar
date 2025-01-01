@@ -9,11 +9,12 @@
   transform: translateX(-50%);
   display: flex;
   pointer-events: auto;
-  background: var(--devtools-bg-gradient);
+  background: var(--devtools-bg-primary);
   border: 1px solid var(--devtools-border-primary);
   border-radius: map.get(map.get(devtools.$dimensions, border-radius), full);
   box-shadow: var(--devtools-shadow-toolbar);
   height: map.get(devtools.$dimensions, toolbar-height);
+  overflow: hidden;
 
   &--active {
     opacity: 1;

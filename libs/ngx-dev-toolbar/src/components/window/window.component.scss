@@ -28,20 +28,6 @@
   justify-content: space-between;
   align-items: flex-start;
 
-  &__content {
-    display: flex;
-    flex-direction: column;
-  }
-
-  &__controls {
-    display: flex;
-    gap: var(--devtools-spacing-sm);
-  }
-
-  &__description {
-    font-size: var(--devtools-font-size-sm);
-    color: var(--devtools-text-muted);
-  }
 
   &__title {
     display: flex;
@@ -60,6 +46,23 @@
       letter-spacing: 0.5px;
     }
   }
+  &__description {
+    font-size: var(--devtools-font-size-sm);
+    color: var(--devtools-text-muted);
+  }
+
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__controls {
+    display: flex;
+    gap: var(--devtools-spacing-sm);
+  }
+
+
 }
 
 .content {

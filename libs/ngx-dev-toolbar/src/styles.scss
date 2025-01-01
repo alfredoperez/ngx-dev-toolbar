@@ -240,6 +240,7 @@ $z-indices: (
   h5 {
     font-weight: 600;
     color: var(--devtools-text-primary);
+    margin: 0;
   }
 
   h1 {
@@ -265,6 +266,7 @@ $z-indices: (
 
   p {
     line-height: 1.5em;
+    margin: 0;
   }
   --devtools-note-background: #{map.get(
       map.get(map.get($colors, light), annotation),
