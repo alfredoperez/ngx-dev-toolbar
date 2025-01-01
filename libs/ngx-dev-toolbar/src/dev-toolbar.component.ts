@@ -5,7 +5,13 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  OnInit,
+  inject,
+  isDevMode,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { fromEvent } from 'rxjs';
 import { filter, throttleTime } from 'rxjs/operators';
@@ -28,6 +34,7 @@ import { SettingsService } from './tools/settings-tool/settings.service';
   ],
 
   template: `
+    @if (isDevMode) {
     <div
       aria-label="Developer tools"
       role="toolbar"
@@ -43,6 +50,7 @@ import { SettingsService } from './tools/settings-tool/settings.service';
       <ndt-feature-flags-tool />
       <ndt-settings-tool />
     </div>
+    }
   `,
   animations: [
     trigger('toolbarState', [
@@ -68,6 +76,8 @@ export class DevToolbarComponent implements OnInit {
   state = inject(DevToolbarStateService);
   destroyRef = inject(DestroyRef);
   settingsService = inject(SettingsService);
+
+  isDevMode = isDevMode();
 
   private keyboardShortcut = fromEvent<KeyboardEvent>(window, 'keydown')
     .pipe(
