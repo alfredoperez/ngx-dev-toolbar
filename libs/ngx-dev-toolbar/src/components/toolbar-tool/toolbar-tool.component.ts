@@ -81,21 +81,29 @@ export class DevToolbarToolComponent {
   );
   height = computed(() => {
     switch (this.windowConfig().size) {
-      case 'tall':
-        return 620;
+      case 'small':
+        return 320;
       case 'medium':
         return 480;
+      case 'tall':
+        return 620;
+      case 'large':
+        return 620;
       default:
-        return 400;
+        return 480;
     }
   });
 
   width = computed(() => {
     switch (this.windowConfig().size) {
-      case 'tall':
-        return 520;
+      case 'small':
+        return 320;
       case 'medium':
         return 480;
+      case 'tall':
+        return 480;
+      case 'large':
+        return 620;
       default:
         return 400;
     }

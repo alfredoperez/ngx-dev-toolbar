@@ -19,12 +19,17 @@ import { DevToolbarStateService } from './dev-toolbar-state.service';
 import { DevToolbarFeatureFlagsToolComponent } from './tools/feature-flags-tool/feature-flags-tool.component';
 import { DevToolbarHomeToolComponent } from './tools/home-tool/home-tool.component';
 import { SettingsService } from './tools/home-tool/settings.service';
+import { DevToolbarLanguageToolComponent } from './tools/language-tool/language-tool.component';
 
 @Component({
   standalone: true,
   selector: 'ndt-toolbar',
   styleUrls: ['./dev-toolbar.component.scss'],
-  imports: [DevToolbarHomeToolComponent, DevToolbarFeatureFlagsToolComponent],
+  imports: [
+    DevToolbarHomeToolComponent,
+    DevToolbarLanguageToolComponent,
+    DevToolbarFeatureFlagsToolComponent,
+  ],
   template: `
     @if (isDevMode) {
     <div
@@ -37,6 +42,7 @@ import { SettingsService } from './tools/home-tool/settings.service';
       (mouseenter)="onMouseEnter()"
     >
       <ndt-home-tool />
+      <ndt-language-tool />
       <ndt-feature-flags-tool />
     </div>
     }

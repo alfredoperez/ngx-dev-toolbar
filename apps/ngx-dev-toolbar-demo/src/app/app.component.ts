@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterOutlet } from '@angular/router';
+
+import { toSignal } from '@angular/core/rxjs-interop';
 import {
   DevToolbarComponent,
   DevToolbarFeatureFlagService,
+  DevToolbarLanguageService,
   Flag,
 } from 'ngx-dev-toolbar';
 import { firstValueFrom, map } from 'rxjs';
@@ -25,7 +27,6 @@ import { FeatureFlagsService } from './services/feature-flags.service';
       </main>
     </div>
     } @else {
-    <!-- Original Layout -->
     <div class="original-layout">
       <app-nav-bar />
       <main class="content">
@@ -33,23 +34,23 @@ import { FeatureFlagsService } from './services/feature-flags.service';
       </main>
     </div>
     }
-    <ndt-toolbar></ndt-toolbar>
+    <ndt-toolbar />
   `,
   styles: [
     `
       .modern-layout {
         min-height: 100vh;
         background: #f8f9fa;
+      }
+      .modern-content {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
 
-        .modern-content {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 2rem;
-          background: white;
-          border-radius: 8px;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-          margin-top: 2rem;
-        }
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        margin-top: 2rem;
       }
 
       .original-layout {
@@ -61,8 +62,11 @@ import { FeatureFlagsService } from './services/feature-flags.service';
   ],
 })
 export class AppComponent implements OnInit {
-  featureFlagsService = inject(FeatureFlagsService);
-  devToolbarFeatureFlagsService = inject(DevToolbarFeatureFlagService);
+  private readonly languageToolbarService = inject(DevToolbarLanguageService);
+  private readonly devToolbarFeatureFlagsService = inject(
+    DevToolbarFeatureFlagService
+  );
+  private readonly featureFlagsService = inject(FeatureFlagsService);
 
   useNewLayout = toSignal(
     this.featureFlagsService.select('newDemoApplicationLayout')
@@ -90,5 +94,12 @@ export class AppComponent implements OnInit {
       )
     );
     this.devToolbarFeatureFlagsService.setAvailableOptions(flags);
+  }
+
+  constructor() {
+    this.languageToolbarService.setAvailableOptions([
+      { id: 'en', name: 'English' },
+      { id: 'es', name: 'Spanish' },
+    ]);
   }
 }

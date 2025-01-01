@@ -11,7 +11,8 @@ export interface DevToolsService<OptionType> {
   setAvailableOptions(options: OptionType[]): void;
 
   /**
-   * Gets the values that were forced/modified through the tool on the dev toolbar
+   * Gets the values that were forced/modified through the tool on the dev toolbar.
+   * If the tool only supports a single option, the returned array will have a single element.
    * @returns Observable of forced values array
    */
   getForcedValues(): Observable<OptionType[]>;

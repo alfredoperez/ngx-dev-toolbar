@@ -6,7 +6,7 @@ export type WindowPlacement =
   | 'top-center'
   | 'top-right';
 
-export type WindowSize = 'tall' | 'medium';
+export type WindowSize = 'small' | 'medium' | 'tall' | 'large';
 export interface WindowConfig {
   id: string;
   /**
