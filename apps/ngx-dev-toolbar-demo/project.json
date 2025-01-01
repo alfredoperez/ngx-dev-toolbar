@@ -23,7 +23,8 @@
           }
         ],
         "styles": ["apps/ngx-dev-toolbar-demo/src/styles.scss"],
-        "scripts": []
+        "scripts": [],
+        "assets": ["apps/ngx-dev-toolbar-demo/src/assets"]
       },
       "configurations": {
         "production": {

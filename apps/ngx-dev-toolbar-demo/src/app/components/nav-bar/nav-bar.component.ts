@@ -20,6 +20,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
           <a routerLink="/feature-flags" routerLinkActive="active"
             >Feature Flags</a
           >
+          <a routerLink="/languages" routerLinkActive="active">Languages</a>
         </div>
       </div>
     </nav>

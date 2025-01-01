@@ -1,6 +1,6 @@
-import { Routes } from '@angular/router';
+import { Route } from '@angular/router';
 
-export const routes: Routes = [
+export const appRoutes: Route[] = [
   {
     path: '',
     loadComponent: () =>
@@ -11,6 +11,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/feature-flags/feature-flags.component').then(
         (m) => m.FeatureFlagsComponent
+      ),
+  },
+  {
+    path: 'languages',
+    loadComponent: () =>
+      import('./features/languages/languages.component').then(
+        (m) => m.LanguagesComponent
       ),
   },
 ];

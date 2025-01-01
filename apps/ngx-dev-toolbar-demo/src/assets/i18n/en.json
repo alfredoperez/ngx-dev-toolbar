@@ -1,0 +1,8 @@
+{
+  "languages": {
+    "title": "Language Selection",
+    "description": "Select your preferred language",
+    "welcome": "Welcome to our application",
+    "sample": "This is a sample translated text"
+  }
+}
