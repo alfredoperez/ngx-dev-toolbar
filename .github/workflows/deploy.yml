@@ -1,4 +1,4 @@
-name: Deploy documentation to GitHub Pages
+name: Build and deploy static content to Pages
 
 on:
   # Runs on pushes targeting the default branch
@@ -36,11 +36,13 @@ jobs:
         run: npm ci
       - name: Build
         run: npx nx run documentation:build --configuration=production
+      - name: List dist directory
+        run: ls -R dist/
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'dist/apps/ngx-dev-toolbar-demo/browser'
+          path: 'dist/documentation/browser'
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
