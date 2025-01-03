@@ -22,16 +22,16 @@
   <table>
     <tr>
       <td align="center">🚥</td>
-      <td>Test feature flags without backend changes</td>
+      <td>Toggle feature flags without backend changes</td>
     </tr>
     <td align="center">🌍</td>
       <td>Switch languages instantly</td>
     </tr>
     <td align="center">🎨</td>
-      <td>Toggle themes on the fly</td>
+      <td>Switch themes on the fly</td>
     </tr>
     <td align="center">👤</td>
-      <td>Manage user sessions effortlessly</td>
+      <td>Change user sessions effortlessly</td>
     </tr>
     <td align="center">🔄</td>
       <td>Mock network requests in real-time</td>
@@ -49,15 +49,14 @@ No more context switching or backend dependencies - everything you need is right
 
 - Feature Flags
 - Language Switcher
-- Themes _(Coming Soon)_
-- User Session _(Coming Soon)_
-- Network Requests Mocker _(Coming Soon)_
+- Themes `Coming Soon`
+- User Session `Coming Soon`
+- Network Requests Mocker `Coming Soon`
 
 ### 🛠️ Extensible
 
 - Create custom tools
 - Add your own functionality
-- Flexible configuration
 
 ### 🔒 Production Ready
 
@@ -68,7 +67,7 @@ No more context switching or backend dependencies - everything you need is right
 ### 💾 Persistent State
 
 - Settings persist across reloads
-- Import/Export configuration _(Coming Soon)_
+- Import/Export configuration `Coming Soon`
 
 </div>
 
