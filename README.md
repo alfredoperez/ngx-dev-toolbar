@@ -6,6 +6,7 @@
 [![Downloads](https://img.shields.io/npm/dm/ngx-dev-toolbar.svg)](https://www.npmjs.com/package/ngx-dev-toolbar)
 [![License](https://img.shields.io/npm/l/ngx-dev-toolbar.svg)](https://github.com/yourusername/ngx-dev-toolbar/blob/main/LICENSE)
 [![Angular](https://img.shields.io/badge/Angular-17%2B-red)](https://angular.io/)
+[![GitHub Stars](https://img.shields.io/github/stars/alfredoperez/ngx-dev-toolbar?style=social)](https://github.com/alfredoperez/ngx-dev-toolbar)
 
 <h3>A powerful development toolbar for Angular applications that helps developers to interact with the application in a more efficient way.</h3>
 
@@ -218,21 +219,21 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
   <tr>
     <td align="center">
       <a href="https://alfredoperez.github.io/ngx-dev-toolbar/">
-        <img src="./docs/images/docs-icon.png" width="40" alt="Documentation">
+        📚
         <br />
         Documentation
       </a>
     </td>
     <td align="center">
-      <a href="https://github.com/yourusername/ngx-dev-toolbar/issues">
-        <img src="./docs/images/issues-icon.png" width="40" alt="Issues">
+      <a href="https://github.com/alfredoperez/ngx-dev-toolbar/issues">
+        🐛
         <br />
         Issue Tracker
       </a>
     </td>
     <td align="center">
-      <a href="https://github.com/yourusername/ngx-dev-toolbar/discussions">
-        <img src="./docs/images/discussions-icon.png" width="40" alt="Discussions">
+      <a href="https://github.com/alfredoperez/ngx-dev-toolbar/discussions">
+        💬
         <br />
         Discussions
       </a>
@@ -246,8 +247,9 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 
 <div align="center">
 
-[![Twitter Follow](https://img.shields.io/twitter/follow/yourusername?style=social)](https://twitter.com/yourusername)
-[![GitHub Stars](https://img.shields.io/github/stars/yourusername/ngx-dev-toolbar?style=social)](https://github.com/yourusername/ngx-dev-toolbar)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue)](https://www.linkedin.com/in/alfredo-perez/)
+[![Bluesky](https://img.shields.io/badge/Bluesky-Follow-1DA1F2)](https://bsky.app/profile/alfredo-perez.bsky.social)
+[![GitHub Stars](https://img.shields.io/github/stars/alfredoperez/ngx-dev-toolbar?style=social)](https://github.com/alfredoperez/ngx-dev-toolbar)
 
 <hr />
 
