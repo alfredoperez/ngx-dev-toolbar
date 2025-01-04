@@ -1,3 +1,5 @@
+export * from './components/icons/icon.component';
+export * from './components/icons/icon.models';
 export * from './dev-toolbar.component';
 export * from './models/dev-tools.interface';
 export * from './tools/feature-flags-tool/feature-flags.models';

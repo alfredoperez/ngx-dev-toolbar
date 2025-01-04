@@ -64,52 +64,57 @@
         <img class="h-11" src="assets/logo.svg" alt="ngx-dev-toolbar" />
       </div>
       <div class="mt-24 sm:mt-32 lg:mt-16">
-        <a href="#" class="inline-flex space-x-6">
+        <div class="flex items-center gap-3">
           <span
             class="rounded-full bg-indigo-500/10 px-3 py-1 text-sm/6 font-semibold text-indigo-400 ring-1 ring-inset ring-indigo-500/20"
-            >What's new</span
+            >Beta v0.1.0</span
           >
           <span
-            class="inline-flex items-center space-x-2 text-sm/6 font-medium text-gray-300"
+            class="inline-flex items-center text-sm/6 font-medium text-gray-300"
           >
-            <span>Try the Beta</span>
-            <svg
-              class="size-5 text-gray-500"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              aria-hidden="true"
+            <a
+              href="https://github.com/alfredoperez/ngx-dev-toolbar/releases"
+              target="_blank"
+              class="hover:text-indigo-400"
             >
-              <path
-                fill-rule="evenodd"
-                d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z"
-                clip-rule="evenodd"
-              />
-            </svg>
+              Release Notes <span aria-hidden="true">→</span>
+            </a>
           </span>
-        </a>
+        </div>
       </div>
-      <h1
-        class="mt-10 text-pretty text-5xl font-semibold tracking-tight text-white sm:text-7xl"
-      >
-        Supercharge Your Angular Development
-      </h1>
-      <p
-        class="mt-8 text-pretty text-lg font-medium text-gray-400 sm:text-xl/8"
-      >
-        A powerful development toolbar for Angular applications that helps
-        developers interact with their application in a more efficient way.
-        Toggle features, switch languages, and mock data - all without leaving
-        your browser.
-      </p>
+      <div class="mt-8">
+        <p class="text-lg font-medium text-indigo-400">
+          Angular Development Tools
+        </p>
+        <h1
+          class="mt-3 text-pretty text-5xl font-semibold tracking-tight text-white sm:text-7xl"
+        >
+          Supercharge Your Angular Development
+        </h1>
+        <p
+          class="mt-6 text-pretty text-lg font-medium text-gray-400 sm:text-xl/8"
+        >
+          Build, test, and customize your Angular apps faster with instant
+          feature toggles, real-time language switching, and powerful
+          development tools - all without leaving your browser or touching
+          production code.
+        </p>
+      </div>
       <div class="mt-10 flex items-center gap-x-6">
+        <app-get-started-button text="Install from NPM" />
+        <a
+          href="https://github.com/alfredoperez/ngx-dev-toolbar"
+          target="_blank"
+          class="text-sm/6 font-semibold text-white hover:text-indigo-400"
+        >
+          View on GitHub <span aria-hidden="true">→</span>
+        </a>
         <a
           href="#"
-          class="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
-          >Get started</a
+          class="text-sm/6 font-semibold text-indigo-400 hover:text-indigo-300"
         >
-        <a href="#" class="text-sm/6 font-semibold text-white"
-          >View on GitHub <span aria-hidden="true">→</span></a
-        >
+          Try Live Demo <span aria-hidden="true">→</span>
+        </a>
       </div>
     </div>
     <div

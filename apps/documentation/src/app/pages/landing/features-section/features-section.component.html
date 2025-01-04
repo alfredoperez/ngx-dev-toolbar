@@ -1,0 +1,105 @@
+<div class="relative bg-gray-900">
+  <!-- Features Section -->
+  <div class="mx-auto max-w-7xl px-6 py-16">
+    <div class="text-center">
+      <span
+        class="rounded-full bg-indigo-500/10 px-3 py-1 text-sm/6 font-semibold text-indigo-400 ring-1 ring-inset ring-indigo-500/20"
+        >Features</span
+      >
+      <h2 class="mt-3 text-2xl font-medium text-white">
+        Development Tools That Work For You
+      </h2>
+      <p class="mt-4 text-lg text-gray-400">
+        Everything you need to streamline your Angular development workflow
+      </p>
+    </div>
+
+    <div class="mt-16 grid lg:grid-cols-2 gap-12 items-start">
+      <!-- Features List -->
+      <div class="space-y-6 order-2 lg:order-1">
+        @for (feature of features(); track feature.id) {
+        <div
+          class="feature-card"
+          [class.feature-card--active]="isExpanded(feature.id)"
+          (click)="onToggleFeature(feature.id)"
+          (keypress)="onToggleFeature(feature.id)"
+          tabindex="0"
+          role="button"
+        >
+          <div class="feature-header">
+            <div class="feature-icon">
+              <ndt-icon [name]="feature.icon" />
+            </div>
+            <h3 class="feature-title">{{ feature.title }}</h3>
+          </div>
+          <div class="feature-content" [class.hidden]="!isExpanded(feature.id)">
+            <p class="mb-4 text-gray-300">{{ feature.description }}</p>
+            <ul class="feature-list space-y-2">
+              @for (benefit of feature.benefits; track benefit) {
+              <li class="flex items-center gap-2">
+                <i class="i-fa6-solid-check text-indigo-400"></i>
+                <span>{{ benefit }}</span>
+              </li>
+              }
+            </ul>
+          </div>
+        </div>
+        }
+      </div>
+
+      <!-- Demo Image -->
+      <div class="lg:sticky lg:top-8 order-1 lg:order-2">
+        <img
+          [src]="currentImage().src"
+          [alt]="currentImage().alt"
+          class="demo-image rounded-lg bg-white/5 shadow-2xl ring-1 ring-white/10"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Additional Features Section -->
+  <div class="xl:py-24 py-16 bg-gray-800/50">
+    <div class="mx-auto max-w-7xl px-6">
+      <div class="text-center additional-features">
+        <h2 class="text-2xl font-medium text-white">
+          Packed with Everything You Need
+        </h2>
+        <p class="mt-4 text-lg text-gray-400">
+          Comprehensive tools to enhance your development experience
+        </p>
+
+        <div class="py-16">
+          <div class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8">
+            @for (column of splitIntoColumns(additionalFeatures()); track
+            $index) {
+            <div
+              class="feature-column"
+              [style.--delay]="100 * ($index + 1) + 'ms'"
+            >
+              <div class="flex flex-col gap-5">
+                @for (feature of column; track feature.name) {
+                <p class="feature-item flex items-center gap-2">
+                  <i class="i-fa6-solid-check text-indigo-400"></i>
+                  <span class="flex-1">{{ feature.name }}</span>
+                  @if (!feature.available) {
+                  <span
+                    class="text-xs bg-indigo-500/20 text-indigo-400 px-2 py-1 rounded"
+                    >Coming Soon</span
+                  >
+                  }
+                </p>
+                }
+              </div>
+            </div>
+            }
+          </div>
+        </div>
+
+        <div class="flex items-center justify-center">
+          <app-get-started-button text="Start Building Now" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

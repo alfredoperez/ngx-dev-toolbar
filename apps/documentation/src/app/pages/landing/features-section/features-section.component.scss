@@ -1,0 +1,116 @@
+.demo-image {
+  @apply w-full rounded-lg bg-white/5 shadow-2xl ring-1 ring-white/10;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+
+  &.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.feature-card {
+  @apply bg-white/5 rounded-lg p-6 ring-1 ring-white/10 transition-all duration-300 cursor-pointer hover:bg-white/10;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &--active {
+    @apply ring-indigo-500/50;
+  }
+}
+
+.feature-header {
+  @apply flex items-center gap-x-4;
+}
+
+.feature-icon {
+  @apply bg-indigo-500/10 rounded-lg flex items-center justify-center h-12 w-12;
+}
+
+.feature-title {
+  @apply text-lg font-medium text-white flex items-center gap-2;
+}
+
+.feature-content {
+  @apply mt-3 text-gray-400;
+}
+
+.feature-list {
+  @apply list-disc list-inside space-y-2 mb-4;
+}
+
+.coming-soon-badge {
+  @apply text-xs bg-indigo-500/20 text-indigo-400 px-2 py-1 rounded;
+}
+
+.additional-features {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .feature-column {
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    transition-delay: var(--delay, 0ms);
+
+    &.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+
+.feature-item {
+  @apply flex items-center gap-3 text-base font-semibold text-gray-400;
+}
+
+.get-started-button {
+  transition: all 0.3s ease;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(
+      115deg,
+      transparent,
+      transparent 40%,
+      rgba(255, 255, 255, 0.25) 40%,
+      rgba(255, 255, 255, 0.25) 60%,
+      transparent 60%
+    );
+    transform: translateX(-100%);
+    animation: shine 3s infinite;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+
+    &::before {
+      animation: shine 1.5s infinite;
+    }
+  }
+}
+
+@keyframes shine {
+  to {
+    transform: translateX(50%);
+  }
+}
