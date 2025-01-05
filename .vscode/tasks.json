@@ -133,6 +133,20 @@
       "isBackground": true
     },
     {
+      "label": "▶️ [Docs] Serve",
+      "type": "shell",
+      "command": "nx",
+      "args": ["serve", "documentation", "--port=1234"],
+      "problemMatcher": ["$tsc-watch"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "demo-tasks",
+        "close": false
+      },
+      "isBackground": true
+    },
+    {
       "label": "🔄 Affected Tasks",
       "type": "shell",
       "command": "nx",

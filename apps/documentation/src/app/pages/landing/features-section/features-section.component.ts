@@ -21,13 +21,13 @@ interface Feature {
 export class FeaturesSectionComponent implements OnInit {
   expandedFeature = signal('featureFlags');
   currentImage = signal<DemoImage>({
-    src: 'assets/demo.gif',
+    src: 'assets/demos/feature-flags-demo.gif',
     alt: 'Dev Toolbar Demo',
   });
 
   readonly demoImages: Record<string, DemoImage> = {
     featureFlags: {
-      src: 'assets/feature-flags-demo.gif',
+      src: 'assets/demos/feature-flags-demo.gif',
       alt: 'Feature Flags Demo',
     },
     languageSwitcher: {

@@ -210,7 +210,7 @@ export class DevToolbarFeatureFlagsToolComponent {
     title: 'Feature Flags',
     description: 'Manage the feature flags for your current session',
     isClosable: true,
-    size: 'tall' as WindowSize,
+    size: 'medium' as WindowSize,
     id: 'ndt-feature-flags',
     isBeta: true,
   };

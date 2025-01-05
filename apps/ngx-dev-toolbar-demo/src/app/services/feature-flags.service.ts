@@ -25,6 +25,31 @@ export class FeatureFlagsService {
       enabled: true,
       description: 'Enables experimental features across the application',
     },
+    {
+      name: 'taskBoardView',
+      enabled: false,
+      description: 'Enables Kanban board view for tasks',
+    },
+    {
+      name: 'taskCategories',
+      enabled: false,
+      description: 'Enables categorization and filtering of tasks',
+    },
+    {
+      name: 'taskReminders',
+      enabled: false,
+      description: 'Enables notification reminders for task deadlines',
+    },
+    {
+      name: 'taskCollaboration',
+      enabled: false,
+      description: 'Enables task sharing and collaboration features',
+    },
+    {
+      name: 'taskAnalytics',
+      enabled: false,
+      description: 'Enables task completion analytics and reporting',
+    },
   ];
 
   private flagsSubject = new BehaviorSubject<FeatureFlag[]>(this.featureFlags);
