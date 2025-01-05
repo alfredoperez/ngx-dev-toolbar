@@ -1,6 +1,6 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { DevToolbarIconComponent, IconName } from 'ngx-dev-toolbar';
-import { GetStartedButtonComponent } from '../../../shared/components/get-started-button/get-started-button.component';
+import { AnalyticsService } from '../../../shared/services/analytics.service';
 interface DemoImage {
   src: string;
   alt: string;
@@ -14,11 +14,12 @@ interface Feature {
 @Component({
   selector: 'app-features-section',
   standalone: true,
-  imports: [GetStartedButtonComponent, DevToolbarIconComponent],
+  imports: [DevToolbarIconComponent],
   templateUrl: './features-section.component.html',
   styleUrl: './features-section.component.scss',
 })
 export class FeaturesSectionComponent implements OnInit {
+  private readonly analytics = inject(AnalyticsService);
   expandedFeature = signal('featureFlags');
   currentImage = signal<DemoImage>({
     src: 'assets/demos/feature-flags-demo.gif',
@@ -31,12 +32,12 @@ export class FeaturesSectionComponent implements OnInit {
       alt: 'Feature Flags Demo',
     },
     languageSwitcher: {
-      src: 'assets/language-demo.gif',
+      src: 'assets/demos/language-switcher-demo.gif',
       alt: 'Language Switcher Demo',
     },
     customTools: {
-      src: 'assets/custom-tools-demo.gif',
-      alt: 'Custom Tools Demo',
+      src: 'assets/demos/toolbar-tool-demo.gif',
+      alt: 'Toolbar Tool Demo',
     },
   };
 
@@ -82,20 +83,6 @@ export class FeaturesSectionComponent implements OnInit {
     },
   ]);
 
-  readonly additionalFeatures = signal<Feature[]>([
-    { name: 'Zero Production Impact', available: true },
-    { name: 'Secure Implementation', available: true },
-    { name: 'Persistent Settings', available: true },
-    { name: 'Hidden by Default', available: true },
-    { name: 'Custom Tools Support', available: true },
-    { name: 'Feature Flags Management', available: true },
-    { name: 'Language Switching', available: true },
-    { name: 'Mock User Personas', available: false },
-    { name: 'Network Request Mocking', available: false },
-    { name: 'Import/Export Settings', available: false },
-    { name: 'Advanced Theming', available: false },
-  ]);
-
   ngOnInit() {
     this.setupScrollAnimation();
   }
@@ -106,6 +93,16 @@ export class FeaturesSectionComponent implements OnInit {
     }
     this.expandedFeature.set(featureId);
     this.updateImage(featureId);
+
+    // Log the feature name that was toggled
+    const featureName = this.features().find(
+      (feature) => feature.id === featureId
+    )?.title;
+
+    this.analytics.trackEvent('feature_toggle', {
+      category: 'engagement',
+      action: featureName,
+    });
   }
 
   isExpanded(featureId: string): boolean {

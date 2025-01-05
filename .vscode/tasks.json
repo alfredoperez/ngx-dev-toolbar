@@ -158,6 +158,57 @@
         "group": "affected-tasks",
         "close": false
       }
+    },
+    {
+      "label": "Docs Tasks",
+      "dependsOrder": "sequence",
+      "dependsOn": ["🔍 [Docs] Lint", "🧪 [Docs] Test", "📄 [Docs] Build"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "docs-tasks",
+        "close": false,
+        "showReuseMessage": false
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🔍 [Docs] Lint",
+      "type": "shell",
+      "command": "nx",
+      "args": ["lint", "documentation"],
+      "problemMatcher": ["$eslint-stylish"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "docs-tasks",
+        "close": false
+      }
+    },
+    {
+      "label": "🧪 [Docs] Test",
+      "type": "shell",
+      "command": "nx",
+      "args": ["test", "documentation"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "docs-tasks",
+        "close": false
+      }
+    },
+    {
+      "label": "📄 [Docs] Build",
+      "type": "shell",
+      "command": "nx",
+      "args": ["build", "documentation"],
+      "problemMatcher": ["$tsc"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "docs-tasks",
+        "close": false
+      }
     }
   ]
 }

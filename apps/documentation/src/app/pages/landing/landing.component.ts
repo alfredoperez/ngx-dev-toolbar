@@ -1,15 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { SeoService } from '../../shared/services/seo.service';
+import { AdditionalFeaturesSectionComponent } from './additional-features-section/additional-features-section.component';
 import { FeaturesSectionComponent } from './features-section/features-section.component';
 import { HeroSectionComponent } from './hero/hero-section.component';
+import { HowToUseSectionComponent } from './how-to-use-section/how-to-use-section.component';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [HeroSectionComponent, FeaturesSectionComponent],
+  imports: [
+    HeroSectionComponent,
+    FeaturesSectionComponent,
+    HowToUseSectionComponent,
+    AdditionalFeaturesSectionComponent,
+  ],
   template: `
     <app-hero-section />
     <app-features-section />
+    <app-how-to-use-section />
+    <app-additional-features-section />
   `,
 })
 export class LandingComponent implements OnInit {

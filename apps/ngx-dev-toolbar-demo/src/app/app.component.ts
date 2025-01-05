@@ -3,11 +3,15 @@ import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { toSignal } from '@angular/core/rxjs-interop';
+
 import {
   DevToolbarComponent,
   DevToolbarFeatureFlagService,
   DevToolbarLanguageService,
+  DevToolbarToolComponent,
   Flag,
+  WindowConfig,
+  WindowSize,
 } from 'ngx-dev-toolbar';
 import { firstValueFrom, map } from 'rxjs';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
@@ -16,7 +20,13 @@ import { FeatureFlagsService } from './services/feature-flags.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, NavBarComponent, DevToolbarComponent],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    NavBarComponent,
+    DevToolbarComponent,
+    DevToolbarToolComponent,
+  ],
   template: `
     @if (useNewLayout() ) {
     <!-- New Modern Layout -->
@@ -34,7 +44,15 @@ import { FeatureFlagsService } from './services/feature-flags.service';
       </main>
     </div>
     }
-    <ndt-toolbar />
+    <ndt-toolbar>
+      <ndt-toolbar-tool
+        [windowConfig]="windowConfig"
+        [icon]="'gear'"
+        [title]="'Settings'"
+      >
+        <p>This is a custom tool</p>
+      </ndt-toolbar-tool>
+    </ndt-toolbar>
   `,
   styles: [
     `
@@ -68,6 +86,14 @@ export class AppComponent implements OnInit {
   );
   private readonly featureFlagsService = inject(FeatureFlagsService);
 
+  public windowConfig = {
+    title: 'Test',
+    description: 'Test',
+    isClosable: true,
+    size: 'medium' as WindowSize,
+    id: 'test',
+    isBeta: true,
+  } as WindowConfig;
   useNewLayout = toSignal(
     this.featureFlagsService.select('newDemoApplicationLayout')
   );

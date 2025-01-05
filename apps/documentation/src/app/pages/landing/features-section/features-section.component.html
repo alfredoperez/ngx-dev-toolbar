@@ -58,48 +58,5 @@
     </div>
   </div>
 
-  <!-- Additional Features Section -->
-  <div class="xl:py-24 py-16 bg-gray-800/50">
-    <div class="mx-auto max-w-7xl px-6">
-      <div class="text-center additional-features">
-        <h2 class="text-2xl font-medium text-white">
-          Packed with Everything You Need
-        </h2>
-        <p class="mt-4 text-lg text-gray-400">
-          Comprehensive tools to enhance your development experience
-        </p>
-
-        <div class="py-16">
-          <div class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8">
-            @for (column of splitIntoColumns(additionalFeatures()); track
-            $index) {
-            <div
-              class="feature-column"
-              [style.--delay]="100 * ($index + 1) + 'ms'"
-            >
-              <div class="flex flex-col gap-5">
-                @for (feature of column; track feature.name) {
-                <p class="feature-item flex items-center gap-2">
-                  <i class="i-fa6-solid-check text-indigo-400"></i>
-                  <span class="flex-1">{{ feature.name }}</span>
-                  @if (!feature.available) {
-                  <span
-                    class="text-xs bg-indigo-500/20 text-indigo-400 px-2 py-1 rounded"
-                    >Coming Soon</span
-                  >
-                  }
-                </p>
-                }
-              </div>
-            </div>
-            }
-          </div>
-        </div>
-
-        <div class="flex items-center justify-center">
-          <app-get-started-button text="Start Building Now" />
-        </div>
-      </div>
-    </div>
-  </div>
+ 
 </div>

@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Injectable, inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 
 export interface SeoConfig {
@@ -18,11 +19,22 @@ export interface SeoConfig {
   providedIn: 'root',
 })
 export class SeoService {
-  constructor(private meta: Meta, private title: Title) {}
+  private readonly document = inject(DOCUMENT);
+  private readonly meta = inject(Meta);
+  private readonly title = inject(Title);
 
   setData(config: SeoConfig) {
-    // Default values
-    const defaults: Partial<SeoConfig> = {
+    const seoConfig = { ...this.getDefaults(), ...config };
+
+    this.setBasicMetaTags(seoConfig);
+    this.setOpenGraphTags(seoConfig);
+    this.setTwitterTags(seoConfig);
+    this.setSocialProfileTags(seoConfig);
+    this.setSchemaMarkup(seoConfig);
+  }
+
+  private getDefaults(): Partial<SeoConfig> {
+    return {
       image: 'assets/social-preview.png',
       type: 'website',
       author: 'Alfredo Perez',
@@ -31,96 +43,98 @@ export class SeoService {
       linkedInProfile: 'https://www.linkedin.com/in/alfredo-perez',
       url: 'https://ngx-dev-toolbar.dev',
     };
+  }
 
-    const seoConfig = { ...defaults, ...config };
+  private setBasicMetaTags(config: SeoConfig): void {
+    this.title.setTitle(config.title);
+    this.meta.updateTag({ name: 'description', content: config.description });
 
-    // Basic Meta Tags
-    this.title.setTitle(seoConfig.title);
-    this.meta.updateTag({
-      name: 'description',
-      content: seoConfig.description,
-    });
-    if (seoConfig.keywords) {
+    if (config.keywords?.length) {
       this.meta.updateTag({
         name: 'keywords',
-        content: seoConfig.keywords.join(', '),
+        content: config.keywords.join(', '),
       });
     }
 
-    // OpenGraph Meta Tags
-    this.meta.updateTag({ property: 'og:title', content: seoConfig.title });
+    if (config.author) {
+      this.meta.updateTag({ name: 'author', content: config.author });
+    }
+  }
+
+  private setOpenGraphTags(config: SeoConfig): void {
+    this.meta.updateTag({ property: 'og:title', content: config.title });
     this.meta.updateTag({
       property: 'og:description',
-      content: seoConfig.description,
+      content: config.description,
     });
-    this.meta.updateTag({ property: 'og:type', content: seoConfig.type! });
-    this.meta.updateTag({ property: 'og:url', content: seoConfig.url! });
-    this.meta.updateTag({ property: 'og:image', content: seoConfig.image! });
+    this.meta.updateTag({ property: 'og:type', content: config.type! });
+    this.meta.updateTag({ property: 'og:url', content: config.url! });
+    this.meta.updateTag({ property: 'og:image', content: config.image! });
+  }
 
-    // Twitter Meta Tags
+  private setTwitterTags(config: SeoConfig): void {
     this.meta.updateTag({
       name: 'twitter:card',
       content: 'summary_large_image',
     });
-    this.meta.updateTag({ name: 'twitter:title', content: seoConfig.title });
+    this.meta.updateTag({ name: 'twitter:title', content: config.title });
     this.meta.updateTag({
       name: 'twitter:description',
-      content: seoConfig.description,
+      content: config.description,
     });
-    this.meta.updateTag({ name: 'twitter:image', content: seoConfig.image! });
-    if (seoConfig.twitterHandle) {
+    this.meta.updateTag({ name: 'twitter:image', content: config.image! });
+    if (config.twitterHandle) {
       this.meta.updateTag({
         name: 'twitter:creator',
-        content: seoConfig.twitterHandle,
+        content: config.twitterHandle,
       });
       this.meta.updateTag({
         name: 'twitter:site',
-        content: seoConfig.twitterHandle,
+        content: config.twitterHandle,
       });
     }
+  }
 
-    // Social Media Profiles
-    if (seoConfig.linkedInProfile) {
+  private setSocialProfileTags(config: SeoConfig): void {
+    if (config.linkedInProfile) {
       this.meta.updateTag({
         property: 'og:see_also',
-        content: seoConfig.linkedInProfile,
+        content: config.linkedInProfile,
       });
       this.meta.updateTag({
         name: 'linkedin:author',
-        content: seoConfig.linkedInProfile,
+        content: config.linkedInProfile,
       });
     }
 
-    if (seoConfig.blueskyHandle) {
+    if (config.blueskyHandle) {
       this.meta.updateTag({
         name: 'bluesky:creator',
-        content: seoConfig.blueskyHandle,
+        content: config.blueskyHandle,
       });
     }
+  }
 
-    // Additional Meta Tags
-    if (seoConfig.author) {
-      this.meta.updateTag({ name: 'author', content: seoConfig.author });
+  private setSchemaMarkup(config: SeoConfig): void {
+    if (!this.document.defaultView) {
+      return;
     }
 
-    // Schema.org JSON-LD
-    const schema = {
+    const schema = this.createSchemaObject(config);
+    this.updateJsonLdScript(schema);
+  }
+
+  private createSchemaObject(config: SeoConfig) {
+    return {
       '@context': 'https://schema.org',
       '@type': 'SoftwareApplication',
-      name: seoConfig.title,
-      description: seoConfig.description,
+      name: config.title,
+      description: config.description,
       author: {
         '@type': 'Person',
-        name: seoConfig.author,
-        url: seoConfig.url,
-        sameAs: [
-          seoConfig.linkedInProfile,
-          `https://twitter.com/${seoConfig.twitterHandle?.replace('@', '')}`,
-          `https://bsky.app/profile/${seoConfig.blueskyHandle?.replace(
-            '@',
-            ''
-          )}`,
-        ].filter(Boolean),
+        name: config.author,
+        url: config.url,
+        sameAs: this.getSocialUrls(config),
       },
       applicationCategory: 'DeveloperApplication',
       operatingSystem: 'Any',
@@ -130,10 +144,27 @@ export class SeoService {
         priceCurrency: 'USD',
       },
     };
+  }
 
-    const scriptElement = document.createElement('script');
+  private getSocialUrls(config: SeoConfig): string[] {
+    return [
+      config.linkedInProfile,
+      config.twitterHandle &&
+        `https://twitter.com/${config.twitterHandle.replace('@', '')}`,
+      config.blueskyHandle &&
+        `https://bsky.app/profile/${config.blueskyHandle.replace('@', '')}`,
+    ].filter(Boolean) as string[];
+  }
+
+  private updateJsonLdScript(schema: object): void {
+    const existingScripts = this.document.head.querySelectorAll(
+      'script[type="application/ld+json"]'
+    );
+    existingScripts.forEach((script) => script.remove());
+
+    const scriptElement = this.document.createElement('script');
     scriptElement.type = 'application/ld+json';
     scriptElement.text = JSON.stringify(schema);
-    document.head.appendChild(scriptElement);
+    this.document.head.appendChild(scriptElement);
   }
 }

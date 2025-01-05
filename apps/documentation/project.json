@@ -19,7 +19,8 @@
         "assets": [
           {
             "glob": "**/*",
-            "input": "apps/documentation/public"
+            "input": "apps/documentation/public",
+            "output": "/"
           },
           {
             "glob": "**/*",
@@ -91,7 +92,7 @@
       "executor": "@nx/web:file-server",
       "options": {
         "buildTarget": "documentation:build",
-        "port": 4200,
+        "port": 12345,
         "staticFilePath": "dist/apps/documentation/browser",
         "spa": true
       }

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
+import { AnalyticsService } from '../../services/analytics.service';
 
 @Component({
   selector: 'app-get-started-button',
@@ -9,6 +10,7 @@ import { Component, input } from '@angular/core';
     <a
       [href]="href()"
       target="_blank"
+      (click)="onNavigate()"
       class="get-started-button rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400 relative"
     >
       <div class="shine-container">
@@ -69,6 +71,15 @@ import { Component, input } from '@angular/core';
   ],
 })
 export class GetStartedButtonComponent {
+  private readonly analytics = inject(AnalyticsService);
+
   text = input('Get Started');
   href = input('https://www.npmjs.com/package/ngx-dev-toolbar');
+
+  onNavigate(): void {
+    this.analytics.trackEvent('button_click', {
+      category: 'engagement',
+      action: 'get_started',
+    });
+  }
 }

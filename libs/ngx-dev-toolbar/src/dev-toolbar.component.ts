@@ -44,6 +44,7 @@ import { DevToolbarLanguageToolComponent } from './tools/language-tool/language-
       <ndt-home-tool />
       <ndt-language-tool />
       <ndt-feature-flags-tool />
+      <ng-content />
     </div>
     }
   `,
