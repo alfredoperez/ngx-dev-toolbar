@@ -1,3 +1,13 @@
+## 0.0.2-7 (2025-01-06)
+
+### 🩹 Fixes
+
+- update README.md to remove demo image and add documentation link ([e6b8d97](https://github.com/alfredoperez/ngx-dev-toolbar/commit/e6b8d97))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 ## 0.0.2-6 (2025-01-06)
 
 ### 🩹 Fixes
