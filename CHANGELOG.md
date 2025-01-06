@@ -1,3 +1,13 @@
+## 0.0.2-6 (2025-01-06)
+
+### 🩹 Fixes
+
+- update image path in ngx-dev-toolbar README.md for correct demo display ([3bb4393](https://github.com/alfredoperez/ngx-dev-toolbar/commit/3bb4393))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 ## 0.0.2-5 (2025-01-06)
 
 ### 🚀 Features
