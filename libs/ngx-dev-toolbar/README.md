@@ -10,9 +10,7 @@
 
 <h3>A powerful development toolbar for Angular applications that helps developers to interact with the application in a more efficient way.</h3>
 
-<p align="center">
-  <img src="../../apps/documentation/src/assets/demos/feature-flags-demo.gif" alt="Dev Toolbar Demo" width="600px" />
-</p>
+[📚 Documentation & Demo](https://alfredoperez.github.io/ngx-dev-toolbar/)
 
 </div>
 
