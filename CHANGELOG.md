@@ -1,3 +1,13 @@
+## 0.0.2-5 (2025-01-06)
+
+### 🚀 Features
+
+- overhaul README.md for ngx-dev-toolbar ([2ae01b1](https://github.com/alfredoperez/ngx-dev-toolbar/commit/2ae01b1))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 ## 0.0.2-4 (2025-01-06)
 
 ### 🚀 Features
