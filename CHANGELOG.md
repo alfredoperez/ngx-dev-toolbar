@@ -1,3 +1,22 @@
+## 0.0.2-4 (2025-01-06)
+
+### 🚀 Features
+
+- add contributing guidelines and license file ([44351c1](https://github.com/alfredoperez/ngx-dev-toolbar/commit/44351c1))
+- integrate Tailwind CSS and refactor documentation layout ([3fc3640](https://github.com/alfredoperez/ngx-dev-toolbar/commit/3fc3640))
+- refactor landing page and enhance documentation structure ([c592ae7](https://github.com/alfredoperez/ngx-dev-toolbar/commit/c592ae7))
+- enhance documentation and feature flags ([5a8d344](https://github.com/alfredoperez/ngx-dev-toolbar/commit/5a8d344))
+- enhance documentation and integrate ngx-highlightjs ([31e94b2](https://github.com/alfredoperez/ngx-dev-toolbar/commit/31e94b2))
+
+### 🩹 Fixes
+
+- update README links and icons for consistency ([0dcdec3](https://github.com/alfredoperez/ngx-dev-toolbar/commit/0dcdec3))
+- update asset paths in documentation for consistency ([a4a7612](https://github.com/alfredoperez/ngx-dev-toolbar/commit/a4a7612))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 ## 0.0.2-3 (2025-01-02)
 
 ### 🚀 Features
