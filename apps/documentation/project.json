@@ -19,13 +19,13 @@
         "assets": [
           {
             "glob": "**/*",
-            "input": "apps/documentation/public",
-            "output": "/"
+            "input": "apps/documentation/src/assets",
+            "output": "/assets"
           },
           {
             "glob": "**/*",
-            "input": "apps/documentation/src/assets",
-            "output": "assets"
+            "input": "apps/documentation/public",
+            "output": "/"
           }
         ],
         "styles": ["apps/documentation/src/styles.scss"],
@@ -50,7 +50,8 @@
               "maximumError": "8kb"
             }
           ],
-          "outputHashing": "all"
+          "outputHashing": "all",
+          "baseHref": "/ngx-dev-toolbar/"
         },
         "development": {
           "optimization": false,

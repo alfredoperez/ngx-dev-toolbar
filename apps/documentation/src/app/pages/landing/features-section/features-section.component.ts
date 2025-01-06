@@ -22,21 +22,21 @@ export class FeaturesSectionComponent implements OnInit {
   private readonly analytics = inject(AnalyticsService);
   expandedFeature = signal('featureFlags');
   currentImage = signal<DemoImage>({
-    src: 'assets/demos/feature-flags-demo.gif',
+    src: './assets/demos/feature-flags-demo.gif',
     alt: 'Dev Toolbar Demo',
   });
 
   readonly demoImages: Record<string, DemoImage> = {
     featureFlags: {
-      src: 'assets/demos/feature-flags-demo.gif',
+      src: './assets/demos/feature-flags-demo.gif',
       alt: 'Feature Flags Demo',
     },
     languageSwitcher: {
-      src: 'assets/demos/language-switcher-demo.gif',
+      src: './assets/demos/language-switcher-demo.gif',
       alt: 'Language Switcher Demo',
     },
     customTools: {
-      src: 'assets/demos/toolbar-tool-demo.gif',
+      src: './assets/demos/toolbar-tool-demo.gif',
       alt: 'Toolbar Tool Demo',
     },
   };
