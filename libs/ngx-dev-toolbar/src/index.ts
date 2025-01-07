@@ -2,7 +2,6 @@ export * from './components/icons/icon.component';
 export * from './components/icons/icon.models';
 export * from './components/toolbar-tool/toolbar-tool.component';
 export * from './components/toolbar-tool/toolbar-tool.models';
-export * from './components/window/window.models';
 export * from './dev-toolbar.component';
 export * from './models/dev-tools.interface';
 export * from './tools/feature-flags-tool/feature-flags.models';

@@ -3,7 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { firstValueFrom, map } from 'rxjs';
 import { DevToolbarSelectComponent } from '../../components/select/select.component';
 import { DevToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
-import { WindowSize } from '../../components/window/window.models';
+import { DevToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
 import { DevToolbarInternalLanguageService } from './language-internal.service';
 import { Language } from './language.models';
 
@@ -13,11 +13,7 @@ import { Language } from './language.models';
   imports: [DevToolbarToolComponent, DevToolbarSelectComponent],
   styleUrls: ['./language-tool.component.scss'],
   template: `
-    <ndt-toolbar-tool
-      title="Languages"
-      icon="translate"
-      [windowConfig]="windowConfig"
-    >
+    <ndt-toolbar-tool title="Languages" icon="translate" [options]="options">
       <div class="language-select">
         <label for="language-select">Language</label>
         <ndt-select
@@ -34,14 +30,14 @@ import { Language } from './language.models';
 export class DevToolbarLanguageToolComponent {
   private readonly languageService = inject(DevToolbarInternalLanguageService);
 
-  protected readonly windowConfig = {
+  protected readonly options = {
     title: 'Languages',
     description: 'Set the language for your current session',
-    isClosable: true,
-    size: 'small' as WindowSize,
+    size: 'small',
     id: 'ndt-language',
     isBeta: true,
-  };
+    isClosable: true,
+  } as DevToolbarWindowOptions;
 
   activeLanguage = signal<string>('not-forced');
 

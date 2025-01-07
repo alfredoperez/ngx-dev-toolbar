@@ -7,11 +7,10 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import {
   DevToolbarComponent,
   DevToolbarFeatureFlagService,
+  DevToolbarFlag,
   DevToolbarLanguageService,
   DevToolbarToolComponent,
-  Flag,
-  WindowConfig,
-  WindowSize,
+  DevToolbarWindowOptions,
 } from 'ngx-dev-toolbar';
 import { firstValueFrom, map } from 'rxjs';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
@@ -46,7 +45,7 @@ import { FeatureFlagsService } from './services/feature-flags.service';
     }
     <ndt-toolbar>
       <ndt-toolbar-tool
-        [windowConfig]="windowConfig"
+        [options]="options"
         [icon]="'gear'"
         [title]="'Settings'"
       >
@@ -86,14 +85,14 @@ export class AppComponent implements OnInit {
   );
   private readonly featureFlagsService = inject(FeatureFlagsService);
 
-  public windowConfig = {
+  public options = {
     title: 'Test',
     description: 'Test',
     isClosable: true,
-    size: 'medium' as WindowSize,
+    size: 'medium',
     id: 'test',
     isBeta: true,
-  } as WindowConfig;
+  } as DevToolbarWindowOptions;
   useNewLayout = toSignal(
     this.featureFlagsService.select('newDemoApplicationLayout')
   );
@@ -104,7 +103,7 @@ export class AppComponent implements OnInit {
 
   private async loadFlags(): Promise<void> {
     // Gets the flags from the application and sets them in the dev toolbar
-    const flags: Flag[] = await firstValueFrom(
+    const flags: DevToolbarFlag[] = await firstValueFrom(
       this.featureFlagsService.flags$.pipe(
         map((flags) =>
           flags.map(
@@ -114,7 +113,7 @@ export class AppComponent implements OnInit {
                 name: flag.name,
                 description: flag.description,
                 isEnabled: flag.enabled,
-              } as Flag)
+              } as DevToolbarFlag)
           )
         )
       )

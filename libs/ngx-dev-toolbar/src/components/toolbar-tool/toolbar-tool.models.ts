@@ -1,9 +1,33 @@
 import { IconName } from '../icons/icon.models';
-import { WindowConfig } from '../window/window.models';
 
-export interface DevToolbarToolConfig {
+export interface DevToolbarWindowPosition {
+  x: number;
+  y: number;
+}
+export interface DevToolbarWindowOptions {
+  id: string;
+  /**
+   * The title of the window, this can be different from the name of the tool
+   */
+  title: string;
+  description?: string;
+  isClosable?: boolean;
+  isMaximizable?: boolean;
+  isMinimizable?: boolean;
+  placement?:
+    | 'bottom-left'
+    | 'bottom-center'
+    | 'bottom-right'
+    | 'top-left'
+    | 'top-center'
+    | 'top-right';
+  size?: 'small' | 'medium' | 'tall' | 'large';
+  isBeta?: boolean;
+}
+
+export interface DevToolbarToolOptions {
   icon: IconName;
   name: string;
-  windowConfig: WindowConfig;
+  windowOptions: DevToolbarWindowOptions;
   isBeta?: boolean;
 }

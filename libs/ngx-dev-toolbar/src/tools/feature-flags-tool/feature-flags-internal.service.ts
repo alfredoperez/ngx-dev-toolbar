@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable, combineLatest, map } from 'rxjs';
 import { DevToolsStorageService } from '../../utils/storage.service';
-import { Flag } from './feature-flags.models';
+import { DevToolbarFlag } from './feature-flags.models';
 
 interface ForcedFlagsState {
   enabled: string[];
@@ -14,7 +14,7 @@ export class DevToolbarInternalFeatureFlagService {
   private readonly STORAGE_KEY = 'feature-flags';
   private storageService = inject(DevToolsStorageService);
 
-  private appFlags$ = new BehaviorSubject<Flag[]>([]);
+  private appFlags$ = new BehaviorSubject<DevToolbarFlag[]>([]);
   private forcedFlagsSubject = new BehaviorSubject<ForcedFlagsState>({
     enabled: [],
     disabled: [],
@@ -22,7 +22,7 @@ export class DevToolbarInternalFeatureFlagService {
 
   private readonly forcedFlags$ = this.forcedFlagsSubject.asObservable();
 
-  public flags$: Observable<Flag[]> = combineLatest([
+  public flags$: Observable<DevToolbarFlag[]> = combineLatest([
     this.appFlags$,
     this.forcedFlags$,
   ]).pipe(
@@ -41,15 +41,15 @@ export class DevToolbarInternalFeatureFlagService {
     this.loadForcedFlags();
   }
 
-  setAppFlags(flags: Flag[]): void {
+  setAppFlags(flags: DevToolbarFlag[]): void {
     this.appFlags$.next(flags);
   }
 
-  getAppFlags(): Observable<Flag[]> {
+  getAppFlags(): Observable<DevToolbarFlag[]> {
     return this.appFlags$.asObservable();
   }
 
-  getForcedFlags(): Observable<Flag[]> {
+  getForcedFlags(): Observable<DevToolbarFlag[]> {
     return this.flags$.pipe(
       map((flags) => flags.filter((flag) => flag.isForced))
     );

@@ -7,10 +7,9 @@ import {
 import { FormsModule } from '@angular/forms';
 import { DevToolbarButtonComponent } from '../../components/button/button.component';
 import { DevToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
-import { WindowConfig } from '../../components/window/window.models';
+import { DevToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
 import { DevToolbarStateService } from '../../dev-toolbar-state.service';
 import { SettingsService } from './settings.service';
-
 type ThemeType = 'light' | 'dark';
 
 @Component({
@@ -18,7 +17,7 @@ type ThemeType = 'light' | 'dark';
   standalone: true,
   imports: [DevToolbarToolComponent, FormsModule, DevToolbarButtonComponent],
   template: `
-    <ndt-toolbar-tool [windowConfig]="windowConfig" title="Home" icon="angular">
+    <ndt-toolbar-tool [options]="options" title="Home" icon="angular">
       <section class="settings">
         <div class="instruction">
           <div class="instruction__label">
@@ -55,7 +54,7 @@ export class DevToolbarHomeToolComponent {
 
   readonly badge = input<string | number>();
   readonly title = `Angular Dev Toolbar`;
-  readonly windowConfig: WindowConfig = {
+  readonly options: DevToolbarWindowOptions = {
     title: this.title,
     isClosable: true,
     id: 'ndt-home',

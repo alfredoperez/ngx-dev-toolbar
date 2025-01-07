@@ -14,7 +14,7 @@ import { DevToolbarIconComponent } from '../icons/icon.component';
 import { IconName } from '../icons/icon.models';
 import { DevToolbarToolButtonComponent } from '../tool-button/tool-button.component';
 import { DevToolbarWindowComponent } from '../window/window.component';
-import { WindowConfig } from '../window/window.models';
+import { DevToolbarWindowOptions } from './toolbar-tool.models';
 
 @Component({
   selector: 'ndt-toolbar-tool',
@@ -37,7 +37,7 @@ import { WindowConfig } from '../window/window.models';
       >
         <div [attr.data-tooltip]="title()">
           @if (icon()) {
-          <ndt-tool-button [title]="title()" [toolId]="windowConfig().id">
+          <ndt-tool-button [title]="title()" [toolId]="options().id">
             <ndt-icon [name]="icon()" />
           </ndt-tool-button>
           } @else {
@@ -56,7 +56,7 @@ import { WindowConfig } from '../window/window.models';
         [cdkConnectedOverlayHeight]="height()"
         cdkConnectedOverlay
       >
-        <ndt-window [config]="windowConfig()" (close)="onClose()">
+        <ndt-window [config]="options()" (close)="onClose()">
           <ng-content />
         </ndt-window>
       </ng-template>
@@ -73,14 +73,12 @@ export class DevToolbarToolComponent {
   @ContentChild(DevToolbarToolButtonComponent)
   buttonComponent!: DevToolbarToolButtonComponent;
 
-  windowConfig = input.required<WindowConfig>();
+  options = input.required<DevToolbarWindowOptions>();
   icon = input.required<IconName>();
   title = input.required<string>();
-  isActive = computed(
-    () => this.state.activeToolId() === this.windowConfig().id
-  );
+  isActive = computed(() => this.state.activeToolId() === this.options().id);
   height = computed(() => {
-    switch (this.windowConfig().size) {
+    switch (this.options().size) {
       case 'small':
         return 320;
       case 'medium':
@@ -95,7 +93,7 @@ export class DevToolbarToolComponent {
   });
 
   width = computed(() => {
-    switch (this.windowConfig().size) {
+    switch (this.options().size) {
       case 'small':
         return 320;
       case 'medium':
@@ -119,7 +117,7 @@ export class DevToolbarToolComponent {
   ]);
 
   onOpen(): void {
-    this.state.setActiveTool(this.windowConfig().id);
+    this.state.setActiveTool(this.options().id);
   }
 
   onClose(): void {

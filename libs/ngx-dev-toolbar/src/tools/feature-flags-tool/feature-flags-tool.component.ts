@@ -9,10 +9,9 @@ import { FormsModule } from '@angular/forms';
 import { DevToolbarInputComponent } from '../../components/input/input.component';
 import { DevToolbarSelectComponent } from '../../components/select/select.component';
 import { DevToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
-import { WindowSize } from '../../components/window/window.models';
+import { DevToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
 import { DevToolbarInternalFeatureFlagService } from './feature-flags-internal.service';
-import { FeatureFlagFilter, Flag } from './feature-flags.models';
-
+import { DevToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
 @Component({
   selector: 'ndt-feature-flags-tool',
   standalone: true,
@@ -24,7 +23,7 @@ import { FeatureFlagFilter, Flag } from './feature-flags.models';
   ],
   template: `
     <ndt-toolbar-tool
-      [windowConfig]="windowConfig"
+      [options]="options"
       title="Feature Flags"
       icon="toggle-left"
     >
@@ -206,14 +205,14 @@ export class DevToolbarFeatureFlagsToolComponent {
   );
 
   // Other properties
-  protected readonly windowConfig = {
+  protected readonly options = {
     title: 'Feature Flags',
     description: 'Manage the feature flags for your current session',
     isClosable: true,
-    size: 'tall' as WindowSize,
+    size: 'tall',
     id: 'ndt-feature-flags',
     isBeta: true,
-  };
+  } as DevToolbarWindowOptions;
 
   protected readonly filterOptions = [
     { value: 'all', label: 'All Flags' },
@@ -255,7 +254,7 @@ export class DevToolbarFeatureFlagsToolComponent {
   }
 
   // Protected methods
-  protected getFlagValue(flag: Flag): string {
+  protected getFlagValue(flag: DevToolbarFlag): string {
     if (!flag.isForced) return '';
     return flag.isEnabled ? 'on' : 'off';
   }

@@ -1,6 +1,6 @@
 import { Component, computed, inject, input, output } from '@angular/core';
 import { DevToolbarStateService } from '../../dev-toolbar-state.service';
-import { WindowConfig } from './window.models';
+import { DevToolbarWindowOptions } from '../toolbar-tool/toolbar-tool.models';
 
 @Component({
   selector: 'ndt-window',
@@ -12,38 +12,28 @@ import { WindowConfig } from './window.models';
           <div class="header__title">
             <h1>{{ config().title }}</h1>
             @if (config().isBeta) {
-              <span class="beta-tag">BETA</span>
+            <span class="beta-tag">BETA</span>
             }
           </div>
           <p class="header__description">{{ config().description }}</p>
         </div>
         <div class="header__controls">
           @if (config().isMinimizable) {
-            <button
-              aria-label="Minimize"
-              class="control"
-              (click)="onMinimize()"
-            >
-              −
-            </button>
-          }
-          @if (config().isMaximizable) {
-            <button
-              aria-label="Maximize"
-              class="control"
-              (click)="onMaximize()"
-            >
-              □
-            </button>
-          }
-          @if (config().isClosable) {
-            <button
-              aria-label="Close"
-              class="control control--close"
-              (click)="onClose()"
-            >
-              ×
-            </button>
+          <button aria-label="Minimize" class="control" (click)="onMinimize()">
+            −
+          </button>
+          } @if (config().isMaximizable) {
+          <button aria-label="Maximize" class="control" (click)="onMaximize()">
+            □
+          </button>
+          } @if (config().isClosable) {
+          <button
+            aria-label="Close"
+            class="control control--close"
+            (click)="onClose()"
+          >
+            ×
+          </button>
           }
         </div>
       </div>
@@ -58,7 +48,7 @@ import { WindowConfig } from './window.models';
 })
 export class DevToolbarWindowComponent {
   readonly devToolbarStateService = inject(DevToolbarStateService);
-  readonly config = input.required<WindowConfig>();
+  readonly config = input.required<DevToolbarWindowOptions>();
   readonly close = output<void>();
   readonly maximize = output<void>();
   readonly minimize = output<void>();

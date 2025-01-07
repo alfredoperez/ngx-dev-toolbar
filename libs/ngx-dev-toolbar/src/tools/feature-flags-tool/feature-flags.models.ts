@@ -1,4 +1,4 @@
-export interface Flag {
+export interface DevToolbarFlag {
   id: string;
   name: string;
   description?: string;
