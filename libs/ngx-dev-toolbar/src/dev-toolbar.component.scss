@@ -9,10 +9,10 @@
   transform: translateX(-50%);
   display: flex;
   pointer-events: auto;
-  background: var(--devtools-bg-primary);
-  border: 1px solid var(--devtools-border-primary);
+  background: var(--ndt-bg-primary);
+  border: 1px solid var(--ndt-border-primary);
   border-radius: map.get(map.get(devtools.$dimensions, border-radius), full);
-  box-shadow: var(--devtools-shadow-toolbar);
+  box-shadow: var(--ndt-shadow-toolbar);
   height: map.get(devtools.$dimensions, toolbar-height);
   overflow: hidden;
 

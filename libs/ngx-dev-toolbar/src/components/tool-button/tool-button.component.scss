@@ -10,19 +10,19 @@ $dimensions: devtools.$dimensions;
   height: map.get($dimensions, toolbar-height);
   border: 0;
   background: transparent;
-  color: var(--devtools-text-primary);
-  transition: var(--devtools-transition-default);
+  color: var(--ndt-text-primary);
+  transition: var(--ndt-transition-default);
   cursor: pointer;
   opacity: 0.5;
   position: relative;
 
   &--active {
-    background: var(--devtools-hover-bg);
+    background: var(--ndt-hover-bg);
     opacity: 1;
   }
 
   &:hover {
-    background: var(--devtools-hover-bg);
+    background: var(--ndt-hover-bg);
     opacity: 1;
   }
 
@@ -37,9 +37,9 @@ $dimensions: devtools.$dimensions;
     position: absolute;
     top: -0.25rem;
     right: -0.25rem;
-    background-color: var(--devtools-hover-danger);
-    color: var(--devtools-text-primary);
-    border-radius: var(--devtools-border-radius-full);
+    background-color: var(--ndt-hover-danger);
+    color: var(--ndt-text-primary);
+    border-radius: var(--ndt-border-radius-full);
     min-width: 1rem;
     height: 1rem;
     font-size: 0.75rem;
@@ -55,13 +55,13 @@ $dimensions: devtools.$dimensions;
   bottom: calc(100% + 1.2rem);
   left: 50%;
   transform: translateX(-50%);
-  background: var(--devtools-bg-primary);
-  color: var(--devtools-text-primary);
+  background: var(--ndt-bg-primary);
+  color: var(--ndt-text-primary);
   padding: 0.5rem 0.75rem;
-  border-radius: var(--devtools-border-radius-medium);
+  border-radius: var(--ndt-border-radius-medium);
   font-size: 0.75rem;
   white-space: nowrap;
   pointer-events: none;
   z-index: 1000;
-  box-shadow: var(--devtools-shadow-tooltip);
+  box-shadow: var(--ndt-shadow-tooltip);
 }

@@ -84,8 +84,8 @@ import { DevToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
       .header {
         flex-shrink: 0;
         display: flex;
-        gap: var(--devtools-spacing-sm);
-        margin-bottom: var(--devtools-spacing-md);
+        gap: var(--ndt-spacing-sm);
+        margin-bottom: var(--ndt-spacing-md);
 
         ndt-input {
           flex: 0.65;
@@ -99,66 +99,66 @@ import { DevToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
       .empty {
         display: flex;
         flex-direction: column;
-        gap: var(--devtools-spacing-md);
+        gap: var(--ndt-spacing-md);
         flex: 1;
         min-height: 0;
         justify-content: center;
         align-items: center;
-        border: 1px solid var(--devtools-warning-border);
-        border-radius: var(--devtools-border-radius-medium);
-        padding: var(--devtools-spacing-md);
-        background: var(--devtools-warning-background);
-        color: var(--devtools-text-muted);
+        border: 1px solid var(--ndt-warning-border);
+        border-radius: var(--ndt-border-radius-medium);
+        padding: var(--ndt-spacing-md);
+        background: var(--ndt-warning-background);
+        color: var(--ndt-text-muted);
       }
 
       .flag-list {
         display: flex;
         flex-direction: column;
-        gap: var(--devtools-spacing-md);
+        gap: var(--ndt-spacing-md);
         flex: 1;
         min-height: 0;
         overflow-y: auto;
-        padding-right: var(--devtools-spacing-sm);
+        padding-right: var(--ndt-spacing-sm);
 
         &::-webkit-scrollbar {
           width: 8px;
         }
 
         &::-webkit-scrollbar-track {
-          background: var(--devtools-background-secondary);
+          background: var(--ndt-background-secondary);
           border-radius: 4px;
         }
 
         &::-webkit-scrollbar-thumb {
-          background: var(--devtools-border-primary);
+          background: var(--ndt-border-primary);
           border-radius: 4px;
 
           &:hover {
-            background: var(--devtools-hover-bg);
+            background: var(--ndt-hover-bg);
           }
         }
 
         scrollbar-width: thin;
-        scrollbar-color: var(--devtools-border-primary)
-          var(--devtools-background-secondary);
+        scrollbar-color: var(--ndt-border-primary)
+          var(--ndt-background-secondary);
       }
 
       .flag {
         display: flex;
         flex-direction: row;
-        gap: var(--devtools-spacing-sm);
-        background: var(--devtools-background-secondary);
+        gap: var(--ndt-spacing-sm);
+        background: var(--ndt-background-secondary);
         .info {
           flex: 0 0 65%;
           h3 {
             margin: 0;
-            font-size: var(--devtools-font-size-md);
-            color: var(--devtools-text-primary);
+            font-size: var(--ndt-font-size-md);
+            color: var(--ndt-text-primary);
           }
 
           p {
-            font-size: var(--devtools-font-size-xs);
-            color: var(--devtools-text-muted);
+            font-size: var(--ndt-font-size-xs);
+            color: var(--ndt-text-muted);
           }
         }
 
@@ -223,8 +223,8 @@ export class DevToolbarFeatureFlagsToolComponent {
 
   protected readonly flagValueOptions = [
     { value: 'not-forced', label: 'Not Forced' },
-    { value: 'off', label: 'Forced Off (false)' },
-    { value: 'on', label: 'Forced On (true)' },
+    { value: 'off', label: 'Forced Off' },
+    { value: 'on', label: 'Forced On' },
   ];
 
   // Public methods

@@ -1,60 +1,60 @@
 @use '../../styles' as *;
 
 .settings {
-  padding: var(--devtools-spacing-md);
+  padding: var(--ndt-spacing-md);
 }
 
 .instruction {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: var(--devtools-spacing-md);
+  gap: var(--ndt-spacing-md);
 
   &__label {
     display: flex;
     flex-direction: column;
-    gap: var(--devtools-spacing-xs);
+    gap: var(--ndt-spacing-xs);
 
     &-text {
-      color: var(--devtools-text-primary);
-      font-size: var(--devtools-font-size-sm);
+      color: var(--ndt-text-primary);
+      font-size: var(--ndt-font-size-sm);
       font-weight: 500;
     }
 
     &-description {
-      color: var(--devtools-text-muted);
-      font-size: var(--devtools-font-size-xs);
+      color: var(--ndt-text-muted);
+      font-size: var(--ndt-font-size-xs);
     }
   }
 }
 
 .theme {
   display: flex;
-  gap: var(--devtools-spacing-xs);
+  gap: var(--ndt-spacing-xs);
 
   &__button {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: var(--devtools-spacing-xs);
-    border-radius: var(--devtools-border-radius-small);
-    border: 1px solid var(--devtools-border-subtle);
-    background: var(--devtools-bg-primary);
-    color: var(--devtools-text-primary);
+    padding: var(--ndt-spacing-xs);
+    border-radius: var(--ndt-border-radius-small);
+    border: 1px solid var(--ndt-border-subtle);
+    background: var(--ndt-bg-primary);
+    color: var(--ndt-text-primary);
     cursor: pointer;
-    transition: var(--devtools-transition-default);
+    transition: var(--ndt-transition-default);
 
     &:hover {
-      background: var(--devtools-hover-bg);
+      background: var(--ndt-hover-bg);
     }
 
     &--active {
-      background: var(--devtools-primary);
-      color: var(--devtools-text-on-primary);
-      border-color: var(--devtools-primary);
+      background: var(--ndt-primary);
+      color: var(--ndt-text-on-primary);
+      border-color: var(--ndt-primary);
 
       &:hover {
-        background: var(--devtools-primary);
+        background: var(--ndt-primary);
       }
     }
   }

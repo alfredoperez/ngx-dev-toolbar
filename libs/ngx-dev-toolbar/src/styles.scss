@@ -173,88 +173,130 @@ $z-indices: (
 
 // Create a mixin for the CSS variables that can be used by components
 @mixin devtools-theme {
-  --devtools-border-radius-small: #{map.get(
+  --ndt-border-radius-small: #{map.get(
       map.get($dimensions, border-radius),
       small
     )};
-  --devtools-border-radius-medium: #{map.get(
+  --ndt-border-radius-medium: #{map.get(
       map.get($dimensions, border-radius),
       medium
     )};
-  --devtools-border-radius-large: #{map.get(
+  --ndt-border-radius-large: #{map.get(
       map.get($dimensions, border-radius),
       large
     )};
 
-  --devtools-transition-default: #{map.get($transitions, default)};
-  --devtools-transition-smooth: #{map.get($transitions, smooth)};
+  --ndt-transition-default: #{map.get($transitions, default)};
+  --ndt-transition-smooth: #{map.get($transitions, smooth)};
 
-  --devtools-bg-primary: #{map.get(map.get($colors, light), background, primary)};
-  --devtools-bg-gradient: #{map.get(
-      map.get($colors, light),
-      background,
-      gradient
+  --ndt-bg-primary: #{map.get(map.get($colors, light), background, primary)};
+  --ndt-bg-gradient: #{map.get(map.get($colors, light), background, gradient)};
+  --ndt-text-primary: #{map.get(map.get($colors, light), text, primary)};
+  --ndt-text-secondary: #{map.get(map.get($colors, light), text, secondary)};
+  --ndt-text-muted: #{map.get(map.get($colors, light), text, muted)};
+  --ndt-border-primary: #{map.get(map.get($colors, light), border, primary)};
+  --ndt-border-subtle: #{map.get(map.get($colors, light), border, subtle)};
+  --ndt-hover-bg: #{map.get(map.get($colors, light), hover, background)};
+  --ndt-hover-danger: #{map.get(map.get($colors, light), hover, danger)};
+  --ndt-shadow-toolbar: #{map.get(map.get($shadow-themes, light), toolbar)};
+  --ndt-shadow-tooltip: #{map.get(map.get($shadow-themes, light), tooltip)};
+  --ndt-shadow-window: #{map.get(map.get($shadow-themes, light), window)};
+
+  --ndt-spacing-xs: 4px;
+  --ndt-spacing-sm: 8px;
+  --ndt-spacing-md: 16px;
+  --ndt-window-padding: 24px;
+
+  --ndt-font-size-xs: #{map.get($font-sizes, xs)};
+  --ndt-font-size-sm: #{map.get($font-sizes, sm)};
+  --ndt-font-size-md: #{map.get($font-sizes, md)};
+  --ndt-font-size-lg: #{map.get($font-sizes, lg)};
+  --ndt-font-size-xl: #{map.get($font-sizes, xl)};
+
+  --ndt-background-secondary: var(--ndt-bg-primary);
+  --ndt-background-hover: var(--ndt-hover-bg);
+
+  --ndt-primary: #df30d4;
+  --ndt-primary-rgb: 223, 48, 212;
+  --ndt-text-on-primary: #{$color-white};
+
+  --ndt-border-color: var(--ndt-border-primary);
+
+  --ndt-note-background: #{map.get(
+      map.get(map.get($colors, light), annotation),
+      note,
+      background
     )};
-  --devtools-text-primary: #{map.get(map.get($colors, light), text, primary)};
-  --devtools-text-secondary: #{map.get(map.get($colors, light), text, secondary)};
-  --devtools-text-muted: #{map.get(map.get($colors, light), text, muted)};
-  --devtools-border-primary: #{map.get(map.get($colors, light), border, primary)};
-  --devtools-border-subtle: #{map.get(map.get($colors, light), border, subtle)};
-  --devtools-hover-bg: #{map.get(map.get($colors, light), hover, background)};
-  --devtools-hover-danger: #{map.get(map.get($colors, light), hover, danger)};
-  --devtools-shadow-toolbar: #{map.get(map.get($shadow-themes, light), toolbar)};
-  --devtools-shadow-tooltip: #{map.get(map.get($shadow-themes, light), tooltip)};
-  --devtools-shadow-window: #{map.get(map.get($shadow-themes, light), window)};
-
-  --devtools-spacing-xs: 4px;
-  --devtools-spacing-sm: 8px;
-  --devtools-spacing-md: 16px;
-  --devtools-window-padding: 24px;
-
-  --devtools-font-size-xs: #{map.get($font-sizes, xs)};
-  --devtools-font-size-sm: #{map.get($font-sizes, sm)};
-  --devtools-font-size-md: #{map.get($font-sizes, md)};
-  --devtools-font-size-lg: #{map.get($font-sizes, lg)};
-  --devtools-font-size-xl: #{map.get($font-sizes, xl)};
-
-  --devtools-background-secondary: var(--devtools-bg-primary);
-  --devtools-background-hover: var(--devtools-hover-bg);
-
-  --devtools-primary: #df30d4;
-  --devtools-primary-rgb: 223, 48, 212;
-  --devtools-text-on-primary: #{$color-white};
-
-  --devtools-border-color: var(--devtools-border-primary);
+  --ndt-note-border: #{map.get(
+      map.get(map.get($colors, light), annotation),
+      note,
+      border
+    )};
+  --ndt-warning-background: #{map.get(
+      map.get(map.get($colors, light), annotation),
+      warning,
+      background
+    )};
+  --ndt-warning-border: #{map.get(
+      map.get(map.get($colors, light), annotation),
+      warning,
+      border
+    )};
+  --ndt-error-background: #{map.get(
+      map.get(map.get($colors, light), annotation),
+      error,
+      background
+    )};
+  --ndt-error-border: #{map.get(
+      map.get(map.get($colors, light), annotation),
+      error,
+      border
+    )};
 
   &[data-theme='dark'] {
-    --devtools-bg-primary: #{map.get(
-        map.get($colors, dark),
-        background,
-        primary
+    --ndt-bg-primary: #{map.get(map.get($colors, dark), background, primary)};
+    --ndt-bg-gradient: #{map.get(map.get($colors, dark), background, gradient)};
+    --ndt-text-primary: #{map.get(map.get($colors, dark), text, primary)};
+    --ndt-text-secondary: #{map.get(map.get($colors, dark), text, secondary)};
+    --ndt-text-muted: #{map.get(map.get($colors, dark), text, muted)};
+    --ndt-border-primary: #{map.get(map.get($colors, dark), border, primary)};
+    --ndt-border-subtle: #{map.get(map.get($colors, dark), border, subtle)};
+    --ndt-hover-bg: #{map.get(map.get($colors, dark), hover, background)};
+    --ndt-hover-danger: #{map.get(map.get($colors, dark), hover, danger)};
+    --ndt-shadow-toolbar: #{map.get(map.get($shadow-themes, dark), toolbar)};
+    --ndt-shadow-tooltip: #{map.get(map.get($shadow-themes, dark), tooltip)};
+    --ndt-shadow-window: #{map.get(map.get($shadow-themes, dark), window)};
+
+    --ndt-note-background: #{map.get(
+        map.get(map.get($colors, dark), annotation),
+        note,
+        background
       )};
-    --devtools-bg-gradient: #{map.get(
-        map.get($colors, dark),
-        background,
-        gradient
+    --ndt-note-border: #{map.get(
+        map.get(map.get($colors, dark), annotation),
+        note,
+        border
       )};
-    --devtools-text-primary: #{map.get(map.get($colors, dark), text, primary)};
-    --devtools-text-secondary: #{map.get(
-        map.get($colors, dark),
-        text,
-        secondary
+    --ndt-warning-background: #{map.get(
+        map.get(map.get($colors, dark), annotation),
+        warning,
+        background
       )};
-    --devtools-text-muted: #{map.get(map.get($colors, dark), text, muted)};
-    --devtools-border-primary: #{map.get(
-        map.get($colors, dark),
-        border,
-        primary
+    --ndt-warning-border: #{map.get(
+        map.get(map.get($colors, dark), annotation),
+        warning,
+        border
       )};
-    --devtools-border-subtle: #{map.get(map.get($colors, dark), border, subtle)};
-    --devtools-hover-bg: #{map.get(map.get($colors, dark), hover, background)};
-    --devtools-hover-danger: #{map.get(map.get($colors, dark), hover, danger)};
-    --devtools-shadow-toolbar: #{map.get(map.get($shadow-themes, dark), toolbar)};
-    --devtools-shadow-tooltip: #{map.get(map.get($shadow-themes, dark), tooltip)};
-    --devtools-shadow-window: #{map.get(map.get($shadow-themes, dark), window)};
+    --ndt-error-background: #{map.get(
+        map.get(map.get($colors, dark), annotation),
+        error,
+        background
+      )};
+    --ndt-error-border: #{map.get(
+        map.get(map.get($colors, dark), annotation),
+        error,
+        border
+      )};
   }
 }
 
@@ -268,125 +310,33 @@ $z-indices: (
   h4,
   h5 {
     font-weight: 600;
-    color: var(--devtools-text-primary);
+    color: var(--ndt-text-primary);
     margin: 0;
   }
 
   h1 {
-    font-size: var(--devtools-font-size-xl);
+    font-size: var(--ndt-font-size-xl);
   }
   h2 {
-    font-size: var(--devtools-font-size-lg);
+    font-size: var(--ndt-font-size-lg);
   }
   h3 {
-    font-size: var(--devtools-font-size-md);
+    font-size: var(--ndt-font-size-md);
   }
   h4 {
-    font-size: var(--devtools-font-size-sm);
+    font-size: var(--ndt-font-size-sm);
   }
   h5 {
-    font-size: var(--devtools-font-size-xs);
+    font-size: var(--ndt-font-size-xs);
   }
 
   hr {
-    border: 1px solid var(--devtools-border-subtle);
+    border: 1px solid var(--ndt-border-subtle);
     margin: 1em 0;
   }
 
   p {
     line-height: 1.5em;
     margin: 0;
-  }
-  --devtools-note-background: #{map.get(
-      map.get(map.get($colors, light), annotation),
-      note,
-      background
-    )};
-  --devtools-note-border: #{map.get(
-      map.get(map.get($colors, light), annotation),
-      note,
-      border
-    )};
-  --devtools-warning-background: #{map.get(
-      map.get(map.get($colors, light), annotation),
-      warning,
-      background
-    )};
-  --devtools-warning-border: #{map.get(
-      map.get(map.get($colors, light), annotation),
-      warning,
-      border
-    )};
-  --devtools-error-background: #{map.get(
-      map.get(map.get($colors, light), annotation),
-      error,
-      background
-    )};
-  --devtools-error-border: #{map.get(
-      map.get(map.get($colors, light), annotation),
-      error,
-      border
-    )};
-
-  &[data-theme='dark'] {
-    --devtools-bg-primary: #{map.get(
-        map.get($colors, dark),
-        background,
-        primary
-      )};
-    --devtools-bg-gradient: #{map.get(
-        map.get($colors, dark),
-        background,
-        gradient
-      )};
-    --devtools-text-primary: #{map.get(map.get($colors, dark), text, primary)};
-    --devtools-text-secondary: #{map.get(
-        map.get($colors, dark),
-        text,
-        secondary
-      )};
-    --devtools-text-muted: #{map.get(map.get($colors, dark), text, muted)};
-    --devtools-border-primary: #{map.get(
-        map.get($colors, dark),
-        border,
-        primary
-      )};
-    --devtools-border-subtle: #{map.get(map.get($colors, dark), border, subtle)};
-    --devtools-hover-bg: #{map.get(map.get($colors, dark), hover, background)};
-    --devtools-hover-danger: #{map.get(map.get($colors, dark), hover, danger)};
-    --devtools-shadow-toolbar: #{map.get(map.get($shadow-themes, dark), toolbar)};
-    --devtools-shadow-tooltip: #{map.get(map.get($shadow-themes, dark), tooltip)};
-    --devtools-shadow-window: #{map.get(map.get($shadow-themes, dark), window)};
-
-    --devtools-note-background: #{map.get(
-        map.get(map.get($colors, dark), annotation),
-        note,
-        background
-      )};
-    --devtools-note-border: #{map.get(
-        map.get(map.get($colors, dark), annotation),
-        note,
-        border
-      )};
-    --devtools-warning-background: #{map.get(
-        map.get(map.get($colors, dark), annotation),
-        warning,
-        background
-      )};
-    --devtools-warning-border: #{map.get(
-        map.get(map.get($colors, dark), annotation),
-        warning,
-        border
-      )};
-    --devtools-error-background: #{map.get(
-        map.get(map.get($colors, dark), annotation),
-        error,
-        background
-      )};
-    --devtools-error-border: #{map.get(
-        map.get(map.get($colors, dark), annotation),
-        error,
-        border
-      )};
   }
 }
