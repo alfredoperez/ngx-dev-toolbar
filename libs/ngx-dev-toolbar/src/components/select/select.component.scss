@@ -1,102 +1,138 @@
 @use '../../styles' as devtools;
+@use 'sass:map';
 
-select.select {
+:host {
+  @include devtools.devtools-theme;
+}
+
+.select {
+  position: relative;
   width: 100%;
-  cursor: pointer;
-  min-width: 100px;
+  min-width: 120px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: var(--devtools-spacing-sm) var(--devtools-spacing-md);
   border: 1px solid var(--devtools-border-primary);
   border-radius: var(--devtools-border-radius-small);
   background-color: var(--devtools-bg-primary);
   color: var(--devtools-text-primary);
   font-size: var(--devtools-font-size-sm);
-  gap: var(--devtools-spacing-xs);
-  appearance: none;
-  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23666666%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
-  background-repeat: no-repeat;
-  background-position: right var(--devtools-spacing-sm) center;
-  background-size: 0.65em auto;
-  padding-right: 2.5em;
+  cursor: pointer;
+  user-select: none;
   transition: var(--devtools-transition-default);
-
-  &.small {
-    padding: calc(var(--devtools-spacing-xs) / 2) var(--devtools-spacing-sm);
-    font-size: var(--devtools-font-size-sm);
-    height: 24px;
-    padding-right: 2em;
-  }
+  outline: none;
+  height: 32px;
 
   &:hover {
-    background-color: var(--devtools-background-hover);
+    background-color: var(--devtools-hover-bg);
+    border-color: var(--devtools-primary);
   }
 
-  &:focus {
+  &:focus-visible {
     outline: none;
     border-color: var(--devtools-primary);
-    box-shadow: 0 0 0 1px var(--devtools-primary);
+    box-shadow: 0 0 0 2px rgba(var(--devtools-primary-rgb), 0.2);
   }
 
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    background-color: var(--devtools-background-disabled);
-  }
-
-  &:invalid {
-    border-color: var(--devtools-border-error, #ff4444);
-  }
-
-  option {
-    background-color: var(--devtools-bg-primary);
-    color: var(--devtools-text-primary);
-    padding: var(--devtools-spacing-sm);
+  &.small {
+    padding: var(--devtools-spacing-xs) var(--devtools-spacing-sm);
     font-size: var(--devtools-font-size-sm);
+    height: 24px;
+  }
 
-    &:hover,
-    &:focus {
-      background-color: var(--devtools-background-hover);
+  &.open {
+    border-color: var(--devtools-primary);
+    box-shadow: 0 0 0 2px rgba(var(--devtools-primary-rgb), 0.2);
+
+    .select__arrow {
+      transform: rotate(180deg);
     }
+  }
+
+  &__value {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1;
+    margin-right: var(--devtools-spacing-sm);
+  }
+
+  &__arrow {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    transition: transform 0.2s ease;
+    opacity: 0.7;
   }
 }
 
-/* Style for Firefox */
-@-moz-document url-prefix() {
-  select.select {
-    text-indent: 0.01px;
-    text-overflow: '';
-    padding-right: 2.5em;
+.select-menu {
+  display: inline-flex;
+  flex-direction: column;
+  min-width: 180px;
+  max-width: 280px;
+  background-color: var(--devtools-bg-primary);
+  padding: var(--devtools-spacing-xs) 0;
+  border: 1px solid var(--devtools-border-primary);
+  border-radius: var(--devtools-border-radius-small);
+  box-shadow: var(--devtools-shadow-window);
+  color: var(--devtools-text-primary);
+}
 
-    option {
-      background-color: var(--devtools-bg-primary) !important;
-      color: var(--devtools-text-primary) !important;
+.select-menu-item {
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+  color: inherit;
+  user-select: none;
+  min-width: 64px;
+  line-height: 36px;
+  padding: 0 var(--devtools-spacing-md);
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex: 1;
+  font-size: var(--devtools-font-size-sm);
+  font-family: inherit;
+  position: relative;
+
+  &:hover {
+    background-color: var(--devtools-hover-bg);
+  }
+
+  &:active {
+    background-color: rgba(var(--devtools-primary-rgb), 0.15);
+  }
+
+  &.selected {
+    color: var(--devtools-primary);
+    background-color: rgba(var(--devtools-primary-rgb), 0.1);
+    font-weight: 500;
+
+    &:hover {
+      background-color: rgba(var(--devtools-primary-rgb), 0.15);
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 3px;
+      height: calc(100% - 16px);
+      background-color: var(--devtools-primary);
+      border-radius: 2px;
     }
   }
-}
 
-/* Style for Webkit browsers */
-select.select::-ms-expand {
-  display: none;
-}
-
-/* Additional browser-specific overrides */
-select::-ms-expand {
-  display: none;
-}
-
-/* For Webkit browsers (Chrome, Safari) */
-select.select:-webkit-autofill,
-select.select:-webkit-autofill:hover,
-select.select:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0px 1000px var(--devtools-bg-primary) inset !important;
-  -webkit-text-fill-color: var(--devtools-text-primary) !important;
-}
-
-/* For Firefox */
-@-moz-document url-prefix() {
-  .select option {
-    background-color: var(--devtools-bg-primary) !important;
-    color: var(--devtools-text-primary) !important;
+  &:focus-visible {
+    outline: none;
+    background-color: var(--devtools-hover-bg);
   }
 }

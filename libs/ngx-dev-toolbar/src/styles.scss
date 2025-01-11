@@ -171,8 +171,8 @@ $z-indices: (
   window: 999999999,
 );
 
-.dev-toolbar {
-  // Border radius variables
+// Create a mixin for the CSS variables that can be used by components
+@mixin devtools-theme {
   --devtools-border-radius-small: #{map.get(
       map.get($dimensions, border-radius),
       small
@@ -186,11 +186,9 @@ $z-indices: (
       large
     )};
 
-  // Transition variables
   --devtools-transition-default: #{map.get($transitions, default)};
   --devtools-transition-smooth: #{map.get($transitions, smooth)};
 
-  // Default light theme
   --devtools-bg-primary: #{map.get(map.get($colors, light), background, primary)};
   --devtools-bg-gradient: #{map.get(
       map.get($colors, light),
@@ -208,29 +206,60 @@ $z-indices: (
   --devtools-shadow-tooltip: #{map.get(map.get($shadow-themes, light), tooltip)};
   --devtools-shadow-window: #{map.get(map.get($shadow-themes, light), window)};
 
-  // Add these spacing variables
   --devtools-spacing-xs: 4px;
   --devtools-spacing-sm: 8px;
   --devtools-spacing-md: 16px;
   --devtools-window-padding: 24px;
 
-  // Add font size CSS variables
   --devtools-font-size-xs: #{map.get($font-sizes, xs)};
   --devtools-font-size-sm: #{map.get($font-sizes, sm)};
   --devtools-font-size-md: #{map.get($font-sizes, md)};
   --devtools-font-size-lg: #{map.get($font-sizes, lg)};
   --devtools-font-size-xl: #{map.get($font-sizes, xl)};
 
-  // Background colors
   --devtools-background-secondary: var(--devtools-bg-primary);
   --devtools-background-hover: var(--devtools-hover-bg);
 
-  // Primary color for active states
-  --devtools-primary: #df30d4; // You can adjust this color value
+  --devtools-primary: #df30d4;
+  --devtools-primary-rgb: 223, 48, 212;
   --devtools-text-on-primary: #{$color-white};
 
-  // Border color
   --devtools-border-color: var(--devtools-border-primary);
+
+  &[data-theme='dark'] {
+    --devtools-bg-primary: #{map.get(
+        map.get($colors, dark),
+        background,
+        primary
+      )};
+    --devtools-bg-gradient: #{map.get(
+        map.get($colors, dark),
+        background,
+        gradient
+      )};
+    --devtools-text-primary: #{map.get(map.get($colors, dark), text, primary)};
+    --devtools-text-secondary: #{map.get(
+        map.get($colors, dark),
+        text,
+        secondary
+      )};
+    --devtools-text-muted: #{map.get(map.get($colors, dark), text, muted)};
+    --devtools-border-primary: #{map.get(
+        map.get($colors, dark),
+        border,
+        primary
+      )};
+    --devtools-border-subtle: #{map.get(map.get($colors, dark), border, subtle)};
+    --devtools-hover-bg: #{map.get(map.get($colors, dark), hover, background)};
+    --devtools-hover-danger: #{map.get(map.get($colors, dark), hover, danger)};
+    --devtools-shadow-toolbar: #{map.get(map.get($shadow-themes, dark), toolbar)};
+    --devtools-shadow-tooltip: #{map.get(map.get($shadow-themes, dark), tooltip)};
+    --devtools-shadow-window: #{map.get(map.get($shadow-themes, dark), window)};
+  }
+}
+
+.dev-toolbar {
+  @include devtools-theme;
 
   // Typography styles
   h1,
