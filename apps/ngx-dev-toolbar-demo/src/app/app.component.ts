@@ -14,6 +14,7 @@ import {
 } from 'ngx-dev-toolbar';
 import { firstValueFrom, map } from 'rxjs';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
+import { AnalyticsService } from './services/analytics.service';
 import { FeatureFlagsService } from './services/feature-flags.service';
 
 @Component({
@@ -80,6 +81,8 @@ import { FeatureFlagsService } from './services/feature-flags.service';
 })
 export class AppComponent implements OnInit {
   private readonly languageToolbarService = inject(DevToolbarLanguageService);
+  private readonly analyticsService = inject(AnalyticsService);
+
   private readonly devToolbarFeatureFlagsService = inject(
     DevToolbarFeatureFlagService
   );
@@ -99,6 +102,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadFlags();
+    this.analyticsService.trackEvent('Loaded Application', '--', '--');
   }
 
   private async loadFlags(): Promise<void> {

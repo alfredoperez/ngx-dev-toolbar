@@ -1,10 +1,6 @@
 @use '../../styles' as devtools;
 @use 'sass:map';
 
-:host {
-  @include devtools.devtools-theme;
-}
-
 .select {
   position: relative;
   width: 100%;
@@ -76,13 +72,31 @@
   display: inline-flex;
   flex-direction: column;
   min-width: 180px;
-  max-width: 280px;
   background-color: var(--devtools-bg-primary);
   padding: var(--devtools-spacing-xs) 0;
   border: 1px solid var(--devtools-border-primary);
   border-radius: var(--devtools-border-radius-small);
   box-shadow: var(--devtools-shadow-window);
   color: var(--devtools-text-primary);
+  max-height: min(400px, 70vh);
+  overflow-y: auto;
+  backdrop-filter: blur(8px);
+
+  /* Scrollbar Styles */
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--devtools-border-primary);
+    border-radius: 4px;
+    border: 2px solid var(--devtools-bg-primary);
+  }
 }
 
 .select-menu-item {
@@ -101,6 +115,9 @@
   font-size: var(--devtools-font-size-sm);
   font-family: inherit;
   position: relative;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 
   &:hover {
     background-color: var(--devtools-hover-bg);
@@ -135,4 +152,9 @@
     outline: none;
     background-color: var(--devtools-hover-bg);
   }
+}
+
+// Ensure proper theme inheritance in overlay
+.select-overlay {
+  backdrop-filter: blur(8px);
 }
