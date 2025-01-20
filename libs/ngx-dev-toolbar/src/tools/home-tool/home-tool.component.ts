@@ -54,13 +54,13 @@ type ThemeType = 'light' | 'dark';
 
         <div class="settings-actions">
           <ndt-clickable-card
-            icon="database"
+            icon="export"
             title="Export Settings"
             subtitle="Export the current settings to share with other devs or use in your tests"
             (clicked)="onExportSettings()"
           />
           <ndt-clickable-card
-            icon="refresh"
+            icon="import"
             title="Import Settings"
             subtitle="Import settings to reproduce a scenario"
             (clicked)="onImportSettings()"
@@ -75,12 +75,12 @@ type ThemeType = 'light' | 'dark';
             Bug report
           </ndt-link-button>
           <ndt-link-button
-            icon="code"
+            icon="lightbulb"
             url="https://github.com/alfredoperez/ngx-dev-toolbar/discussions"
           >
             Suggestions
           </ndt-link-button>
-          <ndt-link-button icon="layout" url="https://ngx-dev-toolbar.dev">
+          <ndt-link-button icon="docs" url="https://ngx-dev-toolbar.dev">
             Docs
           </ndt-link-button>
           <ndt-link-button
@@ -90,10 +90,10 @@ type ThemeType = 'light' | 'dark';
             Star on GitHub
           </ndt-link-button>
           <ndt-link-button
-            icon="terminal"
+            icon="discord"
             url="https://discord.gg/ngx-dev-toolbar"
           >
-            Our Discord
+            Community
           </ndt-link-button>
         </div>
       </section>

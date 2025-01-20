@@ -10,11 +10,16 @@ import { AngularIconComponent } from './angular-icon.component';
 import { BugIconComponent } from './bug-icon.component';
 import { CodeIconComponent } from './code-icon.component';
 import { DatabaseIconComponent } from './database-icon.component';
+import { DiscordIconComponent } from './discord-icon.component';
+import { DocsIconComponent } from './docs-icon.component';
+import { ExportIconComponent } from './export-icon.component';
 import { GaugeIconComponent } from './gauge-icon.component';
 import { GearIconComponent } from './gear-icon.component';
 import { GitBranchIconComponent } from './git-branch-icon.component';
 import { IconName } from './icon.models';
+import { ImportIconComponent } from './import-icon.component';
 import { LayoutIconComponent } from './layout-icon.component';
+import { LightbulbIconComponent } from './lightbulb-icon.component';
 import { LightingIconComponent } from './lighting-icon.component';
 import { MoonIconComponent } from './moon-icon.component';
 import { NetworkIconComponent } from './network-icon.component';
@@ -35,10 +40,15 @@ import { UsersIconComponent } from './users-icon.component';
     BugIconComponent,
     CodeIconComponent,
     DatabaseIconComponent,
+    DocsIconComponent,
+    DiscordIconComponent,
+    ExportIconComponent,
     GaugeIconComponent,
     GearIconComponent,
     GitBranchIconComponent,
+    ImportIconComponent,
     LayoutIconComponent,
+    LightbulbIconComponent,
     LightingIconComponent,
     NetworkIconComponent,
     PuzzleIconComponent,
@@ -61,16 +71,24 @@ import { UsersIconComponent } from './users-icon.component';
     <ndt-code-icon [fill]="fill()" />
     } @case ('database') {
     <ndt-database-icon [fill]="fill()" />
+    } @case ('docs') {
+    <ndt-docs-icon [fill]="fill()" />
+    } @case ('export') {
+    <ndt-export-icon [fill]="fill()" />
     } @case ('gauge') {
     <ndt-gauge-icon [fill]="fill()" />
     } @case ('gear') {
     <ndt-gear-icon [fill]="fill()" />
     } @case ('git-branch') {
     <ndt-git-branch-icon [fill]="fill()" />
+    } @case ('import') {
+    <ndt-import-icon [fill]="fill()" />
     } @case ('layout') {
     <ndt-layout-icon [fill]="fill()" />
     } @case ('lighting') {
     <ndt-lighting-icon [fill]="fill()" />
+    } @case ('lightbulb') {
+    <ndt-lightbulb-icon [fill]="fill()" />
     } @case ('network') {
     <ndt-network-icon [fill]="fill()" />
     } @case ('puzzle') {
@@ -91,6 +109,8 @@ import { UsersIconComponent } from './users-icon.component';
     <ndt-moon-icon [fill]="fill()" />
     } @case ('translate') {
     <ndt-translate-icon [fill]="fill()" />
+    } @case ('discord') {
+    <ndt-discord-icon [fill]="fill()" />
     } }
   `,
 })
