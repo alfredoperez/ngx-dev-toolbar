@@ -1,0 +1,39 @@
+.clickable-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ndt-spacing-sm);
+  height: 100%;
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--ndt-border-radius-medium);
+    background: var(--ndt-hover-bg);
+    color: var(--ndt-text-primary);
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ndt-spacing-xs);
+  }
+
+  &__title {
+    color: var(--ndt-text-primary);
+    font-size: var(--ndt-font-size-sm);
+    font-weight: 500;
+  }
+
+  &__subtitle {
+    color: var(--ndt-text-muted);
+    font-size: var(--ndt-font-size-xs);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}

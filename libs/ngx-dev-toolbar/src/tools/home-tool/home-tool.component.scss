@@ -1,14 +1,19 @@
 @use '../../styles' as *;
 
 .settings {
-  padding: var(--ndt-spacing-md);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100%;
 }
 
 .instruction {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--ndt-spacing-md);
+  padding-block: var(--ndt-spacing-md);
+  border-bottom: 1px solid var(--ndt-border-subtle);
 
   &__label {
     display: flex;
@@ -26,36 +31,35 @@
       font-size: var(--ndt-font-size-xs);
     }
   }
+
+  &__control {
+    flex: 1;
+  }
 }
 
 .theme {
   display: flex;
   gap: var(--ndt-spacing-xs);
+  justify-content: flex-end;
+}
 
-  &__button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--ndt-spacing-xs);
-    border-radius: var(--ndt-border-radius-small);
-    border: 1px solid var(--ndt-border-subtle);
-    background: var(--ndt-bg-primary);
-    color: var(--ndt-text-primary);
-    cursor: pointer;
-    transition: var(--ndt-transition-default);
+.settings-actions {
+  display: flex;
+  gap: var(--ndt-spacing-md);
+  padding-block: var(--ndt-spacing-md);
 
-    &:hover {
-      background: var(--ndt-hover-bg);
-    }
-
-    &--active {
-      background: var(--ndt-primary);
-      color: var(--ndt-text-on-primary);
-      border-color: var(--ndt-primary);
-
-      &:hover {
-        background: var(--ndt-primary);
-      }
-    }
+  > * {
+    width: 50%;
+    min-width: 0;
   }
+}
+
+.footer-links {
+  border-top: 1px solid var(--ndt-border-subtle);
+  padding-top: 1em;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: var(--ndt-spacing-lg);
+  // padding-block: var(--ndt-spacing-md);
 }

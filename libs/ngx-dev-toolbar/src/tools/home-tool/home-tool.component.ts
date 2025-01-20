@@ -6,16 +6,25 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DevToolbarButtonComponent } from '../../components/button/button.component';
+import { DevToolbarClickableCardComponent } from '../../components/clickable-card/clickable-card.component';
+import { DevToolbarLinkButtonComponent } from '../../components/link-button/link-button.component';
 import { DevToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
 import { DevToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
 import { DevToolbarStateService } from '../../dev-toolbar-state.service';
 import { SettingsService } from './settings.service';
+
 type ThemeType = 'light' | 'dark';
 
 @Component({
   selector: 'ndt-home-tool',
   standalone: true,
-  imports: [DevToolbarToolComponent, FormsModule, DevToolbarButtonComponent],
+  imports: [
+    DevToolbarToolComponent,
+    FormsModule,
+    DevToolbarButtonComponent,
+    DevToolbarClickableCardComponent,
+    DevToolbarLinkButtonComponent,
+  ],
   template: `
     <ndt-toolbar-tool [options]="options" title="Home" icon="angular">
       <section class="settings">
@@ -42,6 +51,51 @@ type ThemeType = 'light' | 'dark';
             </div>
           </div>
         </div>
+
+        <div class="settings-actions">
+          <ndt-clickable-card
+            icon="database"
+            title="Export Settings"
+            subtitle="Export the current settings to share with other devs or use in your tests"
+            (clicked)="onExportSettings()"
+          />
+          <ndt-clickable-card
+            icon="refresh"
+            title="Import Settings"
+            subtitle="Import settings to reproduce a scenario"
+            (clicked)="onImportSettings()"
+          />
+        </div>
+
+        <div class="footer-links">
+          <ndt-link-button
+            icon="bug"
+            url="https://github.com/alfredoperez/ngx-dev-toolbar/issues"
+          >
+            Bug report
+          </ndt-link-button>
+          <ndt-link-button
+            icon="code"
+            url="https://github.com/alfredoperez/ngx-dev-toolbar/discussions"
+          >
+            Suggestions
+          </ndt-link-button>
+          <ndt-link-button icon="layout" url="https://ngx-dev-toolbar.dev">
+            Docs
+          </ndt-link-button>
+          <ndt-link-button
+            icon="star"
+            url="https://github.com/alfredoperez/ngx-dev-toolbar"
+          >
+            Star on GitHub
+          </ndt-link-button>
+          <ndt-link-button
+            icon="terminal"
+            url="https://discord.gg/ngx-dev-toolbar"
+          >
+            Our Discord
+          </ndt-link-button>
+        </div>
       </section>
     </ndt-toolbar-tool>
   `,
@@ -67,5 +121,13 @@ export class DevToolbarHomeToolComponent {
     const newTheme: ThemeType = this.state.isDarkTheme() ? 'light' : 'dark';
     this.settingsService.setSettings({ isDarkMode: newTheme === 'dark' });
     this.state.setTheme(newTheme);
+  }
+
+  onExportSettings(): void {
+    // TODO: Implement export settings functionality
+  }
+
+  onImportSettings(): void {
+    // TODO: Implement import settings functionality
   }
 }

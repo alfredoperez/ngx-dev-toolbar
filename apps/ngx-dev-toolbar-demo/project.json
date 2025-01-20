@@ -20,11 +20,11 @@
           {
             "glob": "**/*",
             "input": "apps/ngx-dev-toolbar-demo/public"
-          }
+          },
+          "apps/ngx-dev-toolbar-demo/src/assets"
         ],
         "styles": ["apps/ngx-dev-toolbar-demo/src/styles.scss"],
-        "scripts": [],
-        "assets": ["apps/ngx-dev-toolbar-demo/src/assets"]
+        "scripts": []
       },
       "configurations": {
         "production": {
