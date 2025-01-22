@@ -40,7 +40,7 @@ jobs:
             node_modules
           key: npm-dependencies-${{ hashFiles('package-lock.json') }}
 
-      - run: npm ci --legacy-peer-deps
+      - run: npm ci
 
       - name: Save dependencies cache
         id: cache-dependencies-save
@@ -52,4 +52,4 @@ jobs:
 
       - uses: nrwl/nx-set-shas@v4
 
-      - run: npx nx affected -t lint test build --parallel=3
+      - run: npx nx affected -t lint test build
