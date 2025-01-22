@@ -6,14 +6,16 @@ module.exports = [
   {
     files: ['**/*.json'],
     rules: {
-      '@nx/dependency-checks': ''
+      '@nx/dependency-checks': 'off',
     },
     ignores: ['**/eslint.config.cjs'],
     overrides: [
       {
-    languageOptions: {
-      parser: require('jsonc-eslint-parser'),
-    },
+        languageOptions: {
+          parser: require('jsonc-eslint-parser'),
+        },
+      },
+    ],
   },
   ...nx.configs['flat/angular'],
   ...nx.configs['flat/angular-template'],
