@@ -68,33 +68,11 @@ type ThemeType = 'light' | 'dark';
         </div>
 
         <div class="footer-links">
-          <ndt-link-button
-            icon="bug"
-            url="https://github.com/alfredoperez/ngx-dev-toolbar/issues"
-          >
-            Bug report
+          @for (link of links; track link.url) {
+          <ndt-link-button [icon]="link.icon" [url]="link.url">
+            {{ link.label }}
           </ndt-link-button>
-          <ndt-link-button
-            icon="lightbulb"
-            url="https://github.com/alfredoperez/ngx-dev-toolbar/discussions"
-          >
-            Suggestions
-          </ndt-link-button>
-          <ndt-link-button icon="docs" url="https://ngx-dev-toolbar.dev">
-            Docs
-          </ndt-link-button>
-          <ndt-link-button
-            icon="star"
-            url="https://github.com/alfredoperez/ngx-dev-toolbar"
-          >
-            Star on GitHub
-          </ndt-link-button>
-          <ndt-link-button
-            icon="discord"
-            url="https://discord.gg/ngx-dev-toolbar"
-          >
-            Community
-          </ndt-link-button>
+          }
         </div>
       </section>
     </ndt-toolbar-tool>
@@ -103,8 +81,8 @@ type ThemeType = 'light' | 'dark';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DevToolbarHomeToolComponent {
-  state = inject(DevToolbarStateService);
-  settingsService = inject(SettingsService);
+  protected readonly state = inject(DevToolbarStateService);
+  private readonly settingsService = inject(SettingsService);
 
   readonly badge = input<string | number>();
   readonly title = `Angular Dev Toolbar`;
@@ -116,6 +94,34 @@ export class DevToolbarHomeToolComponent {
     description: '',
     isBeta: true,
   };
+
+  readonly links = [
+    {
+      icon: 'bug',
+      url: 'https://github.com/alfredoperez/ngx-dev-toolbar/issues',
+      label: 'Bug report',
+    },
+    {
+      icon: 'lightbulb',
+      url: 'https://github.com/alfredoperez/ngx-dev-toolbar/discussions',
+      label: 'Suggestions',
+    },
+    {
+      icon: 'docs',
+      url: 'https://alfredoperez.github.io/ngx-dev-toolbar/',
+      label: 'Docs',
+    },
+    {
+      icon: 'star',
+      url: 'https://github.com/alfredoperez/ngx-dev-toolbar',
+      label: 'Star on GitHub',
+    },
+    {
+      icon: 'discord',
+      url: 'https://discord.com/invite/angular',
+      label: 'Community',
+    },
+  ] as const;
 
   onToggleTheme(): void {
     const newTheme: ThemeType = this.state.isDarkTheme() ? 'light' : 'dark';
