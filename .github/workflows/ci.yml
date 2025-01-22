@@ -6,6 +6,9 @@ on:
       - main
   pull_request:
 
+env:
+  NX_VERBOSE_LOGGING: true
+
 permissions:
   actions: read
   contents: read
@@ -18,18 +21,35 @@ jobs:
         with:
           fetch-depth: 0
 
-      # This enables task distribution via Nx Cloud
-      # Run this command as early as possible, before dependencies are installed
-      # Learn more at https://nx.dev/ci/reference/nx-cloud-cli#npx-nxcloud-startcirun
-      # Uncomment this line to enable task distribution
-      # - run: npx nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="e2e-ci"
+      # Add Nx Cloud distributed task execution
+      - name: Start Nx Cloud CI Run
+        run: npx nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after=build
 
-      # Cache node_modules
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
 
+      # Cache node_modules
+      - name: Restore cached dependencies
+        id: cache-dependencies-restore
+        uses: actions/cache/restore@v3
+        with:
+          path: |
+            node_modules
+          key: npm-dependencies-${{ hashFiles('package-lock.json') }}
+
       - run: npm ci --legacy-peer-deps
+
+      - name: Save dependencies cache
+        id: cache-dependencies-save
+        uses: actions/cache/save@v3
+        with:
+          path: |
+            node_modules
+          key: ${{ steps.cache-dependencies-restore.outputs.cache-primary-key }}
+
       - uses: nrwl/nx-set-shas@v4
-      - run: npx nx affected -t lint test build
+
+      - run: npx nx affected -t lint test build --parallel=3
