@@ -34,7 +34,6 @@ module.exports = [
       '**/*.cjs',
       '**/*.mjs',
     ],
-    // Override or add rules here
     rules: {},
   },
   {
@@ -44,6 +43,11 @@ module.exports = [
         'error',
         {
           ignoredFiles: ['{projectRoot}/eslint.config.{js,cjs,mjs}'],
+          ignoredDependencies: [
+            'vite',
+            '@analogjs/vite-plugin-angular',
+            '@nx/vite',
+          ],
         },
       ],
     },
