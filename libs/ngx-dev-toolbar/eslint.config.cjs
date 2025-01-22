@@ -6,13 +6,11 @@ module.exports = [
   {
     files: ['**/*.json'],
     rules: {
-      '@nx/dependency-checks': [
-        'error',
-        {
-          ignoredFiles: ['{projectRoot}/eslint.config.{js,cjs,mjs}'],
-        },
-      ],
+      '@nx/dependency-checks': ''
     },
+    ignores: ['**/eslint.config.cjs'],
+    overrides: [
+      {
     languageOptions: {
       parser: require('jsonc-eslint-parser'),
     },
