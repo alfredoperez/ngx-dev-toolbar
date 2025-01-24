@@ -11,6 +11,7 @@ import { DevToolbarLinkButtonComponent } from '../../components/link-button/link
 import { DevToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
 import { DevToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
 import { DevToolbarStateService } from '../../dev-toolbar-state.service';
+import { DevToolsStorageService } from '../../utils/storage.service';
 import { SettingsService } from './settings.service';
 
 type ThemeType = 'light' | 'dark';
@@ -83,6 +84,7 @@ type ThemeType = 'light' | 'dark';
 export class DevToolbarHomeToolComponent {
   protected readonly state = inject(DevToolbarStateService);
   private readonly settingsService = inject(SettingsService);
+  private readonly storageService = inject(DevToolsStorageService);
 
   readonly badge = input<string | number>();
   readonly title = `Angular Dev Toolbar`;
@@ -130,10 +132,41 @@ export class DevToolbarHomeToolComponent {
   }
 
   onExportSettings(): void {
-    // TODO: Implement export settings functionality
+    const settings = this.storageService.getAllSettings();
+    const blob = new Blob([JSON.stringify(settings, null, 2)], {
+      type: 'application/json',
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    const timestamp = new Date().toISOString().split('T')[0];
+    link.href = url;
+    link.download = `ngx-dev-toolbar-settings-${timestamp}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   }
 
   onImportSettings(): void {
-    // TODO: Implement import settings functionality
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'application/json';
+    input.onchange = (event) => {
+      const file = (event.target as HTMLInputElement).files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const settings = JSON.parse(e.target?.result as string);
+            this.storageService.setAllSettings(settings);
+            window.location.reload();
+          } catch (error) {
+            console.error('Error importing settings:', error);
+          }
+        };
+        reader.readAsText(file);
+      }
+    };
+    input.click();
   }
 }
