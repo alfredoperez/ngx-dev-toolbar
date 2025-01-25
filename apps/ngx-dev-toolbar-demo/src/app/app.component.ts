@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { RouterOutlet } from '@angular/router';
-
-import { toSignal } from '@angular/core/rxjs-interop';
+import { TranslocoService } from '@jsverse/transloco';
 
 import {
   DevToolbarComponent,
@@ -82,11 +82,13 @@ import { FeatureFlagsService } from './services/feature-flags.service';
 export class AppComponent implements OnInit {
   private readonly languageToolbarService = inject(DevToolbarLanguageService);
   private readonly analyticsService = inject(AnalyticsService);
-
+  private readonly translocoService = inject(TranslocoService);
   private readonly devToolbarFeatureFlagsService = inject(
     DevToolbarFeatureFlagService
   );
   private readonly featureFlagsService = inject(FeatureFlagsService);
+
+  originalLang = this.translocoService.getActiveLang();
 
   public options = {
     title: 'Test',
@@ -130,5 +132,17 @@ export class AppComponent implements OnInit {
       { id: 'en', name: 'English' },
       { id: 'es', name: 'Spanish' },
     ]);
+
+    // Handle language changes from the dev toolbar
+    this.languageToolbarService
+      .getForcedValues()
+      .pipe(takeUntilDestroyed())
+      .subscribe(([language]) => {
+        if (language) {
+          this.translocoService.setActiveLang(language.id);
+        } else {
+          this.translocoService.setActiveLang(this.originalLang);
+        }
+      });
   }
 }

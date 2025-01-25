@@ -4,5 +4,15 @@
     "description": "Selecciona tu idioma preferido",
     "welcome": "Bienvenido a nuestra aplicación",
     "sample": "Este es un texto traducido de ejemplo"
+  },
+  "featureFlags": {
+    "title": "Las Feature Flags Disponibles",
+    "newDemoApplicationLayout": "Habilita el nuevo diseño moderno para la aplicación de demostración",
+    "experimentalFeatures": "Habilita características experimentales en toda la aplicación",
+    "taskBoardView": "Habilita la vista de tablero Kanban para tareas",
+    "taskCategories": "Habilita la categorización y filtrado de tareas",
+    "taskReminders": "Habilita recordatorios de notificación para fechas límite de tareas",
+    "taskCollaboration": "Habilita características de compartir y colaboración en tareas",
+    "taskAnalytics": "Habilita análisis e informes de finalización de tareas"
   }
 }

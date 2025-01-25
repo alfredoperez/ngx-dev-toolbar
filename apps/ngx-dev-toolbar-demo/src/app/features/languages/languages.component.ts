@@ -1,7 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { DevToolbarLanguageService } from 'ngx-dev-toolbar';
 
 @Component({
   selector: 'app-languages',
@@ -47,23 +45,7 @@ import { DevToolbarLanguageService } from 'ngx-dev-toolbar';
 })
 export class LanguagesComponent {
   protected readonly translocoService = inject(TranslocoService);
-  private readonly languageToolbarService = inject(DevToolbarLanguageService);
-
-  originalLang = this.translocoService.getActiveLang();
-  currentLang = this.originalLang;
-
-  constructor() {
-    this.languageToolbarService
-      .getForcedValues()
-      .pipe(takeUntilDestroyed())
-      .subscribe(([language]) => {
-        if (language) {
-          this.translocoService.setActiveLang(language.id);
-        } else {
-          this.translocoService.setActiveLang(this.originalLang);
-        }
-      });
-  }
+  currentLang = this.translocoService.getActiveLang();
 
   setLanguage(language: string): void {
     this.translocoService.setActiveLang(language);

@@ -26,9 +26,9 @@ export class DevToolbarClickableCardComponent {
   readonly icon = input.required<IconName>();
   readonly title = input.required<string>();
   readonly subtitle = input.required<string>();
-  readonly clicked = signal<void>(undefined);
+  readonly click = signal<void>(undefined);
 
   onClick(): void {
-    this.clicked.set();
+    this.click.set();
   }
 }

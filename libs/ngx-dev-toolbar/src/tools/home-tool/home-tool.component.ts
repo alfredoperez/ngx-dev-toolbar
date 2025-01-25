@@ -37,7 +37,7 @@ type ThemeType = 'light' | 'dark';
             </span>
           </div>
           <div class="instruction__control">
-            <div class="theme">
+            <div class="instruction__control-button">
               <ndt-button
                 [isActive]="true"
                 (click)="onToggleTheme()"
@@ -53,19 +53,39 @@ type ThemeType = 'light' | 'dark';
           </div>
         </div>
 
-        <div class="settings-actions">
-          <ndt-clickable-card
-            icon="export"
-            title="Export Settings"
-            subtitle="Export the current settings to share with other devs or use in your tests"
-            (clicked)="onExportSettings()"
-          />
-          <ndt-clickable-card
-            icon="import"
-            title="Import Settings"
-            subtitle="Import settings to reproduce a scenario"
-            (clicked)="onImportSettings()"
-          />
+        <div class="settings-container">
+          <div class="instruction">
+            <div class="instruction__label">
+              <span class="instruction__label-text">Reset Settings</span>
+              <span class="instruction__label-description">
+                Reset all settings to their default values
+              </span>
+            </div>
+            <div class="instruction__control">
+              <div class="instruction__control-button">
+                <ndt-button
+                  variant="icon"
+                  icon="trash"
+                  ariaLabel="Reset all settings"
+                  (click)="onResetSettings()"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="settings-actions">
+            <ndt-clickable-card
+              icon="export"
+              title="Export Settings"
+              subtitle="Export the current settings to share with other devs or use in your tests"
+              (click)="onExportSettings()"
+            />
+            <ndt-clickable-card
+              icon="import"
+              title="Import Settings"
+              subtitle="Import settings to reproduce a scenario"
+              (click)="onImportSettings()"
+            />
+          </div>
         </div>
 
         <div class="footer-links">
@@ -168,5 +188,10 @@ export class DevToolbarHomeToolComponent {
       }
     };
     input.click();
+  }
+
+  onResetSettings(): void {
+    this.storageService.clearAllSettings();
+    window.location.reload();
   }
 }

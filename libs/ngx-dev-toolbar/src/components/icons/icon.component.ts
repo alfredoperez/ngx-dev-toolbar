@@ -30,6 +30,7 @@ import { SunIconComponent } from './sun-icon.component';
 import { TerminalIconComponent } from './terminal-icon.component';
 import { ToggleLeftIconComponent } from './toggle-left-icon.component';
 import { TranslateIconComponent } from './translate-icon.component';
+import { TrashIconComponent } from './trash-icon.component';
 import { UsersIconComponent } from './users-icon.component';
 
 @Component({
@@ -60,6 +61,7 @@ import { UsersIconComponent } from './users-icon.component';
     SunIconComponent,
     MoonIconComponent,
     TranslateIconComponent,
+    TrashIconComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -111,6 +113,8 @@ import { UsersIconComponent } from './users-icon.component';
     <ndt-translate-icon [fill]="fill()" />
     } @case ('discord') {
     <ndt-discord-icon [fill]="fill()" />
+    } @case ('trash') {
+    <ndt-trash-icon [fill]="fill()" />
     } }
   `,
 })

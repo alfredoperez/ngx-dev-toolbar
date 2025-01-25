@@ -42,7 +42,7 @@ describe('DevToolsStorageService', () => {
 
       service.set(key, value);
 
-      const storedValue = JSON.parse(storageMock['ndt-testKey'] ?? '{}');
+      const storedValue = JSON.parse(storageMock['AngularDevTools.testKey'] ?? '{}');
       expect(storedValue).toEqual(value);
     });
 
@@ -52,8 +52,8 @@ describe('DevToolsStorageService', () => {
 
       service.set(key, value);
 
-      const toolKeys = JSON.parse(storageMock['ndt--keys'] ?? '[]');
-      expect(toolKeys).toContain('ndt-testKey');
+      const toolKeys = JSON.parse(storageMock['AngularDevTools.keys'] ?? '[]');
+      expect(toolKeys).toContain('AngularDevTools.testKey');
     });
   });
 
@@ -113,8 +113,8 @@ describe('DevToolsStorageService', () => {
       const result = service.getAllSettings();
 
       const settingsWithPrefix = {
-        'ndt-key1': { value: 1 },
-        'ndt-key2': { value: 2 },
+        'AngularDevTools.key1': { value: 1 },
+        'AngularDevTools.key2': { value: 2 },
       };
       expect(result).toEqual(settingsWithPrefix);
     });
@@ -123,14 +123,14 @@ describe('DevToolsStorageService', () => {
   describe('setAllSettings', () => {
     it('should store multiple settings at once', () => {
       const settings = {
-        "ndt-key1": { value: 1 },
-        "ndt-key2": { value: 2 },
+        "AngularDevTools.key1": { value: 1 },
+        "AngularDevTools.key2": { value: 2 },
       };
 
       service.setAllSettings(settings);
 
-      const valueOne = service.get('ndt-key1');
-      const valueTwo = service.get('ndt-key2');
+      const valueOne = service.get('AngularDevTools.key1');
+      const valueTwo = service.get('AngularDevTools.key2');
       expect(valueOne).toEqual({ value: 1 });
       expect( valueTwo).toEqual({ value: 2 });
     });

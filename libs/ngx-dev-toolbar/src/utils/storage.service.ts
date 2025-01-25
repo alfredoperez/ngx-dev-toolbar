@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class DevToolsStorageService {
-  private readonly prefix = 'ndt-';
+  private readonly PREFIX = 'AngularDevTools.';
+  private readonly TOOLS_KEY = `${this.PREFIX}keys`;
+  private readonly SETTINGS_KEY = `${this.PREFIX}settings`;
 
   public set<T>(key: string, value: T): void {
     const toolKey = this.getToolKey(key);
@@ -50,15 +52,16 @@ export class DevToolsStorageService {
   }
 
   public getToolKeys(): string[] {
-    return JSON.parse(localStorage.getItem(`${this.prefix}-keys`) ?? '[]');
+    return JSON.parse(localStorage.getItem(this.TOOLS_KEY) ?? '[]');
   }
+
   private addToolKey(key: string) {
     const currentKeys = this.getToolKeys();
     if (currentKeys.includes(key)) {
       return;
     }
     currentKeys.push(key);
-    localStorage.setItem(`${this.prefix}-keys`, JSON.stringify(currentKeys));
+    localStorage.setItem(this.TOOLS_KEY, JSON.stringify(currentKeys));
   }
 
   private removeToolKey(key: string): void {
@@ -67,10 +70,11 @@ export class DevToolsStorageService {
     if (index !== -1) {
       currentKeys.splice(index, 1);
     }
-    localStorage.setItem(`${this.prefix}-keys`, JSON.stringify(currentKeys));
+    localStorage.setItem(this.TOOLS_KEY, JSON.stringify(currentKeys));
   }
 
   private getToolKey(key: string): string {
-    return key.includes(this.prefix) ? key : this.prefix + key;
+    return key.includes(this.PREFIX) ? key : this.PREFIX + key;
   }
+
 }

@@ -4,5 +4,15 @@
     "description": "Select your preferred language",
     "welcome": "Welcome to our application",
     "sample": "This is a sample translated text"
+  },
+  "featureFlags": {
+    "title": "The Available Feature Flags",
+    "newDemoApplicationLayout": "Enables the new modern layout for the demo application",
+    "experimentalFeatures": "Enables experimental features across the application",
+    "taskBoardView": "Enables Kanban board view for tasks",
+    "taskCategories": "Enables categorization and filtering of tasks",
+    "taskReminders": "Enables notification reminders for task deadlines",
+    "taskCollaboration": "Enables task sharing and collaboration features",
+    "taskAnalytics": "Enables task completion analytics and reporting"
   }
 }
