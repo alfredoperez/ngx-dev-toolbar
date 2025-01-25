@@ -19,7 +19,7 @@ describe('DevToolsStorageService', () => {
         storageMock = {};
       },
       length: 0,
-      key: (index: number): string => '',
+      key: (): string => '',
     };
 
     Object.defineProperty(window, 'localStorage', {
@@ -42,7 +42,9 @@ describe('DevToolsStorageService', () => {
 
       service.set(key, value);
 
-      const storedValue = JSON.parse(storageMock['AngularDevTools.testKey'] ?? '{}');
+      const storedValue = JSON.parse(
+        storageMock['AngularDevTools.testKey'] ?? '{}'
+      );
       expect(storedValue).toEqual(value);
     });
 
@@ -123,8 +125,8 @@ describe('DevToolsStorageService', () => {
   describe('setAllSettings', () => {
     it('should store multiple settings at once', () => {
       const settings = {
-        "AngularDevTools.key1": { value: 1 },
-        "AngularDevTools.key2": { value: 2 },
+        'AngularDevTools.key1': { value: 1 },
+        'AngularDevTools.key2': { value: 2 },
       };
 
       service.setAllSettings(settings);
@@ -132,10 +134,8 @@ describe('DevToolsStorageService', () => {
       const valueOne = service.get('AngularDevTools.key1');
       const valueTwo = service.get('AngularDevTools.key2');
       expect(valueOne).toEqual({ value: 1 });
-      expect( valueTwo).toEqual({ value: 2 });
+      expect(valueTwo).toEqual({ value: 2 });
     });
-
-
 
     it('should preserve existing keys not included in settings', () => {
       service.set('key1', { value: 1 });
