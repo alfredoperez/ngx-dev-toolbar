@@ -23,4 +23,5 @@ export type IconName =
   | 'terminal'
   | 'toggle-left'
   | 'translate'
+  | 'trash'
   | 'user';

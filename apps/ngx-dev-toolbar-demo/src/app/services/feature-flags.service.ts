@@ -18,37 +18,37 @@ export class FeatureFlagsService {
     {
       name: 'newDemoApplicationLayout',
       enabled: false,
-      description: 'Enables the new modern layout for the demo application',
+      description: 'featureFlags.newDemoApplicationLayout',
     },
     {
       name: 'experimentalFeatures',
       enabled: true,
-      description: 'Enables experimental features across the application',
+      description: 'featureFlags.experimentalFeatures',
     },
     {
       name: 'taskBoardView',
       enabled: false,
-      description: 'Enables Kanban board view for tasks',
+      description: 'featureFlags.taskBoardView',
     },
     {
       name: 'taskCategories',
       enabled: false,
-      description: 'Enables categorization and filtering of tasks',
+      description: 'featureFlags.taskCategories',
     },
     {
       name: 'taskReminders',
       enabled: false,
-      description: 'Enables notification reminders for task deadlines',
+      description: 'featureFlags.taskReminders',
     },
     {
       name: 'taskCollaboration',
       enabled: false,
-      description: 'Enables task sharing and collaboration features',
+      description: 'featureFlags.taskCollaboration',
     },
     {
       name: 'taskAnalytics',
       enabled: false,
-      description: 'Enables task completion analytics and reporting',
+      description: 'featureFlags.taskAnalytics',
     },
   ];
 

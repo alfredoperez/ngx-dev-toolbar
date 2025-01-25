@@ -1,20 +1,21 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { FeatureFlagsService } from '../../services/feature-flags.service';
 
 @Component({
   selector: 'app-feature-flags',
   standalone: true,
-  imports: [CommonModule],
+  imports: [TranslocoDirective],
   template: `
-    <div class="feature-flags-container">
-      <h1>Feature Flags</h1>
+    <div class="feature-flags-container" *transloco="let t">
+      <h1>{{ t('featureFlags.title') }}</h1>
       <div class="flags-list">
-        @for (flag of flags$ | async; track flag.name) {
+        @for (flag of flags(); track flag.name) {
         <div class="flag-item">
           <div class="flag-info">
             <h3>{{ flag.name }}</h3>
-            <p>{{ flag.description }}</p>
+            <p>{{ t(flag.description) }}</p>
           </div>
           <label class="switch">
             <input
@@ -111,7 +112,7 @@ import { FeatureFlagsService } from '../../services/feature-flags.service';
 })
 export class FeatureFlagsComponent {
   private readonly featureFlagsService = inject(FeatureFlagsService);
-  flags$ = this.featureFlagsService.flags$;
+  flags = toSignal(this.featureFlagsService.flags$);
 
   toggleFlag(flagName: string): void {
     this.featureFlagsService.toggleFlag(flagName);
