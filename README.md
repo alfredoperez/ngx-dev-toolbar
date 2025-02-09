@@ -90,7 +90,7 @@ import { DevToolbarComponent } from 'ngx-dev-toolbar';
 
 @Component({
   imports: [DevToolbarComponent],
-  template: ` <ndt-dev-toolbar> </ndt-dev-toolbar>`,
+  template: ` <ndt-toolbar> </ndt-toolbar>`,
 })
 export class AppComponent {}
 ```
