@@ -1,3 +1,22 @@
+## 1.0.1 (2025-02-09)
+
+### 🚀 Features
+
+- enhance ngx-dev-toolbar with theme support and select component improvements ([306e37c](https://github.com/alfredoperez/ngx-dev-toolbar/commit/306e37c))
+- integrate analytics tracking and enhance button/select component styles ([210de33](https://github.com/alfredoperez/ngx-dev-toolbar/commit/210de33))
+- enhance ngx-dev-toolbar with new card components and layout improvements ([409ea9c](https://github.com/alfredoperez/ngx-dev-toolbar/commit/409ea9c))
+- add new icons and update home tool layout ([2a7e732](https://github.com/alfredoperez/ngx-dev-toolbar/commit/2a7e732))
+- implement settings export/import functionality and enhance storage service ([88e6c43](https://github.com/alfredoperez/ngx-dev-toolbar/commit/88e6c43))
+- add export,import and clear settings at home tool ([cdc8aad](https://github.com/alfredoperez/ngx-dev-toolbar/commit/cdc8aad))
+
+### 🩹 Fixes
+
+- Nx workspace Cleanup ([#9](https://github.com/alfredoperez/ngx-dev-toolbar/pull/9))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 ## 0.0.2-7 (2025-01-06)
 
 ### 🩹 Fixes
