@@ -13,6 +13,7 @@
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+    "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
       "ngx-dev-toolbar": ["libs/ngx-dev-toolbar/src/index.ts"]
