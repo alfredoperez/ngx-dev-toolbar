@@ -40,7 +40,7 @@
     },
     "@nx/jest:jest": {
       "cache": true,
-      "inputs": ["default", "^production","{workspaceRoot}/jest.preset.js"],
+      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
       "options": {
         "passWithNoTests": true
       },
@@ -84,7 +84,48 @@
   "release": {
     "projects": ["ngx-dev-toolbar"],
     "version": {
-      "conventionalCommits": true
-    }
+      "preVersionCommand": "npm run package"
+    },
+    "git": {
+      "commitMessage": "chore: release {version}"
+    },
+    "changelog": {
+      "workspaceChangelog": {
+        "createRelease": "github"
+      }
+    },
+    "conventionalCommits": {
+      "types": {
+        "feat": {
+          "changelog": {
+            "title": "Features"
+          }
+        },
+        "fix": {
+          "changelog": {
+            "title": "Bug Fixes"
+          }
+        },
+        "cleanup": {
+          "changelog": {
+            "title": "Cleanup"
+          },
+          "semverBump": "patch"
+        },
+        "docs": {
+          "changelog": {
+            "title": "Documentation"
+          },
+          "semverBump": "none"
+        },
+        "refactor": {
+          "changelog": {
+            "title": "Refactor"
+          },
+          "semverBump": "patch"
+        }
+      }
+    },
+    "releaseTagPattern": "{version}"
   }
 }
