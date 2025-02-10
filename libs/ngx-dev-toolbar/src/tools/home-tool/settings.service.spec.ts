@@ -8,8 +8,8 @@ describe('SettingsService', () => {
 
   beforeEach(() => {
     storageServiceMock = {
-      get: vi.fn(),
-      set: vi.fn(),
+      get: jest.fn(),
+      set: jest.fn(),
     } as unknown as DevToolsStorageService;
 
     TestBed.configureTestingModule({
@@ -29,7 +29,7 @@ describe('SettingsService', () => {
   describe('getSettings', () => {
     it('should return settings from storage if they exist', () => {
       const mockSettings = { isDarkMode: true };
-      vi.spyOn(storageServiceMock, 'get').mockReturnValue(mockSettings);
+      jest.spyOn(storageServiceMock, 'get').mockReturnValue(mockSettings);
 
       const result = service.getSettings();
 
@@ -38,7 +38,7 @@ describe('SettingsService', () => {
     });
 
     it('should return default settings if nothing in storage', () => {
-      vi.spyOn(storageServiceMock, 'get').mockReturnValue(null);
+      jest.spyOn(storageServiceMock, 'get').mockReturnValue(null);
 
       const result = service.getSettings();
 

@@ -1,4 +1,0 @@
-# Ignore peer dependency warnings for build tools
-libs/ngx-dev-toolbar/package.json:peerDependencies.vite
-libs/ngx-dev-toolbar/package.json:peerDependencies.@analogjs/vite-plugin-angular
-libs/ngx-dev-toolbar/package.json:peerDependencies.@nx/vite

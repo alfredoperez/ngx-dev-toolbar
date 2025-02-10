@@ -44,9 +44,6 @@ module.exports = [
         {
           ignoredFiles: ['{projectRoot}/eslint.config.{js,cjs,mjs}'],
           ignoredDependencies: [
-            'vite',
-            '@analogjs/vite-plugin-angular',
-            '@nx/vite',
           ],
         },
       ],
