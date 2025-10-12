@@ -16,9 +16,24 @@ export class FeatureFlagsService {
 
   private featureFlags: FeatureFlag[] = [
     {
+      name: 'darkMode',
+      enabled: false,
+      description: 'Enable dark theme throughout the application',
+    },
+    {
       name: 'newDemoApplicationLayout',
       enabled: false,
-      description: 'featureFlags.newDemoApplicationLayout',
+      description: 'Use the modern responsive layout',
+    },
+    {
+      name: 'betaFeatures',
+      enabled: false,
+      description: 'Enable experimental beta features',
+    },
+    {
+      name: 'experimentalUI',
+      enabled: false,
+      description: 'Enable cutting-edge UI components',
     },
     {
       name: 'experimentalFeatures',

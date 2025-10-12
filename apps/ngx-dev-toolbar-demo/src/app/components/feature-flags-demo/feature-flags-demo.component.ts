@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FeatureFlagsService } from '../../services/feature-flags.service';
 
 /**
@@ -329,20 +330,24 @@ import { FeatureFlagsService } from '../../services/feature-flags.service';
 export class FeatureFlagsDemoComponent {
   private readonly featureFlagsService = inject(FeatureFlagsService);
 
-  // Computed signals for each feature flag
-  protected readonly darkModeEnabled = computed(() =>
-    this.featureFlagsService.isEnabled('darkMode')
+  // Convert observables to signals for each feature flag
+  protected readonly darkModeEnabled = toSignal(
+    this.featureFlagsService.select('darkMode'),
+    { initialValue: false }
   );
 
-  protected readonly newLayoutEnabled = computed(() =>
-    this.featureFlagsService.isEnabled('newDemoApplicationLayout')
+  protected readonly newLayoutEnabled = toSignal(
+    this.featureFlagsService.select('newDemoApplicationLayout'),
+    { initialValue: false }
   );
 
-  protected readonly betaFeaturesEnabled = computed(() =>
-    this.featureFlagsService.isEnabled('betaFeatures')
+  protected readonly betaFeaturesEnabled = toSignal(
+    this.featureFlagsService.select('betaFeatures'),
+    { initialValue: false }
   );
 
-  protected readonly experimentalUiEnabled = computed(() =>
-    this.featureFlagsService.isEnabled('experimentalUI')
+  protected readonly experimentalUiEnabled = toSignal(
+    this.featureFlagsService.select('experimentalUI'),
+    { initialValue: false }
   );
 }
