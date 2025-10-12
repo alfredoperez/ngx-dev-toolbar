@@ -165,7 +165,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadFlags();
-    this.loadAppFeatures();
     this.analyticsService.trackEvent('Loaded Application', '--', '--');
   }
 
@@ -189,7 +188,26 @@ export class AppComponent implements OnInit {
     this.devToolbarFeatureFlagsService.setAvailableOptions(flags);
   }
 
-  private loadAppFeatures(): void {
+  constructor() {
+    // Configure available languages
+    this.languageToolbarService.setAvailableOptions([
+      { id: 'en', name: 'English' },
+      { id: 'es', name: 'Spanish' },
+    ]);
+
+    // Handle language changes from the dev toolbar
+    this.languageToolbarService
+      .getForcedValues()
+      .pipe(takeUntilDestroyed())
+      .subscribe(([language]) => {
+        if (language) {
+          this.translocoService.setActiveLang(language.id);
+        } else {
+          this.translocoService.setActiveLang(this.originalLang);
+        }
+      });
+
+    // Set up app features integration
     // Get all features across all tiers for the dev toolbar
     const features = this.appFeaturesConfig.getAllFeatures();
     this.devToolbarAppFeaturesService.setAvailableOptions(features);
@@ -206,25 +224,6 @@ export class AppComponent implements OnInit {
         forcedFeatures.forEach((feature) => {
           this.appFeaturesConfig.forceFeature(feature.id, feature.isEnabled);
         });
-      });
-  }
-
-  constructor() {
-    this.languageToolbarService.setAvailableOptions([
-      { id: 'en', name: 'English' },
-      { id: 'es', name: 'Spanish' },
-    ]);
-
-    // Handle language changes from the dev toolbar
-    this.languageToolbarService
-      .getForcedValues()
-      .pipe(takeUntilDestroyed())
-      .subscribe(([language]) => {
-        if (language) {
-          this.translocoService.setActiveLang(language.id);
-        } else {
-          this.translocoService.setActiveLang(this.originalLang);
-        }
       });
   }
 }
