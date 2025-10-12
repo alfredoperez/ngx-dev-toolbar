@@ -48,6 +48,9 @@
   &__description {
     font-size: var(--ndt-font-size-sm);
     color: var(--ndt-text-muted);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
   }
 
   &__content {

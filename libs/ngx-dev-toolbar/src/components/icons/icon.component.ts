@@ -7,12 +7,14 @@ import {
 } from '@angular/core';
 import { DevToolbarStateService } from '../../dev-toolbar-state.service';
 import { AngularIconComponent } from './angular-icon.component';
+import { BoltIconComponent } from './bolt-icon.component';
 import { BugIconComponent } from './bug-icon.component';
 import { CodeIconComponent } from './code-icon.component';
 import { DatabaseIconComponent } from './database-icon.component';
 import { DiscordIconComponent } from './discord-icon.component';
 import { DocsIconComponent } from './docs-icon.component';
 import { ExportIconComponent } from './export-icon.component';
+import { FilterIconComponent } from './filter-icon.component';
 import { GaugeIconComponent } from './gauge-icon.component';
 import { GearIconComponent } from './gear-icon.component';
 import { GitBranchIconComponent } from './git-branch-icon.component';
@@ -21,6 +23,7 @@ import { ImportIconComponent } from './import-icon.component';
 import { LayoutIconComponent } from './layout-icon.component';
 import { LightbulbIconComponent } from './lightbulb-icon.component';
 import { LightingIconComponent } from './lighting-icon.component';
+import { LockIconComponent } from './lock-icon.component';
 import { MoonIconComponent } from './moon-icon.component';
 import { NetworkIconComponent } from './network-icon.component';
 import { PuzzleIconComponent } from './puzzle-icon.component';
@@ -38,12 +41,14 @@ import { UsersIconComponent } from './users-icon.component';
   standalone: true,
   imports: [
     AngularIconComponent,
+    BoltIconComponent,
     BugIconComponent,
     CodeIconComponent,
     DatabaseIconComponent,
     DocsIconComponent,
     DiscordIconComponent,
     ExportIconComponent,
+    FilterIconComponent,
     GaugeIconComponent,
     GearIconComponent,
     GitBranchIconComponent,
@@ -51,6 +56,7 @@ import { UsersIconComponent } from './users-icon.component';
     LayoutIconComponent,
     LightbulbIconComponent,
     LightingIconComponent,
+    LockIconComponent,
     NetworkIconComponent,
     PuzzleIconComponent,
     RefreshIconComponent,
@@ -67,6 +73,8 @@ import { UsersIconComponent } from './users-icon.component';
   template: `
     @switch (name()) { @case ('angular') {
     <ndt-angular-icon />
+    } @case ('bolt') {
+    <ndt-bolt-icon [fill]="fill()" />
     } @case ('bug') {
     <ndt-bug-icon [fill]="fill()" />
     } @case ('code') {
@@ -77,6 +85,8 @@ import { UsersIconComponent } from './users-icon.component';
     <ndt-docs-icon [fill]="fill()" />
     } @case ('export') {
     <ndt-export-icon [fill]="fill()" />
+    } @case ('filter') {
+    <ndt-filter-icon [fill]="fill()" />
     } @case ('gauge') {
     <ndt-gauge-icon [fill]="fill()" />
     } @case ('gear') {
@@ -91,6 +101,8 @@ import { UsersIconComponent } from './users-icon.component';
     <ndt-lighting-icon [fill]="fill()" />
     } @case ('lightbulb') {
     <ndt-lightbulb-icon [fill]="fill()" />
+    } @case ('lock') {
+    <ndt-lock-icon [fill]="fill()" />
     } @case ('network') {
     <ndt-network-icon [fill]="fill()" />
     } @case ('puzzle') {

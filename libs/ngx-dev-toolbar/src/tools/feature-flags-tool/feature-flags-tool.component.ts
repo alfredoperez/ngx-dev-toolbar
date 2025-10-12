@@ -6,6 +6,7 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { DevToolbarIconComponent } from '../../components/icons/icon.component';
 import { DevToolbarInputComponent } from '../../components/input/input.component';
 import { DevToolbarSelectComponent } from '../../components/select/select.component';
 import { DevToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
@@ -20,6 +21,7 @@ import { DevToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
     DevToolbarToolComponent,
     DevToolbarInputComponent,
     DevToolbarSelectComponent,
+    DevToolbarIconComponent,
   ],
   template: `
     <ndt-toolbar-tool
@@ -34,12 +36,15 @@ import { DevToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
             (valueChange)="onSearchChange($event)"
             placeholder="Search..."
           />
-          <ndt-select
-            [value]="activeFilter()"
-            [options]="filterOptions"
-            [size]="'medium'"
-            (valueChange)="onFilterChange($event)"
-          />
+          <div class="filter-wrapper">
+            <ndt-icon name="filter" class="filter-icon" />
+            <ndt-select
+              [value]="activeFilter()"
+              [options]="filterOptions"
+              [size]="'medium'"
+              (valueChange)="onFilterChange($event)"
+            />
+          </div>
         </div>
 
         @if (hasNoFlags()) {
@@ -91,8 +96,22 @@ import { DevToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
           flex: 0.65;
         }
 
-        ndt-select {
+        .filter-wrapper {
           flex: 0.35;
+          display: flex;
+          align-items: center;
+          gap: var(--ndt-spacing-xs);
+
+          .filter-icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            opacity: 0.6;
+          }
+
+          ndt-select {
+            flex: 1;
+          }
         }
       }
 

@@ -6,6 +6,7 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { DevToolbarIconComponent } from '../../components/icons/icon.component';
 import { DevToolbarInputComponent } from '../../components/input/input.component';
 import { DevToolbarSelectComponent } from '../../components/select/select.component';
 import { DevToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
@@ -35,6 +36,7 @@ import { AppFeatureFilter, DevToolbarAppFeature } from './app-features.models';
     DevToolbarToolComponent,
     DevToolbarInputComponent,
     DevToolbarSelectComponent,
+    DevToolbarIconComponent,
   ],
   template: `
     <ndt-toolbar-tool
@@ -49,12 +51,15 @@ import { AppFeatureFilter, DevToolbarAppFeature } from './app-features.models';
             (valueChange)="onSearchChange($event)"
             placeholder="Search features..."
           />
-          <ndt-select
-            [value]="activeFilter()"
-            [options]="filterOptions"
-            [size]="'medium'"
-            (valueChange)="onFilterChange($event)"
-          />
+          <div class="filter-wrapper">
+            <ndt-icon name="filter" class="filter-icon" />
+            <ndt-select
+              [value]="activeFilter()"
+              [options]="filterOptions"
+              [size]="'medium'"
+              (valueChange)="onFilterChange($event)"
+            />
+          </div>
         </div>
 
         @if (hasNoFeatures()) {
@@ -109,8 +114,22 @@ import { AppFeatureFilter, DevToolbarAppFeature } from './app-features.models';
           flex: 0.65;
         }
 
-        ndt-select {
+        .filter-wrapper {
           flex: 0.35;
+          display: flex;
+          align-items: center;
+          gap: var(--ndt-spacing-xs);
+
+          .filter-icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            opacity: 0.6;
+          }
+
+          ndt-select {
+            flex: 1;
+          }
         }
       }
 
@@ -240,7 +259,7 @@ export class DevToolbarAppFeaturesToolComponent {
   // Other properties
   protected readonly options = {
     title: 'App Features',
-    description: 'Test product-level feature availability (license tiers, deployment configs, environment flags)',
+    description: 'Override product features to test different tiers and configurations',
     isClosable: true,
     size: 'tall',
     id: 'ndt-app-features',

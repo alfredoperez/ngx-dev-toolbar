@@ -69,7 +69,7 @@ import { FeatureFlagsService } from './services/feature-flags.service';
     <ndt-toolbar>
       <ndt-toolbar-tool
         [options]="options"
-        [icon]="'gear'"
+        [icon]="'bolt'"
         [title]="'Settings'"
       >
         <p>This is a custom tool</p>

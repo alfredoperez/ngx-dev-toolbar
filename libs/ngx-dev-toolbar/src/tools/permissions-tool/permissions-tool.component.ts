@@ -6,6 +6,7 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { DevToolbarIconComponent } from '../../components/icons/icon.component';
 import { DevToolbarInputComponent } from '../../components/input/input.component';
 import { DevToolbarSelectComponent } from '../../components/select/select.component';
 import { DevToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
@@ -25,12 +26,13 @@ import {
     DevToolbarToolComponent,
     DevToolbarInputComponent,
     DevToolbarSelectComponent,
+    DevToolbarIconComponent,
   ],
   template: `
     <ndt-toolbar-tool
       [options]="options"
       title="Permissions"
-      icon="user"
+      icon="lock"
     >
       <div class="container">
         <div class="header">
@@ -40,13 +42,16 @@ import {
             placeholder="Search permissions..."
             [ariaLabel]="'Search permissions'"
           />
-          <ndt-select
-            [value]="activeFilter()"
-            [options]="filterOptions"
-            [size]="'medium'"
-            (valueChange)="onFilterChange($event)"
-            [ariaLabel]="'Filter permissions by state'"
-          />
+          <div class="filter-wrapper">
+            <ndt-icon name="filter" class="filter-icon" />
+            <ndt-select
+              [value]="activeFilter()"
+              [options]="filterOptions"
+              [size]="'medium'"
+              (valueChange)="onFilterChange($event)"
+              [ariaLabel]="'Filter permissions by state'"
+            />
+          </div>
         </div>
 
         @if (hasNoPermissions()) {
@@ -99,8 +104,22 @@ import {
           flex: 0.65;
         }
 
-        ndt-select {
+        .filter-wrapper {
           flex: 0.35;
+          display: flex;
+          align-items: center;
+          gap: var(--ndt-spacing-xs);
+
+          .filter-icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            opacity: 0.6;
+          }
+
+          ndt-select {
+            flex: 1;
+          }
         }
       }
 
