@@ -20,6 +20,7 @@ import { DevToolbarFeatureFlagsToolComponent } from './tools/feature-flags-tool/
 import { DevToolbarHomeToolComponent } from './tools/home-tool/home-tool.component';
 import { SettingsService } from './tools/home-tool/settings.service';
 import { DevToolbarLanguageToolComponent } from './tools/language-tool/language-tool.component';
+import { DevToolbarNetworkMockerToolComponent } from './tools/network-mocker-tool/network-mocker-tool.component';
 
 @Component({
   standalone: true,
@@ -29,6 +30,7 @@ import { DevToolbarLanguageToolComponent } from './tools/language-tool/language-
     DevToolbarHomeToolComponent,
     DevToolbarLanguageToolComponent,
     DevToolbarFeatureFlagsToolComponent,
+    DevToolbarNetworkMockerToolComponent,
   ],
   template: `
     @if (isDevMode) {
@@ -44,6 +46,7 @@ import { DevToolbarLanguageToolComponent } from './tools/language-tool/language-
       <ndt-home-tool />
       <ndt-language-tool />
       <ndt-feature-flags-tool />
+      <ndt-network-mocker-tool />
       <ng-content />
     </div>
     }
