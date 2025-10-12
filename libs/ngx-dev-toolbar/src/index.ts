@@ -11,3 +11,8 @@ export * from './tools/language-tool/language.service';
 export * from './tools/network-mocker-tool/network-mocker-tool.component';
 export * from './tools/network-mocker-tool/network-mocker.models';
 export * from './tools/network-mocker-tool/network-mocker.service';
+
+// Permissions Tool
+export * from './tools/permissions-tool/permissions.models';
+export * from './tools/permissions-tool/permissions.service';
+export * from './tools/permissions-tool/permissions-tool.component';

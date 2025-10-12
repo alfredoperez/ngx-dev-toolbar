@@ -36,6 +36,10 @@
     <td align="center">🔄</td>
       <td>Mock network requests in real-time</td>
     </tr>
+    <tr>
+    <td align="center">🔐</td>
+      <td>Test permission-based UI without backend changes</td>
+    </tr>
   </table>
 </div>
 
@@ -49,6 +53,7 @@ No more context switching or backend dependencies - everything you need is right
 
 - Feature Flags
 - Language Switcher
+- Permissions Tool
 - Themes `Coming Soon`
 - User Session `Coming Soon`
 - Network Requests Mocker `Coming Soon`
@@ -157,6 +162,51 @@ export class FeatureComponent {
 #### Dev Toolbar Interface
 
 [Screenshot placeholder showing the feature flags interface in the dev toolbar]
+
+### Permissions Tool
+
+#### Configuration
+
+```typescript
+import { DevToolbarPermissionsService } from 'ngx-dev-toolbar';
+import { inject } from '@angular/core';
+
+@Component({
+  // ... component decorator
+})
+export class AppComponent {
+  private permissionsService = inject(DevToolbarPermissionsService);
+
+  constructor() {
+    // Set available permissions
+    this.permissionsService.setAvailableOptions([
+      { id: 'can-edit', name: 'Can Edit Posts', description: 'Allows editing posts', isGranted: false, isForced: false },
+      { id: 'can-delete', name: 'Can Delete Posts', description: 'Allows deleting posts', isGranted: false, isForced: false },
+      { id: 'can-manage-users', name: 'Can Manage Users', description: 'Allows user management', isGranted: false, isForced: false },
+      { id: 'is-admin', name: 'Admin Access', description: 'Full admin access', isGranted: false, isForced: false },
+    ]);
+  }
+}
+```
+
+#### Usage
+
+```typescript
+@Component({
+  // ... component decorator
+})
+export class ProtectedComponent {
+  private permissionsService = inject(DevToolbarPermissionsService);
+
+  ngOnInit() {
+    this.permissionsService.getForcedValues().subscribe((forcedPermissions) => {
+      const canEdit = forcedPermissions.some(p => p.id === 'can-edit' && p.isGranted);
+      const isAdmin = forcedPermissions.some(p => p.id === 'is-admin' && p.isGranted);
+      // Apply permission-based logic
+    });
+  }
+}
+```
 
 ### Language Switcher
 
