@@ -15,6 +15,7 @@ import {
 } from 'ngx-dev-toolbar';
 import { firstValueFrom, map } from 'rxjs';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
+import { ToolbarStatusSummaryComponent } from './components/toolbar-status-summary/toolbar-status-summary.component';
 import { PermissionDemoComponent } from './components/permission-demo/permission-demo.component';
 import { FeatureFlagsDemoComponent } from './components/feature-flags-demo/feature-flags-demo.component';
 import { AppFeaturesDemoComponent } from './components/app-features-demo/app-features-demo.component';
@@ -29,6 +30,7 @@ import { FeatureFlagsService } from './services/feature-flags.service';
     CommonModule,
     RouterOutlet,
     NavBarComponent,
+    ToolbarStatusSummaryComponent,
     PermissionDemoComponent,
     FeatureFlagsDemoComponent,
     AppFeaturesDemoComponent,
@@ -41,9 +43,12 @@ import { FeatureFlagsService } from './services/feature-flags.service';
     <div class="modern-layout">
       <app-nav-bar />
       <main class="modern-content">
-        <app-permission-demo />
-        <app-feature-flags-demo />
-        <app-features-demo />
+        <app-toolbar-status-summary />
+        <div class="detailed-demos">
+          <app-permission-demo />
+          <app-feature-flags-demo />
+          <app-features-demo />
+        </div>
         <router-outlet />
       </main>
     </div>
@@ -51,9 +56,12 @@ import { FeatureFlagsService } from './services/feature-flags.service';
     <div class="original-layout">
       <app-nav-bar />
       <main class="content">
-        <app-permission-demo />
-        <app-feature-flags-demo />
-        <app-features-demo />
+        <app-toolbar-status-summary />
+        <div class="detailed-demos">
+          <app-permission-demo />
+          <app-feature-flags-demo />
+          <app-features-demo />
+        </div>
         <router-outlet />
       </main>
     </div>
@@ -72,22 +80,57 @@ import { FeatureFlagsService } from './services/feature-flags.service';
     `
       .modern-layout {
         min-height: 100vh;
-        background: #f8f9fa;
+        background: #f0f2f5;
       }
       .modern-content {
-        max-width: 800px;
+        max-width: 1600px;
         margin: 0 auto;
-        padding: 2rem;
+        padding: 0;
+      }
 
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      .detailed-demos {
         margin-top: 2rem;
+        padding: 0 2rem 2rem 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+      }
+
+      .detailed-demos > * {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       }
 
       .original-layout {
-        .content {
-          padding: 1rem;
+        background: #f0f2f5;
+        min-height: 100vh;
+      }
+
+      .original-layout .content {
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 0;
+      }
+
+      .original-layout .detailed-demos {
+        margin-top: 2rem;
+        padding: 0 1rem 1rem 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .original-layout .detailed-demos > * {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      }
+
+      @media (max-width: 768px) {
+        .detailed-demos {
+          padding: 0 1rem 1rem 1rem;
+          gap: 1.5rem;
         }
       }
     `,
