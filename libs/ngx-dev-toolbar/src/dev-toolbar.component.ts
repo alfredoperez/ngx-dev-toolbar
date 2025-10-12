@@ -22,6 +22,7 @@ import { DevToolbarHomeToolComponent } from './tools/home-tool/home-tool.compone
 import { SettingsService } from './tools/home-tool/settings.service';
 import { DevToolbarLanguageToolComponent } from './tools/language-tool/language-tool.component';
 import { DevToolbarNetworkMockerToolComponent } from './tools/network-mocker-tool/network-mocker-tool.component';
+import { DevToolbarPermissionsToolComponent } from './tools/permissions-tool/permissions-tool.component';
 
 @Component({
   standalone: true,
@@ -33,6 +34,7 @@ import { DevToolbarNetworkMockerToolComponent } from './tools/network-mocker-too
     DevToolbarFeatureFlagsToolComponent,
     DevToolbarAppFeaturesToolComponent,
     DevToolbarNetworkMockerToolComponent,
+    DevToolbarPermissionsToolComponent,
   ],
   template: `
     @if (isDevMode) {
@@ -49,6 +51,7 @@ import { DevToolbarNetworkMockerToolComponent } from './tools/network-mocker-too
       <ndt-language-tool />
       <ndt-feature-flags-tool />
       <ndt-app-features-tool />
+      <ndt-permissions-tool />
       <ndt-network-mocker-tool />
       <ng-content />
     </div>

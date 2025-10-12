@@ -14,3 +14,8 @@ export * from './tools/network-mocker-tool/network-mocker.service';
 export * from './tools/app-features-tool/app-features.models';
 export * from './tools/app-features-tool/app-features.service';
 export * from './tools/app-features-tool/app-features-tool.component';
+
+// Permissions Tool
+export * from './tools/permissions-tool/permissions.models';
+export * from './tools/permissions-tool/permissions.service';
+export * from './tools/permissions-tool/permissions-tool.component';

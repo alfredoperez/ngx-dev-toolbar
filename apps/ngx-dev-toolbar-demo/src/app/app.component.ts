@@ -15,6 +15,7 @@ import {
 } from 'ngx-dev-toolbar';
 import { firstValueFrom, map } from 'rxjs';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
+import { PermissionDemoComponent } from './components/permission-demo/permission-demo.component';
 import { AnalyticsService } from './services/analytics.service';
 import { AppFeaturesConfigService } from './services/app-features-config.service';
 import { FeatureFlagsService } from './services/feature-flags.service';
@@ -26,6 +27,7 @@ import { FeatureFlagsService } from './services/feature-flags.service';
     CommonModule,
     RouterOutlet,
     NavBarComponent,
+    PermissionDemoComponent,
     DevToolbarComponent,
     DevToolbarToolComponent,
   ],
@@ -35,6 +37,7 @@ import { FeatureFlagsService } from './services/feature-flags.service';
     <div class="modern-layout">
       <app-nav-bar />
       <main class="modern-content">
+        <app-permission-demo />
         <router-outlet />
       </main>
     </div>
@@ -42,6 +45,7 @@ import { FeatureFlagsService } from './services/feature-flags.service';
     <div class="original-layout">
       <app-nav-bar />
       <main class="content">
+        <app-permission-demo />
         <router-outlet />
       </main>
     </div>
