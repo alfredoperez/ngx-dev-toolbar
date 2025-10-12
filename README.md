@@ -62,10 +62,10 @@ No more context switching or backend dependencies - everything you need is right
 - Feature Flags
 - Language Switcher
 - Permissions Tool
-- App Features
+- App Features Tool
+- Network Mocker (Request Interceptor)
 - Themes `Coming Soon`
 - User Session `Coming Soon`
-- Network Requests Mocker `Coming Soon`
 
 ### 🛠️ Extensible
 
@@ -81,7 +81,7 @@ No more context switching or backend dependencies - everything you need is right
 ### 💾 Persistent State
 
 - Settings persist across reloads
-- Import/Export configuration `Coming Soon`
+- Import/Export configuration
 
 </div>
 
@@ -146,9 +146,9 @@ export class AppComponent {
 }
 ```
 
-Once it is added you should see them in the Feature Flags tool in the Angular Dev Toolbar.
+Once it is added you should see them in the Feature Flags tool in the Angular Dev Toolbar with a visual filter indicator for easier navigation.
 
-![Feature Flags Tool](./docs/images/feature-flags-tool.png)
+> **Note**: Screenshots are being updated to reflect the latest UI improvements including new lock, filter, and bolt icons.
 
 #### Usage
 
@@ -168,9 +168,12 @@ export class FeatureComponent {
 }
 ```
 
-#### Dev Toolbar Interface
+#### Recent UI Improvements
 
-[Screenshot placeholder showing the feature flags interface in the dev toolbar]
+- 🔐 Lock icon for permissions tool
+- 🔍 Filter icons for better visual clarity
+- ⚡ Bolt icon for custom tools
+- 📝 Improved text wrapping in tool descriptions
 
 ### Permissions Tool
 
