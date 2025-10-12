@@ -24,16 +24,24 @@
       <td align="center">🚥</td>
       <td>Toggle feature flags without backend changes</td>
     </tr>
-    <td align="center">🌍</td>
+    <tr>
+      <td align="center">🌍</td>
       <td>Switch languages instantly</td>
     </tr>
-    <td align="center">🎨</td>
+    <tr>
+      <td align="center">🧩</td>
+      <td>Test product features and subscription tiers</td>
+    </tr>
+    <tr>
+      <td align="center">🎨</td>
       <td>Switch themes on the fly</td>
     </tr>
-    <td align="center">👤</td>
+    <tr>
+      <td align="center">👤</td>
       <td>Change user sessions effortlessly</td>
     </tr>
-    <td align="center">🔄</td>
+    <tr>
+      <td align="center">🔄</td>
       <td>Mock network requests in real-time</td>
     </tr>
   </table>
@@ -49,6 +57,7 @@ No more context switching or backend dependencies - everything you need is right
 
 - Feature Flags
 - Language Switcher
+- App Features
 - Themes `Coming Soon`
 - User Session `Coming Soon`
 - Network Requests Mocker `Coming Soon`
@@ -201,6 +210,84 @@ export class TranslatedComponent {
   }
 }
 ```
+
+### App Features
+
+The App Features tool allows you to test product-level feature availability like license tiers, deployment configurations, and environment flags without changing backend settings. Perfect for testing subscription tiers, premium features, and environment-specific functionality.
+
+#### Configuration
+
+```typescript
+import { DevToolbarAppFeaturesService, DevToolbarAppFeature } from 'ngx-dev-toolbar';
+import { inject } from '@angular/core';
+
+@Component({
+  // ... component decorator
+})
+export class AppComponent {
+  private appFeaturesService = inject(DevToolbarAppFeaturesService);
+
+  constructor() {
+    // Set available product features
+    const features: DevToolbarAppFeature[] = [
+      {
+        id: 'advanced-analytics',
+        name: 'Advanced Analytics Dashboard',
+        description: 'Premium reporting and data visualization',
+        isEnabled: false,  // Not available in current tier
+        isForced: false
+      },
+      {
+        id: 'multi-user-support',
+        name: 'Multi-User Collaboration',
+        description: 'Team features and user management',
+        isEnabled: true,   // Available in current tier
+        isForced: false
+      },
+      {
+        id: 'white-label-branding',
+        name: 'White Label Branding',
+        description: 'Custom branding with your logo and colors',
+        isEnabled: false,  // Enterprise feature
+        isForced: false
+      }
+    ];
+
+    this.appFeaturesService.setAvailableOptions(features);
+  }
+}
+```
+
+#### Usage
+
+```typescript
+@Component({
+  // ... component decorator
+})
+export class PremiumFeatureComponent {
+  private appFeaturesService = inject(DevToolbarAppFeaturesService);
+
+  ngOnInit() {
+    this.appFeaturesService.getForcedValues().subscribe((forcedFeatures) => {
+      // Apply forced feature states to your application
+      forcedFeatures.forEach(feature => {
+        if (feature.id === 'advanced-analytics' && feature.isEnabled) {
+          this.enableAnalyticsDashboard();
+        }
+      });
+    });
+  }
+}
+```
+
+#### Use Cases
+
+- **SaaS Subscription Tiers**: Test Basic, Professional, and Enterprise tiers without changing subscriptions
+- **Feature Gating**: Test premium feature access and upgrade flows
+- **Environment Configuration**: Test features specific to dev, staging, or production
+- **License Management**: Test on-premise vs cloud feature availability
+- **A/B Testing**: Test different feature combinations
+- **Beta Rollouts**: Enable/disable beta features for testing
 
 ## Contributing
 

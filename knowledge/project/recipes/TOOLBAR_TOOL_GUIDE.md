@@ -560,3 +560,324 @@ Remember to:
 - Document your tool's functionality
 
 For more examples, refer to the existing tools in the codebase, particularly the Feature Flags tool which serves as an excellent reference implementation.
+
+## App Features Tool Integration Example
+
+The App Features Tool demonstrates how to test product-level feature availability like license tiers, deployment configurations, and environment flags without backend changes. Here's a complete integration example:
+
+### Basic Integration
+
+```typescript
+// app.component.ts
+import { Component, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { DevToolbarAppFeaturesService, DevToolbarAppFeature } from 'ngx-dev-toolbar';
+
+@Component({
+  selector: 'app-root',
+  template: `
+    <ndt-toolbar />
+    <router-outlet />
+  `
+})
+export class AppComponent implements OnInit {
+  private readonly appFeaturesService = inject(DevToolbarAppFeaturesService);
+
+  ngOnInit(): void {
+    // Configure available features based on current tier/environment
+    const features: DevToolbarAppFeature[] = [
+      {
+        id: 'advanced-analytics',
+        name: 'Advanced Analytics Dashboard',
+        description: 'Premium reporting and data visualization',
+        isEnabled: false,  // Not available in current tier
+        isForced: false
+      },
+      {
+        id: 'multi-user-support',
+        name: 'Multi-User Collaboration',
+        description: 'Team features and user management',
+        isEnabled: true,   // Available in current tier
+        isForced: false
+      }
+    ];
+
+    this.appFeaturesService.setAvailableOptions(features);
+
+    // Subscribe to forced overrides from the toolbar
+    this.appFeaturesService
+      .getForcedValues()
+      .pipe(takeUntilDestroyed())
+      .subscribe((forcedFeatures) => {
+        forcedFeatures.forEach((feature) => {
+          // Apply forced feature state to your application logic
+          this.applyFeatureState(feature.id, feature.isEnabled);
+        });
+      });
+  }
+
+  private applyFeatureState(featureId: string, isEnabled: boolean): void {
+    // Update your application's feature configuration
+    console.log(`Feature ${featureId} is now ${isEnabled ? 'enabled' : 'disabled'}`);
+  }
+}
+```
+
+### Advanced Integration: Product Tier Management
+
+For SaaS applications with subscription tiers, create a dedicated service:
+
+```typescript
+// app-features-config.service.ts
+import { Injectable, signal, computed } from '@angular/core';
+
+export type ProductTier = 'basic' | 'professional' | 'enterprise';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class AppFeaturesConfigService {
+  public currentTier = signal<ProductTier>('basic');
+  private forcedFeatures = signal<Map<string, boolean>>(new Map());
+
+  private readonly tierFeatures: Record<ProductTier, string[]> = {
+    basic: ['core-features', 'single-user', 'basic-support'],
+    professional: [
+      'core-features',
+      'single-user',
+      'basic-support',
+      'analytics',
+      'multi-user',
+      'priority-support'
+    ],
+    enterprise: [
+      'core-features',
+      'single-user',
+      'basic-support',
+      'analytics',
+      'multi-user',
+      'priority-support',
+      'white-label',
+      'sso-integration',
+      'api-access'
+    ],
+  };
+
+  private readonly featureMetadata: Record<string, { name: string; description: string }> = {
+    'core-features': {
+      name: 'Core Features',
+      description: 'Essential app functionality and basic tools',
+    },
+    'analytics': {
+      name: 'Analytics Dashboard',
+      description: 'Advanced reporting and data visualization tools',
+    },
+    'multi-user': {
+      name: 'Multi-User Support',
+      description: 'Team collaboration and user management features',
+    },
+    'white-label': {
+      name: 'White Label Branding',
+      description: 'Customize app branding with your logo and colors',
+    },
+    'sso-integration': {
+      name: 'SSO Integration',
+      description: 'Single sign-on with enterprise identity providers',
+    },
+    'api-access': {
+      name: 'API Access',
+      description: 'Full REST API access for custom integrations',
+    },
+    // ... more features
+  };
+
+  /**
+   * Get all features across all tiers (for toolbar display)
+   */
+  public getAllFeatures() {
+    const allFeatureIds = new Set<string>();
+    Object.values(this.tierFeatures).forEach((features) =>
+      features.forEach((id) => allFeatureIds.add(id))
+    );
+
+    const tier = this.currentTier();
+    const enabledFeatures = this.tierFeatures[tier];
+
+    return Array.from(allFeatureIds).map((id) => ({
+      id,
+      name: this.featureMetadata[id]?.name || id,
+      description: this.featureMetadata[id]?.description || '',
+      isEnabled: enabledFeatures.includes(id),
+      isForced: false,
+    }));
+  }
+
+  /**
+   * Check if a specific feature is enabled (considering forced overrides)
+   */
+  public isFeatureEnabled(featureId: string): boolean {
+    const forced = this.forcedFeatures();
+
+    // If forced via toolbar, use forced state
+    if (forced.has(featureId)) {
+      return forced.get(featureId) ?? false;
+    }
+
+    // Otherwise, check if feature is in current tier
+    const tier = this.currentTier();
+    return this.tierFeatures[tier].includes(featureId);
+  }
+
+  /**
+   * Force a feature to enabled/disabled state (called by dev toolbar)
+   */
+  public forceFeature(featureId: string, isEnabled: boolean): void {
+    this.forcedFeatures.update((map) => {
+      const newMap = new Map(map);
+      newMap.set(featureId, isEnabled);
+      return newMap;
+    });
+  }
+
+  /**
+   * Clear all forced overrides
+   */
+  public clearAllForcedFeatures(): void {
+    this.forcedFeatures.set(new Map());
+  }
+
+  /**
+   * Set the product tier (for demo/testing purposes)
+   */
+  public setTier(tier: ProductTier): void {
+    this.currentTier.set(tier);
+  }
+}
+```
+
+### Integration with App Component
+
+```typescript
+// app.component.ts
+import { Component, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { DevToolbarAppFeaturesService } from 'ngx-dev-toolbar';
+import { AppFeaturesConfigService } from './services/app-features-config.service';
+
+@Component({
+  selector: 'app-root',
+  template: `<ndt-toolbar /><router-outlet />`
+})
+export class AppComponent implements OnInit {
+  private readonly devToolbarAppFeaturesService = inject(DevToolbarAppFeaturesService);
+  private readonly appFeaturesConfig = inject(AppFeaturesConfigService);
+
+  ngOnInit(): void {
+    this.loadAppFeatures();
+  }
+
+  private loadAppFeatures(): void {
+    // Get all features across all tiers for the dev toolbar
+    const features = this.appFeaturesConfig.getAllFeatures();
+    this.devToolbarAppFeaturesService.setAvailableOptions(features);
+
+    // Subscribe to forced feature overrides from the dev toolbar
+    this.devToolbarAppFeaturesService
+      .getForcedValues()
+      .pipe(takeUntilDestroyed())
+      .subscribe((forcedFeatures) => {
+        // Clear all forced features first
+        this.appFeaturesConfig.clearAllForcedFeatures();
+
+        // Apply forced states from toolbar
+        forcedFeatures.forEach((feature) => {
+          this.appFeaturesConfig.forceFeature(feature.id, feature.isEnabled);
+        });
+      });
+  }
+}
+```
+
+### Using Features in Components
+
+```typescript
+// feature-gated.component.ts
+import { Component, inject } from '@angular/core';
+import { AppFeaturesConfigService } from '../services/app-features-config.service';
+
+@Component({
+  selector: 'app-analytics-dashboard',
+  template: `
+    @if (hasAnalytics()) {
+      <div class="analytics-dashboard">
+        <h2>Advanced Analytics</h2>
+        <!-- Premium analytics features -->
+      </div>
+    } @else {
+      <div class="upgrade-prompt">
+        <p>Upgrade to Professional tier to unlock Advanced Analytics</p>
+        <button (click)="onUpgrade()">Upgrade Now</button>
+      </div>
+    }
+  `
+})
+export class AnalyticsDashboardComponent {
+  private readonly appFeaturesConfig = inject(AppFeaturesConfigService);
+
+  protected hasAnalytics(): boolean {
+    return this.appFeaturesConfig.isFeatureEnabled('analytics');
+  }
+
+  protected onUpgrade(): void {
+    // Handle upgrade flow
+  }
+}
+```
+
+### Preset Integration
+
+For saving and loading feature configurations:
+
+```typescript
+// Using with presets tool
+import { DevToolbarAppFeaturesService, ForcedAppFeaturesState } from 'ngx-dev-toolbar';
+
+// Save current state as preset
+const currentState: ForcedAppFeaturesState =
+  this.appFeaturesService.getCurrentForcedState();
+// Returns: { enabled: ['analytics'], disabled: ['white-label'] }
+
+// Apply preset
+const enterprisePreset: ForcedAppFeaturesState = {
+  enabled: ['analytics', 'multi-user', 'white-label', 'sso-integration'],
+  disabled: []
+};
+this.appFeaturesService.applyPresetFeatures(enterprisePreset);
+```
+
+### Testing Different Scenarios
+
+The App Features Tool enables testing various scenarios:
+
+1. **Tier Upgrades**: Force premium features on to test upgrade flows
+2. **Tier Downgrades**: Force premium features off to test graceful degradation
+3. **Mixed Configurations**: Test specific feature combinations
+4. **Edge Cases**: Test what happens when features are unexpectedly available/unavailable
+
+### Best Practices
+
+1. **Centralized Configuration**: Keep all feature definitions in one service
+2. **Type Safety**: Use TypeScript enums or union types for feature IDs
+3. **Metadata**: Include names and descriptions for clear UI presentation
+4. **Forced Overrides**: Always check forced state first, then natural state
+5. **Clear on Reset**: Clear all forced features when resetting to natural state
+6. **localStorage Sync**: The toolbar persists forced state automatically
+7. **Testing**: Use the toolbar to test tier changes without backend modifications
+
+This pattern works excellently for:
+- SaaS subscription tiers (Basic, Pro, Enterprise)
+- Environment-specific features (dev, staging, production)
+- Deployment configurations (on-premise vs cloud)
+- License-based feature gates
+- A/B testing scenarios
+- Beta feature rollouts

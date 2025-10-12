@@ -16,6 +16,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { fromEvent } from 'rxjs';
 import { filter, throttleTime } from 'rxjs/operators';
 import { DevToolbarStateService } from './dev-toolbar-state.service';
+import { DevToolbarAppFeaturesToolComponent } from './tools/app-features-tool/app-features-tool.component';
 import { DevToolbarFeatureFlagsToolComponent } from './tools/feature-flags-tool/feature-flags-tool.component';
 import { DevToolbarHomeToolComponent } from './tools/home-tool/home-tool.component';
 import { SettingsService } from './tools/home-tool/settings.service';
@@ -30,6 +31,7 @@ import { DevToolbarNetworkMockerToolComponent } from './tools/network-mocker-too
     DevToolbarHomeToolComponent,
     DevToolbarLanguageToolComponent,
     DevToolbarFeatureFlagsToolComponent,
+    DevToolbarAppFeaturesToolComponent,
     DevToolbarNetworkMockerToolComponent,
   ],
   template: `
@@ -46,6 +48,7 @@ import { DevToolbarNetworkMockerToolComponent } from './tools/network-mocker-too
       <ndt-home-tool />
       <ndt-language-tool />
       <ndt-feature-flags-tool />
+      <ndt-app-features-tool />
       <ndt-network-mocker-tool />
       <ng-content />
     </div>

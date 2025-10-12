@@ -5,6 +5,7 @@ import { RouterOutlet } from '@angular/router';
 import { TranslocoService } from '@jsverse/transloco';
 
 import {
+  DevToolbarAppFeaturesService,
   DevToolbarComponent,
   DevToolbarFeatureFlagService,
   DevToolbarFlag,
@@ -15,6 +16,7 @@ import {
 import { firstValueFrom, map } from 'rxjs';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { AnalyticsService } from './services/analytics.service';
+import { AppFeaturesConfigService } from './services/app-features-config.service';
 import { FeatureFlagsService } from './services/feature-flags.service';
 
 @Component({
@@ -87,6 +89,10 @@ export class AppComponent implements OnInit {
     DevToolbarFeatureFlagService
   );
   private readonly featureFlagsService = inject(FeatureFlagsService);
+  private readonly devToolbarAppFeaturesService = inject(
+    DevToolbarAppFeaturesService
+  );
+  public readonly appFeaturesConfig = inject(AppFeaturesConfigService);
 
   originalLang = this.translocoService.getActiveLang();
 
@@ -104,6 +110,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadFlags();
+    this.loadAppFeatures();
     this.analyticsService.trackEvent('Loaded Application', '--', '--');
   }
 
@@ -125,6 +132,26 @@ export class AppComponent implements OnInit {
       )
     );
     this.devToolbarFeatureFlagsService.setAvailableOptions(flags);
+  }
+
+  private loadAppFeatures(): void {
+    // Get all features across all tiers for the dev toolbar
+    const features = this.appFeaturesConfig.getAllFeatures();
+    this.devToolbarAppFeaturesService.setAvailableOptions(features);
+
+    // Subscribe to forced feature overrides from the dev toolbar
+    this.devToolbarAppFeaturesService
+      .getForcedValues()
+      .pipe(takeUntilDestroyed())
+      .subscribe((forcedFeatures) => {
+        // Clear all forced features first
+        this.appFeaturesConfig.clearAllForcedFeatures();
+
+        // Apply forced states from toolbar
+        forcedFeatures.forEach((feature) => {
+          this.appFeaturesConfig.forceFeature(feature.id, feature.isEnabled);
+        });
+      });
   }
 
   constructor() {

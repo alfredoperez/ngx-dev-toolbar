@@ -81,7 +81,7 @@ check_feature_branch() {
     return 0
 }
 
-get_feature_dir() { echo "$1/specs/$2"; }
+get_feature_dir() { echo "$1/.specify/features/$2"; }
 
 get_feature_paths() {
     local repo_root=$(get_repo_root)

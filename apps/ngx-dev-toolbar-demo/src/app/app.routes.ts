@@ -20,4 +20,11 @@ export const appRoutes: Route[] = [
         (m) => m.LanguagesComponent
       ),
   },
+  {
+    path: 'app-features',
+    loadComponent: () =>
+      import('./pages/app-features-demo/app-features-demo.component').then(
+        (m) => m.AppFeaturesDemoComponent
+      ),
+  },
 ];

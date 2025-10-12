@@ -11,3 +11,6 @@ export * from './tools/language-tool/language.service';
 export * from './tools/network-mocker-tool/network-mocker-tool.component';
 export * from './tools/network-mocker-tool/network-mocker.models';
 export * from './tools/network-mocker-tool/network-mocker.service';
+export * from './tools/app-features-tool/app-features.models';
+export * from './tools/app-features-tool/app-features.service';
+export * from './tools/app-features-tool/app-features-tool.component';
