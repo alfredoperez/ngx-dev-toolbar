@@ -5,7 +5,7 @@
 [![npm version](https://badge.fury.io/js/ngx-dev-toolbar.svg)](https://www.npmjs.com/package/ngx-dev-toolbar)
 [![Downloads](https://img.shields.io/npm/dm/ngx-dev-toolbar.svg)](https://www.npmjs.com/package/ngx-dev-toolbar)
 [![License](https://img.shields.io/npm/l/ngx-dev-toolbar.svg)](https://github.com/yourusername/ngx-dev-toolbar/blob/main/LICENSE)
-[![Angular](https://img.shields.io/badge/Angular-17%2B-red)](https://angular.io/)
+[![Angular](https://img.shields.io/badge/Angular-19%2B-red)](https://angular.io/)
 [![GitHub Stars](https://img.shields.io/github/stars/alfredoperez/ngx-dev-toolbar?style=social)](https://github.com/alfredoperez/ngx-dev-toolbar)
 
 <h3>A powerful development toolbar for Angular applications that helps developers to interact with the application in a more efficient way.</h3>
@@ -63,6 +63,7 @@ No more context switching or backend dependencies - everything you need is right
 - Language Switcher
 - Permissions Tool
 - App Features Tool
+- Presets Tool
 - Network Mocker (Request Interceptor)
 - Themes `Coming Soon`
 - User Session `Coming Soon`

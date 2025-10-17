@@ -1,0 +1,54 @@
+<div class="doc-page">
+  <header class="doc-hero">
+    <h1>App Features Tool</h1>
+    <p class="tagline">Test product-level features and license tiers</p>
+  </header>
+
+  <section class="doc-section">
+    <h2>Overview</h2>
+    <p>
+      The App Features Tool allows developers to test product-level features that are typically controlled by license tiers,
+      deployment configuration, or environment settings. This enables testing premium features without changing deployment configuration.
+    </p>
+  </section>
+
+  <section class="doc-section">
+    <h2>Use Cases</h2>
+    <ul class="use-case-list">
+      <li>
+        <h3>License Tier Testing</h3>
+        <p>Test application behavior across different subscription tiers (Basic, Pro, Enterprise).</p>
+      </li>
+      <li>
+        <h3>Premium Feature Development</h3>
+        <p>Develop and test premium features without upgrading your development environment.</p>
+      </li>
+      <li>
+        <h3>Demo Preparation</h3>
+        <p>Enable all features for demonstrations without changing your environment configuration.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="doc-section">
+    <h2>Quick Start</h2>
+    <app-code-example [example]="basicExample" />
+  </section>
+
+  <section class="doc-section">
+    <h2>API Reference</h2>
+    <app-api-reference
+      [serviceName]="'DevToolbarAppFeaturesService'"
+      [methods]="apiMethods"
+    />
+  </section>
+
+  <section class="doc-section">
+    <h2>Related Tools</h2>
+    <ul class="related-tools">
+      <li><a routerLink="/docs/feature-flags">Feature Flags Tool</a> - Test development feature toggles</li>
+      <li><a routerLink="/docs/permissions">Permissions Tool</a> - Test role-based access</li>
+      <li><a routerLink="/docs/presets">Presets Tool</a> - Save feature configurations for different tiers</li>
+    </ul>
+  </section>
+</div>

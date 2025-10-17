@@ -203,9 +203,9 @@ $z-indices: (
   --ndt-shadow-window: #{map.get(map.get($shadow-themes, light), window)};
 
   --ndt-spacing-xs: 4px;
-  --ndt-spacing-sm: 8px;
-  --ndt-spacing-md: 16px;
-  --ndt-window-padding: 24px;
+  --ndt-spacing-sm: 6px;
+  --ndt-spacing-md: 12px;
+  --ndt-window-padding: 16px;
 
   --ndt-font-size-xs: #{map.get($font-sizes, xs)};
   --ndt-font-size-sm: #{map.get($font-sizes, sm)};
@@ -297,46 +297,5 @@ $z-indices: (
         error,
         border
       )};
-  }
-}
-
-.dev-toolbar {
-  @include devtools-theme;
-
-  // Typography styles
-  h1,
-  h2,
-  h3,
-  h4,
-  h5 {
-    font-weight: 600;
-    color: var(--ndt-text-primary);
-    margin: 0;
-  }
-
-  h1 {
-    font-size: var(--ndt-font-size-xl);
-  }
-  h2 {
-    font-size: var(--ndt-font-size-lg);
-  }
-  h3 {
-    font-size: var(--ndt-font-size-md);
-  }
-  h4 {
-    font-size: var(--ndt-font-size-sm);
-  }
-  h5 {
-    font-size: var(--ndt-font-size-xs);
-  }
-
-  hr {
-    border: 1px solid var(--ndt-border-subtle);
-    margin: 1em 0;
-  }
-
-  p {
-    line-height: 1.5em;
-    margin: 0;
   }
 }

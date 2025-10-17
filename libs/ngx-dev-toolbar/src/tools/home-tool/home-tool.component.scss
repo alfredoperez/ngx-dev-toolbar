@@ -11,7 +11,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: var(--ndt-spacing-md);
+  gap: var(--ndt-spacing-sm);
 
   &__label {
     display: flex;
@@ -47,7 +47,7 @@
   .settings-actions {
     display: flex;
     gap: var(--ndt-spacing-md);
-    padding-block: var(--ndt-spacing-md);
+    padding-block: var(--ndt-spacing-sm);
 
     > * {
       width: 50%;

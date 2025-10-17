@@ -566,4 +566,110 @@ describe('DevToolbarInternalAppFeaturesService', () => {
       expect(Array.isArray(result.disabled)).toBe(true);
     });
   });
+
+  describe('Preset Integration: applyForcedState() and getCurrentForcedState()', () => {
+    beforeEach(() => {
+      const features: DevToolbarAppFeature[] = [
+        createMockFeature('analytics', 'Analytics', false),
+        createMockFeature('multi-user', 'Multi-User', false),
+        createMockFeature('white-label', 'White Label', true),
+      ];
+      service.setAppFeatures(features);
+    });
+
+    it('should apply preset state and replace current forced state', () => {
+      service.setFeature('analytics', true);
+      let result = service.features();
+      expect(result[0].isForced).toBe(true);
+
+      const presetState: ForcedAppFeaturesState = {
+        enabled: ['multi-user'],
+        disabled: ['white-label'],
+      };
+      service.applyForcedState(presetState);
+
+      result = service.features();
+      expect(result[0].isForced).toBe(false); // analytics no longer forced
+      expect(result[1].isForced).toBe(true); // multi-user now forced enabled
+      expect(result[1].isEnabled).toBe(true);
+      expect(result[2].isForced).toBe(true); // white-label now forced disabled
+      expect(result[2].isEnabled).toBe(false);
+    });
+
+    it('should persist applied preset state to localStorage', () => {
+      const presetState: ForcedAppFeaturesState = {
+        enabled: ['analytics'],
+        disabled: ['multi-user'],
+      };
+      service.applyForcedState(presetState);
+
+      expect(storageService.set).toHaveBeenCalledWith('app-features', presetState);
+    });
+
+    it('should filter out invalid feature IDs from preset', () => {
+      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+      const presetState: ForcedAppFeaturesState = {
+        enabled: ['analytics', 'invalid-feature-1'],
+        disabled: ['multi-user', 'invalid-feature-2'],
+      };
+      service.applyForcedState(presetState);
+
+      const result = service.features();
+      expect(result[0].isForced).toBe(true); // analytics (valid)
+      expect(result[1].isForced).toBe(true); // multi-user (valid)
+      expect(result.length).toBe(3); // Only configured features
+
+      expect(consoleWarnSpy).toHaveBeenCalledWith(
+        expect.stringContaining('invalid-feature-1')
+      );
+      expect(consoleWarnSpy).toHaveBeenCalledWith(
+        expect.stringContaining('invalid-feature-2')
+      );
+
+      consoleWarnSpy.mockRestore();
+    });
+
+    it('should persist only valid IDs to localStorage after filtering', () => {
+      const presetState: ForcedAppFeaturesState = {
+        enabled: ['analytics', 'invalid-feature'],
+        disabled: ['multi-user'],
+      };
+      service.applyForcedState(presetState);
+
+      expect(storageService.set).toHaveBeenCalledWith('app-features', {
+        enabled: ['analytics'],
+        disabled: ['multi-user'],
+      });
+    });
+
+    it('should emit updated forced features after applying preset', async () => {
+      const presetState: ForcedAppFeaturesState = {
+        enabled: ['analytics'],
+        disabled: [],
+      };
+      service.applyForcedState(presetState);
+
+      const forcedFeatures = await firstValueFrom(service.getForcedFeatures());
+      expect(forcedFeatures.length).toBe(1);
+      expect(forcedFeatures[0].id).toBe('analytics');
+      expect(forcedFeatures[0].isForced).toBe(true);
+      expect(forcedFeatures[0].isEnabled).toBe(true);
+    });
+
+    it('should handle empty preset state (clear all forced overrides)', () => {
+      service.setFeature('analytics', true);
+      service.setFeature('multi-user', false);
+
+      const emptyPreset: ForcedAppFeaturesState = {
+        enabled: [],
+        disabled: [],
+      };
+      service.applyForcedState(emptyPreset);
+
+      const result = service.features();
+      expect(result[0].isForced).toBe(false);
+      expect(result[1].isForced).toBe(false);
+      expect(result[2].isForced).toBe(false);
+    });
+  });
 });

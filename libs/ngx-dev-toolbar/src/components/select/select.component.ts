@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  ViewEncapsulation,
   computed,
   inject,
   input,
@@ -21,6 +22,7 @@ export interface SelectOption {
 @Component({
   selector: 'ndt-select',
   standalone: true,
+  encapsulation: ViewEncapsulation.ShadowDom,
   imports: [CommonModule, FormsModule, OverlayModule, CdkMenuModule],
   template: `
     <div

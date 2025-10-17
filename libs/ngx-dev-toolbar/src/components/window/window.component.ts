@@ -1,10 +1,11 @@
-import { Component, computed, inject, input, output } from '@angular/core';
+import { Component, ViewEncapsulation, computed, inject, input, output } from '@angular/core';
 import { DevToolbarStateService } from '../../dev-toolbar-state.service';
 import { DevToolbarWindowOptions } from '../toolbar-tool/toolbar-tool.models';
 
 @Component({
   selector: 'ndt-window',
   standalone: true,
+  encapsulation: ViewEncapsulation.ShadowDom,
   template: `
     <div class="window dev-toolbar" [attr.data-theme]="theme()">
       <div class="header">

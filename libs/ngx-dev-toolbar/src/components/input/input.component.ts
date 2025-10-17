@@ -36,6 +36,7 @@ import { FormsModule } from '@angular/forms';
         font-size: var(--ndt-font-size-sm);
         transition: var(--ndt-transition-default);
         box-sizing: border-box;
+        min-height: 36px;
 
         &::placeholder {
           color: var(--ndt-text-muted);

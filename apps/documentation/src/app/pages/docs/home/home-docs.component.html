@@ -1,0 +1,120 @@
+<div class="doc-page">
+  <!-- Hero Section -->
+  <div class="doc-hero">
+    <h1>Getting Started</h1>
+    <p class="tagline">A comprehensive development toolbar for Angular applications</p>
+  </div>
+
+  <!-- Introduction -->
+  <section class="doc-section">
+    <h2>What is ngx-dev-toolbar?</h2>
+    <p>
+      <code>ngx-dev-toolbar</code> is a powerful Angular 19+ library that provides an interactive development toolbar
+      for testing and debugging feature flags, language switching, permissions, app features, and more - all without
+      modifying your backend or redeploying your application.
+    </p>
+  </section>
+
+  <!-- Installation -->
+  <section class="doc-section">
+    <h2>Installation</h2>
+    <p>Install the package via npm:</p>
+    <pre><code>npm install ngx-dev-toolbar</code></pre>
+  </section>
+
+  <!-- Quick Setup -->
+  <section class="doc-section">
+    <h2>Quick Setup</h2>
+    <h3>1. Import the Component</h3>
+    <p>Add the toolbar component to your app:</p>
+    <pre><code>import &#123; Component &#125; from '&#64;angular/core';
+import &#123; DevToolbarComponent &#125; from 'ngx-dev-toolbar';
+
+&#64;Component(&#123;
+  selector: 'app-root',
+  standalone: true,
+  imports: [DevToolbarComponent],
+  template: `
+    &lt;ndt-toolbar /&gt;
+    &lt;router-outlet /&gt;
+  `
+&#125;)
+export class AppComponent &#123;&#125;</code></pre>
+
+    <h3>2. Start Using the Tools</h3>
+    <p>
+      Once installed, press <code>Ctrl+Shift+D</code> to toggle the toolbar. From there, you can access all available
+      tools and start configuring your development environment.
+    </p>
+  </section>
+
+  <!-- Key Features -->
+  <section class="doc-section">
+    <h2>Key Features</h2>
+    <ul>
+      <li><strong>Feature Flags:</strong> Override feature flag states at runtime for testing different configurations</li>
+      <li><strong>Language Switcher:</strong> Test your app in different languages without changing system settings</li>
+      <li><strong>Permissions:</strong> Force grant or deny permissions to test authorization logic</li>
+      <li><strong>App Features:</strong> Toggle application features on and off for development and testing</li>
+      <li><strong>Presets:</strong> Save and restore complete toolbar configurations for different testing scenarios</li>
+    </ul>
+  </section>
+
+  <!-- Available Tools -->
+  <section class="doc-section">
+    <h2>Available Tools</h2>
+    <div class="tools-grid">
+      <div class="tool-card">
+        <h3>🚩 Feature Flags</h3>
+        <p>Override feature flags to test different application states without backend changes.</p>
+        <a routerLink="/docs/feature-flags" class="tool-link">View Documentation →</a>
+      </div>
+
+      <div class="tool-card">
+        <h3>🌍 Language Switcher</h3>
+        <p>Test multi-language support by switching between configured languages instantly.</p>
+        <a routerLink="/docs/language" class="tool-link">View Documentation →</a>
+      </div>
+
+      <div class="tool-card">
+        <h3>🔐 Permissions</h3>
+        <p>Force permissions to granted or denied states for comprehensive authorization testing.</p>
+        <a routerLink="/docs/permissions" class="tool-link">View Documentation →</a>
+      </div>
+
+      <div class="tool-card">
+        <h3>💡 App Features</h3>
+        <p>Toggle application features on and off to test feature availability scenarios.</p>
+        <a routerLink="/docs/app-features" class="tool-link">View Documentation →</a>
+      </div>
+
+      <div class="tool-card">
+        <h3>⭐ Presets</h3>
+        <p>Save and restore complete toolbar configurations for repeatable testing workflows.</p>
+        <a routerLink="/docs/presets" class="tool-link">View Documentation →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Next Steps -->
+  <section class="doc-section">
+    <h2>Next Steps</h2>
+    <p>Explore the individual tool documentation to learn how to integrate and use each feature:</p>
+    <ul>
+      <li><a routerLink="/docs/feature-flags">Feature Flags Tool</a> - Configure and override feature flags</li>
+      <li><a routerLink="/docs/language">Language Switcher Tool</a> - Set up multi-language testing</li>
+      <li><a routerLink="/docs/permissions">Permissions Tool</a> - Test authorization scenarios</li>
+      <li><a routerLink="/docs/app-features">App Features Tool</a> - Manage feature toggles</li>
+      <li><a routerLink="/docs/presets">Presets Tool</a> - Create reusable configurations</li>
+    </ul>
+  </section>
+
+  <!-- Resources -->
+  <section class="doc-section">
+    <h2>Resources</h2>
+    <ul>
+      <li><a href="https://github.com/alfredoperez/ngx-dev-toolbar" target="_blank" rel="noopener">GitHub Repository</a></li>
+      <li><a href="https://www.npmjs.com/package/ngx-dev-toolbar" target="_blank" rel="noopener">NPM Package</a></li>
+    </ul>
+  </section>
+</div>

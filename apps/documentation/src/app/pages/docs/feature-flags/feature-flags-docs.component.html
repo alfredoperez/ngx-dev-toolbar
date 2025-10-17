@@ -1,0 +1,85 @@
+<div class="doc-page">
+  <header class="doc-hero">
+    <h1>Feature Flags Tool</h1>
+    <p class="tagline">Test feature toggles without backend changes</p>
+  </header>
+
+  <section class="doc-section">
+    <h2>Overview</h2>
+    <p>
+      The Feature Flags tool allows developers to override feature flag states at runtime during development and testing.
+      This enables testing different feature combinations without modifying backend configuration or redeploying applications.
+    </p>
+  </section>
+
+  <section class="doc-section">
+    <h2>Use Cases</h2>
+    <ul class="use-case-list">
+      <li>
+        <h3>Testing New Features</h3>
+        <p>Enable experimental features during development without modifying backend feature flag configuration.</p>
+        <p class="example">Example: Test dark mode toggle without deploying backend changes</p>
+      </li>
+      <li>
+        <h3>Debugging Production Issues</h3>
+        <p>Quickly enable/disable features to isolate bugs in production-like environments.</p>
+        <p class="example">Example: Disable problematic feature to identify root cause</p>
+      </li>
+      <li>
+        <h3>Demo Preparation</h3>
+        <p>Force-enable premium features for demos without changing your environment.</p>
+        <p class="example">Example: Show all features during a client presentation</p>
+      </li>
+      <li>
+        <h3>Testing Edge Cases</h3>
+        <p>Test application behavior with different flag combinations.</p>
+        <p class="example">Example: Verify UI handles disabled features gracefully</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="doc-section">
+    <h2>Quick Start</h2>
+    <app-code-example [example]="basicExample" />
+  </section>
+
+  <section class="doc-section">
+    <h2>API Reference</h2>
+    <app-api-reference
+      [serviceName]="'DevToolbarFeatureFlagService'"
+      [methods]="apiMethods"
+      [interfaces]="apiInterfaces"
+    />
+  </section>
+
+  <section class="doc-section">
+    <h2>Advanced Usage</h2>
+    <app-code-example [example]="advancedExample" />
+
+    <h3>Best Practices</h3>
+    <ul>
+      <li>Always provide meaningful names and descriptions for feature flags</li>
+      <li>Use computed signals for reactive flag state management</li>
+      <li>Initialize flags early in application lifecycle (app initialization or root component)</li>
+      <li>Subscribe to forced values to get toolbar overrides</li>
+      <li>Persist flag state across page reloads (handled automatically by the toolbar)</li>
+    </ul>
+  </section>
+
+  <section class="doc-section">
+    <h2>Integration with State Management</h2>
+    <p>
+      The Feature Flags tool integrates seamlessly with Angular's reactive state management using signals and observables.
+      When a flag is toggled in the toolbar, your application receives the updated state through the <code>getForcedValues()</code> observable.
+    </p>
+  </section>
+
+  <section class="doc-section">
+    <h2>Related Tools</h2>
+    <ul class="related-tools">
+      <li><a routerLink="/docs/permissions">Permissions Tool</a> - Test permission-based access control</li>
+      <li><a routerLink="/docs/app-features">App Features Tool</a> - Test product-level features</li>
+      <li><a routerLink="/docs/presets">Presets Tool</a> - Save and load flag configurations</li>
+    </ul>
+  </section>
+</div>
