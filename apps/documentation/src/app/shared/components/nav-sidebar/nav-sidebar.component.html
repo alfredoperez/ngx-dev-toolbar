@@ -1,0 +1,50 @@
+<button
+  class="mobile-toggle"
+  (click)="toggleMobileMenu()"
+  [attr.aria-expanded]="mobileMenuOpen()"
+  aria-label="Toggle navigation menu"
+>
+  <span class="hamburger-icon">☰</span>
+</button>
+
+<nav
+  class="sidebar"
+  [class.mobile-open]="mobileMenuOpen()"
+  [attr.aria-hidden]="!mobileMenuOpen() ? 'true' : null"
+>
+  <div class="sidebar-header">
+    <h2>Documentation</h2>
+  </div>
+
+  <div class="nav-content">
+    @for (section of navSections; track section.title) {
+      <div class="nav-section">
+        <h3 class="nav-section-title">{{ section.title }}</h3>
+        <ul class="nav-list" role="navigation">
+          @for (item of section.items; track item.path) {
+            <li>
+              <a
+                [routerLink]="item.path"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: item.path === '/docs' }"
+                (click)="closeMobileMenu()"
+                class="nav-link"
+              >
+                <ndt-icon [name]="item.icon" class="nav-icon" />
+                <span class="nav-label">{{ item.label }}</span>
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
+    }
+  </div>
+</nav>
+
+@if (mobileMenuOpen()) {
+  <div
+    class="overlay"
+    (click)="closeMobileMenu()"
+    aria-label="Close navigation"
+  ></div>
+}

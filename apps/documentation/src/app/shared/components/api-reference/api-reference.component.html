@@ -1,0 +1,151 @@
+<div class="api-reference">
+  @if (serviceName()) {
+    <h3 class="service-name">{{ serviceName() }}</h3>
+  }
+
+  @if (methods().length > 0) {
+    <div class="methods-section">
+      <h4>Methods</h4>
+      @for (method of methods(); track method.name) {
+        <div class="api-item">
+          <button
+            class="api-header"
+            (click)="toggleMethod(method.name)"
+            [attr.aria-expanded]="expandedMethods().has(method.name)"
+          >
+            <span class="method-name">{{ method.name }}</span>
+            <span class="expand-icon">
+              {{ expandedMethods().has(method.name) ? '▼' : '▶' }}
+            </span>
+          </button>
+
+          @if (expandedMethods().has(method.name)) {
+            <div class="api-details">
+              <div class="signature">
+                <code>{{ method.signature }}</code>
+              </div>
+
+              <p class="description">{{ method.description }}</p>
+
+              @if (method.parameters.length > 0) {
+                <div class="parameters">
+                  <h5>Parameters</h5>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (param of method.parameters; track param.name) {
+                        <tr>
+                          <td>
+                            <code>{{ param.name }}</code>
+                            @if (param.optional) {
+                              <span class="optional">(optional)</span>
+                            }
+                          </td>
+                          <td><code>{{ param.type }}</code></td>
+                          <td>
+                            {{ param.description }}
+                            @if (param.defaultValue) {
+                              <div class="default-value">Default: <code>{{ param.defaultValue }}</code></div>
+                            }
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              }
+
+              <div class="return-type">
+                <h5>Returns</h5>
+                <p><code>{{ method.returnType.type }}</code> - {{ method.returnType.description }}</p>
+              </div>
+
+              @if (method.example) {
+                <div class="example">
+                  <h5>Example</h5>
+                  <app-code-example [example]="method.example" />
+                </div>
+              }
+
+              @if (method.notes && method.notes.length > 0) {
+                <div class="notes">
+                  <h5>Notes</h5>
+                  <ul>
+                    @for (note of method.notes; track note) {
+                      <li>{{ note }}</li>
+                    }
+                  </ul>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+
+  @if (interfaces().length > 0) {
+    <div class="interfaces-section">
+      <h4>Interfaces</h4>
+      @for (iface of interfaces(); track iface.name) {
+        <div class="api-item">
+          <button
+            class="api-header"
+            (click)="toggleInterface(iface.name)"
+            [attr.aria-expanded]="expandedInterfaces().has(iface.name)"
+          >
+            <span class="interface-name">{{ iface.name }}</span>
+            <span class="expand-icon">
+              {{ expandedInterfaces().has(iface.name) ? '▼' : '▶' }}
+            </span>
+          </button>
+
+          @if (expandedInterfaces().has(iface.name)) {
+            <div class="api-details">
+              <p class="description">{{ iface.description }}</p>
+
+              <div class="interface-definition">
+                <pre><code>{{ iface.definition }}</code></pre>
+              </div>
+
+              @if (iface.properties.length > 0) {
+                <div class="properties">
+                  <h5>Properties</h5>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (prop of iface.properties; track prop.name) {
+                        <tr>
+                          <td>
+                            <code>{{ prop.name }}</code>
+                            @if (prop.optional) {
+                              <span class="optional">(optional)</span>
+                            }
+                          </td>
+                          <td><code>{{ prop.type }}</code></td>
+                          <td>{{ prop.description }}</td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

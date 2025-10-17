@@ -2,8 +2,11 @@
 @use 'sass:map';
 
 :host {
+  @include devtools-theme;
+
   display: block;
   width: 100%;
+  font-family: $font-family;
 }
 
 .window {
@@ -28,6 +31,12 @@
   justify-content: space-between;
   align-items: flex-start;
 
+  h1 {
+    font-size: var(--ndt-font-size-lg);
+    line-height: 1.2;
+    margin: 0;
+  }
+
   &__title {
     display: flex;
     align-items: center;
@@ -51,11 +60,14 @@
     word-wrap: break-word;
     overflow-wrap: break-word;
     max-width: 100%;
+    line-height: 1.4;
+    margin: 0;
   }
 
   &__content {
     display: flex;
     flex-direction: column;
+    gap: var(--ndt-spacing-xs);
   }
 
   &__controls {

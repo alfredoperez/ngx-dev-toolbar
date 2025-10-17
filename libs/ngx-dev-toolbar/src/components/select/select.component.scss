@@ -1,6 +1,13 @@
 @use '../../styles' as devtools;
 @use 'sass:map';
 
+:host {
+  @include devtools.devtools-theme;
+
+  display: inline-block;
+  font-family: devtools.$font-family;
+}
+
 .select {
   position: relative;
   width: 100%;
@@ -18,7 +25,7 @@
   user-select: none;
   transition: var(--ndt-transition-default);
   outline: none;
-  height: 32px;
+  min-height: 36px;
   box-sizing: border-box;
 
   &:hover {
@@ -52,9 +59,11 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    line-height: 1;
+    line-height: 1.4;
     margin-right: var(--ndt-spacing-sm);
     min-width: 0;
+    display: flex;
+    align-items: center;
   }
 
   &__arrow {

@@ -7,6 +7,7 @@ import { TranslocoService } from '@jsverse/transloco';
 import {
   DevToolbarAppFeaturesService,
   DevToolbarComponent,
+  DevToolbarConfig,
   DevToolbarFeatureFlagService,
   DevToolbarFlag,
   DevToolbarLanguageService,
@@ -66,7 +67,7 @@ import { FeatureFlagsService } from './services/feature-flags.service';
       </main>
     </div>
     }
-    <ndt-toolbar>
+    <ndt-toolbar [config]="toolbarConfig">
       <ndt-toolbar-tool
         [options]="options"
         [icon]="'bolt'"
@@ -159,6 +160,15 @@ export class AppComponent implements OnInit {
     id: 'test',
     isBeta: true,
   } as DevToolbarWindowOptions;
+
+  public toolbarConfig: DevToolbarConfig = {
+    showLanguageTool: true,
+    showFeatureFlagsTool: true,
+    showAppFeaturesTool: true,
+    showPermissionsTool: true,
+    showPresetsTool: true,
+  };
+
   useNewLayout = toSignal(
     this.featureFlagsService.select('newDemoApplicationLayout')
   );

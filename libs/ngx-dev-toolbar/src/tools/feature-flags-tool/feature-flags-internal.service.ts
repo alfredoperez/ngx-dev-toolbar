@@ -30,7 +30,11 @@ export class DevToolbarInternalFeatureFlagService {
       return appFlags.map((flag) => ({
         ...flag,
         isForced: enabled.includes(flag.id) || disabled.includes(flag.id),
-        isEnabled: enabled.includes(flag.id),
+        isEnabled: enabled.includes(flag.id)
+          ? true
+          : disabled.includes(flag.id)
+          ? false
+          : flag.isEnabled,
       }));
     })
   );
@@ -92,5 +96,22 @@ export class DevToolbarInternalFeatureFlagService {
     if (savedFlags) {
       this.forcedFlagsSubject.next(savedFlags);
     }
+  }
+
+  /**
+   * Apply feature flags from a preset (used by Presets Tool)
+   * This method directly sets the forced flags state without user interaction
+   */
+  applyPresetFlags(presetState: ForcedFlagsState): void {
+    this.forcedFlagsSubject.next(presetState);
+    this.storageService.set(this.STORAGE_KEY, presetState);
+  }
+
+  /**
+   * Get current forced state for saving to preset
+   * Returns the raw state of enabled and disabled flag IDs
+   */
+  getCurrentForcedState(): ForcedFlagsState {
+    return this.forcedFlagsSubject.value;
   }
 }

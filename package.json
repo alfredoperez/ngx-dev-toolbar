@@ -19,8 +19,10 @@
     "@angular/router": "~19.0.0",
     "@angular/ssr": "~19.0.0",
     "@jsverse/transloco": "^7.5.1",
+    "@types/prismjs": "^1.26.5",
     "express": "~4.18.2",
     "ngx-highlightjs": "^13.0.0",
+    "prismjs": "^1.30.0",
     "rxjs": "~7.8.0",
     "zone.js": "~0.15.0"
   },

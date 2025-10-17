@@ -1,6 +1,13 @@
 @use './styles' as devtools;
 @use 'sass:map';
 
+:host {
+  @include devtools.devtools-theme;
+
+  display: contents; // This makes the host transparent for layout purposes
+  font-family: devtools.$font-family;
+}
+
 .dev-toolbar {
   position: fixed;
   bottom: 0;
@@ -19,4 +26,41 @@
   &--active {
     opacity: 1;
   }
+}
+
+// Typography styles scoped within the toolbar component
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: 600;
+  color: var(--ndt-text-primary);
+  margin: 0;
+}
+
+h1 {
+  font-size: var(--ndt-font-size-xl);
+}
+h2 {
+  font-size: var(--ndt-font-size-lg);
+}
+h3 {
+  font-size: var(--ndt-font-size-md);
+}
+h4 {
+  font-size: var(--ndt-font-size-sm);
+}
+h5 {
+  font-size: var(--ndt-font-size-xs);
+}
+
+hr {
+  border: 1px solid var(--ndt-border-subtle);
+  margin: 1em 0;
+}
+
+p {
+  line-height: 1.5em;
+  margin: 0;
 }

@@ -111,14 +111,14 @@ import { AppFeatureFilter, DevToolbarAppFeature } from './app-features.models';
         margin-bottom: var(--ndt-spacing-md);
 
         ndt-input {
-          flex: 0.65;
+          flex: 1;
         }
 
         .filter-wrapper {
-          flex: 0.35;
+          flex: 0 0 auto;
           display: flex;
           align-items: center;
-          gap: var(--ndt-spacing-xs);
+          gap: var(--ndt-spacing-md);
 
           .filter-icon {
             width: 18px;
@@ -128,7 +128,8 @@ import { AppFeatureFilter, DevToolbarAppFeature } from './app-features.models';
           }
 
           ndt-select {
-            flex: 1;
+            flex: 0 0 auto;
+            min-width: 180px;
           }
         }
       }

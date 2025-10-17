@@ -9,35 +9,37 @@ import {
   Component,
   DestroyRef,
   OnInit,
+  ViewEncapsulation,
   inject,
-  isDevMode,
+  input,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { fromEvent } from 'rxjs';
 import { filter, throttleTime } from 'rxjs/operators';
 import { DevToolbarStateService } from './dev-toolbar-state.service';
+import { DevToolbarConfig } from './models/dev-toolbar-config.interface';
 import { DevToolbarAppFeaturesToolComponent } from './tools/app-features-tool/app-features-tool.component';
 import { DevToolbarFeatureFlagsToolComponent } from './tools/feature-flags-tool/feature-flags-tool.component';
 import { DevToolbarHomeToolComponent } from './tools/home-tool/home-tool.component';
 import { SettingsService } from './tools/home-tool/settings.service';
 import { DevToolbarLanguageToolComponent } from './tools/language-tool/language-tool.component';
-import { DevToolbarNetworkMockerToolComponent } from './tools/network-mocker-tool/network-mocker-tool.component';
 import { DevToolbarPermissionsToolComponent } from './tools/permissions-tool/permissions-tool.component';
+import { DevToolbarPresetsToolComponent } from './tools/presets-tool/presets-tool.component';
 
 @Component({
   standalone: true,
   selector: 'ndt-toolbar',
   styleUrls: ['./dev-toolbar.component.scss'],
+  encapsulation: ViewEncapsulation.ShadowDom,
   imports: [
     DevToolbarHomeToolComponent,
     DevToolbarLanguageToolComponent,
     DevToolbarFeatureFlagsToolComponent,
     DevToolbarAppFeaturesToolComponent,
-    DevToolbarNetworkMockerToolComponent,
     DevToolbarPermissionsToolComponent,
+    DevToolbarPresetsToolComponent,
   ],
   template: `
-    @if (isDevMode) {
     <div
       aria-label="Developer tools"
       role="toolbar"
@@ -48,14 +50,23 @@ import { DevToolbarPermissionsToolComponent } from './tools/permissions-tool/per
       (mouseenter)="onMouseEnter()"
     >
       <ndt-home-tool />
-      <ndt-language-tool />
-      <ndt-feature-flags-tool />
-      <ndt-app-features-tool />
-      <ndt-permissions-tool />
-      <ndt-network-mocker-tool />
+      @if (config().showLanguageTool ?? true) {
+        <ndt-language-tool />
+      }
+      @if (config().showFeatureFlagsTool ?? true) {
+        <ndt-feature-flags-tool />
+      }
+      @if (config().showAppFeaturesTool ?? true) {
+        <ndt-app-features-tool />
+      }
+      @if (config().showPermissionsTool ?? true) {
+        <ndt-permissions-tool />
+      }
+      @if (config().showPresetsTool ?? true) {
+        <ndt-presets-tool />
+      }
       <ng-content />
     </div>
-    }
   `,
   animations: [
     trigger('toolbarState', [
@@ -82,7 +93,7 @@ export class DevToolbarComponent implements OnInit {
   destroyRef = inject(DestroyRef);
   settingsService = inject(SettingsService);
 
-  isDevMode = isDevMode();
+  config = input<DevToolbarConfig>({});
 
   private keyboardShortcut = fromEvent<KeyboardEvent>(window, 'keydown')
     .pipe(

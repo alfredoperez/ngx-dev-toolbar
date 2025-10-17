@@ -4,7 +4,8 @@
   display: inline-flex;
   align-items: center;
   gap: var(--ndt-spacing-xs);
-  padding: var(--ndt-spacing-xs) var(--ndt-spacing-sm);
+  padding: var(--ndt-spacing-sm) var(--ndt-spacing-md);
+  min-height: 36px;
   border: 1px solid var(--ndt-border-primary);
   border-radius: var(--ndt-border-radius-medium);
   background: var(--ndt-bg-primary);

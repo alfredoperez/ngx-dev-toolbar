@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, firstValueFrom, map } from 'rxjs';
 import { DevToolsStorageService } from '../../utils/storage.service';
 import { Language } from './language.models';
 
@@ -47,5 +47,36 @@ export class DevToolbarInternalLanguageService {
     if (savedLanguage) {
       this.forcedLanguage$.next(savedLanguage);
     }
+  }
+
+  /**
+   * Apply language from a preset (used by Presets Tool)
+   * Accepts a language ID and finds the corresponding Language object from available languages
+   */
+  async applyPresetLanguage(languageId: string | null): Promise<void> {
+    if (languageId === null) {
+      this.removeForcedLanguage();
+      return;
+    }
+
+    // Get available languages and find matching one
+    const languages = await firstValueFrom(this.languages$);
+    const language = languages.find((lang) => lang.id === languageId);
+
+    if (language) {
+      this.setForcedLanguage(language);
+    } else {
+      console.warn(
+        `Language ${languageId} not found in available languages. Skipping.`
+      );
+    }
+  }
+
+  /**
+   * Get current forced language ID for saving to preset
+   * Returns the language ID or null if no language is forced
+   */
+  getCurrentForcedLanguage(): string | null {
+    return this.forcedLanguage$.value?.id ?? null;
   }
 }
