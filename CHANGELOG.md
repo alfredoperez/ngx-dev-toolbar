@@ -1,3 +1,13 @@
+# 2.0.0 (2025-10-17)
+
+### Features
+
+- **docs:** add comprehensive documentation site with presets tool ([7eee40a](https://github.com/alfredoperez/ngx-dev-toolbar/commit/7eee40a))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 ## 1.0.5 (2025-10-12)
 
 ### Features
