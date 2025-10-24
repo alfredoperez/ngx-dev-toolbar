@@ -50,14 +50,14 @@ import { DevToolbarWindowOptions } from '../toolbar-tool/toolbar-tool.models';
 export class DevToolbarWindowComponent {
   readonly devToolbarStateService = inject(DevToolbarStateService);
   readonly config = input.required<DevToolbarWindowOptions>();
-  readonly close = output<void>();
+  readonly closed = output<void>();
   readonly maximize = output<void>();
   readonly minimize = output<void>();
 
   readonly theme = computed(() => this.devToolbarStateService.theme());
 
   protected onClose(): void {
-    this.close.emit();
+    this.closed.emit();
   }
 
   protected onMaximize(): void {

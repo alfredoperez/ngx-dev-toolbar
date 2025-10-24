@@ -17,7 +17,6 @@ import { DevToolbarInternalPermissionsService } from './permissions-internal.ser
 import {
   DevToolbarPermission,
   PermissionFilter,
-  PermissionValue,
 } from './permissions.models';
 
 @Component({

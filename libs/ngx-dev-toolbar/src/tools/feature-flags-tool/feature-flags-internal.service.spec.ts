@@ -15,7 +15,7 @@ describe('DevToolbarInternalFeatureFlagService', () => {
   const createMockFlag = (
     id: string,
     name: string,
-    isEnabled: boolean = false,
+    isEnabled = false,
     description?: string
   ): DevToolbarFlag => ({
     id,

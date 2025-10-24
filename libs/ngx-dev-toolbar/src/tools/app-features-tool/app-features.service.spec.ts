@@ -13,7 +13,7 @@ describe('DevToolbarAppFeaturesService', () => {
   const createMockFeature = (
     id: string,
     name: string,
-    isEnabled: boolean = false
+    isEnabled = false
   ): DevToolbarAppFeature => ({
     id,
     name,

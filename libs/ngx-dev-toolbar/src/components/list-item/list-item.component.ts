@@ -147,8 +147,9 @@ export class DevToolbarListItemComponent {
    * For non-forced items: shows currentValue
    */
   protected displayValue = computed(() => {
-    return this.isForced() && this.originalValue() !== undefined
-      ? this.originalValue()!
+    const originalValue = this.originalValue();
+    return this.isForced() && originalValue !== undefined
+      ? originalValue
       : this.currentValue();
   });
 

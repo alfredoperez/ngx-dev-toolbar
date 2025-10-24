@@ -11,7 +11,7 @@ describe('DevToolbarInternalAppFeaturesService', () => {
   const createMockFeature = (
     id: string,
     name: string,
-    isEnabled: boolean = false,
+    isEnabled = false,
     description?: string
   ): DevToolbarAppFeature => ({
     id,

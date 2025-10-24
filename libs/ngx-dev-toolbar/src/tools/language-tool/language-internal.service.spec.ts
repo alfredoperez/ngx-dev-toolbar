@@ -293,7 +293,7 @@ describe('DevToolbarInternalLanguageService', () => {
           { provide: DevToolsStorageService, useValue: storageService },
         ],
       });
-      const newService = TestBed.inject(DevToolbarInternalLanguageService);
+      TestBed.inject(DevToolbarInternalLanguageService);
 
       expect(storageService.get).toHaveBeenCalledWith('language');
     });

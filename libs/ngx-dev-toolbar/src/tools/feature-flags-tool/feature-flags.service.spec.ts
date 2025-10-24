@@ -8,12 +8,11 @@ import { DevToolbarFlag } from './feature-flags.models';
 describe('DevToolbarFeatureFlagService', () => {
   let service: DevToolbarFeatureFlagService;
   let internalService: DevToolbarInternalFeatureFlagService;
-  let storageService: jest.Mocked<DevToolsStorageService>;
 
   const createMockFlag = (
     id: string,
     name: string,
-    isEnabled: boolean = false,
+    isEnabled = false,
     description?: string
   ): DevToolbarFlag => ({
     id,
