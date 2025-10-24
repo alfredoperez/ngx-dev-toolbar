@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { CodeExampleComponent } from '../../../shared/components/code-example/code-example.component';
@@ -12,10 +12,7 @@ import { CodeExample, ApiMethod, ApiInterface } from '../../../shared/models/doc
   templateUrl: './language-docs.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LanguageDocsComponent implements OnInit {
-  ngOnInit() {
-    // SEO metadata will be added later
-  }
+export class LanguageDocsComponent {
 
   basicExample: CodeExample = {
     language: 'typescript',

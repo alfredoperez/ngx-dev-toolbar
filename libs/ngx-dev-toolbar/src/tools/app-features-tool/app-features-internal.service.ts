@@ -205,6 +205,7 @@ export class DevToolbarInternalAppFeaturesService {
         ...feature,
         isEnabled: isInEnabled ? true : isInDisabled ? false : feature.isEnabled,
         isForced,
+        originalValue: isForced ? feature.isEnabled : undefined,
       };
     });
   }

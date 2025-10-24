@@ -1,5 +1,7 @@
 export * from './components/icons/icon.component';
 export * from './components/icons/icon.models';
+export * from './components/list/list.component';
+export * from './components/list-item/list-item.component';
 export * from './components/toolbar-tool/toolbar-tool.component';
 export * from './components/toolbar-tool/toolbar-tool.models';
 export * from './dev-toolbar.component';

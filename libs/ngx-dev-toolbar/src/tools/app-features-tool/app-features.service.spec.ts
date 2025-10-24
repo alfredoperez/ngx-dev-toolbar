@@ -13,7 +13,7 @@ describe('DevToolbarAppFeaturesService', () => {
   const createMockFeature = (
     id: string,
     name: string,
-    isEnabled: boolean = false
+    isEnabled = false
   ): DevToolbarAppFeature => ({
     id,
     name,
@@ -58,6 +58,12 @@ describe('DevToolbarAppFeaturesService', () => {
     it('should expose getForcedValues() method returning Observable', () => {
       expect(typeof service.getForcedValues).toBe('function');
       const result = service.getForcedValues();
+      expect(result.subscribe).toBeDefined(); // Observable check
+    });
+
+    it('should expose getValues() method returning Observable', () => {
+      expect(typeof service.getValues).toBe('function');
+      const result = service.getValues();
       expect(result.subscribe).toBeDefined(); // Observable check
     });
 
@@ -256,6 +262,163 @@ describe('DevToolbarAppFeaturesService', () => {
       );
 
       consoleWarnSpy.mockRestore();
+    });
+  });
+
+  describe('getValues', () => {
+    it('should return all features with overrides applied', async () => {
+      const features: DevToolbarAppFeature[] = [
+        createMockFeature('analytics', 'Analytics', false),
+        createMockFeature('multi-user', 'Multi-User', true),
+      ];
+
+      service.setAvailableOptions(features);
+
+      // Force analytics to enabled
+      internalService.setFeature('analytics', true);
+
+      const allFeatures = await firstValueFrom(service.getValues());
+      expect(allFeatures).toHaveLength(2);
+
+      // analytics should be overridden to enabled
+      expect(allFeatures[0].id).toBe('analytics');
+      expect(allFeatures[0].isEnabled).toBe(true);
+      expect(allFeatures[0].isForced).toBe(true);
+
+      // multi-user should remain unchanged
+      expect(allFeatures[1].id).toBe('multi-user');
+      expect(allFeatures[1].isEnabled).toBe(true);
+      expect(allFeatures[1].isForced).toBe(false);
+    });
+
+    it('should return all features when no overrides exist', async () => {
+      const features: DevToolbarAppFeature[] = [
+        createMockFeature('analytics', 'Analytics', false),
+        createMockFeature('multi-user', 'Multi-User', true),
+      ];
+
+      service.setAvailableOptions(features);
+
+      const allFeatures = await firstValueFrom(service.getValues());
+      expect(allFeatures).toHaveLength(2);
+      expect(allFeatures[0].isForced).toBe(false);
+      expect(allFeatures[1].isForced).toBe(false);
+    });
+
+    it('should emit new values when overrides change', (done) => {
+      const features: DevToolbarAppFeature[] = [
+        createMockFeature('analytics', 'Analytics', false),
+      ];
+
+      service.setAvailableOptions(features);
+
+      let emissionCount = 0;
+      service.getValues().subscribe((allFeatures) => {
+        emissionCount++;
+
+        if (emissionCount === 1) {
+          // First emission: no overrides
+          expect(allFeatures[0].isEnabled).toBe(false);
+          expect(allFeatures[0].isForced).toBe(false);
+
+          // Apply override
+          internalService.setFeature('analytics', true);
+        } else if (emissionCount === 2) {
+          // Second emission: override applied
+          expect(allFeatures[0].isEnabled).toBe(true);
+          expect(allFeatures[0].isForced).toBe(true);
+          done();
+        }
+      });
+    });
+
+    it('should handle multiple features with mixed overrides', async () => {
+      const features: DevToolbarAppFeature[] = [
+        createMockFeature('analytics', 'Analytics', false),
+        createMockFeature('multi-user', 'Multi-User', true),
+        createMockFeature('white-label', 'White Label', false),
+      ];
+
+      service.setAvailableOptions(features);
+
+      // Force analytics to enabled and multi-user to disabled
+      internalService.setFeature('analytics', true);
+      internalService.setFeature('multi-user', false);
+      // white-label remains natural (no override)
+
+      const allFeatures = await firstValueFrom(service.getValues());
+      expect(allFeatures).toHaveLength(3);
+
+      // analytics: forced to enabled
+      expect(allFeatures[0].id).toBe('analytics');
+      expect(allFeatures[0].isEnabled).toBe(true);
+      expect(allFeatures[0].isForced).toBe(true);
+
+      // multi-user: forced to disabled
+      expect(allFeatures[1].id).toBe('multi-user');
+      expect(allFeatures[1].isEnabled).toBe(false);
+      expect(allFeatures[1].isForced).toBe(true);
+
+      // white-label: natural state
+      expect(allFeatures[2].id).toBe('white-label');
+      expect(allFeatures[2].isEnabled).toBe(false);
+      expect(allFeatures[2].isForced).toBe(false);
+    });
+
+    it('should correctly identify forced features using isForced property', async () => {
+      const features: DevToolbarAppFeature[] = [
+        createMockFeature('natural', 'Natural Feature', true),
+        createMockFeature('forced', 'Forced Feature', true),
+      ];
+
+      service.setAvailableOptions(features);
+
+      // Force one feature
+      internalService.setFeature('forced', false);
+
+      const allFeatures = await firstValueFrom(service.getValues());
+
+      const naturalFeature = allFeatures.find((f) => f.id === 'natural');
+      const forcedFeature = allFeatures.find((f) => f.id === 'forced');
+
+      expect(naturalFeature?.isForced).toBe(false);
+      expect(forcedFeature?.isForced).toBe(true);
+    });
+
+    it('should show difference between getValues and getForcedValues', async () => {
+      const features: DevToolbarAppFeature[] = [
+        createMockFeature('analytics', 'Analytics', false),
+        createMockFeature('multi-user', 'Multi-User', true),
+        createMockFeature('white-label', 'White Label', false),
+      ];
+
+      service.setAvailableOptions(features);
+
+      // Force only analytics
+      internalService.setFeature('analytics', true);
+
+      const allFeatures = await firstValueFrom(service.getValues());
+      const forcedFeatures = await firstValueFrom(service.getForcedValues());
+
+      // getValues returns all 3 features
+      expect(allFeatures).toHaveLength(3);
+
+      // getForcedValues returns only the 1 forced feature
+      expect(forcedFeatures).toHaveLength(1);
+      expect(forcedFeatures[0].id).toBe('analytics');
+    });
+
+    it('should delegate to internal service features$ observable', async () => {
+      const features: DevToolbarAppFeature[] = [
+        createMockFeature('test', 'Test', false),
+      ];
+
+      service.setAvailableOptions(features);
+      const result = await firstValueFrom(service.getValues());
+
+      // Verify it returns the same as internal service
+      const internalResult = await firstValueFrom(internalService.features$);
+      expect(result).toEqual(internalResult);
     });
   });
 });

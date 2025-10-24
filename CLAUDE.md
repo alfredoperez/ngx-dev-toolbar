@@ -94,7 +94,7 @@ Reusable components are in `src/components/`:
 ## Angular Best Practices
 
 ### Component Development
-- All components use **standalone: true** (implicit, do not explicitly set)
+- All components use **standalone: true** (explicitly set for clarity)
 - Use **OnPush change detection** for all components
 - Use **input()** and **output()** functions instead of decorators
 - Prefer **inline templates** for small components

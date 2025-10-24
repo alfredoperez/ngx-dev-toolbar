@@ -40,7 +40,7 @@ jobs:
             node_modules
           key: npm-dependencies-${{ hashFiles('package-lock.json') }}
 
-      - run: npm ci
+      - run: npm install
 
       - name: Save dependencies cache
         id: cache-dependencies-save

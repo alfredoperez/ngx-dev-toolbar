@@ -23,4 +23,14 @@ export class DevToolbarLanguageService implements DevToolsService<Language> {
   getForcedValues(): Observable<Language[]> {
     return this.internalService.getForcedLanguage();
   }
+
+  /**
+   * Gets the forced language value.
+   * For the language tool, this returns the same as getForcedValues() since
+   * only one language can be selected at a time.
+   * @returns Observable of forced language array (single item or empty)
+   */
+  getValues(): Observable<Language[]> {
+    return this.internalService.getForcedLanguage();
+  }
 }

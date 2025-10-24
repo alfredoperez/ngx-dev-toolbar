@@ -45,6 +45,10 @@
   <div
     class="overlay"
     (click)="closeMobileMenu()"
+    (keydown.enter)="closeMobileMenu()"
+    (keydown.escape)="closeMobileMenu()"
+    role="button"
+    tabindex="0"
     aria-label="Close navigation"
   ></div>
 }

@@ -8,6 +8,8 @@ import {
 import { FormsModule } from '@angular/forms';
 import { DevToolbarIconComponent } from '../../components/icons/icon.component';
 import { DevToolbarInputComponent } from '../../components/input/input.component';
+import { DevToolbarListComponent } from '../../components/list/list.component';
+import { DevToolbarListItemComponent } from '../../components/list-item/list-item.component';
 import { DevToolbarSelectComponent } from '../../components/select/select.component';
 import { DevToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
 import { DevToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
@@ -15,7 +17,6 @@ import { DevToolbarInternalPermissionsService } from './permissions-internal.ser
 import {
   DevToolbarPermission,
   PermissionFilter,
-  PermissionValue,
 } from './permissions.models';
 
 @Component({
@@ -27,6 +28,8 @@ import {
     DevToolbarInputComponent,
     DevToolbarSelectComponent,
     DevToolbarIconComponent,
+    DevToolbarListComponent,
+    DevToolbarListItemComponent,
   ],
   template: `
     <ndt-toolbar-tool
@@ -54,35 +57,31 @@ import {
           </div>
         </div>
 
-        @if (hasNoPermissions()) {
-        <div class="empty">
-          <p>No permissions found</p>
-          <p class="hint">Call setAvailableOptions() to configure permissions</p>
-        </div>
-        } @else if (hasNoFilteredPermissions()) {
-        <div class="empty">
-          <p>No permissions match your filter</p>
-        </div>
-        } @else {
-        <div class="permission-list">
+        <ndt-list
+          [hasItems]="!hasNoPermissions()"
+          [hasResults]="!hasNoFilteredPermissions()"
+          emptyMessage="No permissions found"
+          [emptyHint]="'Call setAvailableOptions() to configure permissions'"
+          noResultsMessage="No permissions match your filter"
+        >
           @for (permission of filteredPermissions(); track permission.id) {
-          <div class="permission">
-            <div class="info">
-              <h3>{{ permission.name }}</h3>
-              <p>{{ permission?.description }}</p>
-            </div>
-
-            <ndt-select
-              [value]="getPermissionValue(permission)"
-              [options]="permissionValueOptions"
-              [ariaLabel]="'Override state for ' + permission.name"
-              (valueChange)="onPermissionChange(permission.id, $event ?? '')"
-              size="small"
-            />
-          </div>
+            <ndt-list-item
+              [title]="permission.name"
+              [description]="permission.description"
+              [isForced]="permission.isForced"
+              [currentValue]="permission.isGranted"
+              [originalValue]="permission.originalValue"
+            >
+              <ndt-select
+                [value]="getPermissionValue(permission)"
+                [options]="permissionValueOptions"
+                [ariaLabel]="'Override state for ' + permission.name"
+                (valueChange)="onPermissionChange(permission.id, $event ?? '')"
+                size="small"
+              />
+            </ndt-list-item>
           }
-        </div>
-        }
+        </ndt-list>
       </div>
     </ndt-toolbar-tool>
   `,
@@ -123,87 +122,6 @@ import {
           }
         }
       }
-
-      .empty {
-        display: flex;
-        flex-direction: column;
-        gap: var(--ndt-spacing-md);
-        flex: 1;
-        min-height: 0;
-        justify-content: center;
-        align-items: center;
-        border: 1px solid var(--ndt-warning-border);
-        border-radius: var(--ndt-border-radius-medium);
-        padding: var(--ndt-spacing-md);
-        background: var(--ndt-warning-background);
-        color: var(--ndt-text-muted);
-
-        p {
-          margin: 0;
-        }
-
-        .hint {
-          font-size: var(--ndt-font-size-xs);
-        }
-      }
-
-      .permission-list {
-        display: flex;
-        flex-direction: column;
-        gap: var(--ndt-spacing-md);
-        flex: 1;
-        min-height: 0;
-        overflow-y: auto;
-        padding-right: var(--ndt-spacing-sm);
-
-        &::-webkit-scrollbar {
-          width: 8px;
-        }
-
-        &::-webkit-scrollbar-track {
-          background: var(--ndt-background-secondary);
-          border-radius: 4px;
-        }
-
-        &::-webkit-scrollbar-thumb {
-          background: var(--ndt-border-primary);
-          border-radius: 4px;
-
-          &:hover {
-            background: var(--ndt-hover-bg);
-          }
-        }
-
-        scrollbar-width: thin;
-        scrollbar-color: var(--ndt-border-primary)
-          var(--ndt-background-secondary);
-      }
-
-      .permission {
-        display: flex;
-        flex-direction: row;
-        gap: var(--ndt-spacing-sm);
-        background: var(--ndt-background-secondary);
-
-        .info {
-          flex: 0 0 65%;
-
-          h3 {
-            margin: 0;
-            font-size: var(--ndt-font-size-md);
-            color: var(--ndt-text-primary);
-          }
-
-          p {
-            font-size: var(--ndt-font-size-xs);
-            color: var(--ndt-text-muted);
-          }
-        }
-
-        ndt-select {
-          flex: 0 0 35%;
-        }
-      }
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -223,7 +141,7 @@ export class DevToolbarPermissionsToolComponent {
     () => this.permissions().length === 0
   );
   protected readonly filteredPermissions = computed(() => {
-    return this.permissions().filter((permission) => {
+    const filtered = this.permissions().filter((permission) => {
       const searchTerm = this.searchQuery().toLowerCase();
       const permissionName = permission.name.toLowerCase();
       const permissionDescription = permission.description?.toLowerCase() ?? '';
@@ -241,6 +159,9 @@ export class DevToolbarPermissionsToolComponent {
 
       return matchesSearch && matchesFilter;
     });
+
+    // Sort alphabetically by name
+    return filtered.sort((a, b) => a.name.localeCompare(b.name));
   });
   protected readonly hasNoFilteredPermissions = computed(
     () => this.filteredPermissions().length === 0

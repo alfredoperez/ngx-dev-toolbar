@@ -8,6 +8,8 @@ import {
 import { FormsModule } from '@angular/forms';
 import { DevToolbarIconComponent } from '../../components/icons/icon.component';
 import { DevToolbarInputComponent } from '../../components/input/input.component';
+import { DevToolbarListComponent } from '../../components/list/list.component';
+import { DevToolbarListItemComponent } from '../../components/list-item/list-item.component';
 import { DevToolbarSelectComponent } from '../../components/select/select.component';
 import { DevToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
 import { DevToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
@@ -37,6 +39,8 @@ import { AppFeatureFilter, DevToolbarAppFeature } from './app-features.models';
     DevToolbarInputComponent,
     DevToolbarSelectComponent,
     DevToolbarIconComponent,
+    DevToolbarListComponent,
+    DevToolbarListItemComponent,
   ],
   template: `
     <ndt-toolbar-tool
@@ -62,37 +66,31 @@ import { AppFeatureFilter, DevToolbarAppFeature } from './app-features.models';
           </div>
         </div>
 
-        @if (hasNoFeatures()) {
-        <div class="empty">
-          <p>No app features found</p>
-          <small>Call setAvailableOptions() to configure features</small>
-        </div>
-        } @else if (hasNoFilteredFeatures()) {
-        <div class="empty">
-          <p>No features match your filter</p>
-        </div>
-        } @else {
-        <div class="feature-list">
+        <ndt-list
+          [hasItems]="!hasNoFeatures()"
+          [hasResults]="!hasNoFilteredFeatures()"
+          emptyMessage="No app features found"
+          [emptyHint]="'Call setAvailableOptions() to configure features'"
+          noResultsMessage="No features match your filter"
+        >
           @for (feature of filteredFeatures(); track feature.id) {
-          <div class="feature">
-            <div class="info">
-              <h3>{{ feature.name }}</h3>
-              @if (feature.description) {
-              <p>{{ feature.description }}</p>
-              }
-            </div>
-
-            <ndt-select
-              [value]="getFeatureValue(feature)"
-              [options]="featureValueOptions"
-              [ariaLabel]="'Set value for ' + feature.name"
-              (valueChange)="onFeatureChange(feature.id, $event ?? '')"
-              size="small"
-            />
-          </div>
+            <ndt-list-item
+              [title]="feature.name"
+              [description]="feature.description"
+              [isForced]="feature.isForced"
+              [currentValue]="feature.isEnabled"
+              [originalValue]="feature.originalValue"
+            >
+              <ndt-select
+                [value]="getFeatureValue(feature)"
+                [options]="featureValueOptions"
+                [ariaLabel]="'Set value for ' + feature.name"
+                (valueChange)="onFeatureChange(feature.id, $event ?? '')"
+                size="small"
+              />
+            </ndt-list-item>
           }
-        </div>
-        }
+        </ndt-list>
       </div>
     </ndt-toolbar-tool>
   `,
@@ -133,92 +131,6 @@ import { AppFeatureFilter, DevToolbarAppFeature } from './app-features.models';
           }
         }
       }
-
-      .empty {
-        display: flex;
-        flex-direction: column;
-        gap: var(--ndt-spacing-md);
-        flex: 1;
-        min-height: 0;
-        justify-content: center;
-        align-items: center;
-        border: 1px solid var(--ndt-warning-border);
-        border-radius: var(--ndt-border-radius-medium);
-        padding: var(--ndt-spacing-md);
-        background: var(--ndt-warning-background);
-        color: var(--ndt-text-muted);
-
-        p {
-          margin: 0;
-          font-size: var(--ndt-font-size-md);
-        }
-
-        small {
-          font-size: var(--ndt-font-size-xs);
-          opacity: 0.8;
-        }
-      }
-
-      .feature-list {
-        display: flex;
-        flex-direction: column;
-        gap: var(--ndt-spacing-md);
-        flex: 1;
-        min-height: 0;
-        overflow-y: auto;
-        padding-right: var(--ndt-spacing-sm);
-
-        &::-webkit-scrollbar {
-          width: 8px;
-        }
-
-        &::-webkit-scrollbar-track {
-          background: var(--ndt-background-secondary);
-          border-radius: 4px;
-        }
-
-        &::-webkit-scrollbar-thumb {
-          background: var(--ndt-border-primary);
-          border-radius: 4px;
-
-          &:hover {
-            background: var(--ndt-hover-bg);
-          }
-        }
-
-        scrollbar-width: thin;
-        scrollbar-color: var(--ndt-border-primary)
-          var(--ndt-background-secondary);
-      }
-
-      .feature {
-        display: flex;
-        flex-direction: row;
-        gap: var(--ndt-spacing-sm);
-        background: var(--ndt-background-secondary);
-        padding: var(--ndt-spacing-md);
-        border-radius: var(--ndt-border-radius-medium);
-
-        .info {
-          flex: 0 0 65%;
-
-          h3 {
-            margin: 0;
-            font-size: var(--ndt-font-size-md);
-            color: var(--ndt-text-primary);
-          }
-
-          p {
-            margin: var(--ndt-spacing-xs) 0 0 0;
-            font-size: var(--ndt-font-size-xs);
-            color: var(--ndt-text-muted);
-          }
-        }
-
-        ndt-select {
-          flex: 0 0 35%;
-        }
-      }
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -234,7 +146,7 @@ export class DevToolbarAppFeaturesToolComponent {
   protected readonly features = this.appFeaturesService.features;
   protected readonly hasNoFeatures = computed(() => this.features().length === 0);
   protected readonly filteredFeatures = computed(() => {
-    return this.features().filter((feature) => {
+    const filtered = this.features().filter((feature) => {
       const searchTerm = this.searchQuery().toLowerCase();
       const featureName = feature.name.toLowerCase();
       const featureDescription = feature.description?.toLowerCase() ?? '';
@@ -252,6 +164,9 @@ export class DevToolbarAppFeaturesToolComponent {
 
       return matchesSearch && matchesFilter;
     });
+
+    // Sort alphabetically by name
+    return filtered.sort((a, b) => a.name.localeCompare(b.name));
   });
   protected readonly hasNoFilteredFeatures = computed(
     () => this.filteredFeatures().length === 0

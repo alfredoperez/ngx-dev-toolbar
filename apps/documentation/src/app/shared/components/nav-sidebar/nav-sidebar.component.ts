@@ -2,7 +2,6 @@ import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { DevToolbarIconComponent, IconName } from 'ngx-dev-toolbar';
-import { NavItem } from '../../models/documentation.models';
 
 interface DocNavItem {
   label: string;

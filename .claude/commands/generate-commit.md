@@ -56,29 +56,31 @@ Example:
 
 ### Step 5: Generate Commit Body
 
-Write a **concise, explanatory description** of what changed and why. DO NOT list individual files.
+Write a **concise summary** followed by organized bullet points. Structure the body as follows:
 
 ```markdown
-<2-5 short sentences explaining what was implemented/changed and the purpose>
+{{1-2 sentence summary of the overall change}}
 
-Include:
-- What functionality was added/changed
-- Key architectural decisions or patterns used
-- Important side effects or impacts
-- Brief mention of supporting changes (docs, tests, config)
+## Changes
+- Concise change description (focus on WHAT was added/changed, avoid implementation details)
+- Another change
+- Etc.
+
+## Demo App
+- Concise change to demo app (if applicable)
+
+## Documentation
+- Concise change to documentation website or README files (if applicable)
 ```
 
 **Guidelines**:
-- Be concise but informative (aim for 3-10 lines total)
-- Focus on WHAT changed and WHY, not WHERE (no file paths)
-- Use plain sentences, not bullet lists
-- For AI config files, briefly mention: "Includes 🤖 Claude Code setup" or "Added 📋 SpecKit workflows"
-- Avoid technical jargon unless necessary
-
-**AI Configuration mentions**:
-- 🤖 Claude Code configuration
-- 📋 SpecKit workflow setup
-- 📚 Knowledge base updates
+- Keep the summary to 1-2 sentences maximum
+- Use bullet points for all changes (be specific but brief)
+- Focus on WHAT changed, not HOW it was implemented
+- Avoid implementation details like pixel sizes, specific patterns, or technical internals
+- DO NOT mention tests, test coverage, or unit tests
+- Omit sections (Demo App, Documentation) if there are no changes
+- Use imperative mood in bullet points ("Add" not "Added")
 
 ### Step 6: Output Format
 
@@ -92,13 +94,27 @@ Present the commit message in this format:
 📄 SUGGESTED COMMIT BODY:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-<Concise explanation of what changed and why, in 2-5 sentences>
+{{Summary}}
+
+## Changes
+- Change 1
+- Change 2
+
+## Demo App
+- Demo app change (if applicable)
+
+## Documentation
+- Documentation change (if applicable)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 💡 TO COMMIT:
 You can now commit manually using:
-  git commit -m "title" -m "body"
+  git commit -F- <<'EOF'
+<type>(<scope>): <description>
+
+{{Full commit body with sections}}
+EOF
 
 Or copy the message and use:
   git commit
@@ -127,27 +143,42 @@ After generating the message, also show:
 ```
 feat(permissions): add permissions tool with boolean toggles
 
-Implemented new permissions tool following the 3-layer architecture pattern
-with component, internal service, and public service. Allows developers to
-override user permissions at runtime for testing different role scenarios
-without backend changes. Includes comprehensive test coverage.
+Implemented new permissions tool for runtime permission override testing.
+
+## Changes
+- Add Permissions tool with 3-layer architecture
+- Add service API for setting available permissions
+- Add method to retrieve forced permission values
 ```
 
 ### Example 2: Documentation
 ```
 docs: create comprehensive toolbar expansion plan
 
-Added detailed implementation roadmap for three new toolbar tools: Permissions,
-App Features, and Presets. Includes architecture patterns, data models, service
-APIs, and integration examples for each tool.
+Added detailed implementation roadmap for three new toolbar tools.
+
+## Documentation
+- Add specifications for Permissions, App Features, and Presets tools
+- Include architecture patterns and data models
+- Add service API examples and integration guides
 ```
 
 ### Example 3: Multiple Changes
 ```
-chore: setup project structure and AI workflows
+feat: add list components and refactor tools
 
-Initial project setup with build tooling, dependency management, and development
-workflows. Includes 🤖 Claude Code agents for automated commits and reviews,
-📋 SpecKit templates for feature specification, and 📚 knowledge base
-documentation for project architecture.
+Created reusable list components and refactored all tools to use shared UI patterns.
+
+## Changes
+- Add reusable list and list-item components
+- Refactor feature-flags, permissions, and app-features tools
+- Add preset support to all tool services
+- Improve type safety across services
+
+## Demo App
+- Update services to use new preset APIs
+
+## Documentation
+- Update README with new components
+- Add component usage examples
 ```

@@ -16,4 +16,27 @@ export interface DevToolsService<OptionType> {
    * @returns Observable of forced values array
    */
   getForcedValues(): Observable<OptionType[]>;
+
+  /**
+   * Gets ALL option values with overrides already applied.
+   * Returns the complete set of options where overridden values replace base values.
+   * Each option includes an `isForced` property indicating if it was overridden.
+   *
+   * This method simplifies integration by eliminating the need to manually merge
+   * base values with overrides using combineLatest.
+   *
+   * @returns Observable of all values with overrides applied
+   *
+   * @example
+   * ```typescript
+   * // Simple integration - no manual merging needed
+   * this.devToolbarService.getValues().pipe(
+   *   map(values => values.find(v => v.id === targetId)),
+   *   map(value => value?.isEnabled ?? defaultValue)
+   * ).subscribe(finalValue => {
+   *   // Use the final value
+   * });
+   * ```
+   */
+  getValues(): Observable<OptionType[]>;
 }

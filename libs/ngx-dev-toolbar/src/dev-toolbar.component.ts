@@ -50,22 +50,22 @@ import { DevToolbarPresetsToolComponent } from './tools/presets-tool/presets-too
       (mouseenter)="onMouseEnter()"
     >
       <ndt-home-tool />
-      @if (config().showLanguageTool ?? true) {
+      <ng-content />
+      @if (config().showLanguageTool ?? false) {
         <ndt-language-tool />
       }
-      @if (config().showFeatureFlagsTool ?? true) {
-        <ndt-feature-flags-tool />
-      }
-      @if (config().showAppFeaturesTool ?? true) {
-        <ndt-app-features-tool />
-      }
-      @if (config().showPermissionsTool ?? true) {
-        <ndt-permissions-tool />
-      }
-      @if (config().showPresetsTool ?? true) {
+      @if (config().showPresetsTool ?? false) {
         <ndt-presets-tool />
       }
-      <ng-content />
+      @if (config().showAppFeaturesTool ?? false) {
+        <ndt-app-features-tool />
+      }
+      @if (config().showPermissionsTool ?? false) {
+        <ndt-permissions-tool />
+      }
+      @if (config().showFeatureFlagsTool ?? false) {
+        <ndt-feature-flags-tool />
+      }
     </div>
   `,
   animations: [

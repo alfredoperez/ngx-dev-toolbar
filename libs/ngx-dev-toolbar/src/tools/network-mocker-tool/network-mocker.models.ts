@@ -3,7 +3,7 @@ export interface MockRequest {
   url: string;
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
   status: number;
-  response: any;
+  response: unknown;
   isActive: boolean;
   createdAt: Date;
 }
@@ -12,6 +12,6 @@ export interface MockRequestConfig {
   url: string;
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
   status?: number;
-  response?: any;
+  response?: unknown;
   delay?: number;
 }

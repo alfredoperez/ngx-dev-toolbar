@@ -5,6 +5,7 @@ export interface DevToolbarFlag {
   link?: string;
   isEnabled: boolean;
   isForced: boolean;
+  originalValue?: boolean;
 }
 
 export type FeatureFlagFilter = 'all' | 'forced' | 'enabled' | 'disabled';

@@ -25,15 +25,19 @@ export class DevToolbarInternalPermissionsService {
     this.forcedState$,
   ]).pipe(
     map(([appPermissions, { granted, denied }]) => {
-      return appPermissions.map((permission) => ({
-        ...permission,
-        isForced: granted.includes(permission.id) || denied.includes(permission.id),
-        isGranted: granted.includes(permission.id)
-          ? true
-          : denied.includes(permission.id)
-          ? false
-          : permission.isGranted,
-      }));
+      return appPermissions.map((permission) => {
+        const isForced = granted.includes(permission.id) || denied.includes(permission.id);
+        return {
+          ...permission,
+          isForced,
+          isGranted: granted.includes(permission.id)
+            ? true
+            : denied.includes(permission.id)
+            ? false
+            : permission.isGranted,
+          originalValue: isForced ? permission.isGranted : undefined,
+        };
+      });
     })
   );
 
@@ -120,12 +124,15 @@ export class DevToolbarInternalPermissionsService {
     }
   }
 
-  private isValidForcedState(state: any): state is ForcedPermissionsState {
+  private isValidForcedState(state: unknown): state is ForcedPermissionsState {
+    if (!state || typeof state !== 'object') {
+      return false;
+    }
+
+    const candidate = state as Record<string, unknown>;
     return (
-      state &&
-      typeof state === 'object' &&
-      Array.isArray(state.granted) &&
-      Array.isArray(state.denied)
+      Array.isArray(candidate['granted']) &&
+      Array.isArray(candidate['denied'])
     );
   }
 

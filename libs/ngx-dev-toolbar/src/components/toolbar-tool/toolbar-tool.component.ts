@@ -57,7 +57,7 @@ import { DevToolbarWindowOptions } from './toolbar-tool.models';
         [cdkConnectedOverlayHeight]="height()"
         cdkConnectedOverlay
       >
-        <ndt-window [@slideAnimation] [config]="options()" (close)="onClose()">
+        <ndt-window [@slideAnimation] [config]="options()" (closed)="onClose()">
           <ng-content />
         </ndt-window>
       </ng-template>

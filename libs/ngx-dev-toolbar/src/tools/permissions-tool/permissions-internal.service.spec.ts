@@ -33,10 +33,6 @@ describe('DevToolbarInternalPermissionsService', () => {
     });
 
     it('should initialize with empty forced state', () => {
-      const forcedState: ForcedPermissionsState = {
-        granted: [],
-        denied: [],
-      };
       expect(storageService.get).toHaveBeenCalledWith('permissions');
     });
 
@@ -55,7 +51,7 @@ describe('DevToolbarInternalPermissionsService', () => {
           { provide: DevToolsStorageService, useValue: storageService },
         ],
       });
-      const newService = TestBed.inject(DevToolbarInternalPermissionsService);
+      TestBed.inject(DevToolbarInternalPermissionsService);
 
       expect(storageService.get).toHaveBeenCalledWith('permissions');
       // The service should have loaded the saved state (we'll verify this after implementing setAppPermissions)
@@ -116,6 +112,7 @@ describe('DevToolbarInternalPermissionsService', () => {
         name: 'Permission 2',
         isGranted: true,
         isForced: true,
+        originalValue: false,
       });
     });
 
@@ -165,6 +162,7 @@ describe('DevToolbarInternalPermissionsService', () => {
         name: 'Permission 1',
         isGranted: true,
         isForced: true,
+        originalValue: false,
       });
     });
 
@@ -217,6 +215,7 @@ describe('DevToolbarInternalPermissionsService', () => {
         name: 'Permission 1',
         isGranted: false,
         isForced: true,
+        originalValue: true,
       });
     });
 

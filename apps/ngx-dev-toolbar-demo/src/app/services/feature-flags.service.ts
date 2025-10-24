@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { DevToolbarFeatureFlagService } from 'ngx-dev-toolbar';
-import { BehaviorSubject, Observable, combineLatest, map } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 
 export interface FeatureFlag {
   name: string;
@@ -72,18 +72,17 @@ export class FeatureFlagsService {
   readonly flags$ = this.flagsSubject.asObservable();
 
   select(flagName: string): Observable<boolean> {
-    return combineLatest([
-      this.flags$,
-      this.devToolbarFeatureFlags.getForcedValues(),
-    ]).pipe(
-      map(([flags, forcedFlags]) => {
-        const flag = flags.find((f) => f.name === flagName);
-        const forcedFlag = forcedFlags.find((f) => f.id === flagName);
-        const isForced = forcedFlag?.isForced ?? false;
-        if (isForced) {
-          return forcedFlag?.isEnabled ?? false;
+    // Use getValues() to get all flags with overrides already applied
+    return this.devToolbarFeatureFlags.getValues().pipe(
+      map(toolbarFlags => {
+        // Check if toolbar has this flag with override
+        const toolbarFlag = toolbarFlags.find(f => f.id === flagName);
+        if (toolbarFlag) {
+          return toolbarFlag.isEnabled;
         }
-        return flag?.enabled ?? false;
+        // Fall back to local flag value if not in toolbar
+        const localFlag = this.featureFlags.find(f => f.name === flagName);
+        return localFlag?.enabled ?? false;
       })
     );
   }

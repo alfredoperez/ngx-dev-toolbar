@@ -8,6 +8,8 @@ import {
 import { FormsModule } from '@angular/forms';
 import { DevToolbarIconComponent } from '../../components/icons/icon.component';
 import { DevToolbarInputComponent } from '../../components/input/input.component';
+import { DevToolbarListComponent } from '../../components/list/list.component';
+import { DevToolbarListItemComponent } from '../../components/list-item/list-item.component';
 import { DevToolbarSelectComponent } from '../../components/select/select.component';
 import { DevToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
 import { DevToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
@@ -22,6 +24,8 @@ import { DevToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
     DevToolbarInputComponent,
     DevToolbarSelectComponent,
     DevToolbarIconComponent,
+    DevToolbarListComponent,
+    DevToolbarListItemComponent,
   ],
   template: `
     <ndt-toolbar-tool
@@ -47,34 +51,30 @@ import { DevToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
           </div>
         </div>
 
-        @if (hasNoFlags()) {
-        <div class="empty">
-          <p>No flags found</p>
-        </div>
-        } @else if (hasNoFilteredFlags()) {
-        <div class="empty">
-          <p>No flags found matching your filter</p>
-        </div>
-        } @else {
-        <div class="flag-list">
+        <ndt-list
+          [hasItems]="!hasNoFlags()"
+          [hasResults]="!hasNoFilteredFlags()"
+          emptyMessage="No flags found"
+          noResultsMessage="No flags found matching your filter"
+        >
           @for (flag of filteredFlags(); track flag.id) {
-          <div class="flag">
-            <div class="info">
-              <h3>{{ flag.name }}</h3>
-              <p>{{ flag?.description }}</p>
-            </div>
-
-            <ndt-select
-              [value]="getFlagValue(flag)"
-              [options]="flagValueOptions"
-              [ariaLabel]="'Set value for ' + flag.name"
-              (valueChange)="onFlagChange(flag.id, $event ?? '')"
-              size="small"
-            />
-          </div>
+            <ndt-list-item
+              [title]="flag.name"
+              [description]="flag.description"
+              [isForced]="flag.isForced"
+              [currentValue]="flag.isEnabled"
+              [originalValue]="flag.originalValue"
+            >
+              <ndt-select
+                [value]="getFlagValue(flag)"
+                [options]="flagValueOptions"
+                [ariaLabel]="'Set value for ' + flag.name"
+                (valueChange)="onFlagChange(flag.id, $event ?? '')"
+                size="small"
+              />
+            </ndt-list-item>
           }
-        </div>
-        }
+        </ndt-list>
       </div>
     </ndt-toolbar-tool>
   `,
@@ -115,77 +115,6 @@ import { DevToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
           }
         }
       }
-
-      .empty {
-        display: flex;
-        flex-direction: column;
-        gap: var(--ndt-spacing-md);
-        flex: 1;
-        min-height: 0;
-        justify-content: center;
-        align-items: center;
-        border: 1px solid var(--ndt-warning-border);
-        border-radius: var(--ndt-border-radius-medium);
-        padding: var(--ndt-spacing-md);
-        background: var(--ndt-warning-background);
-        color: var(--ndt-text-muted);
-      }
-
-      .flag-list {
-        display: flex;
-        flex-direction: column;
-        gap: var(--ndt-spacing-md);
-        flex: 1;
-        min-height: 0;
-        overflow-y: auto;
-        padding-right: var(--ndt-spacing-sm);
-
-        &::-webkit-scrollbar {
-          width: 8px;
-        }
-
-        &::-webkit-scrollbar-track {
-          background: var(--ndt-background-secondary);
-          border-radius: 4px;
-        }
-
-        &::-webkit-scrollbar-thumb {
-          background: var(--ndt-border-primary);
-          border-radius: 4px;
-
-          &:hover {
-            background: var(--ndt-hover-bg);
-          }
-        }
-
-        scrollbar-width: thin;
-        scrollbar-color: var(--ndt-border-primary)
-          var(--ndt-background-secondary);
-      }
-
-      .flag {
-        display: flex;
-        flex-direction: row;
-        gap: var(--ndt-spacing-sm);
-        background: var(--ndt-background-secondary);
-        .info {
-          flex: 0 0 65%;
-          h3 {
-            margin: 0;
-            font-size: var(--ndt-font-size-md);
-            color: var(--ndt-text-primary);
-          }
-
-          p {
-            font-size: var(--ndt-font-size-xs);
-            color: var(--ndt-text-muted);
-          }
-        }
-
-        ndt-select {
-          flex: 0 0 35%;
-        }
-      }
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -201,7 +130,7 @@ export class DevToolbarFeatureFlagsToolComponent {
   protected readonly flags = this.featureFlags.flags;
   protected readonly hasNoFlags = computed(() => this.flags().length === 0);
   protected readonly filteredFlags = computed(() => {
-    return this.flags().filter((flag) => {
+    const filtered = this.flags().filter((flag) => {
       const searchTerm = this.searchQuery().toLowerCase();
       const flagName = flag.name.toLowerCase();
       const flagDescription = flag.description?.toLowerCase() ?? '';
@@ -219,6 +148,9 @@ export class DevToolbarFeatureFlagsToolComponent {
 
       return matchesSearch && matchesFilter;
     });
+
+    // Sort alphabetically by name
+    return filtered.sort((a, b) => a.name.localeCompare(b.name));
   });
   protected readonly hasNoFilteredFlags = computed(
     () => this.filteredFlags().length === 0

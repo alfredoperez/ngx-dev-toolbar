@@ -13,6 +13,8 @@ export interface DevToolbarPermission {
   isGranted: boolean;
   /** Whether the permission's value has been overridden through the toolbar */
   isForced: boolean;
+  /** Original value before forcing (only present when isForced is true) */
+  originalValue?: boolean;
 }
 
 /**
