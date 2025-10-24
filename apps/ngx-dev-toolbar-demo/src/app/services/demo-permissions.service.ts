@@ -10,7 +10,7 @@ import {
  *
  * Integration Points:
  * 1. Call setAvailableOptions() in constructor to register permissions with the toolbar
- * 2. Subscribe to getForcedValues() to receive toolbar overrides
+ * 2. Subscribe to getValues() to receive all permissions with overrides already applied
  * 3. Use the permissions signal in your components to check permissions
  * 4. Implement hasPermission() method for easy permission checking
  */
@@ -72,11 +72,11 @@ export class DemoPermissionsService {
     // Register permissions with the toolbar
     this.permissionsService.setAvailableOptions(this.samplePermissions);
 
-    // Listen for forced permission changes from the toolbar
-    this.permissionsService.getForcedValues().subscribe((forcedPermissions) => {
-      // Update local permissions state with forced values
-      const updatedPermissions = this.buildPermissionsMap(forcedPermissions);
-      this.permissions.update((current) => ({ ...current, ...updatedPermissions }));
+    // Listen for permission changes from the toolbar (with overrides already applied)
+    this.permissionsService.getValues().subscribe((allPermissions) => {
+      // Update local permissions state with all values (natural + overrides)
+      const updatedPermissions = this.buildPermissionsMap(allPermissions);
+      this.permissions.set(updatedPermissions);
     });
   }
 

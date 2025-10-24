@@ -25,4 +25,31 @@ export class DevToolbarFeatureFlagService
   getForcedValues(): Observable<DevToolbarFlag[]> {
     return this.internalService.getForcedFlags();
   }
+
+  /**
+   * Gets ALL flag values with overrides already applied.
+   * Returns the complete set of flags where overridden values replace base values.
+   * Each flag includes an `isForced` property indicating if it was overridden.
+   *
+   * This method simplifies integration by eliminating the need to manually merge
+   * base flags with overrides using combineLatest.
+   *
+   * @returns Observable of all flags with overrides applied
+   *
+   * @example
+   * ```typescript
+   * // Get a specific flag value with overrides applied
+   * this.featureFlagsService.getValues().pipe(
+   *   map(flags => flags.find(f => f.id === 'newFeature')),
+   *   map(flag => flag?.isEnabled ?? false)
+   * ).subscribe(isEnabled => {
+   *   if (isEnabled) {
+   *     // Enable feature
+   *   }
+   * });
+   * ```
+   */
+  getValues(): Observable<DevToolbarFlag[]> {
+    return this.internalService.flags$;
+  }
 }

@@ -46,6 +46,12 @@ export interface DevToolbarAppFeature {
    * - false: State reflects the natural application configuration
    */
   isForced: boolean;
+
+  /**
+   * Original value before forcing (only present when isForced is true)
+   * Used to display what the feature's state was before being overridden
+   */
+  originalValue?: boolean;
 }
 
 /**

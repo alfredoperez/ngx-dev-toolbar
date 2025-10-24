@@ -75,6 +75,33 @@ export class DevToolbarPermissionsService
   }
 
   /**
+   * Gets ALL permission values with overrides already applied.
+   * Returns the complete set of permissions where overridden values replace base values.
+   * Each permission includes an `isForced` property indicating if it was overridden.
+   *
+   * This method simplifies integration by eliminating the need to manually merge
+   * base permissions with overrides using combineLatest.
+   *
+   * @returns Observable of all permissions with overrides applied
+   *
+   * @example
+   * ```typescript
+   * // Simple permission check with overrides applied
+   * this.permissionsService.getValues().pipe(
+   *   map(permissions => permissions.find(p => p.id === 'can-edit')),
+   *   map(permission => permission?.isGranted ?? false)
+   * ).subscribe(canEdit => {
+   *   if (canEdit) {
+   *     // Enable edit functionality
+   *   }
+   * });
+   * ```
+   */
+  getValues(): Observable<DevToolbarPermission[]> {
+    return this.internalService.permissions$;
+  }
+
+  /**
    * Apply a preset permission state. Useful for automated testing scenarios.
    *
    * @param state The forced permissions state to apply

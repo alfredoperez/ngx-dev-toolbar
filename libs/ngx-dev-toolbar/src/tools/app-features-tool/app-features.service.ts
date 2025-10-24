@@ -108,6 +108,33 @@ export class DevToolbarAppFeaturesService implements DevToolsService<DevToolbarA
   }
 
   /**
+   * Gets ALL app feature values with overrides already applied.
+   * Returns the complete set of features where overridden values replace base values.
+   * Each feature includes an `isForced` property indicating if it was overridden.
+   *
+   * This method simplifies integration by eliminating the need to manually merge
+   * base features with overrides using combineLatest.
+   *
+   * @returns Observable of all features with overrides applied
+   *
+   * @example
+   * ```typescript
+   * // Check if a feature is enabled with overrides applied
+   * this.appFeaturesService.getValues().pipe(
+   *   map(features => features.find(f => f.id === 'premium-analytics')),
+   *   map(feature => feature?.isEnabled ?? false)
+   * ).subscribe(isEnabled => {
+   *   if (isEnabled) {
+   *     // Enable premium analytics
+   *   }
+   * });
+   * ```
+   */
+  getValues(): Observable<DevToolbarAppFeature[]> {
+    return this.internalService.features$;
+  }
+
+  /**
    * Apply a preset feature configuration (for preset tool integration).
    *
    * Accepts a forced features state object and applies it to the current configuration.

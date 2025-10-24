@@ -27,15 +27,19 @@ export class DevToolbarInternalFeatureFlagService {
     this.forcedFlags$,
   ]).pipe(
     map(([appFlags, { enabled, disabled }]) => {
-      return appFlags.map((flag) => ({
-        ...flag,
-        isForced: enabled.includes(flag.id) || disabled.includes(flag.id),
-        isEnabled: enabled.includes(flag.id)
-          ? true
-          : disabled.includes(flag.id)
-          ? false
-          : flag.isEnabled,
-      }));
+      return appFlags.map((flag) => {
+        const isForced = enabled.includes(flag.id) || disabled.includes(flag.id);
+        return {
+          ...flag,
+          isForced,
+          isEnabled: enabled.includes(flag.id)
+            ? true
+            : disabled.includes(flag.id)
+            ? false
+            : flag.isEnabled,
+          originalValue: isForced ? flag.isEnabled : undefined,
+        };
+      });
     })
   );
 

@@ -138,6 +138,43 @@ Once it is added you should see them in the Feature Flags tool in the Angular De
 
 #### Usage
 
+The toolbar provides two methods for retrieving feature flag values:
+
+##### Option 1: Using `getValues()` (Recommended ✨)
+
+The `getValues()` method returns ALL feature flags with overrides already applied, simplifying integration:
+
+```typescript
+@Component({
+  // ... component decorator
+})
+export class FeatureComponent {
+  private featureFlagsService = inject(DevToolbarFeatureFlagService);
+
+  ngOnInit() {
+    // Get all flags with overrides applied
+    this.featureFlagsService.getValues().pipe(
+      map(flags => flags.find(f => f.id === 'darkMode')),
+      map(flag => flag?.isEnabled ?? false)
+    ).subscribe(isDarkMode => {
+      if (isDarkMode) {
+        // Apply dark mode logic
+      }
+    });
+  }
+}
+```
+
+**Benefits:**
+- ✅ No manual merging with `combineLatest` needed
+- ✅ 60-80% less integration code
+- ✅ Includes `isForced` property to identify overridden flags
+- ✅ Returns all flags (both overridden and natural state)
+
+##### Option 2: Using `getForcedValues()` (Legacy)
+
+The `getForcedValues()` method returns only flags that have been overridden:
+
 ```typescript
 @Component({
   // ... component decorator
@@ -153,6 +190,8 @@ export class FeatureComponent {
   }
 }
 ```
+
+> **Note:** This method only returns overridden flags. You need to manually merge with your base flags for complete state.
 
 #### Dev Toolbar Interface
 
@@ -201,6 +240,75 @@ export class TranslatedComponent {
   }
 }
 ```
+
+## 🔄 Migration Guide
+
+### Upgrading to v2.x (getValues() API)
+
+If you're using the legacy `getForcedValues()` with manual `combineLatest` merging, you can simplify your code significantly:
+
+#### Before (Manual Merging):
+
+```typescript
+@Injectable()
+export class FeatureFlagService {
+  private store = inject(Store);
+  private devToolbar = inject(DevToolbarFeatureFlagService);
+
+  getFlag(flagId: string): Observable<boolean> {
+    return combineLatest([
+      this.store.select(state => state.flags[flagId]),
+      this.devToolbar.getForcedValues().pipe(startWith([]))
+    ]).pipe(
+      map(([baseValue, overrides]) => {
+        const override = overrides.find(o => o.id === flagId);
+        return override ? override.isEnabled : baseValue;
+      })
+    );
+  }
+}
+```
+
+#### After (Using getValues()):
+
+```typescript
+@Injectable()
+export class FeatureFlagService {
+  private store = inject(Store);
+  private devToolbar = inject(DevToolbarFeatureFlagService);
+
+  getFlag(flagId: string): Observable<boolean> {
+    return this.devToolbar.getValues().pipe(
+      map(flags => flags.find(f => f.id === flagId)),
+      map(flag => flag?.isEnabled ?? this.getBaseValue(flagId))
+    );
+  }
+
+  private getBaseValue(flagId: string): boolean {
+    return this.store.selectSnapshot(state => state.flags[flagId]);
+  }
+}
+```
+
+**What changed:**
+- ❌ Removed `combineLatest` complexity
+- ❌ Removed manual override merging logic
+- ✅ Single observable with merged state
+- ✅ ~60% less code
+
+### Available for All Tools
+
+The `getValues()` method is available for:
+- ✅ **DevToolbarFeatureFlagService** - Feature flags with overrides
+- ✅ **DevToolbarPermissionsService** - Permissions with overrides
+- ✅ **DevToolbarAppFeaturesService** - App features with overrides
+- ℹ️ **DevToolbarLanguageService** - Returns forced language (same as `getForcedValues()`)
+
+### Breaking Changes
+
+**None!** This is a non-breaking change. Both APIs work:
+- `getValues()` - New, recommended method
+- `getForcedValues()` - Legacy method, still supported
 
 ## Contributing
 

@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { DevToolbarIconComponent } from '../icons/icon.component';
 import { IconName } from '../icons/icon.models';
 
@@ -22,6 +22,7 @@ import { IconName } from '../icons/icon.models';
     </a>
   `,
   styleUrls: ['./link-button.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DevToolbarLinkButtonComponent {
   readonly url = input.required<string>();

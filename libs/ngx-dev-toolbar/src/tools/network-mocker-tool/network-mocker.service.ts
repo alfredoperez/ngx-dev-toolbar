@@ -48,12 +48,10 @@ export class DevToolbarNetworkMockerService {
 
   enableMocking(): void {
     this.isMockingEnabled.set(true);
-    console.log('Network mocking enabled');
   }
 
   disableMocking(): void {
     this.isMockingEnabled.set(false);
-    console.log('Network mocking disabled');
   }
 
   clearAllMocks(): void {

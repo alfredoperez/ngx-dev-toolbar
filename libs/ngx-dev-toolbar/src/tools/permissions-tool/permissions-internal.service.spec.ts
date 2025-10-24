@@ -116,6 +116,7 @@ describe('DevToolbarInternalPermissionsService', () => {
         name: 'Permission 2',
         isGranted: true,
         isForced: true,
+        originalValue: false,
       });
     });
 
@@ -165,6 +166,7 @@ describe('DevToolbarInternalPermissionsService', () => {
         name: 'Permission 1',
         isGranted: true,
         isForced: true,
+        originalValue: false,
       });
     });
 
@@ -217,6 +219,7 @@ describe('DevToolbarInternalPermissionsService', () => {
         name: 'Permission 1',
         isGranted: false,
         isForced: true,
+        originalValue: true,
       });
     });
 

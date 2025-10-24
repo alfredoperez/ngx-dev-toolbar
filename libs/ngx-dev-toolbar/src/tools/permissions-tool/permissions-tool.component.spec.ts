@@ -163,8 +163,9 @@ describe('DevToolbarPermissionsToolComponent', () => {
 
       const filtered = component['filteredPermissions']();
       expect(filtered.length).toBe(2);
-      expect(filtered[0].name).toBe('Edit Posts');
-      expect(filtered[1].name).toBe('Delete Posts');
+      // Sorted alphabetically (D before E)
+      expect(filtered[0].name).toBe('Delete Posts');
+      expect(filtered[1].name).toBe('Edit Posts');
     });
 
     it('filteredPermissions should show all permissions when search query is empty', () => {
@@ -215,6 +216,7 @@ describe('DevToolbarPermissionsToolComponent', () => {
 
       const filtered = component['filteredPermissions']();
       expect(filtered.length).toBe(2);
+      // Sorted alphabetically (E before M)
       expect(filtered[0].id).toBe('perm1');
       expect(filtered[1].id).toBe('perm3');
     });

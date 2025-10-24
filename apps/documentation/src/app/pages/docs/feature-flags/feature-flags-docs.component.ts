@@ -56,8 +56,8 @@ export class AppComponent implements OnInit {
       }
     ]);
 
-    // Subscribe to forced values from toolbar
-    this.featureFlagsService.getForcedValues().subscribe(flags => {
+    // Subscribe to all values with overrides applied (recommended)
+    this.featureFlagsService.getValues().subscribe(flags => {
       const darkMode = flags.find(f => f.id === 'dark-mode');
       this.darkModeEnabled = darkMode?.isEnabled || false;
     });
@@ -96,10 +96,10 @@ export class FeatureFlagService {
       }))
     );
 
-    // Subscribe to forced values
-    this.toolbarService.getForcedValues().subscribe(forced => {
+    // Subscribe to all values with overrides applied
+    this.toolbarService.getValues().subscribe(allFlags => {
       const flagMap = new Map<string, boolean>();
-      forced.forEach(flag => flagMap.set(flag.id, flag.isEnabled));
+      allFlags.forEach(flag => flagMap.set(flag.id, flag.isEnabled));
       this.flags.set(flagMap);
     });
   }
@@ -140,13 +140,34 @@ this.featureFlagsService.setAvailableOptions([
       }
     },
     {
-      name: 'getForcedValues',
-      signature: 'getForcedValues(): Observable<DevToolbarFlag[]>',
-      description: 'Gets an observable of feature flags that have been overridden through the toolbar.',
+      name: 'getValues',
+      signature: 'getValues(): Observable<DevToolbarFlag[]>',
+      description: 'Gets ALL feature flags with overrides already applied. This is the recommended method for integration as it eliminates the need for manual merging. Each flag includes an isForced property.',
       parameters: [],
       returnType: {
         type: 'Observable<DevToolbarFlag[]>',
-        description: 'Observable emitting the array of forced feature flags whenever changes occur'
+        description: 'Observable emitting all feature flags with overrides applied whenever changes occur'
+      },
+      example: {
+        language: 'typescript',
+        code: `
+this.featureFlagsService.getValues().subscribe(flags => {
+  const darkMode = flags.find(f => f.id === 'dark-mode');
+  if (darkMode?.isEnabled) {
+    // Apply dark mode
+  }
+});
+        `.trim()
+      }
+    },
+    {
+      name: 'getForcedValues',
+      signature: 'getForcedValues(): Observable<DevToolbarFlag[]>',
+      description: 'Gets only the feature flags that have been overridden through the toolbar. Legacy method - consider using getValues() instead.',
+      parameters: [],
+      returnType: {
+        type: 'Observable<DevToolbarFlag[]>',
+        description: 'Observable emitting only the forced feature flags whenever changes occur'
       },
       example: {
         language: 'typescript',
