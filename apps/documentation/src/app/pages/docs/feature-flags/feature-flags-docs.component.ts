@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CodeExampleComponent } from '../../../shared/components/code-example/code-example.component';
 import { ApiReferenceComponent } from '../../../shared/components/api-reference/api-reference.component';
@@ -11,10 +11,7 @@ import { CodeExample, ApiMethod, ApiInterface } from '../../../shared/models/doc
   templateUrl: './feature-flags-docs.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FeatureFlagsDocsComponent implements OnInit {
-  ngOnInit() {
-    // SEO metadata will be added later
-  }
+export class FeatureFlagsDocsComponent {
 
   basicExample: CodeExample = {
     language: 'typescript',

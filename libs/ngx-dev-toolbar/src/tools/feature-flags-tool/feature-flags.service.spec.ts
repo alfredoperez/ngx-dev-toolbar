@@ -8,6 +8,7 @@ import { DevToolbarFlag } from './feature-flags.models';
 describe('DevToolbarFeatureFlagService', () => {
   let service: DevToolbarFeatureFlagService;
   let internalService: DevToolbarInternalFeatureFlagService;
+  let storageServiceMock: jest.Mocked<DevToolsStorageService>;
 
   const createMockFlag = (
     id: string,
@@ -23,7 +24,7 @@ describe('DevToolbarFeatureFlagService', () => {
   });
 
   beforeEach(() => {
-    const storageServiceMock = {
+    const mockStorage = {
       get: jest.fn(),
       set: jest.fn(),
       remove: jest.fn(),
@@ -33,13 +34,13 @@ describe('DevToolbarFeatureFlagService', () => {
       providers: [
         DevToolbarFeatureFlagService,
         DevToolbarInternalFeatureFlagService,
-        { provide: DevToolsStorageService, useValue: storageServiceMock },
+        { provide: DevToolsStorageService, useValue: mockStorage },
       ],
     });
 
     service = TestBed.inject(DevToolbarFeatureFlagService);
     internalService = TestBed.inject(DevToolbarInternalFeatureFlagService);
-    storageService = TestBed.inject(
+    storageServiceMock = TestBed.inject(
       DevToolsStorageService
     ) as jest.Mocked<DevToolsStorageService>;
   });
