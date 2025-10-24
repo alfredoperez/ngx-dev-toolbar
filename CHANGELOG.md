@@ -1,3 +1,20 @@
+## 2.0.1 (2025-10-24)
+
+### Features
+
+- add permissions, app features tools and list components ([29948c0](https://github.com/alfredoperez/ngx-dev-toolbar/commit/29948c0))
+- add permissions, app features tools and list components ([c026413](https://github.com/alfredoperez/ngx-dev-toolbar/commit/c026413))
+
+### Bug Fixes
+
+- lint errors ([39b0f2f](https://github.com/alfredoperez/ngx-dev-toolbar/commit/39b0f2f))
+- lint errors and tests ([5502dc5](https://github.com/alfredoperez/ngx-dev-toolbar/commit/5502dc5))
+- update nx release configuration ([11051ca](https://github.com/alfredoperez/ngx-dev-toolbar/commit/11051ca))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 # 2.0.0 (2025-10-17)
 
 ### Features
