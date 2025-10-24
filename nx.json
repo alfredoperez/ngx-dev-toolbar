@@ -84,14 +84,17 @@
   "release": {
     "projects": ["ngx-dev-toolbar"],
     "version": {
-      "preVersionCommand": "npm run package"
-    },
-    "git": {
-      "commitMessage": "chore: release {version}"
+      "preVersionCommand": "npm run package",
+      "git": {
+        "commitMessage": "chore: release {version}"
+      }
     },
     "changelog": {
       "workspaceChangelog": {
         "createRelease": "github"
+      },
+      "git": {
+        "commitMessage": "chore: update changelog for {version}"
       }
     },
     "conventionalCommits": {
