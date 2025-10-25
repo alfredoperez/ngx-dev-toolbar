@@ -1,3 +1,13 @@
+## 2.0.2 (2025-10-25)
+
+### Bug Fixes
+
+- styling ([8a99997](https://github.com/alfredoperez/ngx-dev-toolbar/commit/8a99997))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 ## 2.0.1 (2025-10-24)
 
 ### Features
