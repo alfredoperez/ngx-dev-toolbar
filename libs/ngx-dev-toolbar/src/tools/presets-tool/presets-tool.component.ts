@@ -11,12 +11,12 @@ import { DevToolbarIconComponent } from '../../components/icons/icon.component';
 import { DevToolbarInputComponent } from '../../components/input/input.component';
 import { DevToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
 import { DevToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
-import { DevToolbarWindowComponent } from '../../components/window/window.component';
 import { DevToolbarInternalPresetsService } from './presets-internal.service';
 import { DevToolbarInternalFeatureFlagService } from '../feature-flags-tool/feature-flags-internal.service';
 import { DevToolbarInternalPermissionsService } from '../permissions-tool/permissions-internal.service';
 import { DevToolbarInternalAppFeaturesService } from '../app-features-tool/app-features-internal.service';
 import { DevToolbarInternalLanguageService } from '../language-tool/language-internal.service';
+import { DevToolbarStateService } from '../../dev-toolbar-state.service';
 
 @Component({
   selector: 'ndt-presets-tool',
@@ -27,7 +27,6 @@ import { DevToolbarInternalLanguageService } from '../language-tool/language-int
     DevToolbarInputComponent,
     DevToolbarButtonComponent,
     DevToolbarIconComponent,
-    DevToolbarWindowComponent,
   ],
   template: `
     <ndt-toolbar-tool [options]="options" title="Presets" icon="layout">
@@ -77,15 +76,122 @@ import { DevToolbarInternalLanguageService } from '../language-tool/language-int
             [ariaLabel]="'Preset description'"
           />
 
-          <!-- Summary of what will be saved -->
+          <!-- Category selection checkboxes -->
           <div class="preset-summary">
-            <h4>Configuration to Save:</h4>
-            <ul>
-              <li>Feature Flags: {{ getCurrentFlagsCount() }} forced</li>
-              <li>Permissions: {{ getCurrentPermissionsCount() }} forced</li>
-              <li>App Features: {{ getCurrentAppFeaturesCount() }} forced</li>
-              <li>Language: {{ getCurrentLanguage() }}</li>
-            </ul>
+            <h4>Select what to include:</h4>
+
+            @if (isFeatureFlagsEnabled()) {
+            <div class="category-section">
+              <label class="checkbox-option">
+                <input
+                  type="checkbox"
+                  [checked]="includeFeatureFlags()"
+                  (change)="includeFeatureFlags.set(!includeFeatureFlags())"
+                  [disabled]="getCurrentFlagsCount() === 0"
+                />
+                <span>Feature Flags ({{ getCurrentFlagsCount() }} forced)</span>
+              </label>
+              @if (forcedFlags().length > 0) {
+              <ul class="forced-items-list">
+                @for (flag of forcedFlags(); track flag.id) {
+                <li>
+                  <label class="item-checkbox">
+                    <input
+                      type="checkbox"
+                      [checked]="isItemSelected(selectedFlagIds(), flag.id)"
+                      (change)="toggleItemSelection(selectedFlagIds, flag.id)"
+                    />
+                    <span class="item-name">{{ flag.name }}</span>
+                    <span class="item-status" [class.enabled]="flag.isEnabled" [class.disabled]="!flag.isEnabled">
+                      {{ flag.isEnabled ? 'ON' : 'OFF' }}
+                    </span>
+                  </label>
+                </li>
+                }
+              </ul>
+              }
+            </div>
+            }
+
+            @if (isPermissionsEnabled()) {
+            <div class="category-section">
+              <label class="checkbox-option">
+                <input
+                  type="checkbox"
+                  [checked]="includePermissions()"
+                  (change)="includePermissions.set(!includePermissions())"
+                  [disabled]="getCurrentPermissionsCount() === 0"
+                />
+                <span>Permissions ({{ getCurrentPermissionsCount() }} forced)</span>
+              </label>
+              @if (forcedPermissions().length > 0) {
+              <ul class="forced-items-list">
+                @for (perm of forcedPermissions(); track perm.id) {
+                <li>
+                  <label class="item-checkbox">
+                    <input
+                      type="checkbox"
+                      [checked]="isItemSelected(selectedPermissionIds(), perm.id)"
+                      (change)="toggleItemSelection(selectedPermissionIds, perm.id)"
+                    />
+                    <span class="item-name">{{ perm.name }}</span>
+                    <span class="item-status" [class.enabled]="perm.isGranted" [class.disabled]="!perm.isGranted">
+                      {{ perm.isGranted ? 'GRANTED' : 'DENIED' }}
+                    </span>
+                  </label>
+                </li>
+                }
+              </ul>
+              }
+            </div>
+            }
+
+            @if (isAppFeaturesEnabled()) {
+            <div class="category-section">
+              <label class="checkbox-option">
+                <input
+                  type="checkbox"
+                  [checked]="includeAppFeatures()"
+                  (change)="includeAppFeatures.set(!includeAppFeatures())"
+                  [disabled]="getCurrentAppFeaturesCount() === 0"
+                />
+                <span>App Features ({{ getCurrentAppFeaturesCount() }} forced)</span>
+              </label>
+              @if (forcedAppFeatures().length > 0) {
+              <ul class="forced-items-list">
+                @for (feat of forcedAppFeatures(); track feat.id) {
+                <li>
+                  <label class="item-checkbox">
+                    <input
+                      type="checkbox"
+                      [checked]="isItemSelected(selectedFeatureIds(), feat.id)"
+                      (change)="toggleItemSelection(selectedFeatureIds, feat.id)"
+                    />
+                    <span class="item-name">{{ feat.name }}</span>
+                    <span class="item-status" [class.enabled]="feat.isEnabled" [class.disabled]="!feat.isEnabled">
+                      {{ feat.isEnabled ? 'ON' : 'OFF' }}
+                    </span>
+                  </label>
+                </li>
+                }
+              </ul>
+              }
+            </div>
+            }
+
+            @if (isLanguageEnabled()) {
+            <div class="category-section">
+              <label class="checkbox-option">
+                <input
+                  type="checkbox"
+                  [checked]="includeLanguage()"
+                  (change)="includeLanguage.set(!includeLanguage())"
+                  [disabled]="!getCurrentLanguage() || getCurrentLanguage() === 'Not Forced'"
+                />
+                <span>Language ({{ getCurrentLanguage() }})</span>
+              </label>
+            </div>
+            }
           </div>
 
           <div class="form-actions">
@@ -374,21 +480,110 @@ import { DevToolbarInternalLanguageService } from '../language-tool/language-int
         background: var(--ndt-background-secondary);
         padding: var(--ndt-spacing-md);
         border-radius: var(--ndt-border-radius-medium);
+        display: flex;
+        flex-direction: column;
+        gap: var(--ndt-spacing-sm);
 
         h4 {
-          margin: 0 0 var(--ndt-spacing-sm) 0;
+          margin: 0;
           font-size: var(--ndt-font-size-sm);
           color: var(--ndt-text-primary);
         }
+      }
 
-        ul {
-          margin: 0;
-          padding-left: var(--ndt-spacing-md);
-          color: var(--ndt-text-secondary);
-          font-size: var(--ndt-font-size-sm);
+      .category-section {
+        display: flex;
+        flex-direction: column;
+        gap: var(--ndt-spacing-xs);
+      }
 
-          li {
-            margin-bottom: var(--ndt-spacing-xs);
+      .checkbox-option {
+        display: flex;
+        align-items: center;
+        gap: var(--ndt-spacing-sm);
+        cursor: pointer;
+        color: var(--ndt-text-secondary);
+        font-size: var(--ndt-font-size-sm);
+
+        input[type='checkbox'] {
+          cursor: pointer;
+          width: 16px;
+          height: 16px;
+          accent-color: var(--ndt-primary);
+
+          &:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+          }
+        }
+
+        &:has(input:disabled) {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+      }
+
+      .forced-items-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 0 var(--ndt-spacing-lg);
+        display: flex;
+        flex-direction: column;
+        gap: var(--ndt-spacing-xs);
+        font-size: var(--ndt-font-size-xs);
+
+        li {
+          background: rgba(var(--ndt-primary-rgb), 0.05);
+          border-radius: var(--ndt-border-radius-small);
+          border-left: 2px solid rgba(var(--ndt-primary-rgb), 0.3);
+        }
+
+        .item-checkbox {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: var(--ndt-spacing-xs) var(--ndt-spacing-sm);
+          cursor: pointer;
+          gap: var(--ndt-spacing-sm);
+
+          input[type='checkbox'] {
+            cursor: pointer;
+            width: 14px;
+            height: 14px;
+            accent-color: var(--ndt-primary);
+            flex-shrink: 0;
+          }
+
+          &:hover {
+            background: rgba(var(--ndt-primary-rgb), 0.08);
+          }
+        }
+
+        .item-name {
+          color: var(--ndt-text-primary);
+          flex: 1;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .item-status {
+          font-weight: 600;
+          padding: 2px 6px;
+          border-radius: var(--ndt-border-radius-small);
+          font-size: 10px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          flex-shrink: 0;
+
+          &.enabled {
+            background: rgba(34, 197, 94, 0.15);
+            color: rgb(34, 197, 94);
+          }
+
+          &.disabled {
+            background: rgba(239, 68, 68, 0.15);
+            color: rgb(239, 68, 68);
           }
         }
       }
@@ -415,12 +610,22 @@ export class DevToolbarPresetsToolComponent {
     DevToolbarInternalAppFeaturesService
   );
   private readonly languageService = inject(DevToolbarInternalLanguageService);
+  protected readonly state = inject(DevToolbarStateService);
 
   // Signals
   protected readonly viewMode = signal<'list' | 'create'>('list');
   protected readonly searchQuery = signal<string>('');
   protected readonly presetName = signal<string>('');
   protected readonly presetDescription = signal<string>('');
+  protected readonly includeFeatureFlags = signal<boolean>(true);
+  protected readonly includePermissions = signal<boolean>(true);
+  protected readonly includeAppFeatures = signal<boolean>(true);
+  protected readonly includeLanguage = signal<boolean>(true);
+
+  // Track selected individual items
+  protected readonly selectedFlagIds = signal<Set<string>>(new Set());
+  protected readonly selectedPermissionIds = signal<Set<string>>(new Set());
+  protected readonly selectedFeatureIds = signal<Set<string>>(new Set());
 
   protected readonly presets = this.presetsService.presets;
   protected readonly filteredPresets = computed(() => {
@@ -438,6 +643,31 @@ export class DevToolbarPresetsToolComponent {
   protected readonly hasNoFilteredPresets = computed(
     () => this.filteredPresets().length === 0
   );
+
+  // Tool availability (based on config)
+  protected readonly isFeatureFlagsEnabled = computed(
+    () => this.state.config().showFeatureFlagsTool ?? true
+  );
+  protected readonly isPermissionsEnabled = computed(
+    () => this.state.config().showPermissionsTool ?? true
+  );
+  protected readonly isAppFeaturesEnabled = computed(
+    () => this.state.config().showAppFeaturesTool ?? true
+  );
+  protected readonly isLanguageEnabled = computed(
+    () => this.state.config().showLanguageTool ?? true
+  );
+
+  // Forced items details
+  protected readonly forcedFlags = computed(() => {
+    return this.featureFlagsService.flags().filter((flag) => flag.isForced);
+  });
+  protected readonly forcedPermissions = computed(() => {
+    return this.permissionsService.permissions().filter((perm) => perm.isForced);
+  });
+  protected readonly forcedAppFeatures = computed(() => {
+    return this.appFeaturesService.features().filter((feat) => feat.isForced);
+  });
 
   // Other properties
   protected readonly options: DevToolbarWindowOptions = {
@@ -458,6 +688,21 @@ export class DevToolbarPresetsToolComponent {
     this.viewMode.set('create');
     this.presetName.set('');
     this.presetDescription.set('');
+    // Reset checkboxes - only enable categories that have forced items
+    this.includeFeatureFlags.set(this.getCurrentFlagsCount() > 0);
+    this.includePermissions.set(this.getCurrentPermissionsCount() > 0);
+    this.includeAppFeatures.set(this.getCurrentAppFeaturesCount() > 0);
+    const currentLang = this.getCurrentLanguage();
+    this.includeLanguage.set(!!currentLang && currentLang !== 'Not Forced');
+
+    // Initialize selected items - select all by default
+    this.selectedFlagIds.set(new Set(this.forcedFlags().map((f) => f.id)));
+    this.selectedPermissionIds.set(
+      new Set(this.forcedPermissions().map((p) => p.id))
+    );
+    this.selectedFeatureIds.set(
+      new Set(this.forcedAppFeatures().map((f) => f.id))
+    );
   }
 
   onSwitchToListMode(): void {
@@ -469,7 +714,16 @@ export class DevToolbarPresetsToolComponent {
     if (!this.presetName()) return;
     this.presetsService.saveCurrentAsPreset(
       this.presetName(),
-      this.presetDescription()
+      this.presetDescription(),
+      {
+        includeFeatureFlags: this.includeFeatureFlags(),
+        includePermissions: this.includePermissions(),
+        includeAppFeatures: this.includeAppFeatures(),
+        includeLanguage: this.includeLanguage(),
+        selectedFlagIds: Array.from(this.selectedFlagIds()),
+        selectedPermissionIds: Array.from(this.selectedPermissionIds()),
+        selectedFeatureIds: Array.from(this.selectedFeatureIds()),
+      }
     );
     this.onSwitchToListMode();
   }
@@ -524,5 +778,28 @@ export class DevToolbarPresetsToolComponent {
 
   protected formatDate(isoString: string): string {
     return new Date(isoString).toLocaleDateString();
+  }
+
+  /**
+   * Toggle selection of an individual item
+   */
+  protected toggleItemSelection(
+    signal: typeof this.selectedFlagIds,
+    itemId: string
+  ): void {
+    const current = new Set(signal());
+    if (current.has(itemId)) {
+      current.delete(itemId);
+    } else {
+      current.add(itemId);
+    }
+    signal.set(current);
+  }
+
+  /**
+   * Check if an item is selected
+   */
+  protected isItemSelected(selectedSet: Set<string>, itemId: string): boolean {
+    return selectedSet.has(itemId);
   }
 }

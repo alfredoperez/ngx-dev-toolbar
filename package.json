@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "package": "nx run ngx-dev-toolbar:build"
+    "package": "nx run ngx-dev-toolbar:build",
+    "code-check": "nx affected -t lint,test,build,e2e"
   },
   "private": true,
   "dependencies": {

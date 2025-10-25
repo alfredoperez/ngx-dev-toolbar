@@ -1,4 +1,5 @@
 import { Injectable, computed, signal } from '@angular/core';
+import { DevToolbarConfig } from './models/dev-toolbar-config.interface';
 
 interface DevToolbarState {
   isHidden: boolean;
@@ -6,6 +7,7 @@ interface DevToolbarState {
   error: string | null;
   theme: 'light' | 'dark';
   delay: number;
+  config: DevToolbarConfig;
 }
 
 @Injectable({
@@ -19,6 +21,7 @@ export class DevToolbarStateService {
     delay: 3000,
     error: null,
     theme: 'dark',
+    config: {},
   });
 
   // Selectors
@@ -34,6 +37,7 @@ export class DevToolbarStateService {
    * The delay to hide the toolbar
    */
   readonly delay = computed(() => this.state().delay);
+  readonly config = computed(() => this.state().config);
 
   // State updates
   setVisibility(isVisible: boolean): void {
@@ -84,6 +88,13 @@ export class DevToolbarStateService {
     this.state.update((state) => ({
       ...state,
       isHidden: !state.isHidden,
+    }));
+  }
+
+  setConfig(config: DevToolbarConfig): void {
+    this.state.update((state) => ({
+      ...state,
+      config,
     }));
   }
 }

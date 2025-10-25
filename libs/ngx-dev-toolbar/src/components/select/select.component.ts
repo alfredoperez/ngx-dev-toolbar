@@ -24,7 +24,7 @@ export interface SelectOption {
   imports: [CommonModule, FormsModule, OverlayModule, CdkMenuModule],
   template: `
     <div
-      class="dev-toolbar select"
+      class="ndt-select"
       [class.small]="size() === 'small'"
       [class.open]="isOpen()"
       [attr.aria-label]="ariaLabel()"
@@ -48,11 +48,12 @@ export interface SelectOption {
       [cdkConnectedOverlayOrigin]="trigger"
       [cdkConnectedOverlayOpen]="isOpen()"
       [cdkConnectedOverlayPositions]="positions"
+      [cdkConnectedOverlayPanelClass]="['ndt-overlay-panel', 'ndt-select-overlay']"
       (overlayOutsideClick)="close()"
     >
       <div
         [id]="selectMenuId"
-        class="dev-toolbar select-menu"
+        class="ndt-select-menu"
         cdkMenu
         role="listbox"
         [attr.data-theme]="theme()"

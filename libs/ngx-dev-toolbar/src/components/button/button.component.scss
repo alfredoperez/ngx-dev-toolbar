@@ -1,5 +1,9 @@
 @use '../../styles' as devtools;
 
+:host {
+  @include devtools.devtools-theme;
+}
+
 .button {
   display: inline-flex;
   align-items: center;

@@ -1,3 +1,9 @@
+@use '../../styles' as devtools;
+
+:host {
+  @include devtools.devtools-theme;
+}
+
 .clickable-card {
   display: flex;
   flex-direction: column;

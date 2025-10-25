@@ -2,13 +2,13 @@
 @use 'sass:map';
 
 :host {
-  @include devtools.devtools-theme;
-
   display: contents; // This makes the host transparent for layout purposes
   font-family: devtools.$font-family;
 }
 
-.dev-toolbar {
+.ndt-toolbar {
+  @include devtools.devtools-theme;
+
   position: fixed;
   bottom: 0;
   left: 50%;

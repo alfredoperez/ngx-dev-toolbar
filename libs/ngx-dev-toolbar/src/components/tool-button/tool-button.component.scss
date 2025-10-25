@@ -2,6 +2,10 @@
 @use 'sass:map';
 $dimensions: devtools.$dimensions;
 
+:host {
+  @include devtools.devtools-theme;
+}
+
 .tool-button {
   display: flex;
   justify-content: center;

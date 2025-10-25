@@ -1,3 +1,9 @@
+@use '../../styles' as devtools;
+
+:host {
+  @include devtools.devtools-theme;
+}
+
 .card {
   background: var(--ndt-bg-primary);
   border-radius: var(--ndt-border-radius-large);

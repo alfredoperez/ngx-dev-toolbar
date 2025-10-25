@@ -6,7 +6,7 @@ import { DevToolbarWindowOptions } from '../toolbar-tool/toolbar-tool.models';
   selector: 'ndt-window',
   standalone: true,
   template: `
-    <div class="window dev-toolbar" [attr.data-theme]="theme()">
+    <div class="ndt-window" [attr.data-theme]="theme()">
       <div class="header">
         <div class="header__content">
           <div class="header__title">

@@ -29,30 +29,6 @@ type ThemeType = 'light' | 'dark';
   template: `
     <ndt-toolbar-tool [options]="options" title="Home" icon="angular">
       <section class="settings">
-        <div class="instruction">
-          <div class="instruction__label">
-            <span class="instruction__label-text">Theme</span>
-            <span class="instruction__label-description">
-              Switch between light and dark mode
-            </span>
-          </div>
-          <div class="instruction__control">
-            <div class="instruction__control-button">
-              <ndt-button
-                [isActive]="true"
-                (click)="onToggleTheme()"
-                variant="icon"
-                [ariaLabel]="
-                  state.isDarkTheme()
-                    ? 'Switch to light theme'
-                    : 'Switch to dark theme'
-                "
-                [icon]="state.isDarkTheme() ? 'sun' : 'moon'"
-              />
-            </div>
-          </div>
-        </div>
-
         <div class="settings-container">
           <div class="instruction">
             <div class="instruction__label">
@@ -144,12 +120,6 @@ export class DevToolbarHomeToolComponent {
       label: 'Community',
     },
   ] as const;
-
-  onToggleTheme(): void {
-    const newTheme: ThemeType = this.state.isDarkTheme() ? 'light' : 'dark';
-    this.settingsService.setSettings({ isDarkMode: newTheme === 'dark' });
-    this.state.setTheme(newTheme);
-  }
 
   onExportSettings(): void {
     const settings = this.storageService.getAllSettings();

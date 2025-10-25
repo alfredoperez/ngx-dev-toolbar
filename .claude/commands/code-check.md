@@ -12,7 +12,25 @@ Focus your review on:
 
 Perform the following checks and provide a comprehensive advisory report:
 
-### 1. Angular Modernization Review
+### 1. Run Automated Quality Checks
+
+Execute the nx affected command to run linting, tests, build, and e2e on affected projects:
+
+```bash
+nx affected -t lint,test,build,e2e
+```
+
+**What this checks:**
+- Runs ESLint to catch code quality issues
+- Executes unit tests on affected projects
+- Attempts to build affected projects to catch compilation errors
+- Runs end-to-end tests if affected
+
+**Report the results:**
+- If all checks pass, note it in the ✅ Passed Checks section
+- If any checks fail, include specific failures in the ⚠️ Warnings section with file paths and error messages
+
+### 2. Angular Modernization Review
 
 Use the Task tool with subagent_type="general-purpose" to review Angular code for modern patterns:
 
@@ -34,7 +52,7 @@ Use the Task tool with subagent_type="general-purpose" to review Angular code fo
 - All `.ts` files in `apps/ngx-dev-toolbar-demo/src/`
 - Focus on recently changed files (use git diff to identify)
 
-### 2. Documentation Verification
+### 3. Documentation Verification
 
 **A. README Accuracy Check:**
 
@@ -56,7 +74,7 @@ If documentation site exists in `apps/documentation/`:
 3. Verify that API signatures shown match current implementation
 4. Check that deprecated APIs are marked as such
 
-### 3. Code Quality Checks (Standard Level)
+### 4. Code Quality Checks (Standard Level)
 
 **A. Remove Unnecessary Comments:**
 - ❌ Commented-out code blocks (unless marked with clear reason like "// TODO: Re-enable after v2.0")
@@ -86,7 +104,7 @@ If documentation site exists in `apps/documentation/`:
 - ✅ Icons have aria-hidden="true" or descriptive text
 - ✅ Interactive elements are keyboard accessible
 
-### 4. Additional Quality Checks
+### 5. Additional Quality Checks
 
 **A. Imports:**
 - ❌ Unused imports
@@ -115,12 +133,22 @@ Provide your review in this format:
 # Pre-Commit Review Report
 
 ## ✅ Passed Checks
+- Automated checks: lint, test, build, e2e all passed
 - Angular modernization: [X/Y files reviewed]
 - Documentation accuracy: README up to date
 - Code quality: No debug statements found
 - [other passed checks]
 
 ## ⚠️  Warnings
+
+### Automated Checks
+- **Lint**: 2 issues found
+  - `libs/ngx-dev-toolbar/src/example.ts:15`: 'foo' is assigned a value but never used
+  - `apps/demo/src/app.ts:8`: Missing return type on function 'getData'
+- **Tests**: 1 test failed
+  - `libs/ngx-dev-toolbar/src/service.spec.ts`: Test "should handle errors" failed
+- **Build**: Passed ✅
+- **E2E**: Passed ✅
 
 ### Angular Patterns
 - `libs/ngx-dev-toolbar/src/example.component.ts:42`: Using `@Input()` decorator instead of `input()` function
