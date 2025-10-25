@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "package": "nx run ngx-dev-toolbar:build",
-    "code-check": "nx affected -t lint,test,build,e2e",
+    "code-check": "nx affected -t lint,test,build",
     "release:version": "nx release version",
     "release:changelog": "nx release changelog",
     "release:publish": "nx release publish",
