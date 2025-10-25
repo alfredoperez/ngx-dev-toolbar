@@ -189,7 +189,7 @@ export class DevToolbarAppFeaturesToolComponent {
   ];
 
   protected readonly featureValueOptions = [
-    { value: '', label: 'Not Forced' },
+    { value: 'not-forced', label: 'Not Forced' },
     { value: 'off', label: 'Disabled' },
     { value: 'on', label: 'Enabled' },
   ];
@@ -208,13 +208,13 @@ export class DevToolbarAppFeaturesToolComponent {
 
   /**
    * Handle feature value change from 3-state dropdown.
-   * - 'not-forced' (empty string): Remove forced override
+   * - 'not-forced': Remove forced override
    * - 'on': Force feature to enabled
    * - 'off': Force feature to disabled
    */
   onFeatureChange(featureId: string, value: string): void {
     switch (value) {
-      case '':
+      case 'not-forced':
         this.appFeaturesService.removeFeatureOverride(featureId);
         break;
       case 'on':

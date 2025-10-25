@@ -205,6 +205,7 @@ $z-indices: (
   --ndt-spacing-xs: 4px;
   --ndt-spacing-sm: 6px;
   --ndt-spacing-md: 12px;
+  --ndt-spacing-lg: 16px;
   --ndt-window-padding: 16px;
 
   --ndt-font-size-xs: #{map.get($font-sizes, xs)};
@@ -252,50 +253,4 @@ $z-indices: (
       error,
       border
     )};
-
-  &[data-theme='dark'] {
-    --ndt-bg-primary: #{map.get(map.get($colors, dark), background, primary)};
-    --ndt-bg-gradient: #{map.get(map.get($colors, dark), background, gradient)};
-    --ndt-text-primary: #{map.get(map.get($colors, dark), text, primary)};
-    --ndt-text-secondary: #{map.get(map.get($colors, dark), text, secondary)};
-    --ndt-text-muted: #{map.get(map.get($colors, dark), text, muted)};
-    --ndt-border-primary: #{map.get(map.get($colors, dark), border, primary)};
-    --ndt-border-subtle: #{map.get(map.get($colors, dark), border, subtle)};
-    --ndt-hover-bg: #{map.get(map.get($colors, dark), hover, background)};
-    --ndt-hover-danger: #{map.get(map.get($colors, dark), hover, danger)};
-    --ndt-shadow-toolbar: #{map.get(map.get($shadow-themes, dark), toolbar)};
-    --ndt-shadow-tooltip: #{map.get(map.get($shadow-themes, dark), tooltip)};
-    --ndt-shadow-window: #{map.get(map.get($shadow-themes, dark), window)};
-
-    --ndt-note-background: #{map.get(
-        map.get(map.get($colors, dark), annotation),
-        note,
-        background
-      )};
-    --ndt-note-border: #{map.get(
-        map.get(map.get($colors, dark), annotation),
-        note,
-        border
-      )};
-    --ndt-warning-background: #{map.get(
-        map.get(map.get($colors, dark), annotation),
-        warning,
-        background
-      )};
-    --ndt-warning-border: #{map.get(
-        map.get(map.get($colors, dark), annotation),
-        warning,
-        border
-      )};
-    --ndt-error-background: #{map.get(
-        map.get(map.get($colors, dark), annotation),
-        error,
-        background
-      )};
-    --ndt-error-border: #{map.get(
-        map.get(map.get($colors, dark), annotation),
-        error,
-        border
-      )};
-  }
 }

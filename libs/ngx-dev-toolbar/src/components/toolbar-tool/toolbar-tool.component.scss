@@ -1,5 +1,9 @@
 @use '../../styles' as devtools;
 
+:host {
+  @include devtools.devtools-theme;
+}
+
 .tool {
   position: relative;
 }

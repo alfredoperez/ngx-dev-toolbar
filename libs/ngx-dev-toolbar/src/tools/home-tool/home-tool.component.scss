@@ -1,4 +1,8 @@
-@use '../../styles' as *;
+@use '../../styles' as devtools;
+
+:host {
+  @include devtools.devtools-theme;
+}
 
 .settings {
   display: flex;

@@ -24,3 +24,13 @@ export interface DevToolbarPresetConfig {
 }
 
 export type PresetFilter = 'all' | 'recent' | 'favorites';
+
+export interface PresetCategoryOptions {
+  includeFeatureFlags?: boolean;
+  includePermissions?: boolean;
+  includeAppFeatures?: boolean;
+  includeLanguage?: boolean;
+  selectedFlagIds?: string[];
+  selectedPermissionIds?: string[];
+  selectedFeatureIds?: string[];
+}

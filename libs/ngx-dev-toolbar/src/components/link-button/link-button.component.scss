@@ -1,3 +1,9 @@
+@use '../../styles' as devtools;
+
+:host {
+  @include devtools.devtools-theme;
+}
+
 .link-button {
   display: flex;
   flex-direction: column;

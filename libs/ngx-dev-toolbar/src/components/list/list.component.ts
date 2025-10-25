@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 /**
@@ -41,71 +41,8 @@ import { CommonModule } from '@angular/common';
       </div>
     }
   `,
-  styles: [
-    `
-      :host {
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-        min-height: 0;
-      }
-
-      .empty-state {
-        display: flex;
-        flex-direction: column;
-        gap: var(--ndt-spacing-md);
-        flex: 1;
-        min-height: 0;
-        justify-content: center;
-        align-items: center;
-        border: 1px solid var(--ndt-warning-border);
-        border-radius: var(--ndt-border-radius-medium);
-        padding: var(--ndt-spacing-md);
-        background: var(--ndt-warning-background);
-        color: var(--ndt-text-muted);
-
-        p {
-          margin: 0;
-        }
-
-        .hint {
-          font-size: var(--ndt-font-size-xs);
-        }
-      }
-
-      .list-container {
-        display: flex;
-        flex-direction: column;
-        gap: var(--ndt-spacing-md);
-        flex: 1;
-        min-height: 0;
-        overflow-y: auto;
-        padding-right: var(--ndt-spacing-sm);
-
-        &::-webkit-scrollbar {
-          width: 8px;
-        }
-
-        &::-webkit-scrollbar-track {
-          background: var(--ndt-background-secondary);
-          border-radius: 4px;
-        }
-
-        &::-webkit-scrollbar-thumb {
-          background: var(--ndt-border-primary);
-          border-radius: 4px;
-
-          &:hover {
-            background: var(--ndt-hover-bg);
-          }
-        }
-
-        scrollbar-width: thin;
-        scrollbar-color: var(--ndt-border-primary)
-          var(--ndt-background-secondary);
-      }
-    `,
-  ],
+  styleUrls: ['./list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DevToolbarListComponent {
   /**

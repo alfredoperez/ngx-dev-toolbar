@@ -1,7 +1,19 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DevToolbarInternalPresetsService } from './presets-internal.service';
-import { DevToolbarPreset } from './presets.models';
+import {
+  DevToolbarPreset,
+  DevToolbarPresetConfig,
+} from './presets.models';
+
+/**
+ * Partial preset for initialization (without generated fields)
+ */
+export interface InitialPreset {
+  name: string;
+  description?: string;
+  config: DevToolbarPresetConfig;
+}
 
 /**
  * Public service for managing dev toolbar presets.
@@ -72,5 +84,87 @@ export class DevToolbarPresetsService {
   importPreset(json: string): DevToolbarPreset {
     const preset = JSON.parse(json) as DevToolbarPreset;
     return this.internalService.addPreset(preset);
+  }
+
+  /**
+   * Initialize presets with predefined configurations.
+   * Useful for setting up default presets that all developers can use.
+   *
+   * @param presets - Array of preset configurations to initialize
+   * @returns Array of created presets
+   *
+   * @example
+   * ```typescript
+   * const presetsService = inject(DevToolbarPresetsService);
+   *
+   * presetsService.initializePresets([
+   *   {
+   *     name: 'Admin User',
+   *     description: 'Full access admin configuration',
+   *     config: {
+   *       featureFlags: {
+   *         enabled: ['admin-panel', 'advanced-features'],
+   *         disabled: []
+   *       },
+   *       permissions: {
+   *         granted: ['admin', 'write', 'delete'],
+   *         denied: []
+   *       },
+   *       appFeatures: {
+   *         enabled: ['analytics', 'reporting'],
+   *         disabled: []
+   *       },
+   *       language: 'en'
+   *     }
+   *   },
+   *   {
+   *     name: 'Read-Only User',
+   *     description: 'Limited access for viewing only',
+   *     config: {
+   *       featureFlags: {
+   *         enabled: [],
+   *         disabled: ['admin-panel', 'advanced-features']
+   *       },
+   *       permissions: {
+   *         granted: ['read'],
+   *         denied: ['write', 'delete']
+   *       },
+   *       appFeatures: {
+   *         enabled: [],
+   *         disabled: ['analytics', 'reporting']
+   *       },
+   *       language: null
+   *     }
+   *   }
+   * ]);
+   * ```
+   */
+  initializePresets(presets: InitialPreset[]): DevToolbarPreset[] {
+    return presets.map((preset) =>
+      this.internalService.addPreset({
+        id: '', // Will be generated
+        createdAt: '', // Will be generated
+        updatedAt: '', // Will be generated
+        ...preset,
+      })
+    );
+  }
+
+  /**
+   * Clear all existing presets and set new initial presets.
+   * Use this to replace all presets with a fresh set of configurations.
+   *
+   * @param presets - Array of preset configurations to set as initial
+   * @returns Array of created presets
+   */
+  setInitialPresets(presets: InitialPreset[]): DevToolbarPreset[] {
+    // Clear existing presets
+    const currentPresets = this.internalService.presets();
+    currentPresets.forEach((preset) => {
+      this.internalService.deletePreset(preset.id);
+    });
+
+    // Add new presets
+    return this.initializePresets(presets);
   }
 }

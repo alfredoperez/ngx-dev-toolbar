@@ -3,12 +3,12 @@ import { CdkConnectedOverlay, OverlayModule } from '@angular/cdk/overlay';
 import {
   ChangeDetectionStrategy,
   Component,
-  ContentChild,
   ElementRef,
-  ViewChild,
   computed,
+  contentChild,
   inject,
   input,
+  viewChild,
 } from '@angular/core';
 import { DevToolbarStateService } from '../../dev-toolbar-state.service';
 import { DevToolbarIconComponent } from '../icons/icon.component';
@@ -28,9 +28,9 @@ import { DevToolbarWindowOptions } from './toolbar-tool.models';
     DevToolbarIconComponent,
   ],
   template: `
-    <div #trigger="cdkOverlayOrigin" class="dev-toolbar-tool" cdkOverlayOrigin>
+    <div #trigger="cdkOverlayOrigin" class="ndt-toolbar-tool" cdkOverlayOrigin>
       <div
-        class="dev-toolbar-tool__icon"
+        class="ndt-toolbar-tool__icon"
         (click)="onOpen()"
         (keydown.enter)="onOpen()"
         (keydown.space)="onOpen()"
@@ -55,6 +55,7 @@ import { DevToolbarWindowOptions } from './toolbar-tool.models';
         [cdkConnectedOverlayPositions]="positions()"
         [cdkConnectedOverlayWidth]="width()"
         [cdkConnectedOverlayHeight]="height()"
+        [cdkConnectedOverlayPanelClass]="['ndt-overlay-panel', 'ndt-tool-overlay']"
         cdkConnectedOverlay
       >
         <ndt-window [@slideAnimation] [config]="options()" (closed)="onClose()">
@@ -99,10 +100,8 @@ import { DevToolbarWindowOptions } from './toolbar-tool.models';
 })
 export class DevToolbarToolComponent {
   state = inject(DevToolbarStateService);
-  @ViewChild('buttonContainer') buttonContainer!: ElementRef;
-
-  @ContentChild(DevToolbarToolButtonComponent)
-  buttonComponent!: DevToolbarToolButtonComponent;
+  buttonContainer = viewChild.required<ElementRef>('buttonContainer');
+  buttonComponent = contentChild(DevToolbarToolButtonComponent);
 
   options = input.required<DevToolbarWindowOptions>();
   icon = input.required<IconName>();
@@ -163,7 +162,7 @@ export class DevToolbarToolComponent {
 
   getButtonContainerXPosition(): number {
     const buttonContainerRect =
-      this.buttonContainer?.nativeElement?.getBoundingClientRect();
+      this.buttonContainer()?.nativeElement?.getBoundingClientRect();
     return buttonContainerRect?.left ?? 0;
   }
 }

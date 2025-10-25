@@ -1,4 +1,5 @@
 @use '../../styles' as devtools;
+@use '../../mixins' as *;
 @use 'sass:map';
 
 :host {
@@ -8,7 +9,7 @@
   font-family: devtools.$font-family;
 }
 
-.select {
+.ndt-select {
   position: relative;
   width: 100%;
   min-width: 120px;
@@ -27,16 +28,19 @@
   outline: none;
   min-height: 36px;
   box-sizing: border-box;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 
   &:hover {
     background-color: var(--ndt-hover-bg);
     border-color: var(--ndt-primary);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
 
   &:focus-visible {
     outline: none;
     border-color: var(--ndt-primary);
-    box-shadow: 0 0 0 2px rgba(var(--ndt-primary-rgb), 0.2);
+    box-shadow: 0 0 0 2px rgba(var(--ndt-primary-rgb), 0.2),
+      0 1px 3px rgba(0, 0, 0, 0.1);
   }
 
   &.small {
@@ -47,7 +51,8 @@
 
   &.open {
     border-color: var(--ndt-primary);
-    box-shadow: 0 0 0 2px rgba(var(--ndt-primary-rgb), 0.2);
+    box-shadow: 0 0 0 2px rgba(var(--ndt-primary-rgb), 0.2),
+      0 1px 3px rgba(0, 0, 0, 0.1);
 
     .select__arrow {
       transform: rotate(180deg);
@@ -79,59 +84,50 @@
   }
 }
 
-.select-menu {
+.ndt-select-menu {
   display: inline-flex;
   flex-direction: column;
   min-width: 180px;
   background-color: var(--ndt-bg-primary);
-  padding: var(--ndt-spacing-xs) 0;
-  border: 1px solid var(--ndt-border-primary);
-  border-radius: var(--ndt-border-radius-small);
-  box-shadow: var(--ndt-shadow-window);
+  padding: var(--ndt-spacing-sm) 0;
+  border: 2px solid var(--ndt-border-primary);
+  border-radius: var(--ndt-border-radius-large);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
   color: var(--ndt-text-primary);
   max-height: min(400px, 70vh);
   overflow-y: auto;
   backdrop-filter: blur(8px);
+  z-index: 1000;
 
   /* Scrollbar Styles */
-  &::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: var(--ndt-border-primary);
-    border-radius: 4px;
-    border: 2px solid var(--ndt-bg-primary);
-  }
+  @include scrollbar-theme;
 }
 
 .select-menu-item {
   background-color: transparent;
   cursor: pointer;
   border: none;
-  color: inherit;
+  color: var(--ndt-text-primary);
   user-select: none;
   min-width: 64px;
-  line-height: 36px;
-  padding: 0 var(--ndt-spacing-md);
+  padding: var(--ndt-spacing-sm) var(--ndt-spacing-md) var(--ndt-spacing-sm)
+    var(--ndt-spacing-lg);
   display: flex;
   align-items: center;
   flex-direction: row;
   flex: 1;
-  font-size: var(--ndt-font-size-sm);
+  font-size: var(--ndt-font-size-xs);
   font-family: inherit;
   position: relative;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  font-weight: 400;
+  line-height: 1.5;
+  transition: background-color 0.15s ease;
 
   &:hover {
-    background-color: var(--ndt-hover-bg);
+    background-color: rgba(0, 0, 0, 0.06);
   }
 
   &:active {
@@ -140,11 +136,11 @@
 
   &.selected {
     color: var(--ndt-primary);
-    background-color: rgba(var(--ndt-primary-rgb), 0.1);
-    font-weight: 500;
+    background-color: rgba(var(--ndt-primary-rgb), 0.08);
+    font-weight: 400;
 
     &:hover {
-      background-color: rgba(var(--ndt-primary-rgb), 0.15);
+      background-color: rgba(var(--ndt-primary-rgb), 0.12);
     }
 
     &::before {
@@ -161,7 +157,15 @@
 
   &:focus-visible {
     outline: none;
-    background-color: var(--ndt-hover-bg);
+    background-color: rgba(0, 0, 0, 0.06);
+  }
+
+  &:first-child {
+    margin-top: var(--ndt-spacing-xs);
+  }
+
+  &:last-child {
+    margin-bottom: var(--ndt-spacing-xs);
   }
 }
 

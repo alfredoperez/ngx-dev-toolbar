@@ -1,3 +1,9 @@
+@use '../../styles' as devtools;
+
+:host {
+  @include devtools.devtools-theme;
+}
+
 .language-select {
   display: flex;
   flex-direction: row;

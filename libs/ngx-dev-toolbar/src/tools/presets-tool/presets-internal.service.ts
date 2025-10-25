@@ -6,7 +6,11 @@ import { DevToolbarInternalFeatureFlagService } from '../feature-flags-tool/feat
 import { DevToolbarInternalLanguageService } from '../language-tool/language-internal.service';
 import { DevToolbarInternalPermissionsService } from '../permissions-tool/permissions-internal.service';
 import { DevToolbarInternalAppFeaturesService } from '../app-features-tool/app-features-internal.service';
-import { DevToolbarPreset, DevToolbarPresetConfig } from './presets.models';
+import {
+  DevToolbarPreset,
+  DevToolbarPresetConfig,
+  PresetCategoryOptions,
+} from './presets.models';
 
 /**
  * Internal service for managing presets state.
@@ -37,7 +41,8 @@ export class DevToolbarInternalPresetsService {
    */
   saveCurrentAsPreset(
     name: string,
-    description?: string
+    description?: string,
+    categoryOptions?: PresetCategoryOptions
   ): DevToolbarPreset {
     const preset: DevToolbarPreset = {
       id: this.generateId(),
@@ -45,7 +50,7 @@ export class DevToolbarInternalPresetsService {
       description,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      config: this.captureCurrentConfig(),
+      config: this.captureCurrentConfig(categoryOptions),
     };
 
     const presets = [...this.presetsSubject.value, preset];
@@ -128,12 +133,66 @@ export class DevToolbarInternalPresetsService {
   /**
    * Capture current configuration from all tools
    */
-  private captureCurrentConfig(): DevToolbarPresetConfig {
+  private captureCurrentConfig(
+    categoryOptions?: PresetCategoryOptions
+  ): DevToolbarPresetConfig {
+    // Default to including all categories if not specified
+    const options = {
+      includeFeatureFlags: categoryOptions?.includeFeatureFlags ?? true,
+      includePermissions: categoryOptions?.includePermissions ?? true,
+      includeAppFeatures: categoryOptions?.includeAppFeatures ?? true,
+      includeLanguage: categoryOptions?.includeLanguage ?? true,
+    };
+
+    // Get current forced states
+    const currentFlags = this.featureFlagsService.getCurrentForcedState();
+    const currentPerms = this.permissionsService.getCurrentForcedState();
+    const currentFeatures = this.appFeaturesService.getCurrentForcedState();
+
+    // Filter by selected IDs if provided
+    const filterById = (ids: string[], selected?: string[]) =>
+      selected && selected.length > 0 ? ids.filter((id) => selected.includes(id)) : ids;
+
     return {
-      featureFlags: this.featureFlagsService.getCurrentForcedState(),
-      language: this.languageService.getCurrentForcedLanguage(),
-      permissions: this.permissionsService.getCurrentForcedState(),
-      appFeatures: this.appFeaturesService.getCurrentForcedState(),
+      featureFlags: options.includeFeatureFlags
+        ? {
+            enabled: filterById(
+              currentFlags.enabled,
+              categoryOptions?.selectedFlagIds
+            ),
+            disabled: filterById(
+              currentFlags.disabled,
+              categoryOptions?.selectedFlagIds
+            ),
+          }
+        : { enabled: [], disabled: [] },
+      language: options.includeLanguage
+        ? this.languageService.getCurrentForcedLanguage()
+        : null,
+      permissions: options.includePermissions
+        ? {
+            granted: filterById(
+              currentPerms.granted,
+              categoryOptions?.selectedPermissionIds
+            ),
+            denied: filterById(
+              currentPerms.denied,
+              categoryOptions?.selectedPermissionIds
+            ),
+          }
+        : { granted: [], denied: [] },
+      appFeatures: options.includeAppFeatures
+        ? {
+            enabled: filterById(
+              currentFeatures.enabled,
+              categoryOptions?.selectedFeatureIds
+            ),
+            disabled: filterById(
+              currentFeatures.disabled,
+              categoryOptions?.selectedFeatureIds
+            ),
+          }
+        : { enabled: [], disabled: [] },
     };
   }
 
