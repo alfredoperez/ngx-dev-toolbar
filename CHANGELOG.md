@@ -1,3 +1,13 @@
+## 2.0.6 (2025-10-26)
+
+### Bug Fixes
+
+- rename tool header class and add defensive positioning to prevent external CSS conflicts ([60ed011](https://github.com/alfredoperez/ngx-dev-toolbar/commit/60ed011))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 ## 2.0.5 (2025-10-26)
 
 ### Bug Fixes
