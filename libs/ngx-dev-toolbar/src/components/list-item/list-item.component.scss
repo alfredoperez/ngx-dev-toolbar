@@ -12,6 +12,9 @@
   padding: var(--ndt-spacing-md);
   border-radius: var(--ndt-border-radius-medium);
   transition: background-color 0.2s ease;
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
 }
 
 .list-item.list-item--forced {

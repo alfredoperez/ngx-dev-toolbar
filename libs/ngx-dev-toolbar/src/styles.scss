@@ -138,6 +138,7 @@ $font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
 
 // Add font size variables
 $font-sizes: (
+  xxs: 0.65rem,
   xs: 0.75rem,
   sm: 0.875rem,
   md: 1rem,
@@ -208,6 +209,7 @@ $z-indices: (
   --ndt-spacing-lg: 16px;
   --ndt-window-padding: 16px;
 
+  --ndt-font-size-xxs: #{map.get($font-sizes, xxs)};
   --ndt-font-size-xs: #{map.get($font-sizes, xs)};
   --ndt-font-size-sm: #{map.get($font-sizes, sm)};
   --ndt-font-size-md: #{map.get($font-sizes, md)};

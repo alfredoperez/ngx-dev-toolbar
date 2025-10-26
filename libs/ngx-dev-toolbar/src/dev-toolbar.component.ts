@@ -168,6 +168,7 @@ export class DevToolbarComponent implements OnInit, OnDestroy {
         --ndt-spacing-md: 12px;
         --ndt-spacing-lg: 16px;
         --ndt-window-padding: 16px;
+        --ndt-font-size-xxs: 0.65rem;
         --ndt-font-size-xs: 0.75rem;
         --ndt-font-size-sm: 0.875rem;
         --ndt-font-size-md: 1rem;
@@ -201,6 +202,8 @@ export class DevToolbarComponent implements OnInit, OnDestroy {
       .ndt-overlay-panel {
         font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
         box-sizing: border-box;
+        isolation: isolate;
+        z-index: 999999999;
       }
       .ndt-overlay-panel *, .ndt-overlay-panel *::before, .ndt-overlay-panel *::after {
         box-sizing: border-box;

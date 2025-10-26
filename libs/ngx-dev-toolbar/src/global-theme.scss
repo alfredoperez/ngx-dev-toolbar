@@ -29,6 +29,7 @@
   --ndt-window-padding: 16px;
 
   /* Font Sizes */
+  --ndt-font-size-xxs: 0.65rem;
   --ndt-font-size-xs: 0.75rem;
   --ndt-font-size-sm: 0.875rem;
   --ndt-font-size-md: 1rem;
@@ -85,6 +86,8 @@
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
     'Noto Color Emoji';
   box-sizing: border-box;
+  isolation: isolate;
+  z-index: 999999999;
 }
 
 /* Ensure all elements inside overlay panels inherit box-sizing */
