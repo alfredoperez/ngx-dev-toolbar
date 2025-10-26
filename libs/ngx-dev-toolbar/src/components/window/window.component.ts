@@ -15,7 +15,9 @@ import { DevToolbarWindowOptions } from '../toolbar-tool/toolbar-tool.models';
             <span class="beta-tag">BETA</span>
             }
           </div>
+          @if (config().description) {
           <p class="header__description">{{ config().description }}</p>
+          }
         </div>
         <div class="header__controls">
           @if (config().isMinimizable) {

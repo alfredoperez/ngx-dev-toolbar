@@ -90,7 +90,7 @@ import { DevToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
         flex-shrink: 0;
         display: flex;
         gap: var(--ndt-spacing-sm);
-        margin-bottom: var(--ndt-spacing-md);
+        margin-bottom: var(--ndt-spacing-sm);
 
         ndt-input {
           flex: 1;

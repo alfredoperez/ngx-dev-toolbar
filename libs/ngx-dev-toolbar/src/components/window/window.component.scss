@@ -19,7 +19,7 @@
   background: var(--ndt-bg-primary);
   border: 1px solid var(--ndt-border-primary);
   border-radius: var(--ndt-border-radius-large);
-  padding: var(--ndt-window-padding);
+  padding: var(--ndt-window-padding) var(--ndt-window-padding) var(--ndt-spacing-sm);
   font-family: $font-family;
   color: var(--ndt-text-secondary);
   z-index: #{map.get($z-indices, window)};
@@ -91,8 +91,6 @@
 .content {
   flex: 1;
   overflow: auto;
-  position: relative;
-  z-index: 1;
   min-height: 0;
 }
 
