@@ -94,7 +94,6 @@
   flex: 1;
   overflow: auto;
   min-height: 0;
-  padding-top: var(--ndt-spacing-md); // Prevents tool content from overlapping window header in apps with CSS resets
 }
 
 .divider {

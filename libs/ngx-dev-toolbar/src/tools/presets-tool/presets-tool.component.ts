@@ -310,7 +310,7 @@ import { DevToolbarStateService } from '../../dev-toolbar-state.service';
         display: flex;
         flex-direction: column;
         height: 100%;
-        margin-top: var(--ndt-spacing-sm); // Defensive spacing against CSS resets
+        margin-top: var(--ndt-spacing-xs); // Defensive spacing against CSS resets
       }
 
       .tool-header {

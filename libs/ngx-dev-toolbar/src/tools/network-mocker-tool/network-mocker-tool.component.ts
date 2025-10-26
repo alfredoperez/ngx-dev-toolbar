@@ -121,7 +121,7 @@ import { DevToolbarNetworkMockerService } from './network-mocker.service';
         height: 100%;
         gap: var(--ndt-spacing-md);
         padding: var(--ndt-spacing-md);
-        margin-top: var(--ndt-spacing-sm); // Defensive spacing against CSS resets
+        margin-top: var(--ndt-spacing-xs); // Defensive spacing against CSS resets
       }
 
       .tool-header {
