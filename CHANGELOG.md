@@ -1,3 +1,13 @@
+## 2.0.9 (2025-10-26)
+
+### Bug Fixes
+
+- eliminate CSS collisions and reduce spacing per user feedback ([35e1300](https://github.com/alfredoperez/ngx-dev-toolbar/commit/35e1300))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 ## 2.0.8 (2025-10-26)
 
 ### Bug Fixes
