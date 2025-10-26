@@ -1,3 +1,13 @@
+## 2.0.5 (2025-10-26)
+
+### Bug Fixes
+
+- apply defensive CSS patterns to prevent layout issues in apps with CSS resets ([6081991](https://github.com/alfredoperez/ngx-dev-toolbar/commit/6081991))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 ## 2.0.4 (2025-10-26)
 
 ### Bug Fixes
