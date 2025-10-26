@@ -1,3 +1,13 @@
+## 2.0.7 (2025-10-26)
+
+### Bug Fixes
+
+- reduce excessive spacing between window divider and tool content ([c68494d](https://github.com/alfredoperez/ngx-dev-toolbar/commit/c68494d))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 ## 2.0.6 (2025-10-26)
 
 ### Bug Fixes
