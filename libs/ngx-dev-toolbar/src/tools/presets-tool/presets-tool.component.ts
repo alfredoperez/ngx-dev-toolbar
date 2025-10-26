@@ -33,7 +33,7 @@ import { DevToolbarStateService } from '../../dev-toolbar-state.service';
       <div class="container">
         <!-- Mode Toggle -->
         @if (!hasNoPresets() || viewMode() === 'create') {
-        <div class="header">
+        <div class="tool-header">
           @if (viewMode() === 'list') {
           <ndt-input
             [value]="searchQuery()"
@@ -306,13 +306,15 @@ import { DevToolbarStateService } from '../../dev-toolbar-state.service';
   styles: [
     `
       .container {
+        position: relative;
         display: flex;
         flex-direction: column;
         height: 100%;
         margin-top: var(--ndt-spacing-sm); // Defensive spacing against CSS resets
       }
 
-      .header {
+      .tool-header {
+        position: relative;
         flex-shrink: 0;
         display: flex;
         gap: var(--ndt-spacing-sm);

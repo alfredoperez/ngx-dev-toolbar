@@ -27,7 +27,7 @@ import { DevToolbarNetworkMockerService } from './network-mocker.service';
   template: `
     <ndt-toolbar-tool [options]="options" title="Network Mocker" icon="network">
       <div class="container">
-        <div class="header">
+        <div class="tool-header">
           <h3>Mock Network Requests</h3>
           <p>Intercept and mock HTTP requests for testing and development.</p>
         </div>
@@ -115,6 +115,7 @@ import { DevToolbarNetworkMockerService } from './network-mocker.service';
   styles: [
     `
       .container {
+        position: relative;
         display: flex;
         flex-direction: column;
         height: 100%;
@@ -123,7 +124,8 @@ import { DevToolbarNetworkMockerService } from './network-mocker.service';
         margin-top: var(--ndt-spacing-sm); // Defensive spacing against CSS resets
       }
 
-      .header {
+      .tool-header {
+        position: relative;
         text-align: center;
         flex-shrink: 0;
 

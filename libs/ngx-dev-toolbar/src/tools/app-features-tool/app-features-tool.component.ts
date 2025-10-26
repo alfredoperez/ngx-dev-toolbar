@@ -49,7 +49,7 @@ import { AppFeatureFilter, DevToolbarAppFeature } from './app-features.models';
       icon="puzzle"
     >
       <div class="container">
-        <div class="header">
+        <div class="tool-header">
           <ndt-input
             [value]="searchQuery()"
             (valueChange)="onSearchChange($event)"
@@ -97,13 +97,15 @@ import { AppFeatureFilter, DevToolbarAppFeature } from './app-features.models';
   styles: [
     `
       .container {
+        position: relative;
         display: flex;
         flex-direction: column;
         height: 100%;
         margin-top: var(--ndt-spacing-sm); // Defensive spacing against CSS resets
       }
 
-      .header {
+      .tool-header {
+        position: relative;
         flex-shrink: 0;
         display: flex;
         gap: var(--ndt-spacing-sm);
