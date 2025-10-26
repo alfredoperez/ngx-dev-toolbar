@@ -1,3 +1,13 @@
+## 2.0.8 (2025-10-26)
+
+### Bug Fixes
+
+- reduce window bottom padding for more balanced spacing ([8719ad6](https://github.com/alfredoperez/ngx-dev-toolbar/commit/8719ad6))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 ## 2.0.7 (2025-10-26)
 
 ### Bug Fixes
