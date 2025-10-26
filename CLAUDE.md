@@ -131,11 +131,45 @@ Reusable components are in `src/components/`:
 
 ## Styling
 
-- Uses CSS custom properties for theming (`--ndt-*` prefix)
-- Design tokens: colors, spacing, border-radius, font-sizes
-- Supports light/dark themes via `[attr.data-theme]="theme()"`
-- Responsive layouts with flexbox
-- Scrollable content areas with `overflow-y: auto`
+### CSS Architecture
+
+The library uses a **hybrid CSS architecture** combining component-scoped styles with global overlay styles:
+
+- **Class Naming**: Use `ndt-` prefix ONLY for global/overlay classes (outside Shadow DOM). Component-scoped classes don't need prefixes.
+- **Design Tokens**: All theme values use CSS custom properties (`--ndt-*` prefix)
+- **Theme Support**: Light/dark themes via `[attr.data-theme]="theme()"`
+- **Defensive CSS**: Explicit spacing patterns to resist external CSS resets
+
+### Defensive CSS Patterns (CRITICAL)
+
+**The demo app is NOT representative of real-world environments.** Always apply defensive CSS to prevent issues when integrated into apps with CSS resets (Normalize, Tailwind, Bootstrap):
+
+1. **Explicit Spacing**: Always use explicit `padding-top`, `margin-top`, and `gap` - never rely on browser defaults
+2. **CSS Containment**: Use `contain: layout style` on overlay windows to isolate from external styles
+3. **Flexbox Isolation**: Use `flex-shrink: 0` on headers/footers, `min-height: 0` on scrollable content
+
+**Example Pattern:**
+```scss
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-top: var(--ndt-spacing-sm); // Defensive spacing against CSS resets
+  gap: var(--ndt-spacing-md);
+}
+
+.ndt-window {
+  contain: layout style; // Isolates window from external CSS interference
+}
+
+.content {
+  flex: 1;
+  overflow: auto;
+  min-height: 0;
+  padding-top: var(--ndt-spacing-md); // Prevents overlap with header
+}
+```
+
+**Reference**: See `knowledge/code-style/defensive-css.md` and `knowledge/project/patterns/css-architecture.md` for complete patterns.
 
 ## Key Integration Points
 

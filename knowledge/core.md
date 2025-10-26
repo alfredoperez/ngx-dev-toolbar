@@ -14,8 +14,9 @@ Central index and standards for our AI-optimized knowledge base system.
 
 Framework and language-specific coding patterns and conventions.
 
+- **[angular-patterns.md](./code-style/angular-patterns.md)** - Angular-specific patterns (components, services, state management, templates, etc.)
+- **[defensive-css.md](./code-style/defensive-css.md)** - Defensive CSS patterns for resilient component library styles
 - **[typescript-rules.md](./code-style/typescript-rules.md)** - TypeScript code style rules and best practices
-- **angular/** - Angular-specific patterns (components, services, state management, templates, etc.)
 - **testing/** - Testing patterns and best practices
 - **storybook/** - Storybook configuration and patterns
 
@@ -23,7 +24,11 @@ Framework and language-specific coding patterns and conventions.
 
 Project-specific implementations, architecture, and guides.
 
-- **guides/** - Step-by-step implementation guides for common tasks
+- **[core/technical-stack.md](./project/core/technical-stack.md)** - Technical stack and dependencies
+- **[patterns/component-hierarchy.md](./project/patterns/component-hierarchy.md)** - Component architecture and hierarchy
+- **[patterns/service-architecture.md](./project/patterns/service-architecture.md)** - Service layer patterns and state management
+- **[patterns/css-architecture.md](./project/patterns/css-architecture.md)** - CSS architecture, class naming, and theme system
+- **[recipes/TOOLBAR_TOOL_GUIDE.md](./project/recipes/TOOLBAR_TOOL_GUIDE.md)** - Guide for creating custom toolbar tools
 
 ### [/tools](./tools/)
 

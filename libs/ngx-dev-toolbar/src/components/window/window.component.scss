@@ -24,6 +24,7 @@
   color: var(--ndt-text-secondary);
   z-index: #{map.get($z-indices, window)};
   box-shadow: var(--ndt-shadow-window);
+  contain: layout style; // Isolates window from external CSS interference
 }
 
 .header {
@@ -92,6 +93,7 @@
   flex: 1;
   overflow: auto;
   min-height: 0;
+  padding-top: var(--ndt-spacing-md); // Prevents tool content from overlapping window header in apps with CSS resets
 }
 
 .divider {
