@@ -1,3 +1,13 @@
+## 2.0.4 (2025-10-26)
+
+### Bug Fixes
+
+- improve toolbar layout and content spacing for better UX ([91243b0](https://github.com/alfredoperez/ngx-dev-toolbar/commit/91243b0))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 ## 2.0.3 (2025-10-26)
 
 ### Bug Fixes
