@@ -1,3 +1,14 @@
+## 2.0.3 (2025-10-26)
+
+### Bug Fixes
+
+- regenerate package-lock.json to fix CI deployment ([74781bf](https://github.com/alfredoperez/ngx-dev-toolbar/commit/74781bf))
+- resolve toolbar styling issues with title visibility, badge sizing, and list overflow ([00b3b66](https://github.com/alfredoperez/ngx-dev-toolbar/commit/00b3b66))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 ## 2.0.2 (2025-10-25)
 
 ### Bug Fixes
