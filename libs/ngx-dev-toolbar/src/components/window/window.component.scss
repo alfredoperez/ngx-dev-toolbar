@@ -27,7 +27,7 @@
   contain: layout style; // Isolates window from external CSS interference
 }
 
-.header {
+.ndt-header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -89,7 +89,7 @@
   }
 }
 
-.content {
+.ndt-content {
   position: relative;
   flex: 1;
   overflow: auto;

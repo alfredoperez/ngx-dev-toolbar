@@ -120,8 +120,7 @@ import { DevToolbarNetworkMockerService } from './network-mocker.service';
         flex-direction: column;
         height: 100%;
         gap: var(--ndt-spacing-md);
-        padding: var(--ndt-spacing-md);
-        margin-top: var(--ndt-spacing-xs); // Defensive spacing against CSS resets
+        padding: 0;
       }
 
       .tool-header {
