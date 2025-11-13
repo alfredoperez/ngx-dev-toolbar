@@ -1,3 +1,13 @@
+## 2.1.0 (2025-11-13)
+
+### Features
+
+- add global enabled config to control toolbar and service overrides ([a4b997e](https://github.com/alfredoperez/ngx-dev-toolbar/commit/a4b997e))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 ## 2.0.9 (2025-10-26)
 
 ### Bug Fixes
