@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable, combineLatest, map } from 'rxjs';
+import { DevToolbarStateService } from '../../dev-toolbar-state.service';
 import { DevToolsStorageService } from '../../utils/storage.service';
 import { DevToolbarFlag } from './feature-flags.models';
 
@@ -13,6 +14,7 @@ interface ForcedFlagsState {
 export class DevToolbarInternalFeatureFlagService {
   private readonly STORAGE_KEY = 'feature-flags';
   private storageService = inject(DevToolsStorageService);
+  private stateService = inject(DevToolbarStateService);
 
   private appFlags$ = new BehaviorSubject<DevToolbarFlag[]>([]);
   private forcedFlagsSubject = new BehaviorSubject<ForcedFlagsState>({
@@ -27,6 +29,11 @@ export class DevToolbarInternalFeatureFlagService {
     this.forcedFlags$,
   ]).pipe(
     map(([appFlags, { enabled, disabled }]) => {
+      // If toolbar is disabled, return app flags without overrides
+      if (!this.stateService.isEnabled()) {
+        return appFlags;
+      }
+
       return appFlags.map((flag) => {
         const isForced = enabled.includes(flag.id) || disabled.includes(flag.id);
         return {
@@ -59,7 +66,13 @@ export class DevToolbarInternalFeatureFlagService {
 
   getForcedFlags(): Observable<DevToolbarFlag[]> {
     return this.flags$.pipe(
-      map((flags) => flags.filter((flag) => flag.isForced))
+      map((flags) => {
+        // If toolbar is disabled, return empty array (no forced values)
+        if (!this.stateService.isEnabled()) {
+          return [];
+        }
+        return flags.filter((flag) => flag.isForced);
+      })
     );
   }
 

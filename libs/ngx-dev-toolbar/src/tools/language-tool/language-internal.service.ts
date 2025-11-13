@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable, firstValueFrom, map } from 'rxjs';
+import { DevToolbarStateService } from '../../dev-toolbar-state.service';
 import { DevToolsStorageService } from '../../utils/storage.service';
 import { Language } from './language.models';
 
@@ -8,6 +9,7 @@ import { Language } from './language.models';
 export class DevToolbarInternalLanguageService {
   private readonly STORAGE_KEY = 'language';
   private readonly storageService = inject(DevToolsStorageService);
+  private readonly stateService = inject(DevToolbarStateService);
 
   private languages$ = new BehaviorSubject<Language[]>([]);
   private forcedLanguage$ = new BehaviorSubject<Language | null>(null);
@@ -33,7 +35,13 @@ export class DevToolbarInternalLanguageService {
 
   getForcedLanguage(): Observable<Language[]> {
     return this.forcedLanguage$.pipe(
-      map((language) => (language ? [language] : []))
+      map((language) => {
+        // If toolbar is disabled, return empty array (no forced values)
+        if (!this.stateService.isEnabled()) {
+          return [];
+        }
+        return language ? [language] : [];
+      })
     );
   }
 

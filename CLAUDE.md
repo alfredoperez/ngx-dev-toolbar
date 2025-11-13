@@ -191,9 +191,40 @@ import { DevToolbarComponent } from 'ngx-dev-toolbar';
 
 @Component({
   imports: [DevToolbarComponent],
-  template: `<ndt-toolbar></ndt-toolbar>`
+  template: `<ndt-toolbar [config]="toolbarConfig"></ndt-toolbar>`
 })
+export class AppComponent {
+  toolbarConfig = {
+    enabled: true, // Master switch to enable/disable entire toolbar
+    showLanguageTool: true,
+    showFeatureFlagsTool: true,
+    showAppFeaturesTool: true,
+    showPermissionsTool: true,
+    showPresetsTool: true,
+  };
+}
 ```
+
+### Toolbar Configuration
+
+The toolbar accepts a `DevToolbarConfig` object to control its behavior:
+
+```typescript
+interface DevToolbarConfig {
+  enabled?: boolean;              // Master switch (default: true)
+  showLanguageTool?: boolean;     // Show/hide individual tools (default: true)
+  showFeatureFlagsTool?: boolean;
+  showAppFeaturesTool?: boolean;
+  showPermissionsTool?: boolean;
+  showPresetsTool?: boolean;
+}
+```
+
+**Important behavior when `enabled: false`:**
+- Toolbar UI will not render at all
+- All tool services preserve localStorage data but won't return forced values via `getForcedValues()`
+- Developers can still call `setAvailableOptions()` safely (no-op when disabled)
+- When re-enabled, all previously forced values are restored automatically
 
 ### Keyboard Shortcuts
 

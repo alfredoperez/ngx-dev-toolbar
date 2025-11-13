@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable, combineLatest, map } from 'rxjs';
+import { DevToolbarStateService } from '../../dev-toolbar-state.service';
 import { DevToolsStorageService } from '../../utils/storage.service';
 import {
   DevToolbarPermission,
@@ -11,6 +12,7 @@ import {
 export class DevToolbarInternalPermissionsService {
   private readonly STORAGE_KEY = 'permissions';
   private storageService = inject(DevToolsStorageService);
+  private stateService = inject(DevToolbarStateService);
 
   private appPermissions$ = new BehaviorSubject<DevToolbarPermission[]>([]);
   private forcedStateSubject = new BehaviorSubject<ForcedPermissionsState>({
@@ -25,6 +27,11 @@ export class DevToolbarInternalPermissionsService {
     this.forcedState$,
   ]).pipe(
     map(([appPermissions, { granted, denied }]) => {
+      // If toolbar is disabled, return app permissions without overrides
+      if (!this.stateService.isEnabled()) {
+        return appPermissions;
+      }
+
       return appPermissions.map((permission) => {
         const isForced = granted.includes(permission.id) || denied.includes(permission.id);
         return {
@@ -83,7 +90,13 @@ export class DevToolbarInternalPermissionsService {
 
   getForcedPermissions(): Observable<DevToolbarPermission[]> {
     return this.permissions$.pipe(
-      map((permissions) => permissions.filter((permission) => permission.isForced))
+      map((permissions) => {
+        // If toolbar is disabled, return empty array (no forced values)
+        if (!this.stateService.isEnabled()) {
+          return [];
+        }
+        return permissions.filter((permission) => permission.isForced);
+      })
     );
   }
 

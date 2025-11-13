@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable, combineLatest, map } from 'rxjs';
+import { DevToolbarStateService } from '../../dev-toolbar-state.service';
 import { DevToolsStorageService } from '../../utils/storage.service';
 import { DevToolbarAppFeature, ForcedAppFeaturesState } from './app-features.models';
 
@@ -19,6 +20,7 @@ import { DevToolbarAppFeature, ForcedAppFeaturesState } from './app-features.mod
 export class DevToolbarInternalAppFeaturesService {
   private readonly STORAGE_KEY = 'app-features';
   private storageService = inject(DevToolsStorageService);
+  private stateService = inject(DevToolbarStateService);
 
   private appFeaturesSubject = new BehaviorSubject<DevToolbarAppFeature[]>([]);
   private forcedFeaturesSubject = new BehaviorSubject<ForcedAppFeaturesState>({
@@ -96,7 +98,13 @@ export class DevToolbarInternalAppFeaturesService {
    */
   getForcedFeatures(): Observable<DevToolbarAppFeature[]> {
     return this.features$.pipe(
-      map((features) => features.filter((feature) => feature.isForced))
+      map((features) => {
+        // If toolbar is disabled, return empty array (no forced values)
+        if (!this.stateService.isEnabled()) {
+          return [];
+        }
+        return features.filter((feature) => feature.isForced);
+      })
     );
   }
 
@@ -196,6 +204,11 @@ export class DevToolbarInternalAppFeaturesService {
     appFeatures: DevToolbarAppFeature[],
     forcedState: ForcedAppFeaturesState
   ): DevToolbarAppFeature[] {
+    // If toolbar is disabled, return app features without overrides
+    if (!this.stateService.isEnabled()) {
+      return appFeatures;
+    }
+
     return appFeatures.map((feature) => {
       const isInEnabled = forcedState.enabled.includes(feature.id);
       const isInDisabled = forcedState.disabled.includes(feature.id);

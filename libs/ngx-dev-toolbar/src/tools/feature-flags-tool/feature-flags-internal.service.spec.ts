@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { DevToolbarStateService } from '../../dev-toolbar-state.service';
 import { DevToolsStorageService } from '../../utils/storage.service';
 import { DevToolbarInternalFeatureFlagService } from './feature-flags-internal.service';
 import { DevToolbarFlag } from './feature-flags.models';
@@ -11,6 +12,7 @@ interface ForcedFlagsState {
 describe('DevToolbarInternalFeatureFlagService', () => {
   let service: DevToolbarInternalFeatureFlagService;
   let storageService: jest.Mocked<DevToolsStorageService>;
+  let stateService: DevToolbarStateService;
 
   const createMockFlag = (
     id: string,
@@ -35,6 +37,7 @@ describe('DevToolbarInternalFeatureFlagService', () => {
     TestBed.configureTestingModule({
       providers: [
         DevToolbarInternalFeatureFlagService,
+        DevToolbarStateService,
         { provide: DevToolsStorageService, useValue: storageServiceMock },
       ],
     });
@@ -43,6 +46,7 @@ describe('DevToolbarInternalFeatureFlagService', () => {
     storageService = TestBed.inject(
       DevToolsStorageService
     ) as jest.Mocked<DevToolsStorageService>;
+    stateService = TestBed.inject(DevToolbarStateService);
   });
 
   afterEach(() => {
@@ -410,6 +414,78 @@ describe('DevToolbarInternalFeatureFlagService', () => {
       expect(result).toHaveProperty('disabled');
       expect(Array.isArray(result.enabled)).toBe(true);
       expect(Array.isArray(result.disabled)).toBe(true);
+    });
+  });
+
+  describe('Disabled Toolbar State', () => {
+    beforeEach(() => {
+      const flags = [
+        createMockFlag('flag1', 'Feature Flag 1', false),
+        createMockFlag('flag2', 'Feature Flag 2', true),
+      ];
+      service.setAppFlags(flags);
+      service.setFlag('flag1', true);
+      service.setFlag('flag2', false);
+    });
+
+    it('should return empty array from getForcedFlags when toolbar is disabled', (done) => {
+      stateService.setConfig({ enabled: false });
+
+      service.getForcedFlags().subscribe((forced) => {
+        expect(forced.length).toBe(0);
+        done();
+      });
+    });
+
+    it('should return app flags without overrides from flags$ when toolbar is disabled', (done) => {
+      stateService.setConfig({ enabled: false });
+
+      service.flags$.subscribe((flags) => {
+        expect(flags[0].id).toBe('flag1');
+        expect(flags[0].isEnabled).toBe(false); // Original value, not forced
+        expect(flags[0].isForced).toBe(false);
+        expect(flags[1].id).toBe('flag2');
+        expect(flags[1].isEnabled).toBe(true); // Original value, not forced
+        expect(flags[1].isForced).toBe(false);
+        done();
+      });
+    });
+
+    it('should preserve localStorage data when toolbar is disabled', () => {
+      const setCallCount = storageService.set.mock.calls.length;
+      stateService.setConfig({ enabled: false });
+
+      // Verify no additional localStorage calls were made
+      expect(storageService.set).toHaveBeenCalledTimes(setCallCount);
+
+      // Verify data is still in localStorage (from when it was enabled)
+      const lastCall = storageService.set.mock.calls[setCallCount - 1];
+      expect(lastCall[0]).toBe('feature-flags');
+      expect(lastCall[1]).toEqual({
+        enabled: ['flag1'],
+        disabled: ['flag2'],
+      });
+    });
+
+    it('should return forced values when toolbar is re-enabled', (done) => {
+      // First disable toolbar
+      stateService.setConfig({ enabled: false });
+
+      // Subscribe and verify disabled state
+      service.getForcedFlags().subscribe((forced) => {
+        expect(forced.length).toBe(0);
+      });
+
+      // Re-enable toolbar
+      stateService.setConfig({ enabled: true });
+
+      // Subscribe again and verify forced values are returned
+      service.getForcedFlags().subscribe((forced) => {
+        expect(forced.length).toBe(2);
+        expect(forced[0].id).toBe('flag1');
+        expect(forced[1].id).toBe('flag2');
+        done();
+      });
     });
   });
 });

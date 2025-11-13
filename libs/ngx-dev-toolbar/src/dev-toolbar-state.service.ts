@@ -38,6 +38,12 @@ export class DevToolbarStateService {
    */
   readonly delay = computed(() => this.state().delay);
   readonly config = computed(() => this.state().config);
+  /**
+   * Indicates if the toolbar is enabled based on config.
+   * When disabled, toolbar UI won't render and services won't return forced values.
+   * @default true
+   */
+  readonly isEnabled = computed(() => this.state().config.enabled ?? true);
 
   // State updates
   setVisibility(isVisible: boolean): void {

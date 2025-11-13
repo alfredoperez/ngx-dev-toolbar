@@ -4,6 +4,16 @@
  */
 export interface DevToolbarConfig {
   /**
+   * Master switch to enable/disable the entire toolbar.
+   * When disabled:
+   * - Toolbar UI will not render
+   * - All tool services will preserve localStorage data but won't return forced values
+   * - Developers can still call setAvailableOptions() safely (no-op when disabled)
+   * @default true
+   */
+  enabled?: boolean;
+
+  /**
    * Show/hide the Language tool
    * @default true
    */

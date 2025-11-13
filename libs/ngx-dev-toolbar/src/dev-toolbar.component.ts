@@ -43,33 +43,35 @@ import { DevToolbarPresetsToolComponent } from './tools/presets-tool/presets-too
     DevToolbarPresetsToolComponent,
   ],
   template: `
-    <div
-      aria-label="Developer tools"
-      role="toolbar"
-      class="ndt-toolbar"
-      [@toolbarState]="state.isVisible() ? 'visible' : 'hidden'"
-      [attr.data-theme]="state.theme()"
-      [class.ndt-toolbar--active]="state.isVisible()"
-      (mouseenter)="onMouseEnter()"
-    >
-      <ndt-home-tool />
-      <ng-content />
-      @if (config().showLanguageTool ?? false) {
-        <ndt-language-tool />
-      }
-      @if (config().showPresetsTool ?? false) {
-        <ndt-presets-tool />
-      }
-      @if (config().showAppFeaturesTool ?? false) {
-        <ndt-app-features-tool />
-      }
-      @if (config().showPermissionsTool ?? false) {
-        <ndt-permissions-tool />
-      }
-      @if (config().showFeatureFlagsTool ?? false) {
-        <ndt-feature-flags-tool />
-      }
-    </div>
+    @if (config().enabled ?? true) {
+      <div
+        aria-label="Developer tools"
+        role="toolbar"
+        class="ndt-toolbar"
+        [@toolbarState]="state.isVisible() ? 'visible' : 'hidden'"
+        [attr.data-theme]="state.theme()"
+        [class.ndt-toolbar--active]="state.isVisible()"
+        (mouseenter)="onMouseEnter()"
+      >
+        <ndt-home-tool />
+        <ng-content />
+        @if (config().showLanguageTool ?? false) {
+          <ndt-language-tool />
+        }
+        @if (config().showPresetsTool ?? false) {
+          <ndt-presets-tool />
+        }
+        @if (config().showAppFeaturesTool ?? false) {
+          <ndt-app-features-tool />
+        }
+        @if (config().showPermissionsTool ?? false) {
+          <ndt-permissions-tool />
+        }
+        @if (config().showFeatureFlagsTool ?? false) {
+          <ndt-feature-flags-tool />
+        }
+      </div>
+    }
   `,
   animations: [
     trigger('toolbarState', [
