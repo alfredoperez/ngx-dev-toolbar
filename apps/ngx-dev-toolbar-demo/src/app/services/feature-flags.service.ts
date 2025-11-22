@@ -35,36 +35,6 @@ export class FeatureFlagsService {
       enabled: false,
       description: 'Enable cutting-edge UI components',
     },
-    {
-      name: 'experimentalFeatures',
-      enabled: true,
-      description: 'featureFlags.experimentalFeatures',
-    },
-    {
-      name: 'taskBoardView',
-      enabled: false,
-      description: 'featureFlags.taskBoardView',
-    },
-    {
-      name: 'taskCategories',
-      enabled: false,
-      description: 'featureFlags.taskCategories',
-    },
-    {
-      name: 'taskReminders',
-      enabled: false,
-      description: 'featureFlags.taskReminders',
-    },
-    {
-      name: 'taskCollaboration',
-      enabled: false,
-      description: 'featureFlags.taskCollaboration',
-    },
-    {
-      name: 'taskAnalytics',
-      enabled: false,
-      description: 'featureFlags.taskAnalytics',
-    },
   ];
 
   private flagsSubject = new BehaviorSubject<FeatureFlag[]>(this.featureFlags);

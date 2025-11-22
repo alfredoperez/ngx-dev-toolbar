@@ -30,36 +30,14 @@ export class AppFeaturesConfigService {
    * Feature definitions for each product tier
    */
   private readonly tierFeatures: Record<ProductTier, string[]> = {
-    basic: [
-      'core-features',
-      'single-user',
-      'basic-support',
-      'community-access',
-    ],
-    professional: [
-      'core-features',
-      'single-user',
-      'basic-support',
-      'community-access',
-      'analytics',
-      'multi-user',
-      'priority-support',
-      'advanced-reporting',
-    ],
+    basic: [],
+    professional: ['analytics', 'multi-user'],
     enterprise: [
-      'core-features',
-      'single-user',
-      'basic-support',
-      'community-access',
       'analytics',
       'multi-user',
-      'priority-support',
-      'advanced-reporting',
       'white-label',
       'sso-integration',
       'api-access',
-      'dedicated-support',
-      'custom-integrations',
     ],
   };
 
@@ -70,22 +48,6 @@ export class AppFeaturesConfigService {
     string,
     { name: string; description: string }
   > = {
-    'core-features': {
-      name: 'Core Features',
-      description: 'Essential app functionality and basic tools',
-    },
-    'single-user': {
-      name: 'Single User Mode',
-      description: 'Individual user account and personal workspace',
-    },
-    'basic-support': {
-      name: 'Basic Support',
-      description: 'Email support with 48-hour response time',
-    },
-    'community-access': {
-      name: 'Community Access',
-      description: 'Access to community forums and knowledge base',
-    },
     analytics: {
       name: 'Analytics Dashboard',
       description: 'Advanced reporting and data visualization tools',
@@ -93,14 +55,6 @@ export class AppFeaturesConfigService {
     'multi-user': {
       name: 'Multi-User Support',
       description: 'Team collaboration and user management features',
-    },
-    'priority-support': {
-      name: 'Priority Support',
-      description: '24/7 support with 4-hour response time',
-    },
-    'advanced-reporting': {
-      name: 'Advanced Reporting',
-      description: 'Custom reports and data export capabilities',
     },
     'white-label': {
       name: 'White Label Branding',
@@ -113,14 +67,6 @@ export class AppFeaturesConfigService {
     'api-access': {
       name: 'API Access',
       description: 'Full REST API access for custom integrations',
-    },
-    'dedicated-support': {
-      name: 'Dedicated Support',
-      description: 'Dedicated account manager and 1-hour SLA',
-    },
-    'custom-integrations': {
-      name: 'Custom Integrations',
-      description: 'Build custom integrations with our engineering team',
     },
   };
 
