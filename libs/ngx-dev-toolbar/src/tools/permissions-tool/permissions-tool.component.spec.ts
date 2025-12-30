@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { DevToolsStorageService } from '../../utils/storage.service';
 import { DevToolbarPermissionsToolComponent } from './permissions-tool.component';
 import { DevToolbarInternalPermissionsService } from './permissions-internal.service';
 import { DevToolbarPermission } from './permissions.models';
@@ -43,12 +44,21 @@ describe('DevToolbarPermissionsToolComponent', () => {
       removePermissionOverride: jest.fn(),
     };
 
+    const storageServiceMock = {
+      get: jest.fn().mockReturnValue(null),
+      set: jest.fn(),
+    };
+
     await TestBed.configureTestingModule({
       imports: [DevToolbarPermissionsToolComponent, NoopAnimationsModule],
       providers: [
         {
           provide: DevToolbarInternalPermissionsService,
           useValue: internalServiceMock,
+        },
+        {
+          provide: DevToolsStorageService,
+          useValue: storageServiceMock,
         },
       ],
     }).compileComponents();
@@ -286,6 +296,11 @@ describe('DevToolbarPermissionsToolComponent', () => {
         removePermissionOverride: jest.fn(),
       };
 
+      const storageServiceMock = {
+        get: jest.fn().mockReturnValue(null),
+        set: jest.fn(),
+      };
+
       TestBed.resetTestingModule();
       await TestBed.configureTestingModule({
         imports: [DevToolbarPermissionsToolComponent, NoopAnimationsModule],
@@ -293,6 +308,10 @@ describe('DevToolbarPermissionsToolComponent', () => {
           {
             provide: DevToolbarInternalPermissionsService,
             useValue: emptyServiceMock,
+          },
+          {
+            provide: DevToolsStorageService,
+            useValue: storageServiceMock,
           },
         ],
       }).compileComponents();

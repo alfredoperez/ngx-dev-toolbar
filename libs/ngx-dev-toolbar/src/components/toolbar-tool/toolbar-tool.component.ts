@@ -38,7 +38,7 @@ import { DevToolbarWindowOptions } from './toolbar-tool.models';
       >
         <div #buttonContainer [attr.data-tooltip]="title()">
           @if (icon()) {
-          <ndt-tool-button [title]="title()" [toolId]="options().id">
+          <ndt-tool-button [title]="title()" [toolId]="options().id" [badge]="badge()">
             <ndt-icon [name]="icon()" />
           </ndt-tool-button>
           } @else {
@@ -106,6 +106,7 @@ export class DevToolbarToolComponent {
   options = input.required<DevToolbarWindowOptions>();
   icon = input.required<IconName>();
   title = input.required<string>();
+  badge = input<string>();
   isActive = computed(() => this.state.activeToolId() === this.options().id);
   height = computed(() => {
     switch (this.options().size) {

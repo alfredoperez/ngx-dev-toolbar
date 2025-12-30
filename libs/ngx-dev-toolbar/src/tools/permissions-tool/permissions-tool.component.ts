@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   inject,
   signal,
 } from '@angular/core';
@@ -13,6 +14,8 @@ import { DevToolbarListItemComponent } from '../../components/list-item/list-ite
 import { DevToolbarSelectComponent } from '../../components/select/select.component';
 import { DevToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
 import { DevToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
+import { ToolViewState } from '../../models/tool-view-state.models';
+import { DevToolsStorageService } from '../../utils/storage.service';
 import { DevToolbarInternalPermissionsService } from './permissions-internal.service';
 import {
   DevToolbarPermission,
@@ -36,6 +39,7 @@ import {
       [options]="options"
       title="Permissions"
       icon="lock"
+      [badge]="badgeCount()"
     >
       <div class="container">
         <div class="tool-header">
@@ -134,12 +138,53 @@ export class DevToolbarPermissionsToolComponent {
   private readonly permissionsService = inject(
     DevToolbarInternalPermissionsService
   );
+  private readonly storageService = inject(DevToolsStorageService);
+
+  // Constants
+  private readonly VIEW_STATE_KEY = 'permissions-view';
 
   // Signals
   protected readonly activeFilter = signal<PermissionFilter>('all');
   protected readonly searchQuery = signal<string>('');
 
+  constructor() {
+    this.loadViewState();
+
+    // Save view state on changes
+    effect(() => {
+      const state: ToolViewState = {
+        searchQuery: this.searchQuery(),
+        filter: this.activeFilter(),
+        sortOrder: 'asc',
+      };
+      this.storageService.set(this.VIEW_STATE_KEY, state);
+    });
+  }
+
+  private loadViewState(): void {
+    try {
+      const saved = this.storageService.get<ToolViewState>(this.VIEW_STATE_KEY);
+      if (saved) {
+        this.searchQuery.set(saved.searchQuery ?? '');
+        const filter = saved.filter as PermissionFilter;
+        if (['all', 'forced', 'granted', 'denied'].includes(filter)) {
+          this.activeFilter.set(filter);
+        }
+      }
+    } catch {
+      // Use defaults on error
+    }
+  }
+
   protected readonly permissions = this.permissionsService.permissions;
+
+  // Computed badge count for forced values
+  protected readonly badgeCount = computed(() => {
+    const count = this.permissions().filter((p) => p.isForced).length;
+    if (count === 0) return '';
+    if (count > 99) return '99+';
+    return count.toString();
+  });
   protected readonly hasNoPermissions = computed(
     () => this.permissions().length === 0
   );

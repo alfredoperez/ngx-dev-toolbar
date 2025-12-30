@@ -21,7 +21,7 @@
   border-radius: map.get(map.get(devtools.$dimensions, border-radius), full);
   box-shadow: var(--ndt-shadow-toolbar);
   height: map.get(devtools.$dimensions, toolbar-height);
-  overflow: hidden;
+  overflow: visible;
 
   &--active {
     opacity: 1;

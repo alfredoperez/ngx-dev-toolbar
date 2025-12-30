@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   inject,
   signal,
 } from '@angular/core';
@@ -13,6 +14,8 @@ import { DevToolbarListItemComponent } from '../../components/list-item/list-ite
 import { DevToolbarSelectComponent } from '../../components/select/select.component';
 import { DevToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
 import { DevToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
+import { ToolViewState } from '../../models/tool-view-state.models';
+import { DevToolsStorageService } from '../../utils/storage.service';
 import { DevToolbarInternalAppFeaturesService } from './app-features-internal.service';
 import { AppFeatureFilter, DevToolbarAppFeature } from './app-features.models';
 
@@ -47,6 +50,7 @@ import { AppFeatureFilter, DevToolbarAppFeature } from './app-features.models';
       [options]="options"
       title="App Features"
       icon="puzzle"
+      [badge]="badgeCount()"
     >
       <div class="container">
         <div class="tool-header">
@@ -141,12 +145,53 @@ import { AppFeatureFilter, DevToolbarAppFeature } from './app-features.models';
 export class DevToolbarAppFeaturesToolComponent {
   // Injects
   private readonly appFeaturesService = inject(DevToolbarInternalAppFeaturesService);
+  private readonly storageService = inject(DevToolsStorageService);
+
+  // Constants
+  private readonly VIEW_STATE_KEY = 'app-features-view';
 
   // Signals
   protected readonly activeFilter = signal<AppFeatureFilter>('all');
   protected readonly searchQuery = signal<string>('');
 
+  constructor() {
+    this.loadViewState();
+
+    // Save view state on changes
+    effect(() => {
+      const state: ToolViewState = {
+        searchQuery: this.searchQuery(),
+        filter: this.activeFilter(),
+        sortOrder: 'asc',
+      };
+      this.storageService.set(this.VIEW_STATE_KEY, state);
+    });
+  }
+
+  private loadViewState(): void {
+    try {
+      const saved = this.storageService.get<ToolViewState>(this.VIEW_STATE_KEY);
+      if (saved) {
+        this.searchQuery.set(saved.searchQuery ?? '');
+        const filter = saved.filter as AppFeatureFilter;
+        if (['all', 'forced', 'enabled', 'disabled'].includes(filter)) {
+          this.activeFilter.set(filter);
+        }
+      }
+    } catch {
+      // Use defaults on error
+    }
+  }
+
   protected readonly features = this.appFeaturesService.features;
+
+  // Computed badge count for forced values
+  protected readonly badgeCount = computed(() => {
+    const count = this.features().filter((f) => f.isForced).length;
+    if (count === 0) return '';
+    if (count > 99) return '99+';
+    return count.toString();
+  });
   protected readonly hasNoFeatures = computed(() => this.features().length === 0);
   protected readonly filteredFeatures = computed(() => {
     const filtered = this.features().filter((feature) => {

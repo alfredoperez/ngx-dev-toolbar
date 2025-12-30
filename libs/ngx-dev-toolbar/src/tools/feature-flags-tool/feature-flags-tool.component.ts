@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   inject,
   signal,
 } from '@angular/core';
@@ -13,6 +14,8 @@ import { DevToolbarListItemComponent } from '../../components/list-item/list-ite
 import { DevToolbarSelectComponent } from '../../components/select/select.component';
 import { DevToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
 import { DevToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
+import { ToolViewState } from '../../models/tool-view-state.models';
+import { DevToolsStorageService } from '../../utils/storage.service';
 import { DevToolbarInternalFeatureFlagService } from './feature-flags-internal.service';
 import { DevToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
 @Component({
@@ -32,6 +35,7 @@ import { DevToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
       [options]="options"
       title="Feature Flags"
       icon="toggle-left"
+      [badge]="badgeCount()"
     >
       <div class="container">
         <div class="tool-header">
@@ -125,12 +129,53 @@ import { DevToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
 export class DevToolbarFeatureFlagsToolComponent {
   // Injects
   private readonly featureFlags = inject(DevToolbarInternalFeatureFlagService);
+  private readonly storageService = inject(DevToolsStorageService);
+
+  // Constants
+  private readonly VIEW_STATE_KEY = 'feature-flags-view';
 
   // Signals
   protected readonly activeFilter = signal<FeatureFlagFilter>('all');
   protected readonly searchQuery = signal<string>('');
 
+  constructor() {
+    this.loadViewState();
+
+    // Save view state on changes
+    effect(() => {
+      const state: ToolViewState = {
+        searchQuery: this.searchQuery(),
+        filter: this.activeFilter(),
+        sortOrder: 'asc',
+      };
+      this.storageService.set(this.VIEW_STATE_KEY, state);
+    });
+  }
+
+  private loadViewState(): void {
+    try {
+      const saved = this.storageService.get<ToolViewState>(this.VIEW_STATE_KEY);
+      if (saved) {
+        this.searchQuery.set(saved.searchQuery ?? '');
+        const filter = saved.filter as FeatureFlagFilter;
+        if (['all', 'forced', 'enabled', 'disabled'].includes(filter)) {
+          this.activeFilter.set(filter);
+        }
+      }
+    } catch {
+      // Use defaults on error
+    }
+  }
+
   protected readonly flags = this.featureFlags.flags;
+
+  // Computed badge count for forced values
+  protected readonly badgeCount = computed(() => {
+    const count = this.flags().filter((flag) => flag.isForced).length;
+    if (count === 0) return '';
+    if (count > 99) return '99+';
+    return count.toString();
+  });
   protected readonly hasNoFlags = computed(() => this.flags().length === 0);
   protected readonly filteredFlags = computed(() => {
     const filtered = this.flags().filter((flag) => {

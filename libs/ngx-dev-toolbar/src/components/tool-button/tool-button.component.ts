@@ -40,6 +40,9 @@ import { DevToolbarStateService } from '../../dev-toolbar-state.service';
       </span>
       }
       <ng-content />
+      @if (badge()) {
+        <span class="tool-button__badge">{{ badge() }}</span>
+      }
     </button>
   `,
   styleUrls: ['./tool-button.component.scss'],
@@ -73,6 +76,7 @@ export class DevToolbarToolButtonComponent {
   // Inputs
   readonly title = input.required<string>();
   readonly toolId = input.required<string>();
+  readonly badge = input<string>();
 
   // Outputs
   readonly open = output<void>();

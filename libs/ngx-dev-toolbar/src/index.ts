@@ -7,6 +7,7 @@ export * from './components/toolbar-tool/toolbar-tool.models';
 export * from './dev-toolbar.component';
 export * from './models/dev-tools.interface';
 export * from './models/dev-toolbar-config.interface';
+export * from './models/tool-view-state.models';
 export * from './tools/feature-flags-tool/feature-flags.models';
 export * from './tools/feature-flags-tool/feature-flags.service';
 export * from './tools/language-tool/language.models';
