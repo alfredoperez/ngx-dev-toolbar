@@ -1,3 +1,21 @@
+## 2.1.1 (2025-12-30)
+
+### Features
+
+- add badge counts and view state persistence to tools ([4291ab0](https://github.com/alfredoperez/ngx-dev-toolbar/commit/4291ab0))
+
+### Bug Fixes
+
+- clean up available options ([a4dd47a](https://github.com/alfredoperez/ngx-dev-toolbar/commit/a4dd47a))
+
+### Documentation
+
+- simplify README for npm ([b37b349](https://github.com/alfredoperez/ngx-dev-toolbar/commit/b37b349))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 ## 2.1.0 (2025-11-13)
 
 ### Features
