@@ -18,35 +18,6 @@ import { DevToolbarPermissionsService, DevToolbarFeatureFlagService, DevToolbarA
       </p>
 
       <div class="summary-grid">
-        <!-- Permissions Card -->
-        <div class="summary-card permissions-card">
-          <div class="card-header">
-            <span class="icon">🔐</span>
-            <h3>Permissions</h3>
-          </div>
-          <div class="card-content">
-            @if (forcedPermissions().length > 0) {
-              <div class="forced-items">
-                @for (perm of forcedPermissions(); track perm.id) {
-                  <div class="forced-item" [class.granted]="perm.isGranted" [class.denied]="!perm.isGranted">
-                    <span class="status-icon">{{ perm.isGranted ? '✓' : '✗' }}</span>
-                    <span class="item-name">{{ perm.name }}</span>
-                  </div>
-                }
-              </div>
-            } @else {
-              <div class="empty-state">
-                <span class="empty-icon">🔓</span>
-                <p>No forced permissions</p>
-                <small>Using natural state</small>
-              </div>
-            }
-          </div>
-          <div class="card-footer">
-            <span class="count">{{ forcedPermissions().length }} forced</span>
-          </div>
-        </div>
-
         <!-- Feature Flags Card -->
         <div class="summary-card flags-card">
           <div class="card-header">
@@ -73,6 +44,35 @@ import { DevToolbarPermissionsService, DevToolbarFeatureFlagService, DevToolbarA
           </div>
           <div class="card-footer">
             <span class="count">{{ forcedFlags().length }} forced</span>
+          </div>
+        </div>
+
+        <!-- Permissions Card -->
+        <div class="summary-card permissions-card">
+          <div class="card-header">
+            <span class="icon">🔐</span>
+            <h3>Permissions</h3>
+          </div>
+          <div class="card-content">
+            @if (forcedPermissions().length > 0) {
+              <div class="forced-items">
+                @for (perm of forcedPermissions(); track perm.id) {
+                  <div class="forced-item" [class.granted]="perm.isGranted" [class.denied]="!perm.isGranted">
+                    <span class="status-icon">{{ perm.isGranted ? '✓' : '✗' }}</span>
+                    <span class="item-name">{{ perm.name }}</span>
+                  </div>
+                }
+              </div>
+            } @else {
+              <div class="empty-state">
+                <span class="empty-icon">🔓</span>
+                <p>No forced permissions</p>
+                <small>Using natural state</small>
+              </div>
+            }
+          </div>
+          <div class="card-footer">
+            <span class="count">{{ forcedPermissions().length }} forced</span>
           </div>
         </div>
 

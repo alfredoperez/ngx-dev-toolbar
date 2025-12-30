@@ -5,17 +5,13 @@ import { Component } from '@angular/core';
   selector: 'app-home',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <div class="home-container">
-      <h1>Welcome to the Demo Application</h1>
-      <p>This is a demo application showcasing feature flags implementation.</p>
-    </div>
-  `,
+  template: ` <div class="home-container"></div> `,
   styles: [
     `
       .home-container {
         padding: 2rem;
         max-width: 800px;
+        height: 100vh;
         margin: 0 auto;
       }
     `,

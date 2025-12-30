@@ -283,3 +283,10 @@ All tool services follow the `DevToolsService<T>` interface:
 --ndt-font-size-md
 --ndt-font-size-lg
 ```
+
+## Active Technologies
+- TypeScript 5.5, Angular 19.0 + Angular 19.0, Angular CDK 19.0, RxJS 7.8 (005-badges-each-tools)
+- localStorage via `DevToolsStorageService` (prefix: `AngularDevTools.`) (005-badges-each-tools)
+
+## Recent Changes
+- 005-badges-each-tools: Added TypeScript 5.5, Angular 19.0 + Angular 19.0, Angular CDK 19.0, RxJS 7.8

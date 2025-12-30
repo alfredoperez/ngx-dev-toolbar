@@ -44,12 +44,12 @@ import { FeatureFlagsService } from './services/feature-flags.service';
     <div class="modern-layout">
       <app-nav-bar />
       <main class="modern-content">
-        <app-toolbar-status-summary />
         <div class="detailed-demos">
-          <app-permission-demo />
           <app-feature-flags-demo />
+          <app-permission-demo />
           <app-features-demo />
         </div>
+        <app-toolbar-status-summary />
         <router-outlet />
       </main>
     </div>
@@ -57,12 +57,12 @@ import { FeatureFlagsService } from './services/feature-flags.service';
     <div class="original-layout">
       <app-nav-bar />
       <main class="content">
-        <app-toolbar-status-summary />
         <div class="detailed-demos">
-          <app-permission-demo />
           <app-feature-flags-demo />
+          <app-permission-demo />
           <app-features-demo />
         </div>
+        <app-toolbar-status-summary />
         <router-outlet />
       </main>
     </div>

@@ -1,232 +1,145 @@
 <!--
-Sync Impact Report:
-Version Change: Initial (none) → 1.0.0
-Constitution Type: MINOR - Initial constitution establishment with comprehensive principles
-Modified Principles: N/A (initial version)
-Added Sections:
-  - Core Principles (7 principles)
-  - Angular Development Standards
-  - Testing & Quality Standards
-  - Governance
-Removed Sections: None
-Templates Requiring Updates:
-  ✅ .specify/templates/plan-template.md - Constitution Check section aligns
-  ✅ .specify/templates/spec-template.md - Requirements structure aligns
-  ✅ .specify/templates/tasks-template.md - Task organization aligns
-Follow-up TODOs: None
+  Sync Impact Report
+  ===================
+  Version change: 0.0.0 → 1.0.0 (MAJOR - initial constitution adoption)
+
+  Added sections:
+  - I. Angular Modern Patterns
+  - II. Defensive CSS Architecture
+  - III. Testing Standards
+  - IV. Component Architecture
+  - V. Simplicity First
+  - Development Standards section
+  - Quality Gates section
+
+  Templates requiring updates:
+  - .specify/templates/plan-template.md: ✅ Constitution Check section exists
+  - .specify/templates/spec-template.md: ✅ No changes needed
+  - .specify/templates/tasks-template.md: ✅ No changes needed
+
+  Follow-up TODOs: None
 -->
 
 # ngx-dev-toolbar Constitution
 
 ## Core Principles
 
-### I. Standalone Component Architecture
+### I. Angular Modern Patterns
 
-**ngx-dev-toolbar** MUST be built as a standalone Angular component library. This principle is NON-NEGOTIABLE.
+All components and services MUST follow Angular 19+ best practices:
 
-- Every component MUST use standalone: true (implicit in Angular 19+, do not explicitly set)
-- All components, directives, and pipes MUST be independently importable
-- No NgModule declarations or imports permitted in library code
-- Components MUST declare all dependencies in their imports array
-- Public API surfaces MUST be clearly defined through index.ts barrel exports
+- Components MUST use `standalone: true` explicitly
+- Components MUST use `OnPush` change detection strategy
+- State MUST be managed using Angular signals (`signal()`, `computed()`, `effect()`)
+- Inputs and outputs MUST use function-based `input()` and `output()` instead of decorators
+- Forms MUST use Reactive Forms over Template-driven forms
+- Class bindings MUST be used instead of `ngClass`; style bindings instead of `ngStyle`
 
-**Rationale**: Standalone architecture ensures modern Angular compatibility, reduces bundle size through tree-shaking, simplifies testing, and provides consumers with granular import control.
+**Rationale**: Modern Angular patterns provide better performance, type safety, and maintainability.
+Signal-based reactivity eliminates common pitfalls with zone.js change detection.
 
-### II. Signal-First State Management
+### II. Defensive CSS Architecture
 
-**ngx-dev-toolbar** MUST use Angular signals as the primary state management mechanism. This principle is NON-NEGOTIABLE for all new code.
+All styling MUST be resilient to external CSS interference:
 
-- Component state MUST use signal() for reactive state
-- Derived state MUST use computed() for pure transformations
-- Service state MUST expose readonly signals via asReadonly()
-- Side effects MUST use effect() for DOM updates, localStorage, logging
-- State updates MUST be pure and immutable (use spread operators)
-- RxJS observables permitted ONLY for public API compatibility (e.g., getForcedValues())
+- Global/overlay classes MUST use `ndt-` prefix; component-scoped classes do not require prefixes
+- Theme values MUST use CSS custom properties with `--ndt-*` prefix
+- Spacing MUST be explicit (`padding-top`, `margin-top`, `gap`) - never rely on browser defaults
+- Overlay windows MUST use `contain: layout style` for CSS isolation
+- Flexbox layouts MUST use `flex-shrink: 0` on headers/footers and `min-height: 0` on scrollable content
 
-**Rationale**: Signals provide predictable reactivity, automatic dependency tracking, improved performance, and align with Angular's future direction. This creates a consistent mental model across the codebase.
+**Rationale**: The library integrates into applications with various CSS resets (Normalize, Tailwind,
+Bootstrap). Defensive patterns prevent visual regressions in real-world environments that the demo
+app cannot replicate.
 
-### III. Test-First Development (NON-NEGOTIABLE)
+### III. Testing Standards
 
-Every feature MUST follow Test-Driven Development (TDD) practices.
+All code MUST be tested according to these standards:
 
-**Workflow**:
-1. Tests written FIRST based on acceptance criteria
-2. User validates test scenarios
-3. Tests MUST fail (Red phase)
-4. Implement minimal code to pass (Green phase)
-5. Refactor while keeping tests green
+- Unit tests MUST use Jest with the AAA pattern (Arrange, Act, Assert)
+- E2E tests MUST use Playwright
+- Mocks MUST use `jest.fn()` for functions and `HttpTestingController` for HTTP
+- Tests MUST include proper cleanup in `afterEach`
+- Component tests MUST verify inputs, outputs, and template rendering
 
-**Testing Requirements**:
-- Jest for unit and integration tests
-- Playwright for E2E tests
-- Follow AAA pattern (Arrange, Act, Assert)
-- Test component inputs/outputs and template rendering
-- Use jest.fn() for mocks, HttpTestingController for HTTP testing
-- Implement proper cleanup in afterEach
-- Coverage targets: >80% for services, >70% for components
+**Rationale**: Consistent testing patterns ensure reliability and make tests maintainable across
+the codebase. The AAA pattern provides clear test structure.
 
-**Rationale**: TDD ensures requirements are testable, reduces defects, provides living documentation, and enables confident refactoring.
+### IV. Component Architecture
 
-### IV. OnPush Change Detection & Performance
+All tools MUST follow the established component pattern:
 
-All components MUST use OnPush change detection strategy.
+- Tool Component (`*-tool.component.ts`): UI wrapped in `DevToolbarToolComponent`
+- Internal Service (`*-internal.service.ts`): Tool-specific state using signals
+- Public Service (`*.service.ts`): Public API implementing `DevToolsService<T>` interface
+- Models (`*.models.ts`): Type definitions for the tool's data structures
 
-- ChangeDetectionStrategy.OnPush required for all components
-- Use signals and computed values to trigger change detection
-- Avoid mutable operations that bypass change detection
-- Use markForCheck() only when absolutely necessary
-- Profile components with DevTools before optimizing
+Component property order MUST be: Injects → Inputs → Outputs → Signals → Computed → Other →
+Public methods → Protected methods → Private methods.
 
-**Performance Standards**:
-- Initial toolbar render <100ms
-- Tool switching transition <50ms
-- State updates <16ms (60fps)
-- Bundle size delta per tool <5KB gzipped
+**Rationale**: Consistent architecture makes the codebase predictable. Developers can understand
+any tool by understanding one tool. The separation of internal/public services provides clean APIs.
 
-**Rationale**: OnPush dramatically reduces change detection cycles, improves rendering performance, and forces immutable state patterns that prevent bugs.
+### V. Simplicity First
 
-### V. Consistent Tool Architecture Pattern
+All implementations MUST prioritize simplicity:
 
-Every tool MUST follow the established three-layer architecture.
+- Changes MUST be limited to what is directly requested or clearly necessary
+- Features MUST NOT be added beyond the explicit request
+- Abstractions MUST NOT be created for one-time operations
+- Error handling MUST only validate at system boundaries (user input, external APIs)
+- Comments MUST only be added where logic is not self-evident
+- Unused code MUST be deleted completely - no backward-compatibility hacks
 
-**Required Structure**:
-1. **Tool Component** (*-tool.component.ts): UI layer wrapping DevToolbarToolComponent
-2. **Internal Service** (*-internal.service.ts): State management with signals
-3. **Public Service** (*.service.ts): Public API implementing DevToolsService<T>
-4. **Models** (*.models.ts): Type definitions for tool data
+**Rationale**: Over-engineering creates maintenance burden and obscures intent. YAGNI (You Aren't
+Gonna Need It) keeps the codebase lean and understandable.
 
-**Public Service Contract**:
-```typescript
-interface DevToolsService<T> {
-  setAvailableOptions(options: T[]): void;
-  getForcedValues(): Observable<T[]>;
-}
-```
+## Development Standards
 
-**Rationale**: Consistent architecture reduces cognitive load, enables pattern recognition, simplifies onboarding, and ensures predictable integration for library consumers.
+### Technology Stack
 
-### VI. Design System Consistency
-
-All UI components MUST use the centralized design system.
-
-**Requirements**:
-- Use CSS custom properties with --ndt-* prefix exclusively
-- Reference design tokens: colors, spacing, border-radius, font-sizes
-- Support light/dark themes via [attr.data-theme]="theme()"
-- Use reusable components from src/components/ (button, input, select, card, window, icons)
-- Responsive layouts with flexbox
-- Scrollable content with overflow-y: auto
-
-**Rationale**: Design system ensures visual consistency, maintainability, theme support, and reduces CSS duplication across tools.
-
-### VII. Zero Production Impact
-
-The toolbar MUST have zero impact on production builds unless explicitly enabled.
-
-- Hidden by default in production mode
-- No runtime overhead when not visible
-- No production bundle size increase for unused tools
-- Tree-shakeable exports for partial imports
-- Keyboard shortcut (Ctrl+Shift+D) disabled in production by default
-- Opt-in production access via configuration flag only
-
-**Rationale**: Development tools should never impact production performance, bundle size, or user experience.
-
-## Angular Development Standards
-
-### Component Structure
-
-Components MUST follow this property order:
-1. Injects (using inject() function)
-2. Inputs (using input() function)
-3. Outputs (using output() function)
-4. Signals (signal(), computed())
-5. Other properties
-6. Public methods
-7. Protected methods
-8. Private methods
-
-### Template Practices
-
-- Prefer inline templates for components <30 lines
-- Use class bindings instead of ngClass: [class.active]="isActive()"
-- Use style bindings instead of ngStyle: [style.color]="themeColor()"
-- Use @if/@for/@switch (control flow syntax) instead of *ngIf/*ngFor/*ngSwitch
-- Avoid template expressions with side effects
-
-### Reactive Forms
-
-- Use Reactive Forms over Template-driven forms
-- Typed form controls with FormControl<T>
-- Form validation with built-in and custom validators
-- Signal-based form state via toSignal()
-
-## Testing & Quality Standards
-
-### Test Organization
-
-```
-tests/
-├── unit/          # Component and service unit tests
-├── integration/   # Multi-component interaction tests
-└── e2e/           # End-to-end Playwright tests
-```
-
-### Test Requirements
-
-- Every public method MUST have unit test coverage
-- Every user-facing feature MUST have E2E test coverage
-- Edge cases and error paths MUST be tested
-- Breaking changes MUST include migration tests
-- Use descriptive test names: "should [expected behavior] when [condition]"
+- **Framework**: Angular 19.0+ with signals support
+- **Component Dev Kit**: Angular CDK 19.0
+- **Reactive Programming**: RxJS 7.8
+- **Monorepo Tooling**: Nx 20.3+
+- **Testing**: Jest (unit), Playwright (E2E)
 
 ### Code Quality
 
-- ESLint rules MUST pass without warnings
-- Prettier formatting MUST be applied
-- No console.log statements in committed code
-- TypeScript strict mode enabled
-- No any types except in explicit edge cases with justification
+- All components MUST pass `nx lint ngx-dev-toolbar`
+- All tests MUST pass `nx test ngx-dev-toolbar`
+- Exports MUST be registered in `libs/ngx-dev-toolbar/src/index.ts`
+
+## Quality Gates
+
+### Before Merging
+
+- [ ] All lint rules pass without warnings
+- [ ] All unit tests pass
+- [ ] E2E tests pass for affected features
+- [ ] New components follow the established architecture pattern
+- [ ] CSS follows defensive patterns documented in CLAUDE.md
+- [ ] No unnecessary abstractions or over-engineering
+
+### Release Checklist
+
+- [ ] Build succeeds: `nx run ngx-dev-toolbar:build`
+- [ ] Package succeeds: `npm run package`
+- [ ] Changelog updated via conventional commits
+- [ ] Version follows semantic versioning
 
 ## Governance
 
-### Constitution Authority
+This constitution supersedes all other development practices for this project. Amendments require:
 
-This constitution supersedes all other development practices, style guides, and conventions. In case of conflict, the constitution takes precedence.
+1. Documentation of the proposed change with rationale
+2. Update to this constitution file
+3. Migration plan for existing code if breaking changes are introduced
 
-### Amendment Process
+All pull requests and code reviews MUST verify compliance with these principles. Complexity beyond
+these standards MUST be explicitly justified in the PR description.
 
-1. Proposed amendments MUST be documented with rationale
-2. Team review and consensus required
-3. Version bump according to semantic versioning:
-   - **MAJOR**: Backward-incompatible principle removals or redefinitions
-   - **MINOR**: New principles or materially expanded guidance
-   - **PATCH**: Clarifications, wording fixes, non-semantic refinements
-4. Migration plan required for breaking changes
-5. Update date and version in constitution footer
+For runtime development guidance, refer to `CLAUDE.md` which contains detailed implementation
+patterns and examples.
 
-### Compliance Review
-
-- All PRs MUST verify compliance with constitution principles
-- Architecture decisions MUST reference relevant principles
-- Deviations require explicit justification and approval
-- Complex patterns MUST justify why simpler alternatives were rejected
-
-### Versioning & Releases
-
-- Use Nx Release with conventional commits
-- Commit types: feat (minor), fix (patch), cleanup/refactor (patch)
-- docs commits do not trigger releases
-- Automatic changelog generation from commits
-- Pre-release: npm run package validates build
-- GitHub releases created automatically
-
-### Documentation Standards
-
-- Public APIs MUST have JSDoc comments
-- Complex algorithms MUST have inline explanation comments
-- Breaking changes MUST be documented in CHANGELOG.md
-- Migration guides required for major version bumps
-- Use CLAUDE.md for AI agent development guidance
-
-**Version**: 1.0.0 | **Ratified**: 2025-10-12 | **Last Amended**: 2025-10-12
+**Version**: 1.0.0 | **Ratified**: 2025-12-29 | **Last Amended**: 2025-12-29
