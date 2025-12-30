@@ -1,398 +1,187 @@
 # Angular Dev Toolbar
 
-<div align="center">
-
 [![npm version](https://badge.fury.io/js/ngx-dev-toolbar.svg)](https://www.npmjs.com/package/ngx-dev-toolbar)
 [![Downloads](https://img.shields.io/npm/dm/ngx-dev-toolbar.svg)](https://www.npmjs.com/package/ngx-dev-toolbar)
-[![License](https://img.shields.io/npm/l/ngx-dev-toolbar.svg)](https://github.com/yourusername/ngx-dev-toolbar/blob/main/LICENSE)
+[![License](https://img.shields.io/npm/l/ngx-dev-toolbar.svg)](https://github.com/alfredoperez/ngx-dev-toolbar/blob/main/LICENSE)
 [![Angular](https://img.shields.io/badge/Angular-19%2B-red)](https://angular.io/)
-[![GitHub Stars](https://img.shields.io/github/stars/alfredoperez/ngx-dev-toolbar?style=social)](https://github.com/alfredoperez/ngx-dev-toolbar)
 
-<h3>A powerful development toolbar for Angular applications that helps developers to interact with the application in a more efficient way.</h3>
+A development toolbar for Angular 19+ applications that helps developers interact with the application more efficiently.
 
-<p align="center">
-  <img src="./docs/images/demo.gif" alt="Dev Toolbar Demo" width="600px" />
-</p>
+![Dev Toolbar Demo](./docs/images/demo.gif)
 
-</div>
+## Why ngx-dev-toolbar?
 
-## ✨ Why ngx-dev-toolbar?
-
-<div align="center">
-  <table>
-    <tr>
-      <td align="center">🚥</td>
-      <td>Toggle feature flags without backend changes</td>
-    </tr>
-    <tr>
-      <td align="center">🌍</td>
-      <td>Switch languages instantly</td>
-    </tr>
-    <tr>
-      <td align="center">🧩</td>
-      <td>Test product features and subscription tiers</td>
-    </tr>
-    <tr>
-      <td align="center">🎨</td>
-      <td>Switch themes on the fly</td>
-    </tr>
-    <tr>
-      <td align="center">👤</td>
-      <td>Change user sessions effortlessly</td>
-    </tr>
-    <tr>
-      <td align="center">🔄</td>
-      <td>Mock network requests in real-time</td>
-    </tr>
-    <tr>
-    <td align="center">🔐</td>
-      <td>Test permission-based UI without backend changes</td>
-    </tr>
-  </table>
-</div>
+- Toggle feature flags without backend changes
+- Switch languages instantly
+- Test product features and subscription tiers
+- Switch themes on the fly
+- Change user sessions effortlessly
+- Mock network requests in real-time
+- Test permission-based UI without backend changes
 
 No more context switching or backend dependencies - everything you need is right in your browser!
 
-## 🎯 Features
-
-<div class="feature-grid">
-
-### 📦 Available Tools
-
-- Feature Flags
-- Language Switcher
-- Permissions Tool
-- App Features Tool
-- Presets Tool
-- Network Mocker (Request Interceptor)
-- Themes `Coming Soon`
-- User Session `Coming Soon`
-
-### 🛠️ Extensible
-
-- Create custom tools
-- Add your own functionality
-
-### 🔒 Production Ready
-
-- Hidden by default in production
-- Zero production impact
-- Secure implementation
-
-### 💾 Persistent State
-
-- Settings persist across reloads
-- Import/Export configuration
-
-</div>
-
-## 📱 Quick Start
-
-<details>
-<summary><b>1. Installation</b></summary>
+## Installation
 
 ```bash
 npm install ngx-dev-toolbar --save-dev
 ```
 
-</details>
-
-<details>
-<summary><b>2. Import Component</b></summary>
+## Quick Start
 
 ```typescript
 import { DevToolbarComponent } from 'ngx-dev-toolbar';
 
 @Component({
   imports: [DevToolbarComponent],
-  template: ` <ndt-toolbar> </ndt-toolbar>`,
+  template: `<ndt-toolbar></ndt-toolbar>`,
 })
 export class AppComponent {}
 ```
 
-</details>
-
 ## Available Tools
 
-The tools come with a default implementation, but you can create your own tools and add them to the toolbar.
+| Tool | Description |
+|------|-------------|
+| Feature Flags | Toggle feature flags on/off during development |
+| Permissions | Test permission-based UI without backend changes |
+| App Features | Test product features and subscription tiers |
+| Language Switcher | Switch between available languages |
+| Presets | Save and restore tool configurations |
+| Network Mocker | Mock HTTP requests in real-time |
 
-They have a service that you can use to interact with them.
-
-### Feature Flags
-
-#### Configuration
-
-In order to use the feature flags tool, you need to import the `DevToolbarFeatureFlagService` and inject it in your component.
-
-Then you just need to call the `setAvailableOptions` method with the available feature flags that can come from your backend or a third party service.
+## Feature Flags
 
 ```typescript
 import { DevToolbarFeatureFlagService } from 'ngx-dev-toolbar';
-import { inject } from '@angular/core';
 
-@Component({
-  // ... component decorator
-})
+@Component({...})
 export class AppComponent {
   private featureFlagsService = inject(DevToolbarFeatureFlagService);
 
   constructor() {
-    // Set available feature flags
     this.featureFlagsService.setAvailableOptions([
-      { id: 'darkMode', name: 'Dark Mode' },
-      { id: 'betaFeatures', name: 'Beta Features' },
-      { id: 'experimentalUI', name: 'Experimental UI' },
+      { id: 'darkMode', name: 'Dark Mode', isEnabled: false },
+      { id: 'betaFeatures', name: 'Beta Features', isEnabled: true },
     ]);
   }
 }
 ```
 
-Once it is added you should see them in the Feature Flags tool in the Angular Dev Toolbar with a visual filter indicator for easier navigation.
-
-> **Note**: Screenshots are being updated to reflect the latest UI improvements including new lock, filter, and bolt icons.
-
-#### Usage
+Subscribe to forced values:
 
 ```typescript
-@Component({
-  // ... component decorator
-})
-export class FeatureComponent {
-  private featureFlagsService = inject(DevToolbarFeatureFlagService);
-
-  ngOnInit() {
-    this.featureFlagsService.getForcedValues().subscribe((forcedFlags) => {
-      const isDarkMode = forcedFlags.some((flag) => flag.id === 'darkMode');
-      // Apply dark mode logic
-    });
-  }
-}
+this.featureFlagsService.getForcedValues().subscribe((flags) => {
+  // Apply forced flag states
+});
 ```
 
-#### Recent UI Improvements
-
-- 🔐 Lock icon for permissions tool
-- 🔍 Filter icons for better visual clarity
-- ⚡ Bolt icon for custom tools
-- 📝 Improved text wrapping in tool descriptions
-
-### Permissions Tool
-
-#### Configuration
+## Permissions
 
 ```typescript
 import { DevToolbarPermissionsService } from 'ngx-dev-toolbar';
-import { inject } from '@angular/core';
 
-@Component({
-  // ... component decorator
-})
+@Component({...})
 export class AppComponent {
   private permissionsService = inject(DevToolbarPermissionsService);
 
   constructor() {
-    // Set available permissions
     this.permissionsService.setAvailableOptions([
-      { id: 'can-edit', name: 'Can Edit Posts', description: 'Allows editing posts', isGranted: false, isForced: false },
-      { id: 'can-delete', name: 'Can Delete Posts', description: 'Allows deleting posts', isGranted: false, isForced: false },
-      { id: 'can-manage-users', name: 'Can Manage Users', description: 'Allows user management', isGranted: false, isForced: false },
-      { id: 'is-admin', name: 'Admin Access', description: 'Full admin access', isGranted: false, isForced: false },
+      { id: 'can-edit', name: 'Can Edit', isGranted: false },
+      { id: 'is-admin', name: 'Admin Access', isGranted: false },
     ]);
   }
 }
 ```
 
-#### Usage
+## App Features
+
+Test product-level feature availability like license tiers and subscription features:
 
 ```typescript
-@Component({
-  // ... component decorator
-})
-export class ProtectedComponent {
-  private permissionsService = inject(DevToolbarPermissionsService);
+import { DevToolbarAppFeaturesService } from 'ngx-dev-toolbar';
 
-  ngOnInit() {
-    this.permissionsService.getForcedValues().subscribe((forcedPermissions) => {
-      const canEdit = forcedPermissions.some(p => p.id === 'can-edit' && p.isGranted);
-      const isAdmin = forcedPermissions.some(p => p.id === 'is-admin' && p.isGranted);
-      // Apply permission-based logic
-    });
+@Component({...})
+export class AppComponent {
+  private appFeaturesService = inject(DevToolbarAppFeaturesService);
+
+  constructor() {
+    this.appFeaturesService.setAvailableOptions([
+      { id: 'analytics', name: 'Advanced Analytics', isEnabled: false },
+      { id: 'multi-user', name: 'Multi-User Support', isEnabled: true },
+    ]);
   }
 }
 ```
 
-### Language Switcher
-
-#### Configuration
+## Language Switcher
 
 ```typescript
 import { DevToolbarLanguageService } from 'ngx-dev-toolbar';
-import { inject } from '@angular/core';
 
-@Component({
-  // ... component decorator
-})
+@Component({...})
 export class AppComponent {
   private languageService = inject(DevToolbarLanguageService);
 
   constructor() {
-    // Set available languages
     this.languageService.setAvailableOptions([
       { code: 'en', name: 'English' },
       { code: 'es', name: 'Spanish' },
-      { code: 'fr', name: 'French' },
     ]);
   }
 }
 ```
 
-#### Usage
+## Configuration
+
+The toolbar accepts a configuration object to control visibility of tools:
 
 ```typescript
 @Component({
-  // ... component decorator
-})
-export class TranslatedComponent {
-  private languageService = inject(DevToolbarLanguageService);
-
-  ngOnInit() {
-    this.languageService.getForcedValues().subscribe(([selectedLang]) => {
-      // Update component's language
-      this.currentLanguage = selectedLang.code;
-      this.loadTranslations();
-    });
-  }
-}
-```
-
-### App Features
-
-The App Features tool allows you to test product-level feature availability like license tiers, deployment configurations, and environment flags without changing backend settings. Perfect for testing subscription tiers, premium features, and environment-specific functionality.
-
-#### Configuration
-
-```typescript
-import { DevToolbarAppFeaturesService, DevToolbarAppFeature } from 'ngx-dev-toolbar';
-import { inject } from '@angular/core';
-
-@Component({
-  // ... component decorator
+  template: `<ndt-toolbar [config]="toolbarConfig"></ndt-toolbar>`,
 })
 export class AppComponent {
-  private appFeaturesService = inject(DevToolbarAppFeaturesService);
-
-  constructor() {
-    // Set available product features
-    const features: DevToolbarAppFeature[] = [
-      {
-        id: 'advanced-analytics',
-        name: 'Advanced Analytics Dashboard',
-        description: 'Premium reporting and data visualization',
-        isEnabled: false,  // Not available in current tier
-        isForced: false
-      },
-      {
-        id: 'multi-user-support',
-        name: 'Multi-User Collaboration',
-        description: 'Team features and user management',
-        isEnabled: true,   // Available in current tier
-        isForced: false
-      },
-      {
-        id: 'white-label-branding',
-        name: 'White Label Branding',
-        description: 'Custom branding with your logo and colors',
-        isEnabled: false,  // Enterprise feature
-        isForced: false
-      }
-    ];
-
-    this.appFeaturesService.setAvailableOptions(features);
-  }
+  toolbarConfig = {
+    enabled: true,
+    showLanguageTool: true,
+    showFeatureFlagsTool: true,
+    showAppFeaturesTool: true,
+    showPermissionsTool: true,
+    showPresetsTool: true,
+  };
 }
 ```
 
-#### Usage
+## Keyboard Shortcuts
 
-```typescript
-@Component({
-  // ... component decorator
-})
-export class PremiumFeatureComponent {
-  private appFeaturesService = inject(DevToolbarAppFeaturesService);
+- **Ctrl+Shift+D**: Toggle toolbar visibility
 
-  ngOnInit() {
-    this.appFeaturesService.getForcedValues().subscribe((forcedFeatures) => {
-      // Apply forced feature states to your application
-      forcedFeatures.forEach(feature => {
-        if (feature.id === 'advanced-analytics' && feature.isEnabled) {
-          this.enableAnalyticsDashboard();
-        }
-      });
-    });
-  }
-}
-```
+## Features
 
-#### Use Cases
+- **Persistent State**: Settings persist across page reloads
+- **Production Ready**: Hidden by default in production with zero impact
+- **Extensible**: Create custom tools to fit your workflow
 
-- **SaaS Subscription Tiers**: Test Basic, Professional, and Enterprise tiers without changing subscriptions
-- **Feature Gating**: Test premium feature access and upgrade flows
-- **Environment Configuration**: Test features specific to dev, staging, or production
-- **License Management**: Test on-premise vs cloud feature availability
-- **A/B Testing**: Test different feature combinations
-- **Beta Rollouts**: Enable/disable beta features for testing
+## Documentation
+
+For full documentation, visit: [https://alfredoperez.github.io/ngx-dev-toolbar/](https://alfredoperez.github.io/ngx-dev-toolbar/)
 
 ## Contributing
 
 We welcome contributions! Please see our [contributing guidelines](https://github.com/alfredoperez/ngx-dev-toolbar/blob/main/CONTRIBUTING.md) for details.
 
+## Support
+
+- [Documentation](https://alfredoperez.github.io/ngx-dev-toolbar/)
+- [Issue Tracker](https://github.com/alfredoperez/ngx-dev-toolbar/issues)
+- [Discussions](https://github.com/alfredoperez/ngx-dev-toolbar/discussions)
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](https://github.com/alfredoperez/ngx-dev-toolbar/blob/main/LICENSE) file for details.
 
-## Support
-
-<div align="center">
-
-<table>
-  <tr>
-    <td align="center">
-      <a href="https://alfredoperez.github.io/ngx-dev-toolbar/">
-        📚
-        <br />
-        Documentation
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/alfredoperez/ngx-dev-toolbar/issues">
-        🐛
-        <br />
-        Issue Tracker
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/alfredoperez/ngx-dev-toolbar/discussions">
-        💬
-        <br />
-        Discussions
-      </a>
-    </td>
-  </tr>
-</table>
-
-</div>
-
-## 🌟 Stay Connected
-
-<div align="center">
+---
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue)](https://www.linkedin.com/in/alfredo-perez/)
 [![Bluesky](https://img.shields.io/badge/Bluesky-Follow-1DA1F2)](https://bsky.app/profile/alfredo-perez.bsky.social)
 [![GitHub Stars](https://img.shields.io/github/stars/alfredoperez/ngx-dev-toolbar?style=social)](https://github.com/alfredoperez/ngx-dev-toolbar)
-
-<hr />
-
-<p>Built with ❤️ using <a href="https://nx.dev">Nx</a></p>
-
-</div>
