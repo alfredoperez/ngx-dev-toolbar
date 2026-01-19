@@ -11,7 +11,7 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DevToolbarStateService } from '../../dev-toolbar-state.service';
+import { ToolbarStateService } from '../../toolbar-state.service';
 
 export interface SelectOption {
   value: string;
@@ -19,12 +19,12 @@ export interface SelectOption {
 }
 
 @Component({
-  selector: 'ndt-select',
+  selector: 'ngt-select',
   standalone: true,
   imports: [CommonModule, FormsModule, OverlayModule, CdkMenuModule],
   template: `
     <div
-      class="ndt-select"
+      class="ngt-select"
       [class.small]="size() === 'small'"
       [class.open]="isOpen()"
       [attr.aria-label]="ariaLabel()"
@@ -48,12 +48,12 @@ export interface SelectOption {
       [cdkConnectedOverlayOrigin]="trigger"
       [cdkConnectedOverlayOpen]="isOpen()"
       [cdkConnectedOverlayPositions]="positions"
-      [cdkConnectedOverlayPanelClass]="['ndt-overlay-panel', 'ndt-select-overlay']"
+      [cdkConnectedOverlayPanelClass]="['ngt-overlay-panel', 'ngt-select-overlay']"
       (overlayOutsideClick)="close()"
     >
       <div
         [id]="selectMenuId"
-        class="ndt-select-menu"
+        class="ngt-select-menu"
         cdkMenu
         role="listbox"
         [attr.data-theme]="theme()"
@@ -76,8 +76,8 @@ export interface SelectOption {
   styleUrls: ['./select.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DevToolbarSelectComponent {
-  readonly devToolbarStateService = inject(DevToolbarStateService);
+export class ToolbarSelectComponent {
+  readonly devToolbarStateService = inject(ToolbarStateService);
 
   value = model<string>();
   options = input.required<SelectOption[]>();

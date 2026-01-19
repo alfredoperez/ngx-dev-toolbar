@@ -7,7 +7,7 @@
 .clickable-card {
   display: flex;
   flex-direction: column;
-  gap: var(--ndt-spacing-xs);
+  gap: var(--ngt-spacing-xs);
   height: 100%;
 
   &__icon {
@@ -16,26 +16,26 @@
     justify-content: center;
     width: 32px;
     height: 32px;
-    border-radius: var(--ndt-border-radius-medium);
-    background: var(--ndt-hover-bg);
-    color: var(--ndt-text-primary);
+    border-radius: var(--ngt-border-radius-medium);
+    background: var(--ngt-hover-bg);
+    color: var(--ngt-text-primary);
   }
 
   &__content {
     display: flex;
     flex-direction: column;
-    gap: var(--ndt-spacing-xs);
+    gap: var(--ngt-spacing-xs);
   }
 
   &__title {
-    color: var(--ndt-text-primary);
-    font-size: var(--ndt-font-size-sm);
+    color: var(--ngt-text-primary);
+    font-size: var(--ngt-font-size-sm);
     font-weight: 500;
   }
 
   &__subtitle {
-    color: var(--ndt-text-muted);
-    font-size: var(--ndt-font-size-xs);
+    color: var(--ngt-text-muted);
+    font-size: var(--ngt-font-size-xs);
     line-height: 1.4;
     display: -webkit-box;
     -webkit-line-clamp: 2;

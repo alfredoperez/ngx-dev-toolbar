@@ -5,10 +5,10 @@ import { RouterOutlet } from '@angular/router';
 import { TranslocoService } from '@jsverse/transloco';
 
 import {
-  DevToolbarAppFeaturesService,
-  DevToolbarFeatureFlagService,
-  DevToolbarFlag,
-  DevToolbarLanguageService,
+  ToolbarAppFeaturesService,
+  ToolbarFeatureFlagService,
+  ToolbarFlag,
+  ToolbarLanguageService,
 } from 'ngx-dev-toolbar';
 import { firstValueFrom, map } from 'rxjs';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
@@ -123,15 +123,15 @@ import { FeatureFlagsService } from './services/feature-flags.service';
   ],
 })
 export class AppComponent implements OnInit {
-  private readonly languageToolbarService = inject(DevToolbarLanguageService);
+  private readonly languageToolbarService = inject(ToolbarLanguageService);
   private readonly analyticsService = inject(AnalyticsService);
   private readonly translocoService = inject(TranslocoService);
-  private readonly devToolbarFeatureFlagsService = inject(
-    DevToolbarFeatureFlagService
+  private readonly toolbarFeatureFlagsService = inject(
+    ToolbarFeatureFlagService
   );
   private readonly featureFlagsService = inject(FeatureFlagsService);
-  private readonly devToolbarAppFeaturesService = inject(
-    DevToolbarAppFeaturesService
+  private readonly toolbarAppFeaturesService = inject(
+    ToolbarAppFeaturesService
   );
   public readonly appFeaturesConfig = inject(AppFeaturesConfigService);
 
@@ -147,8 +147,8 @@ export class AppComponent implements OnInit {
   }
 
   private async loadFlags(): Promise<void> {
-    // Gets the flags from the application and sets them in the dev toolbar
-    const flags: DevToolbarFlag[] = await firstValueFrom(
+    // Gets the flags from the application and sets them in the toolbar
+    const flags: ToolbarFlag[] = await firstValueFrom(
       this.featureFlagsService.flags$.pipe(
         map((flags) =>
           flags.map(
@@ -158,12 +158,12 @@ export class AppComponent implements OnInit {
                 name: flag.name,
                 description: flag.description,
                 isEnabled: flag.enabled,
-              } as DevToolbarFlag)
+              } as ToolbarFlag)
           )
         )
       )
     );
-    this.devToolbarFeatureFlagsService.setAvailableOptions(flags);
+    this.toolbarFeatureFlagsService.setAvailableOptions(flags);
   }
 
   constructor() {
@@ -186,12 +186,12 @@ export class AppComponent implements OnInit {
       });
 
     // Set up app features integration
-    // Get all features across all tiers for the dev toolbar
+    // Get all features across all tiers for the toolbar
     const features = this.appFeaturesConfig.getAllFeatures();
-    this.devToolbarAppFeaturesService.setAvailableOptions(features);
+    this.toolbarAppFeaturesService.setAvailableOptions(features);
 
-    // Subscribe to forced feature overrides from the dev toolbar
-    this.devToolbarAppFeaturesService
+    // Subscribe to forced feature overrides from the toolbar
+    this.toolbarAppFeaturesService
       .getForcedValues()
       .pipe(takeUntilDestroyed())
       .subscribe((forcedFeatures) => {

@@ -9,49 +9,49 @@
   font-family: devtools.$font-family;
 }
 
-.ndt-select {
+.ngt-select {
   position: relative;
   width: 100%;
   min-width: 120px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--ndt-spacing-sm) var(--ndt-spacing-md);
-  border: 1px solid var(--ndt-border-primary);
-  border-radius: var(--ndt-border-radius-small);
-  background-color: var(--ndt-bg-primary);
-  color: var(--ndt-text-primary);
-  font-size: var(--ndt-font-size-sm);
+  padding: var(--ngt-spacing-sm) var(--ngt-spacing-md);
+  border: 1px solid var(--ngt-border-primary);
+  border-radius: var(--ngt-border-radius-small);
+  background-color: var(--ngt-bg-primary);
+  color: var(--ngt-text-primary);
+  font-size: var(--ngt-font-size-sm);
   cursor: pointer;
   user-select: none;
-  transition: var(--ndt-transition-default);
+  transition: var(--ngt-transition-default);
   outline: none;
   min-height: 36px;
   box-sizing: border-box;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 
   &:hover {
-    background-color: var(--ndt-hover-bg);
-    border-color: var(--ndt-primary);
+    background-color: var(--ngt-hover-bg);
+    border-color: var(--ngt-primary);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
 
   &:focus-visible {
     outline: none;
-    border-color: var(--ndt-primary);
-    box-shadow: 0 0 0 2px rgba(var(--ndt-primary-rgb), 0.2),
+    border-color: var(--ngt-primary);
+    box-shadow: 0 0 0 2px rgba(var(--ngt-primary-rgb), 0.2),
       0 1px 3px rgba(0, 0, 0, 0.1);
   }
 
   &.small {
-    padding: var(--ndt-spacing-xs) var(--ndt-spacing-sm);
-    font-size: var(--ndt-font-size-sm);
+    padding: var(--ngt-spacing-xs) var(--ngt-spacing-sm);
+    font-size: var(--ngt-font-size-sm);
     height: 24px;
   }
 
   &.open {
-    border-color: var(--ndt-primary);
-    box-shadow: 0 0 0 2px rgba(var(--ndt-primary-rgb), 0.2),
+    border-color: var(--ngt-primary);
+    box-shadow: 0 0 0 2px rgba(var(--ngt-primary-rgb), 0.2),
       0 1px 3px rgba(0, 0, 0, 0.1);
 
     .select__arrow {
@@ -65,7 +65,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 1.4;
-    margin-right: var(--ndt-spacing-sm);
+    margin-right: var(--ngt-spacing-sm);
     min-width: 0;
     display: flex;
     align-items: center;
@@ -84,16 +84,16 @@
   }
 }
 
-.ndt-select-menu {
+.ngt-select-menu {
   display: inline-flex;
   flex-direction: column;
   min-width: 180px;
-  background-color: var(--ndt-bg-primary);
-  padding: var(--ndt-spacing-sm) 0;
-  border: 2px solid var(--ndt-border-primary);
-  border-radius: var(--ndt-border-radius-large);
+  background-color: var(--ngt-bg-primary);
+  padding: var(--ngt-spacing-sm) 0;
+  border: 2px solid var(--ngt-border-primary);
+  border-radius: var(--ngt-border-radius-large);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
-  color: var(--ndt-text-primary);
+  color: var(--ngt-text-primary);
   max-height: min(400px, 70vh);
   overflow-y: auto;
   backdrop-filter: blur(8px);
@@ -107,16 +107,16 @@
   background-color: transparent;
   cursor: pointer;
   border: none;
-  color: var(--ndt-text-primary);
+  color: var(--ngt-text-primary);
   user-select: none;
   min-width: 64px;
-  padding: var(--ndt-spacing-sm) var(--ndt-spacing-md) var(--ndt-spacing-sm)
-    var(--ndt-spacing-lg);
+  padding: var(--ngt-spacing-sm) var(--ngt-spacing-md) var(--ngt-spacing-sm)
+    var(--ngt-spacing-lg);
   display: flex;
   align-items: center;
   flex-direction: row;
   flex: 1;
-  font-size: var(--ndt-font-size-xs);
+  font-size: var(--ngt-font-size-xs);
   font-family: inherit;
   position: relative;
   white-space: nowrap;
@@ -131,16 +131,16 @@
   }
 
   &:active {
-    background-color: rgba(var(--ndt-primary-rgb), 0.15);
+    background-color: rgba(var(--ngt-primary-rgb), 0.15);
   }
 
   &.selected {
-    color: var(--ndt-primary);
-    background-color: rgba(var(--ndt-primary-rgb), 0.08);
+    color: var(--ngt-primary);
+    background-color: rgba(var(--ngt-primary-rgb), 0.08);
     font-weight: 400;
 
     &:hover {
-      background-color: rgba(var(--ndt-primary-rgb), 0.12);
+      background-color: rgba(var(--ngt-primary-rgb), 0.12);
     }
 
     &::before {
@@ -150,7 +150,7 @@
       top: 8px;
       width: 3px;
       height: calc(100% - 16px);
-      background-color: var(--ndt-primary);
+      background-color: var(--ngt-primary);
       border-radius: 2px;
     }
   }
@@ -161,11 +161,11 @@
   }
 
   &:first-child {
-    margin-top: var(--ndt-spacing-xs);
+    margin-top: var(--ngt-spacing-xs);
   }
 
   &:last-child {
-    margin-bottom: var(--ndt-spacing-xs);
+    margin-bottom: var(--ngt-spacing-xs);
   }
 }
 

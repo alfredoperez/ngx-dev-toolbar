@@ -1,9 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable, combineLatest, map } from 'rxjs';
-import { DevToolbarStateService } from '../../dev-toolbar-state.service';
-import { DevToolsStorageService } from '../../utils/storage.service';
-import { DevToolbarFlag } from './feature-flags.models';
+import { ToolbarStateService } from '../../toolbar-state.service';
+import { ToolbarStorageService } from '../../utils/storage.service';
+import { ToolbarFlag } from './feature-flags.models';
 
 interface ForcedFlagsState {
   enabled: string[];
@@ -11,12 +11,12 @@ interface ForcedFlagsState {
 }
 
 @Injectable({ providedIn: 'root' })
-export class DevToolbarInternalFeatureFlagService {
+export class ToolbarInternalFeatureFlagService {
   private readonly STORAGE_KEY = 'feature-flags';
-  private storageService = inject(DevToolsStorageService);
-  private stateService = inject(DevToolbarStateService);
+  private storageService = inject(ToolbarStorageService);
+  private stateService = inject(ToolbarStateService);
 
-  private appFlags$ = new BehaviorSubject<DevToolbarFlag[]>([]);
+  private appFlags$ = new BehaviorSubject<ToolbarFlag[]>([]);
   private forcedFlagsSubject = new BehaviorSubject<ForcedFlagsState>({
     enabled: [],
     disabled: [],
@@ -24,7 +24,7 @@ export class DevToolbarInternalFeatureFlagService {
 
   private readonly forcedFlags$ = this.forcedFlagsSubject.asObservable();
 
-  public flags$: Observable<DevToolbarFlag[]> = combineLatest([
+  public flags$: Observable<ToolbarFlag[]> = combineLatest([
     this.appFlags$,
     this.forcedFlags$,
   ]).pipe(
@@ -56,15 +56,15 @@ export class DevToolbarInternalFeatureFlagService {
     this.loadForcedFlags();
   }
 
-  setAppFlags(flags: DevToolbarFlag[]): void {
+  setAppFlags(flags: ToolbarFlag[]): void {
     this.appFlags$.next(flags);
   }
 
-  getAppFlags(): Observable<DevToolbarFlag[]> {
+  getAppFlags(): Observable<ToolbarFlag[]> {
     return this.appFlags$.asObservable();
   }
 
-  getForcedFlags(): Observable<DevToolbarFlag[]> {
+  getForcedFlags(): Observable<ToolbarFlag[]> {
     return this.flags$.pipe(
       map((flags) => {
         // If toolbar is disabled, return empty array (no forced values)

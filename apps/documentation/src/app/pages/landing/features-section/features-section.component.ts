@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { DevToolbarIconComponent, IconName } from 'ngx-dev-toolbar';
+import { ToolbarIconComponent, IconName } from 'ngx-dev-toolbar';
 import { AnalyticsService } from '../../../shared/services/analytics.service';
 interface DemoImage {
   src: string;
@@ -14,7 +14,7 @@ interface Feature {
 @Component({
   selector: 'app-features-section',
   standalone: true,
-  imports: [DevToolbarIconComponent],
+  imports: [ToolbarIconComponent],
   templateUrl: './features-section.component.html',
   styleUrl: './features-section.component.scss',
 })

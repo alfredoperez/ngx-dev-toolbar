@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { DevToolbarIconComponent } from '../icons/icon.component';
+import { ToolbarIconComponent } from '../icons/icon.component';
 import { IconName } from '../icons/icon.models';
 
 @Component({
-  selector: 'ndt-button',
+  selector: 'ngt-button',
   standalone: true,
-  imports: [DevToolbarIconComponent],
+  imports: [ToolbarIconComponent],
   template: `
     <button
       class="button"
@@ -15,7 +15,7 @@ import { IconName } from '../icons/icon.models';
       [class.button--icon]="variant() === 'icon'"
     >
       @if (icon()) {
-        <ndt-icon [name]="icon() || 'star'" />
+        <ngt-icon [name]="icon() || 'star'" />
       }
       @if (label()) {
         <span class="button__label">{{ label() }}</span>
@@ -26,7 +26,7 @@ import { IconName } from '../icons/icon.models';
   styleUrls: ['./button.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DevToolbarButtonComponent {
+export class ToolbarButtonComponent {
   readonly type = input<'button' | 'submit' | 'reset'>('button');
   readonly variant = input<'default' | 'icon'>('default');
   readonly icon = input<IconName>();

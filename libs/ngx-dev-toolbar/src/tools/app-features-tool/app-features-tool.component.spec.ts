@@ -1,7 +1,7 @@
-import { DevToolbarAppFeaturesToolComponent } from './app-features-tool.component';
+import { ToolbarAppFeaturesToolComponent } from './app-features-tool.component';
 
-describe('DevToolbarAppFeaturesToolComponent', () => {
+describe('ToolbarAppFeaturesToolComponent', () => {
   it('should be defined', () => {
-    expect(DevToolbarAppFeaturesToolComponent).toBeDefined();
+    expect(ToolbarAppFeaturesToolComponent).toBeDefined();
   });
 });

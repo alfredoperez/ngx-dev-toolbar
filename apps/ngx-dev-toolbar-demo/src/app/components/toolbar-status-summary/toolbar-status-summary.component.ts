@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AppFeaturesConfigService } from '../../services/app-features-config.service';
-import { DevToolbarPermissionsService, DevToolbarFeatureFlagService, DevToolbarAppFeaturesService } from 'ngx-dev-toolbar';
+import { ToolbarPermissionsService, ToolbarFeatureFlagService, ToolbarAppFeaturesService } from 'ngx-dev-toolbar';
 
 /**
  * Summary component showing currently forced values across all tools.
@@ -346,9 +346,9 @@ import { DevToolbarPermissionsService, DevToolbarFeatureFlagService, DevToolbarA
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarStatusSummaryComponent {
-  private readonly permissionsService = inject(DevToolbarPermissionsService);
-  private readonly flagsService = inject(DevToolbarFeatureFlagService);
-  private readonly featuresService = inject(DevToolbarAppFeaturesService);
+  private readonly permissionsService = inject(ToolbarPermissionsService);
+  private readonly flagsService = inject(ToolbarFeatureFlagService);
+  private readonly featuresService = inject(ToolbarAppFeaturesService);
   private readonly appFeaturesConfig = inject(AppFeaturesConfigService);
 
   // Convert observables to signals

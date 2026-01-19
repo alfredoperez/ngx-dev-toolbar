@@ -1,22 +1,22 @@
 import { Component, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { firstValueFrom, map } from 'rxjs';
-import { DevToolbarSelectComponent } from '../../components/select/select.component';
-import { DevToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
-import { DevToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
-import { DevToolbarInternalLanguageService } from './language-internal.service';
+import { ToolbarSelectComponent } from '../../components/select/select.component';
+import { ToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
+import { ToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
+import { ToolbarInternalLanguageService } from './language-internal.service';
 import { Language } from './language.models';
 
 @Component({
-  selector: 'ndt-language-tool',
+  selector: 'ngt-language-tool',
   standalone: true,
-  imports: [DevToolbarToolComponent, DevToolbarSelectComponent],
+  imports: [ToolbarToolComponent, ToolbarSelectComponent],
   styleUrls: ['./language-tool.component.scss'],
   template: `
-    <ndt-toolbar-tool title="Languages" icon="translate" [options]="options">
+    <ngt-toolbar-tool title="Languages" icon="translate" [options]="options">
       <div class="language-select">
         <label for="language-select">Language</label>
-        <ndt-select
+        <ngt-select
           id="language-select"
           [value]="activeLanguage()"
           [options]="languageOptions()"
@@ -24,20 +24,20 @@ import { Language } from './language.models';
           (valueChange)="onLanguageChange($event ?? '')"
         />
       </div>
-    </ndt-toolbar-tool>
+    </ngt-toolbar-tool>
   `,
 })
-export class DevToolbarLanguageToolComponent {
-  private readonly languageService = inject(DevToolbarInternalLanguageService);
+export class ToolbarLanguageToolComponent {
+  private readonly languageService = inject(ToolbarInternalLanguageService);
 
   protected readonly options = {
     title: 'Languages',
     description: 'Set the language for your current session',
     size: 'small',
-    id: 'ndt-language',
+    id: 'ngt-language',
     isBeta: true,
     isClosable: true,
-  } as DevToolbarWindowOptions;
+  } as ToolbarWindowOptions;
 
   activeLanguage = signal<string>('not-forced');
 

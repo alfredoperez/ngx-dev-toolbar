@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { DevToolsStorageService } from './storage.service';
+import { ToolbarStorageService } from './storage.service';
 
-describe('DevToolsStorageService', () => {
-  let service: DevToolsStorageService;
+describe('ToolbarStorageService', () => {
+  let service: ToolbarStorageService;
   let storageMock: { [key: string]: string };
 
   beforeAll(() => {
@@ -30,9 +30,9 @@ describe('DevToolsStorageService', () => {
   beforeEach(() => {
     storageMock = {};
     TestBed.configureTestingModule({
-      providers: [DevToolsStorageService],
+      providers: [ToolbarStorageService],
     });
-    service = TestBed.inject(DevToolsStorageService);
+    service = TestBed.inject(ToolbarStorageService);
   });
 
   describe('set', () => {
@@ -43,7 +43,7 @@ describe('DevToolsStorageService', () => {
       service.set(key, value);
 
       const storedValue = JSON.parse(
-        storageMock['AngularDevTools.testKey'] ?? '{}'
+        storageMock['AngularToolbar.testKey'] ?? '{}'
       );
       expect(storedValue).toEqual(value);
     });
@@ -54,8 +54,8 @@ describe('DevToolsStorageService', () => {
 
       service.set(key, value);
 
-      const toolKeys = JSON.parse(storageMock['AngularDevTools.keys'] ?? '[]');
-      expect(toolKeys).toContain('AngularDevTools.testKey');
+      const toolKeys = JSON.parse(storageMock['AngularToolbar.keys'] ?? '[]');
+      expect(toolKeys).toContain('AngularToolbar.testKey');
     });
   });
 
@@ -87,7 +87,7 @@ describe('DevToolsStorageService', () => {
 
       service.remove(key);
 
-      expect(storageMock['ndt-testKey']).toBeUndefined();
+      expect(storageMock['ngt-testKey']).toBeUndefined();
     });
 
     it('should keep other values in localStorage', () => {
@@ -115,8 +115,8 @@ describe('DevToolsStorageService', () => {
       const result = service.getAllSettings();
 
       const settingsWithPrefix = {
-        'AngularDevTools.key1': { value: 1 },
-        'AngularDevTools.key2': { value: 2 },
+        'AngularToolbar.key1': { value: 1 },
+        'AngularToolbar.key2': { value: 2 },
       };
       expect(result).toEqual(settingsWithPrefix);
     });
@@ -125,14 +125,14 @@ describe('DevToolsStorageService', () => {
   describe('setAllSettings', () => {
     it('should store multiple settings at once', () => {
       const settings = {
-        'AngularDevTools.key1': { value: 1 },
-        'AngularDevTools.key2': { value: 2 },
+        'AngularToolbar.key1': { value: 1 },
+        'AngularToolbar.key2': { value: 2 },
       };
 
       service.setAllSettings(settings);
 
-      const valueOne = service.get('AngularDevTools.key1');
-      const valueTwo = service.get('AngularDevTools.key2');
+      const valueOne = service.get('AngularToolbar.key1');
+      const valueTwo = service.get('AngularToolbar.key2');
       expect(valueOne).toEqual({ value: 1 });
       expect(valueTwo).toEqual({ value: 2 });
     });

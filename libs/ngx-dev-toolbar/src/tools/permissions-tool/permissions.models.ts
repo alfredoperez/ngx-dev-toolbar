@@ -2,7 +2,7 @@
  * Represents a permission in the developer toolbar.
  * Used to configure and override application permissions for testing.
  */
-export interface DevToolbarPermission {
+export interface ToolbarPermission {
   /** Unique identifier for the permission */
   id: string;
   /** Human-readable name displayed in the UI */

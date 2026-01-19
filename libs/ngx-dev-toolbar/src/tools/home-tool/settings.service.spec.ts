@@ -1,21 +1,21 @@
 import { TestBed } from '@angular/core/testing';
-import { DevToolsStorageService } from '../../utils/storage.service';
+import { ToolbarStorageService } from '../../utils/storage.service';
 import { SettingsService } from './settings.service';
 
 describe('SettingsService', () => {
   let service: SettingsService;
-  let storageServiceMock: DevToolsStorageService;
+  let storageServiceMock: ToolbarStorageService;
 
   beforeEach(() => {
     storageServiceMock = {
       get: jest.fn(),
       set: jest.fn(),
-    } as unknown as DevToolsStorageService;
+    } as unknown as ToolbarStorageService;
 
     TestBed.configureTestingModule({
       providers: [
         SettingsService,
-        { provide: DevToolsStorageService, useValue: storageServiceMock },
+        { provide: ToolbarStorageService, useValue: storageServiceMock },
       ],
     });
 

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
-  selector: 'ndt-code-icon',
+  selector: 'ngt-code-icon',
   standalone: true,
   template: `
     <svg

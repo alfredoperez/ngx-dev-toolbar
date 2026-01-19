@@ -1,13 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DevToolsService } from '../../models/dev-tools.interface';
-import { DevToolbarInternalAppFeaturesService } from './app-features-internal.service';
-import { DevToolbarAppFeature, ForcedAppFeaturesState } from './app-features.models';
+import { ToolbarService } from '../../models/toolbar.interface';
+import { ToolbarInternalAppFeaturesService } from './app-features-internal.service';
+import { ToolbarAppFeature, ForcedAppFeaturesState } from './app-features.models';
 
 /**
  * Public service for managing app features in the dev toolbar.
  *
- * This service implements the DevToolsService interface and provides methods for:
+ * This service implements the ToolbarService interface and provides methods for:
  * - Configuring available product features
  * - Retrieving forced feature overrides
  * - Applying preset feature configurations
@@ -15,15 +15,15 @@ import { DevToolbarAppFeature, ForcedAppFeaturesState } from './app-features.mod
  *
  * @example
  * ```typescript
- * import { DevToolbarAppFeaturesService } from 'ngx-dev-toolbar';
+ * import { ToolbarAppFeaturesService } from 'ngx-dev-toolbar';
  *
  * @Component({...})
  * export class AppComponent implements OnInit {
- *   private appFeaturesService = inject(DevToolbarAppFeaturesService);
+ *   private appFeaturesService = inject(ToolbarAppFeaturesService);
  *
  *   ngOnInit() {
  *     // Configure available features based on current tier
- *     const features: DevToolbarAppFeature[] = [
+ *     const features: ToolbarAppFeature[] = [
  *       { id: 'analytics', name: 'Analytics Dashboard', isEnabled: true, isForced: false },
  *       { id: 'multi-user', name: 'Multi-User Support', isEnabled: false, isForced: false }
  *     ];
@@ -41,8 +41,8 @@ import { DevToolbarAppFeature, ForcedAppFeaturesState } from './app-features.mod
  * ```
  */
 @Injectable({ providedIn: 'root' })
-export class DevToolbarAppFeaturesService implements DevToolsService<DevToolbarAppFeature> {
-  private internalService = inject(DevToolbarInternalAppFeaturesService);
+export class ToolbarAppFeaturesService implements ToolbarService<ToolbarAppFeature> {
+  private internalService = inject(ToolbarInternalAppFeaturesService);
 
   /**
    * Set available app features for the application.
@@ -56,7 +56,7 @@ export class DevToolbarAppFeaturesService implements DevToolsService<DevToolbarA
    *
    * @example
    * ```typescript
-   * const features: DevToolbarAppFeature[] = [
+   * const features: ToolbarAppFeature[] = [
    *   {
    *     id: 'advanced-analytics',
    *     name: 'Advanced Analytics Dashboard',
@@ -75,7 +75,7 @@ export class DevToolbarAppFeaturesService implements DevToolsService<DevToolbarA
    * this.appFeaturesService.setAvailableOptions(features);
    * ```
    */
-  setAvailableOptions(features: DevToolbarAppFeature[]): void {
+  setAvailableOptions(features: ToolbarAppFeature[]): void {
     this.internalService.setAppFeatures(features);
   }
 
@@ -103,7 +103,7 @@ export class DevToolbarAppFeaturesService implements DevToolsService<DevToolbarA
    *   });
    * ```
    */
-  getForcedValues(): Observable<DevToolbarAppFeature[]> {
+  getForcedValues(): Observable<ToolbarAppFeature[]> {
     return this.internalService.getForcedFeatures();
   }
 
@@ -130,7 +130,7 @@ export class DevToolbarAppFeaturesService implements DevToolsService<DevToolbarA
    * });
    * ```
    */
-  getValues(): Observable<DevToolbarAppFeature[]> {
+  getValues(): Observable<ToolbarAppFeature[]> {
     return this.internalService.features$;
   }
 

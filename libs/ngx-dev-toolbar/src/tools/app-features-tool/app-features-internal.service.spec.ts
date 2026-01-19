@@ -1,19 +1,19 @@
 import { TestBed } from '@angular/core/testing';
 import { firstValueFrom } from 'rxjs';
-import { DevToolsStorageService } from '../../utils/storage.service';
-import { DevToolbarInternalAppFeaturesService } from './app-features-internal.service';
-import { DevToolbarAppFeature, ForcedAppFeaturesState } from './app-features.models';
+import { ToolbarStorageService } from '../../utils/storage.service';
+import { ToolbarInternalAppFeaturesService } from './app-features-internal.service';
+import { ToolbarAppFeature, ForcedAppFeaturesState } from './app-features.models';
 
-describe('DevToolbarInternalAppFeaturesService', () => {
-  let service: DevToolbarInternalAppFeaturesService;
-  let storageService: jest.Mocked<DevToolsStorageService>;
+describe('ToolbarInternalAppFeaturesService', () => {
+  let service: ToolbarInternalAppFeaturesService;
+  let storageService: jest.Mocked<ToolbarStorageService>;
 
   const createMockFeature = (
     id: string,
     name: string,
     isEnabled = false,
     description?: string
-  ): DevToolbarAppFeature => ({
+  ): ToolbarAppFeature => ({
     id,
     name,
     description,
@@ -30,13 +30,13 @@ describe('DevToolbarInternalAppFeaturesService', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        DevToolbarInternalAppFeaturesService,
-        { provide: DevToolsStorageService, useValue: storageServiceMock },
+        ToolbarInternalAppFeaturesService,
+        { provide: ToolbarStorageService, useValue: storageServiceMock },
       ],
     });
 
-    service = TestBed.inject(DevToolbarInternalAppFeaturesService);
-    storageService = TestBed.inject(DevToolsStorageService) as jest.Mocked<DevToolsStorageService>;
+    service = TestBed.inject(ToolbarInternalAppFeaturesService);
+    storageService = TestBed.inject(ToolbarStorageService) as jest.Mocked<ToolbarStorageService>;
   });
 
   afterEach(() => {
@@ -45,7 +45,7 @@ describe('DevToolbarInternalAppFeaturesService', () => {
 
   describe('Task 4: setAppFeatures() validation and storage', () => {
     it('should accept valid features array and emit to BehaviorSubject', async () => {
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics Dashboard', false, 'View analytics'),
         createMockFeature('multi-user', 'Multi-User Support', true),
       ];
@@ -57,7 +57,7 @@ describe('DevToolbarInternalAppFeaturesService', () => {
     });
 
     it('should throw error on duplicate feature IDs', () => {
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics Dashboard'),
         createMockFeature('analytics', 'Duplicate Analytics'), // Duplicate ID
       ];
@@ -66,7 +66,7 @@ describe('DevToolbarInternalAppFeaturesService', () => {
     });
 
     it('should throw error on empty feature ID', () => {
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('', 'Invalid Feature'), // Empty ID
       ];
 
@@ -74,7 +74,7 @@ describe('DevToolbarInternalAppFeaturesService', () => {
     });
 
     it('should trim whitespace from feature names', async () => {
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', '  Analytics Dashboard  '),
       ];
 
@@ -86,7 +86,7 @@ describe('DevToolbarInternalAppFeaturesService', () => {
 
     it('should log warning for empty feature names (non-blocking)', () => {
       const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', ''),
       ];
 
@@ -101,7 +101,7 @@ describe('DevToolbarInternalAppFeaturesService', () => {
 
   describe('Task 5: mergeForcedState() combines natural and forced state', () => {
     it('should return features with isForced=false when no forced state exists', async () => {
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics', false),
       ];
 
@@ -113,7 +113,7 @@ describe('DevToolbarInternalAppFeaturesService', () => {
     });
 
     it('should set isEnabled=true and isForced=true for features in enabled array', async () => {
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics', false),
       ];
 
@@ -130,12 +130,12 @@ describe('DevToolbarInternalAppFeaturesService', () => {
 
       TestBed.configureTestingModule({
         providers: [
-          DevToolbarInternalAppFeaturesService,
-          { provide: DevToolsStorageService, useValue: newStorageService },
+          ToolbarInternalAppFeaturesService,
+          { provide: ToolbarStorageService, useValue: newStorageService },
         ],
       });
 
-      const newService = TestBed.inject(DevToolbarInternalAppFeaturesService);
+      const newService = TestBed.inject(ToolbarInternalAppFeaturesService);
       newService.setAppFeatures(features);
 
       const result = newService.features();
@@ -144,7 +144,7 @@ describe('DevToolbarInternalAppFeaturesService', () => {
     });
 
     it('should set isEnabled=false and isForced=true for features in disabled array', async () => {
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics', true),
       ];
 
@@ -161,12 +161,12 @@ describe('DevToolbarInternalAppFeaturesService', () => {
 
       TestBed.configureTestingModule({
         providers: [
-          DevToolbarInternalAppFeaturesService,
-          { provide: DevToolsStorageService, useValue: newStorageService },
+          ToolbarInternalAppFeaturesService,
+          { provide: ToolbarStorageService, useValue: newStorageService },
         ],
       });
 
-      const newService = TestBed.inject(DevToolbarInternalAppFeaturesService);
+      const newService = TestBed.inject(ToolbarInternalAppFeaturesService);
       newService.setAppFeatures(features);
 
       const result = newService.features();
@@ -175,7 +175,7 @@ describe('DevToolbarInternalAppFeaturesService', () => {
     });
 
     it('should preserve natural isEnabled when feature not in forced state', async () => {
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics', true),
         createMockFeature('multi-user', 'Multi-User', false),
       ];
@@ -191,7 +191,7 @@ describe('DevToolbarInternalAppFeaturesService', () => {
     });
 
     it('should handle mixed forced state (some enabled, some disabled)', async () => {
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics', false),
         createMockFeature('multi-user', 'Multi-User', true),
         createMockFeature('white-label', 'White Label', true),
@@ -210,12 +210,12 @@ describe('DevToolbarInternalAppFeaturesService', () => {
 
       TestBed.configureTestingModule({
         providers: [
-          DevToolbarInternalAppFeaturesService,
-          { provide: DevToolsStorageService, useValue: newStorageService },
+          ToolbarInternalAppFeaturesService,
+          { provide: ToolbarStorageService, useValue: newStorageService },
         ],
       });
 
-      const newService = TestBed.inject(DevToolbarInternalAppFeaturesService);
+      const newService = TestBed.inject(ToolbarInternalAppFeaturesService);
       newService.setAppFeatures(features);
 
       const result = newService.features();
@@ -230,7 +230,7 @@ describe('DevToolbarInternalAppFeaturesService', () => {
 
   describe('Task 6: setFeature() and removeFeatureOverride() manage forced state', () => {
     beforeEach(() => {
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics', false),
         createMockFeature('multi-user', 'Multi-User', false),
       ];
@@ -308,13 +308,13 @@ describe('DevToolbarInternalAppFeaturesService', () => {
 
       TestBed.configureTestingModule({
         providers: [
-          DevToolbarInternalAppFeaturesService,
-          { provide: DevToolsStorageService, useValue: newStorageService },
+          ToolbarInternalAppFeaturesService,
+          { provide: ToolbarStorageService, useValue: newStorageService },
         ],
       });
 
-      const newService = TestBed.inject(DevToolbarInternalAppFeaturesService);
-      const features: DevToolbarAppFeature[] = [
+      const newService = TestBed.inject(ToolbarInternalAppFeaturesService);
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics', false),
         createMockFeature('multi-user', 'Multi-User', true),
       ];
@@ -339,12 +339,12 @@ describe('DevToolbarInternalAppFeaturesService', () => {
 
       TestBed.configureTestingModule({
         providers: [
-          DevToolbarInternalAppFeaturesService,
-          { provide: DevToolsStorageService, useValue: newStorageService },
+          ToolbarInternalAppFeaturesService,
+          { provide: ToolbarStorageService, useValue: newStorageService },
         ],
       });
 
-      expect(() => TestBed.inject(DevToolbarInternalAppFeaturesService)).not.toThrow();
+      expect(() => TestBed.inject(ToolbarInternalAppFeaturesService)).not.toThrow();
     });
 
     it('should handle corrupted JSON in localStorage (log error, use empty state)', () => {
@@ -362,12 +362,12 @@ describe('DevToolbarInternalAppFeaturesService', () => {
 
       TestBed.configureTestingModule({
         providers: [
-          DevToolbarInternalAppFeaturesService,
-          { provide: DevToolsStorageService, useValue: newStorageService },
+          ToolbarInternalAppFeaturesService,
+          { provide: ToolbarStorageService, useValue: newStorageService },
         ],
       });
 
-      expect(() => TestBed.inject(DevToolbarInternalAppFeaturesService)).not.toThrow();
+      expect(() => TestBed.inject(ToolbarInternalAppFeaturesService)).not.toThrow();
 
       consoleErrorSpy.mockRestore();
     });
@@ -388,13 +388,13 @@ describe('DevToolbarInternalAppFeaturesService', () => {
 
       TestBed.configureTestingModule({
         providers: [
-          DevToolbarInternalAppFeaturesService,
-          { provide: DevToolsStorageService, useValue: newStorageService },
+          ToolbarInternalAppFeaturesService,
+          { provide: ToolbarStorageService, useValue: newStorageService },
         ],
       });
 
-      const newService = TestBed.inject(DevToolbarInternalAppFeaturesService);
-      const features: DevToolbarAppFeature[] = [
+      const newService = TestBed.inject(ToolbarInternalAppFeaturesService);
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics', false),
       ];
 
@@ -422,13 +422,13 @@ describe('DevToolbarInternalAppFeaturesService', () => {
 
       TestBed.configureTestingModule({
         providers: [
-          DevToolbarInternalAppFeaturesService,
-          { provide: DevToolsStorageService, useValue: newStorageService },
+          ToolbarInternalAppFeaturesService,
+          { provide: ToolbarStorageService, useValue: newStorageService },
         ],
       });
 
-      const newService = TestBed.inject(DevToolbarInternalAppFeaturesService);
-      const features: DevToolbarAppFeature[] = [
+      const newService = TestBed.inject(ToolbarInternalAppFeaturesService);
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics', false),
         createMockFeature('multi-user', 'Multi-User', false),
       ];
@@ -458,13 +458,13 @@ describe('DevToolbarInternalAppFeaturesService', () => {
 
       TestBed.configureTestingModule({
         providers: [
-          DevToolbarInternalAppFeaturesService,
-          { provide: DevToolsStorageService, useValue: newStorageService },
+          ToolbarInternalAppFeaturesService,
+          { provide: ToolbarStorageService, useValue: newStorageService },
         ],
       });
 
-      const newService = TestBed.inject(DevToolbarInternalAppFeaturesService);
-      const features: DevToolbarAppFeature[] = [
+      const newService = TestBed.inject(ToolbarInternalAppFeaturesService);
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics', false),
       ];
 
@@ -493,13 +493,13 @@ describe('DevToolbarInternalAppFeaturesService', () => {
 
       TestBed.configureTestingModule({
         providers: [
-          DevToolbarInternalAppFeaturesService,
-          { provide: DevToolsStorageService, useValue: newStorageService },
+          ToolbarInternalAppFeaturesService,
+          { provide: ToolbarStorageService, useValue: newStorageService },
         ],
       });
 
-      const newService = TestBed.inject(DevToolbarInternalAppFeaturesService);
-      const features: DevToolbarAppFeature[] = [
+      const newService = TestBed.inject(ToolbarInternalAppFeaturesService);
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics', false),
       ];
 
@@ -523,7 +523,7 @@ describe('DevToolbarInternalAppFeaturesService', () => {
     });
 
     it('should return current forced state with enabled/disabled arrays', () => {
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics', false),
         createMockFeature('multi-user', 'Multi-User', false),
       ];
@@ -541,7 +541,7 @@ describe('DevToolbarInternalAppFeaturesService', () => {
     });
 
     it('should return defensive copy (mutations dont affect internal state)', () => {
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics', false),
       ];
 
@@ -569,7 +569,7 @@ describe('DevToolbarInternalAppFeaturesService', () => {
 
   describe('Preset Integration: applyForcedState() and getCurrentForcedState()', () => {
     beforeEach(() => {
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics', false),
         createMockFeature('multi-user', 'Multi-User', false),
         createMockFeature('white-label', 'White Label', true),

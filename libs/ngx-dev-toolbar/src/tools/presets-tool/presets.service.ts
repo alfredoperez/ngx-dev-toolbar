@@ -1,9 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DevToolbarInternalPresetsService } from './presets-internal.service';
+import { ToolbarInternalPresetsService } from './presets-internal.service';
 import {
-  DevToolbarPreset,
-  DevToolbarPresetConfig,
+  ToolbarPreset,
+  ToolbarPresetConfig,
 } from './presets.models';
 
 /**
@@ -12,7 +12,7 @@ import {
 export interface InitialPreset {
   name: string;
   description?: string;
-  config: DevToolbarPresetConfig;
+  config: ToolbarPresetConfig;
 }
 
 /**
@@ -20,13 +20,13 @@ export interface InitialPreset {
  * Allows developers to programmatically save, load, and manage presets.
  */
 @Injectable({ providedIn: 'root' })
-export class DevToolbarPresetsService {
-  private internalService = inject(DevToolbarInternalPresetsService);
+export class ToolbarPresetsService {
+  private internalService = inject(ToolbarInternalPresetsService);
 
   /**
    * Get all saved presets as an Observable
    */
-  getPresets(): Observable<DevToolbarPreset[]> {
+  getPresets(): Observable<ToolbarPreset[]> {
     return this.internalService.presets$;
   }
 
@@ -36,7 +36,7 @@ export class DevToolbarPresetsService {
    * @param description - Optional description
    * @returns The created preset
    */
-  savePreset(name: string, description?: string): DevToolbarPreset {
+  savePreset(name: string, description?: string): ToolbarPreset {
     return this.internalService.saveCurrentAsPreset(name, description);
   }
 
@@ -81,8 +81,8 @@ export class DevToolbarPresetsService {
    * @returns The imported preset
    * @throws Error if JSON is invalid
    */
-  importPreset(json: string): DevToolbarPreset {
-    const preset = JSON.parse(json) as DevToolbarPreset;
+  importPreset(json: string): ToolbarPreset {
+    const preset = JSON.parse(json) as ToolbarPreset;
     return this.internalService.addPreset(preset);
   }
 
@@ -95,7 +95,7 @@ export class DevToolbarPresetsService {
    *
    * @example
    * ```typescript
-   * const presetsService = inject(DevToolbarPresetsService);
+   * const presetsService = inject(ToolbarPresetsService);
    *
    * presetsService.initializePresets([
    *   {
@@ -139,7 +139,7 @@ export class DevToolbarPresetsService {
    * ]);
    * ```
    */
-  initializePresets(presets: InitialPreset[]): DevToolbarPreset[] {
+  initializePresets(presets: InitialPreset[]): ToolbarPreset[] {
     return presets.map((preset) =>
       this.internalService.addPreset({
         id: '', // Will be generated
@@ -157,7 +157,7 @@ export class DevToolbarPresetsService {
    * @param presets - Array of preset configurations to set as initial
    * @returns Array of created presets
    */
-  setInitialPresets(presets: InitialPreset[]): DevToolbarPreset[] {
+  setInitialPresets(presets: InitialPreset[]): ToolbarPreset[] {
     // Clear existing presets
     const currentPresets = this.internalService.presets();
     currentPresets.forEach((preset) => {

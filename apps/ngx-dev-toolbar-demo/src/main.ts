@@ -8,8 +8,8 @@ async function bootstrap() {
   let providers = [...(appConfig.providers || [])];
 
   if (isDevMode()) {
-    const { provideDevToolbar } = await import('ngx-dev-toolbar');
-    providers = [...providers, ...provideDevToolbar()];
+    const { provideToolbar } = await import('ngx-dev-toolbar');
+    providers = [...providers, ...provideToolbar()];
   }
 
   const appRef = await bootstrapApplication(AppComponent, {
@@ -19,8 +19,8 @@ async function bootstrap() {
 
   // Initialize toolbar UI
   if (isDevMode()) {
-    const { initDevToolbar } = await import('ngx-dev-toolbar');
-    initDevToolbar(appRef, {
+    const { initToolbar } = await import('ngx-dev-toolbar');
+    initToolbar(appRef, {
       config: {
         showLanguageTool: true,
         showFeatureFlagsTool: true,

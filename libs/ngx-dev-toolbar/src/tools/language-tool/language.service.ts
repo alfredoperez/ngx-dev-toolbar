@@ -1,12 +1,12 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DevToolsService } from '../../models/dev-tools.interface';
-import { DevToolbarInternalLanguageService } from './language-internal.service';
+import { ToolbarService } from '../../models/toolbar.interface';
+import { ToolbarInternalLanguageService } from './language-internal.service';
 import { Language } from './language.models';
 
 @Injectable({ providedIn: 'root' })
-export class DevToolbarLanguageService implements DevToolsService<Language> {
-  private internalService = inject(DevToolbarInternalLanguageService);
+export class ToolbarLanguageService implements ToolbarService<Language> {
+  private internalService = inject(ToolbarInternalLanguageService);
 
   /**
    * Sets the available languages that will be displayed in the tool on the dev toolbar

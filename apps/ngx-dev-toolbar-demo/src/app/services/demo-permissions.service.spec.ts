@@ -1,14 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import {
-  DevToolbarPermissionsService,
-  DevToolbarPermission,
+  ToolbarPermissionsService,
+  ToolbarPermission,
 } from 'ngx-dev-toolbar';
 import { DemoPermissionsService } from './demo-permissions.service';
 
 describe('DemoPermissionsService', () => {
   let service: DemoPermissionsService;
-  let permissionsService: jest.Mocked<DevToolbarPermissionsService>;
+  let permissionsService: jest.Mocked<ToolbarPermissionsService>;
 
   beforeEach(() => {
     const permissionsServiceMock = {
@@ -20,15 +20,15 @@ describe('DemoPermissionsService', () => {
       providers: [
         DemoPermissionsService,
         {
-          provide: DevToolbarPermissionsService,
+          provide: ToolbarPermissionsService,
           useValue: permissionsServiceMock,
         },
       ],
     });
 
     permissionsService = TestBed.inject(
-      DevToolbarPermissionsService
-    ) as jest.Mocked<DevToolbarPermissionsService>;
+      ToolbarPermissionsService
+    ) as jest.Mocked<ToolbarPermissionsService>;
     service = TestBed.inject(DemoPermissionsService);
   });
 
@@ -52,7 +52,7 @@ describe('DemoPermissionsService', () => {
   });
 
   it('should update permissions signal when forced values change', () => {
-    const forcedPermissions: DevToolbarPermission[] = [
+    const forcedPermissions: ToolbarPermission[] = [
       {
         id: 'can-edit-posts',
         name: 'Edit Posts',
@@ -71,7 +71,7 @@ describe('DemoPermissionsService', () => {
       providers: [
         DemoPermissionsService,
         {
-          provide: DevToolbarPermissionsService,
+          provide: ToolbarPermissionsService,
           useValue: permissionsService,
         },
       ],

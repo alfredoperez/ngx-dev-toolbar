@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 
 @Component({
-  selector: 'ndt-card',
+  selector: 'ngt-card',
   standalone: true,
   template: `
     <div
@@ -21,7 +21,7 @@ import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
   styleUrls: ['./card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DevToolbarCardComponent {
+export class ToolbarCardComponent {
   readonly click = signal<void>(undefined);
   protected readonly isHovered = signal(false);
 

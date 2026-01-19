@@ -6,54 +6,54 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DevToolbarButtonComponent } from '../../components/button/button.component';
-import { DevToolbarIconComponent } from '../../components/icons/icon.component';
-import { DevToolbarInputComponent } from '../../components/input/input.component';
-import { DevToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
-import { DevToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
-import { DevToolbarInternalPresetsService } from './presets-internal.service';
-import { DevToolbarInternalFeatureFlagService } from '../feature-flags-tool/feature-flags-internal.service';
-import { DevToolbarInternalPermissionsService } from '../permissions-tool/permissions-internal.service';
-import { DevToolbarInternalAppFeaturesService } from '../app-features-tool/app-features-internal.service';
-import { DevToolbarInternalLanguageService } from '../language-tool/language-internal.service';
-import { DevToolbarStateService } from '../../dev-toolbar-state.service';
+import { ToolbarButtonComponent } from '../../components/button/button.component';
+import { ToolbarIconComponent } from '../../components/icons/icon.component';
+import { ToolbarInputComponent } from '../../components/input/input.component';
+import { ToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
+import { ToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
+import { ToolbarInternalPresetsService } from './presets-internal.service';
+import { ToolbarInternalFeatureFlagService } from '../feature-flags-tool/feature-flags-internal.service';
+import { ToolbarInternalPermissionsService } from '../permissions-tool/permissions-internal.service';
+import { ToolbarInternalAppFeaturesService } from '../app-features-tool/app-features-internal.service';
+import { ToolbarInternalLanguageService } from '../language-tool/language-internal.service';
+import { ToolbarStateService } from '../../toolbar-state.service';
 
 @Component({
-  selector: 'ndt-presets-tool',
+  selector: 'ngt-presets-tool',
   standalone: true,
   imports: [
     FormsModule,
-    DevToolbarToolComponent,
-    DevToolbarInputComponent,
-    DevToolbarButtonComponent,
-    DevToolbarIconComponent,
+    ToolbarToolComponent,
+    ToolbarInputComponent,
+    ToolbarButtonComponent,
+    ToolbarIconComponent,
   ],
   template: `
-    <ndt-toolbar-tool [options]="options" title="Presets" icon="layout">
+    <ngt-toolbar-tool [options]="options" title="Presets" icon="layout">
       <div class="container">
         <!-- Mode Toggle -->
         @if (!hasNoPresets() || viewMode() === 'create') {
         <div class="tool-header">
           @if (viewMode() === 'list') {
-          <ndt-input
+          <ngt-input
             [value]="searchQuery()"
             (valueChange)="onSearchChange($event)"
             placeholder="Search presets..."
             [ariaLabel]="'Search presets'"
           />
-          <ndt-button
+          <ngt-button
             (click)="onSwitchToCreateMode()"
             [ariaLabel]="'Create new preset'"
           >
             New Preset
-          </ndt-button>
+          </ngt-button>
           } @else {
-          <ndt-button
+          <ngt-button
             (click)="onSwitchToListMode()"
             [ariaLabel]="'Back to list'"
           >
             ← Back to List
-          </ndt-button>
+          </ngt-button>
           }
         </div>
         }
@@ -61,14 +61,14 @@ import { DevToolbarStateService } from '../../dev-toolbar-state.service';
         <!-- Create Form -->
         @if (viewMode() === 'create') {
         <form (submit)="onSavePreset($event)" class="preset-form">
-          <ndt-input
+          <ngt-input
             label="Preset Name"
             [value]="presetName()"
             (valueChange)="presetName.set($event)"
             placeholder="e.g., Admin User - Full Access"
             [ariaLabel]="'Preset name'"
           />
-          <ndt-input
+          <ngt-input
             label="Description (optional)"
             [value]="presetDescription()"
             (valueChange)="presetDescription.set($event)"
@@ -195,7 +195,7 @@ import { DevToolbarStateService } from '../../dev-toolbar-state.service';
           </div>
 
           <div class="form-actions">
-            <ndt-button type="submit">Save Preset</ndt-button>
+            <ngt-button type="submit">Save Preset</ngt-button>
           </div>
         </form>
         }
@@ -207,9 +207,9 @@ import { DevToolbarStateService } from '../../dev-toolbar-state.service';
           <p class="hint">
             Save the current toolbar configuration as a preset for quick access
           </p>
-          <ndt-button (click)="onSwitchToCreateMode()">
+          <ngt-button (click)="onSwitchToCreateMode()">
             Create Your First Preset
-          </ndt-button>
+          </ngt-button>
         </div>
         } @else if (viewMode() === 'list' && hasNoFilteredPresets()) {
         <div class="empty">
@@ -229,7 +229,7 @@ import { DevToolbarStateService } from '../../dev-toolbar-state.service';
                   [attr.aria-label]="'Apply preset ' + preset.name"
                   title="Apply preset"
                 >
-                  <ndt-icon name="refresh" />
+                  <ngt-icon name="refresh" />
                 </button>
                 <button
                   class="icon-button"
@@ -237,7 +237,7 @@ import { DevToolbarStateService } from '../../dev-toolbar-state.service';
                   [attr.aria-label]="'Update preset ' + preset.name"
                   title="Update with current state"
                 >
-                  <ndt-icon name="gear" />
+                  <ngt-icon name="gear" />
                 </button>
                 <button
                   class="icon-button"
@@ -245,7 +245,7 @@ import { DevToolbarStateService } from '../../dev-toolbar-state.service';
                   [attr.aria-label]="'Export preset ' + preset.name"
                   title="Export as JSON"
                 >
-                  <ndt-icon name="export" />
+                  <ngt-icon name="export" />
                 </button>
                 <button
                   class="icon-button"
@@ -253,7 +253,7 @@ import { DevToolbarStateService } from '../../dev-toolbar-state.service';
                   [attr.aria-label]="'Delete preset ' + preset.name"
                   title="Delete preset"
                 >
-                  <ndt-icon name="trash" />
+                  <ngt-icon name="trash" />
                 </button>
               </div>
             </div>
@@ -301,7 +301,7 @@ import { DevToolbarStateService } from '../../dev-toolbar-state.service';
         </div>
         }
       </div>
-    </ndt-toolbar-tool>
+    </ngt-toolbar-tool>
   `,
   styles: [
     `
@@ -317,14 +317,14 @@ import { DevToolbarStateService } from '../../dev-toolbar-state.service';
         position: relative;
         flex-shrink: 0;
         display: flex;
-        gap: var(--ndt-spacing-sm);
-        margin-bottom: var(--ndt-spacing-md);
+        gap: var(--ngt-spacing-sm);
+        margin-bottom: var(--ngt-spacing-md);
 
-        ndt-input {
+        ngt-input {
           flex: 1;
         }
 
-        ndt-button {
+        ngt-button {
           flex-shrink: 0;
         }
       }
@@ -332,16 +332,16 @@ import { DevToolbarStateService } from '../../dev-toolbar-state.service';
       .empty {
         display: flex;
         flex-direction: column;
-        gap: var(--ndt-spacing-md);
+        gap: var(--ngt-spacing-md);
         flex: 1;
         min-height: 0;
         justify-content: center;
         align-items: center;
-        border: 1px solid var(--ndt-border-subtle);
-        border-radius: var(--ndt-border-radius-medium);
-        padding: var(--ndt-spacing-md);
+        border: 1px solid var(--ngt-border-subtle);
+        border-radius: var(--ngt-border-radius-medium);
+        padding: var(--ngt-spacing-md);
         background: transparent;
-        color: var(--ndt-text-muted);
+        color: var(--ngt-text-muted);
         text-align: center;
 
         p {
@@ -349,87 +349,87 @@ import { DevToolbarStateService } from '../../dev-toolbar-state.service';
         }
 
         .hint {
-          font-size: var(--ndt-font-size-xs);
+          font-size: var(--ngt-font-size-xs);
         }
       }
 
       .preset-list {
         display: flex;
         flex-direction: column;
-        gap: var(--ndt-spacing-md);
+        gap: var(--ngt-spacing-md);
         flex: 1;
         min-height: 0;
         overflow-y: auto;
-        padding-right: var(--ndt-spacing-sm);
+        padding-right: var(--ngt-spacing-sm);
 
         &::-webkit-scrollbar {
           width: 8px;
         }
 
         &::-webkit-scrollbar-track {
-          background: var(--ndt-background-secondary);
+          background: var(--ngt-background-secondary);
           border-radius: 4px;
         }
 
         &::-webkit-scrollbar-thumb {
-          background: var(--ndt-border-primary);
+          background: var(--ngt-border-primary);
           border-radius: 4px;
 
           &:hover {
-            background: var(--ndt-hover-bg);
+            background: var(--ngt-hover-bg);
           }
         }
 
         scrollbar-width: thin;
-        scrollbar-color: var(--ndt-border-primary)
-          var(--ndt-background-secondary);
+        scrollbar-color: var(--ngt-border-primary)
+          var(--ngt-background-secondary);
       }
 
       .preset-card {
-        background: var(--ndt-background-secondary);
-        padding: var(--ndt-spacing-md);
-        border-radius: var(--ndt-border-radius-medium);
+        background: var(--ngt-background-secondary);
+        padding: var(--ngt-spacing-md);
+        border-radius: var(--ngt-border-radius-medium);
         display: flex;
         flex-direction: column;
-        gap: var(--ndt-spacing-sm);
+        gap: var(--ngt-spacing-sm);
       }
 
       .preset-card__header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: var(--ndt-spacing-sm);
+        gap: var(--ngt-spacing-sm);
 
         h3 {
           margin: 0;
-          font-size: var(--ndt-font-size-md);
-          color: var(--ndt-text-primary);
+          font-size: var(--ngt-font-size-md);
+          color: var(--ngt-text-primary);
           flex: 1;
         }
       }
 
       .preset-card__actions {
         display: flex;
-        gap: var(--ndt-spacing-xs);
+        gap: var(--ngt-spacing-xs);
       }
 
       .icon-button {
         background: transparent;
         border: none;
         cursor: pointer;
-        padding: var(--ndt-spacing-xs);
-        border-radius: var(--ndt-border-radius-small);
-        color: var(--ndt-text-secondary);
+        padding: var(--ngt-spacing-xs);
+        border-radius: var(--ngt-border-radius-small);
+        color: var(--ngt-text-secondary);
         display: flex;
         align-items: center;
         justify-content: center;
 
         &:hover {
-          background: var(--ndt-hover-bg);
-          color: var(--ndt-text-primary);
+          background: var(--ngt-hover-bg);
+          color: var(--ngt-text-primary);
         }
 
-        ndt-icon {
+        ngt-icon {
           width: 16px;
           height: 16px;
         }
@@ -437,31 +437,31 @@ import { DevToolbarStateService } from '../../dev-toolbar-state.service';
 
       .preset-card__description {
         margin: 0;
-        font-size: var(--ndt-font-size-sm);
-        color: var(--ndt-text-secondary);
+        font-size: var(--ngt-font-size-sm);
+        color: var(--ngt-text-secondary);
       }
 
       .preset-card__meta {
-        font-size: var(--ndt-font-size-xs);
-        color: var(--ndt-text-muted);
+        font-size: var(--ngt-font-size-xs);
+        color: var(--ngt-text-muted);
 
         span {
-          margin-right: var(--ndt-spacing-sm);
+          margin-right: var(--ngt-spacing-sm);
         }
       }
 
       .preset-card__preview {
         display: flex;
-        gap: var(--ndt-spacing-xs);
+        gap: var(--ngt-spacing-xs);
         flex-wrap: wrap;
       }
 
       .badge {
-        background: var(--ndt-primary-color);
+        background: var(--ngt-primary-color);
         color: white;
         padding: 2px 8px;
         border-radius: 12px;
-        font-size: var(--ndt-font-size-xs);
+        font-size: var(--ngt-font-size-xs);
         font-weight: 500;
       }
 
@@ -471,48 +471,48 @@ import { DevToolbarStateService } from '../../dev-toolbar-state.service';
         overflow-y: auto;
         display: flex;
         flex-direction: column;
-        gap: var(--ndt-spacing-md);
-        padding: var(--ndt-spacing-md);
+        gap: var(--ngt-spacing-md);
+        padding: var(--ngt-spacing-md);
 
-        ndt-input {
+        ngt-input {
           width: 100%;
         }
       }
 
       .preset-summary {
-        background: var(--ndt-background-secondary);
-        padding: var(--ndt-spacing-md);
-        border-radius: var(--ndt-border-radius-medium);
+        background: var(--ngt-background-secondary);
+        padding: var(--ngt-spacing-md);
+        border-radius: var(--ngt-border-radius-medium);
         display: flex;
         flex-direction: column;
-        gap: var(--ndt-spacing-sm);
+        gap: var(--ngt-spacing-sm);
 
         h4 {
           margin: 0;
-          font-size: var(--ndt-font-size-sm);
-          color: var(--ndt-text-primary);
+          font-size: var(--ngt-font-size-sm);
+          color: var(--ngt-text-primary);
         }
       }
 
       .category-section {
         display: flex;
         flex-direction: column;
-        gap: var(--ndt-spacing-xs);
+        gap: var(--ngt-spacing-xs);
       }
 
       .checkbox-option {
         display: flex;
         align-items: center;
-        gap: var(--ndt-spacing-sm);
+        gap: var(--ngt-spacing-sm);
         cursor: pointer;
-        color: var(--ndt-text-secondary);
-        font-size: var(--ndt-font-size-sm);
+        color: var(--ngt-text-secondary);
+        font-size: var(--ngt-font-size-sm);
 
         input[type='checkbox'] {
           cursor: pointer;
           width: 16px;
           height: 16px;
-          accent-color: var(--ndt-primary);
+          accent-color: var(--ngt-primary);
 
           &:disabled {
             cursor: not-allowed;
@@ -529,41 +529,41 @@ import { DevToolbarStateService } from '../../dev-toolbar-state.service';
       .forced-items-list {
         list-style: none;
         padding: 0;
-        margin: 0 0 0 var(--ndt-spacing-lg);
+        margin: 0 0 0 var(--ngt-spacing-lg);
         display: flex;
         flex-direction: column;
-        gap: var(--ndt-spacing-xs);
-        font-size: var(--ndt-font-size-xs);
+        gap: var(--ngt-spacing-xs);
+        font-size: var(--ngt-font-size-xs);
 
         li {
-          background: rgba(var(--ndt-primary-rgb), 0.05);
-          border-radius: var(--ndt-border-radius-small);
-          border-left: 2px solid rgba(var(--ndt-primary-rgb), 0.3);
+          background: rgba(var(--ngt-primary-rgb), 0.05);
+          border-radius: var(--ngt-border-radius-small);
+          border-left: 2px solid rgba(var(--ngt-primary-rgb), 0.3);
         }
 
         .item-checkbox {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: var(--ndt-spacing-xs) var(--ndt-spacing-sm);
+          padding: var(--ngt-spacing-xs) var(--ngt-spacing-sm);
           cursor: pointer;
-          gap: var(--ndt-spacing-sm);
+          gap: var(--ngt-spacing-sm);
 
           input[type='checkbox'] {
             cursor: pointer;
             width: 14px;
             height: 14px;
-            accent-color: var(--ndt-primary);
+            accent-color: var(--ngt-primary);
             flex-shrink: 0;
           }
 
           &:hover {
-            background: rgba(var(--ndt-primary-rgb), 0.08);
+            background: rgba(var(--ngt-primary-rgb), 0.08);
           }
         }
 
         .item-name {
-          color: var(--ndt-text-primary);
+          color: var(--ngt-text-primary);
           flex: 1;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -573,7 +573,7 @@ import { DevToolbarStateService } from '../../dev-toolbar-state.service';
         .item-status {
           font-weight: 600;
           padding: 2px 6px;
-          border-radius: var(--ndt-border-radius-small);
+          border-radius: var(--ngt-border-radius-small);
           font-size: 10px;
           text-transform: uppercase;
           letter-spacing: 0.5px;
@@ -594,26 +594,26 @@ import { DevToolbarStateService } from '../../dev-toolbar-state.service';
       .form-actions {
         display: flex;
         justify-content: flex-end;
-        gap: var(--ndt-spacing-sm);
+        gap: var(--ngt-spacing-sm);
       }
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DevToolbarPresetsToolComponent {
+export class ToolbarPresetsToolComponent {
   // Injects
-  private readonly presetsService = inject(DevToolbarInternalPresetsService);
+  private readonly presetsService = inject(ToolbarInternalPresetsService);
   private readonly featureFlagsService = inject(
-    DevToolbarInternalFeatureFlagService
+    ToolbarInternalFeatureFlagService
   );
   private readonly permissionsService = inject(
-    DevToolbarInternalPermissionsService
+    ToolbarInternalPermissionsService
   );
   private readonly appFeaturesService = inject(
-    DevToolbarInternalAppFeaturesService
+    ToolbarInternalAppFeaturesService
   );
-  private readonly languageService = inject(DevToolbarInternalLanguageService);
-  protected readonly state = inject(DevToolbarStateService);
+  private readonly languageService = inject(ToolbarInternalLanguageService);
+  protected readonly state = inject(ToolbarStateService);
 
   // Signals
   protected readonly viewMode = signal<'list' | 'create'>('list');
@@ -673,12 +673,12 @@ export class DevToolbarPresetsToolComponent {
   });
 
   // Other properties
-  protected readonly options: DevToolbarWindowOptions = {
+  protected readonly options: ToolbarWindowOptions = {
     title: 'Presets',
     description: 'Save and load toolbar configurations',
     isClosable: true,
     size: 'tall',
-    id: 'ndt-presets',
+    id: 'ngt-presets',
     isBeta: true,
   };
 

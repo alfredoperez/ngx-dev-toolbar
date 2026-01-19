@@ -18,7 +18,7 @@ export class PermissionsDocsComponent {
     fileName: 'app.component.ts',
     code: `
 import { Component, inject, signal } from '@angular/core';
-import { DevToolbarPermissionsService } from 'ngx-dev-toolbar';
+import { ToolbarPermissionsService } from 'ngx-dev-toolbar';
 
 @Component({
   selector: 'app-root',
@@ -32,7 +32,7 @@ import { DevToolbarPermissionsService } from 'ngx-dev-toolbar';
   \`
 })
 export class AppComponent {
-  private permissionsService = inject(DevToolbarPermissionsService);
+  private permissionsService = inject(ToolbarPermissionsService);
 
   canEdit = signal(false);
   canDelete = signal(false);
@@ -74,12 +74,12 @@ export class AppComponent {
   apiMethods: ApiMethod[] = [
     {
       name: 'setAvailableOptions',
-      signature: 'setAvailableOptions(permissions: DevToolbarPermission[]): void',
+      signature: 'setAvailableOptions(permissions: ToolbarPermission[]): void',
       description: 'Defines the available permissions that can be overridden in the toolbar.',
       parameters: [
         {
           name: 'permissions',
-          type: 'DevToolbarPermission[]',
+          type: 'ToolbarPermission[]',
           description: 'Array of permission definitions'
         }
       ],
@@ -90,11 +90,11 @@ export class AppComponent {
     },
     {
       name: 'getForcedValues',
-      signature: 'getForcedValues(): Observable<DevToolbarPermission[]>',
+      signature: 'getForcedValues(): Observable<ToolbarPermission[]>',
       description: 'Gets an observable of permissions that have been overridden through the toolbar.',
       parameters: [],
       returnType: {
-        type: 'Observable<DevToolbarPermission[]>',
+        type: 'Observable<ToolbarPermission[]>',
         description: 'Observable emitting forced permission changes'
       }
     }

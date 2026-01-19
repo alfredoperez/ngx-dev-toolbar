@@ -1,20 +1,20 @@
 import { Injectable, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable, combineLatest, map } from 'rxjs';
-import { DevToolbarStateService } from '../../dev-toolbar-state.service';
-import { DevToolsStorageService } from '../../utils/storage.service';
+import { ToolbarStateService } from '../../toolbar-state.service';
+import { ToolbarStorageService } from '../../utils/storage.service';
 import {
-  DevToolbarPermission,
+  ToolbarPermission,
   ForcedPermissionsState,
 } from './permissions.models';
 
 @Injectable({ providedIn: 'root' })
-export class DevToolbarInternalPermissionsService {
+export class ToolbarInternalPermissionsService {
   private readonly STORAGE_KEY = 'permissions';
-  private storageService = inject(DevToolsStorageService);
-  private stateService = inject(DevToolbarStateService);
+  private storageService = inject(ToolbarStorageService);
+  private stateService = inject(ToolbarStateService);
 
-  private appPermissions$ = new BehaviorSubject<DevToolbarPermission[]>([]);
+  private appPermissions$ = new BehaviorSubject<ToolbarPermission[]>([]);
   private forcedStateSubject = new BehaviorSubject<ForcedPermissionsState>({
     granted: [],
     denied: [],
@@ -22,7 +22,7 @@ export class DevToolbarInternalPermissionsService {
 
   private readonly forcedState$ = this.forcedStateSubject.asObservable();
 
-  public permissions$: Observable<DevToolbarPermission[]> = combineLatest([
+  public permissions$: Observable<ToolbarPermission[]> = combineLatest([
     this.appPermissions$,
     this.forcedState$,
   ]).pipe(
@@ -54,7 +54,7 @@ export class DevToolbarInternalPermissionsService {
     this.loadForcedState();
   }
 
-  setAppPermissions(permissions: DevToolbarPermission[]): void {
+  setAppPermissions(permissions: ToolbarPermission[]): void {
     this.appPermissions$.next(permissions);
     this.validateAndCleanForcedState(permissions);
   }
@@ -88,7 +88,7 @@ export class DevToolbarInternalPermissionsService {
     this.storageService.set(this.STORAGE_KEY, newState);
   }
 
-  getForcedPermissions(): Observable<DevToolbarPermission[]> {
+  getForcedPermissions(): Observable<ToolbarPermission[]> {
     return this.permissions$.pipe(
       map((permissions) => {
         // If toolbar is disabled, return empty array (no forced values)
@@ -149,7 +149,7 @@ export class DevToolbarInternalPermissionsService {
     );
   }
 
-  private validateAndCleanForcedState(permissions: DevToolbarPermission[]): void {
+  private validateAndCleanForcedState(permissions: ToolbarPermission[]): void {
     const currentState = this.forcedStateSubject.value;
     const validIds = new Set(permissions.map((p) => p.id));
 

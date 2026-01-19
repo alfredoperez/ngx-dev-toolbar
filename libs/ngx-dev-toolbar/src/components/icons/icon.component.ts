@@ -5,7 +5,7 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { DevToolbarStateService } from '../../dev-toolbar-state.service';
+import { ToolbarStateService } from '../../toolbar-state.service';
 import { AngularIconComponent } from './angular-icon.component';
 import { BoltIconComponent } from './bolt-icon.component';
 import { BugIconComponent } from './bug-icon.component';
@@ -37,7 +37,7 @@ import { TrashIconComponent } from './trash-icon.component';
 import { UsersIconComponent } from './users-icon.component';
 
 @Component({
-  selector: 'ndt-icon',
+  selector: 'ngt-icon',
   standalone: true,
   imports: [
     AngularIconComponent,
@@ -72,66 +72,66 @@ import { UsersIconComponent } from './users-icon.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @switch (name()) { @case ('angular') {
-    <ndt-angular-icon />
+    <ngt-angular-icon />
     } @case ('bolt') {
-    <ndt-bolt-icon [fill]="fill()" />
+    <ngt-bolt-icon [fill]="fill()" />
     } @case ('bug') {
-    <ndt-bug-icon [fill]="fill()" />
+    <ngt-bug-icon [fill]="fill()" />
     } @case ('code') {
-    <ndt-code-icon [fill]="fill()" />
+    <ngt-code-icon [fill]="fill()" />
     } @case ('database') {
-    <ndt-database-icon [fill]="fill()" />
+    <ngt-database-icon [fill]="fill()" />
     } @case ('docs') {
-    <ndt-docs-icon [fill]="fill()" />
+    <ngt-docs-icon [fill]="fill()" />
     } @case ('export') {
-    <ndt-export-icon [fill]="fill()" />
+    <ngt-export-icon [fill]="fill()" />
     } @case ('filter') {
-    <ndt-filter-icon [fill]="fill()" />
+    <ngt-filter-icon [fill]="fill()" />
     } @case ('gauge') {
-    <ndt-gauge-icon [fill]="fill()" />
+    <ngt-gauge-icon [fill]="fill()" />
     } @case ('gear') {
-    <ndt-gear-icon [fill]="fill()" />
+    <ngt-gear-icon [fill]="fill()" />
     } @case ('git-branch') {
-    <ndt-git-branch-icon [fill]="fill()" />
+    <ngt-git-branch-icon [fill]="fill()" />
     } @case ('import') {
-    <ndt-import-icon [fill]="fill()" />
+    <ngt-import-icon [fill]="fill()" />
     } @case ('layout') {
-    <ndt-layout-icon [fill]="fill()" />
+    <ngt-layout-icon [fill]="fill()" />
     } @case ('lighting') {
-    <ndt-lighting-icon [fill]="fill()" />
+    <ngt-lighting-icon [fill]="fill()" />
     } @case ('lightbulb') {
-    <ndt-lightbulb-icon [fill]="fill()" />
+    <ngt-lightbulb-icon [fill]="fill()" />
     } @case ('lock') {
-    <ndt-lock-icon [fill]="fill()" />
+    <ngt-lock-icon [fill]="fill()" />
     } @case ('network') {
-    <ndt-network-icon [fill]="fill()" />
+    <ngt-network-icon [fill]="fill()" />
     } @case ('puzzle') {
-    <ndt-puzzle-icon [fill]="fill()" />
+    <ngt-puzzle-icon [fill]="fill()" />
     } @case ('refresh') {
-    <ndt-refresh-icon [fill]="fill()" />
+    <ngt-refresh-icon [fill]="fill()" />
     } @case ('star') {
-    <ndt-star-icon [fill]="fill()" />
+    <ngt-star-icon [fill]="fill()" />
     } @case ('terminal') {
-    <ndt-terminal-icon [fill]="fill()" />
+    <ngt-terminal-icon [fill]="fill()" />
     } @case ('toggle-left') {
-    <ndt-toggle-left-icon [fill]="fill()" />
+    <ngt-toggle-left-icon [fill]="fill()" />
     } @case ('user') {
-    <ndt-users-icon [fill]="fill()" />
+    <ngt-users-icon [fill]="fill()" />
     } @case ('sun') {
-    <ndt-sun-icon [fill]="fill()" />
+    <ngt-sun-icon [fill]="fill()" />
     } @case ('moon') {
-    <ndt-moon-icon [fill]="fill()" />
+    <ngt-moon-icon [fill]="fill()" />
     } @case ('translate') {
-    <ndt-translate-icon [fill]="fill()" />
+    <ngt-translate-icon [fill]="fill()" />
     } @case ('discord') {
-    <ndt-discord-icon [fill]="fill()" />
+    <ngt-discord-icon [fill]="fill()" />
     } @case ('trash') {
-    <ndt-trash-icon [fill]="fill()" />
+    <ngt-trash-icon [fill]="fill()" />
     } }
   `,
 })
-export class DevToolbarIconComponent {
-  private readonly stateService = inject(DevToolbarStateService);
+export class ToolbarIconComponent {
+  private readonly stateService = inject(ToolbarStateService);
 
   name = input.required<IconName>();
 

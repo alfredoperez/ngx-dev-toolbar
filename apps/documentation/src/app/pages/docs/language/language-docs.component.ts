@@ -19,14 +19,14 @@ export class LanguageDocsComponent {
     fileName: 'app.component.ts',
     code: `
 import { Component, inject, OnInit } from '@angular/core';
-import { DevToolbarLanguageService } from 'ngx-dev-toolbar';
+import { ToolbarLanguageService } from 'ngx-dev-toolbar';
 
 @Component({
   selector: 'app-root',
   template: '<p>{{ "HELLO" | translate }}</p>'
 })
 export class AppComponent implements OnInit {
-  private languageService = inject(DevToolbarLanguageService);
+  private languageService = inject(ToolbarLanguageService);
 
   ngOnInit() {
     // Define available languages
@@ -56,12 +56,12 @@ export class AppComponent implements OnInit {
     fileName: 'i18n-integration.service.ts',
     code: `
 import { Injectable, inject } from '@angular/core';
-import { DevToolbarLanguageService } from 'ngx-dev-toolbar';
+import { ToolbarLanguageService } from 'ngx-dev-toolbar';
 import { TranslocoService } from '@ngneat/transloco';
 
 @Injectable({ providedIn: 'root' })
 export class I18nIntegrationService {
-  private toolbarService = inject(DevToolbarLanguageService);
+  private toolbarService = inject(ToolbarLanguageService);
   private transloco = inject(TranslocoService);
 
   initialize(supportedLanguages: { id: string; name: string }[]) {

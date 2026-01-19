@@ -1,11 +1,11 @@
 import { Injectable, inject } from '@angular/core';
-import { DevToolsStorageService } from '../../utils/storage.service';
+import { ToolbarStorageService } from '../../utils/storage.service';
 import { Settings } from './settings.models';
 
 @Injectable({ providedIn: 'root' })
 export class SettingsService {
   private readonly STORAGE_KEY = 'settings';
-  private readonly storageService = inject(DevToolsStorageService);
+  private readonly storageService = inject(ToolbarStorageService);
 
   public getSettings(): Settings {
     return (

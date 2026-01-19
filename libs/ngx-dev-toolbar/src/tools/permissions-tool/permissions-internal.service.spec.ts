@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { DevToolsStorageService } from '../../utils/storage.service';
-import { DevToolbarInternalPermissionsService } from './permissions-internal.service';
+import { ToolbarStorageService } from '../../utils/storage.service';
+import { ToolbarInternalPermissionsService } from './permissions-internal.service';
 import { ForcedPermissionsState } from './permissions.models';
 
-describe('DevToolbarInternalPermissionsService', () => {
-  let service: DevToolbarInternalPermissionsService;
-  let storageService: jest.Mocked<DevToolsStorageService>;
+describe('ToolbarInternalPermissionsService', () => {
+  let service: ToolbarInternalPermissionsService;
+  let storageService: jest.Mocked<ToolbarStorageService>;
 
   beforeEach(() => {
     const storageServiceMock = {
@@ -16,15 +16,15 @@ describe('DevToolbarInternalPermissionsService', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        DevToolbarInternalPermissionsService,
-        { provide: DevToolsStorageService, useValue: storageServiceMock },
+        ToolbarInternalPermissionsService,
+        { provide: ToolbarStorageService, useValue: storageServiceMock },
       ],
     });
 
     storageService = TestBed.inject(
-      DevToolsStorageService
-    ) as jest.Mocked<DevToolsStorageService>;
-    service = TestBed.inject(DevToolbarInternalPermissionsService);
+      ToolbarStorageService
+    ) as jest.Mocked<ToolbarStorageService>;
+    service = TestBed.inject(ToolbarInternalPermissionsService);
   });
 
   describe('initialization', () => {
@@ -47,11 +47,11 @@ describe('DevToolbarInternalPermissionsService', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
         providers: [
-          DevToolbarInternalPermissionsService,
-          { provide: DevToolsStorageService, useValue: storageService },
+          ToolbarInternalPermissionsService,
+          { provide: ToolbarStorageService, useValue: storageService },
         ],
       });
-      TestBed.inject(DevToolbarInternalPermissionsService);
+      TestBed.inject(ToolbarInternalPermissionsService);
 
       expect(storageService.get).toHaveBeenCalledWith('permissions');
       // The service should have loaded the saved state (we'll verify this after implementing setAppPermissions)
@@ -296,11 +296,11 @@ describe('DevToolbarInternalPermissionsService', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
         providers: [
-          DevToolbarInternalPermissionsService,
-          { provide: DevToolsStorageService, useValue: storageService },
+          ToolbarInternalPermissionsService,
+          { provide: ToolbarStorageService, useValue: storageService },
         ],
       });
-      const newService = TestBed.inject(DevToolbarInternalPermissionsService);
+      const newService = TestBed.inject(ToolbarInternalPermissionsService);
 
       // Set permissions to verify forced state is applied
       const permissions = [
@@ -323,11 +323,11 @@ describe('DevToolbarInternalPermissionsService', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
         providers: [
-          DevToolbarInternalPermissionsService,
-          { provide: DevToolsStorageService, useValue: storageService },
+          ToolbarInternalPermissionsService,
+          { provide: ToolbarStorageService, useValue: storageService },
         ],
       });
-      const newService = TestBed.inject(DevToolbarInternalPermissionsService);
+      const newService = TestBed.inject(ToolbarInternalPermissionsService);
 
       // Should initialize with empty state, not crash
       expect(newService.permissions()).toEqual([]);
@@ -339,11 +339,11 @@ describe('DevToolbarInternalPermissionsService', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
         providers: [
-          DevToolbarInternalPermissionsService,
-          { provide: DevToolsStorageService, useValue: storageService },
+          ToolbarInternalPermissionsService,
+          { provide: ToolbarStorageService, useValue: storageService },
         ],
       });
-      const newService = TestBed.inject(DevToolbarInternalPermissionsService);
+      const newService = TestBed.inject(ToolbarInternalPermissionsService);
 
       expect(newService.permissions()).toEqual([]);
     });
@@ -355,14 +355,14 @@ describe('DevToolbarInternalPermissionsService', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
         providers: [
-          DevToolbarInternalPermissionsService,
-          { provide: DevToolsStorageService, useValue: storageService },
+          ToolbarInternalPermissionsService,
+          { provide: ToolbarStorageService, useValue: storageService },
         ],
       });
 
       // Should not throw error during construction
       expect(() =>
-        TestBed.inject(DevToolbarInternalPermissionsService)
+        TestBed.inject(ToolbarInternalPermissionsService)
       ).not.toThrow();
     });
   });
@@ -378,11 +378,11 @@ describe('DevToolbarInternalPermissionsService', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
         providers: [
-          DevToolbarInternalPermissionsService,
-          { provide: DevToolsStorageService, useValue: storageService },
+          ToolbarInternalPermissionsService,
+          { provide: ToolbarStorageService, useValue: storageService },
         ],
       });
-      const newService = TestBed.inject(DevToolbarInternalPermissionsService);
+      const newService = TestBed.inject(ToolbarInternalPermissionsService);
 
       const permissions = [
         { id: 'perm1', name: 'Permission 1', isGranted: false, isForced: false },
@@ -408,11 +408,11 @@ describe('DevToolbarInternalPermissionsService', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
         providers: [
-          DevToolbarInternalPermissionsService,
-          { provide: DevToolsStorageService, useValue: storageService },
+          ToolbarInternalPermissionsService,
+          { provide: ToolbarStorageService, useValue: storageService },
         ],
       });
-      const newService = TestBed.inject(DevToolbarInternalPermissionsService);
+      const newService = TestBed.inject(ToolbarInternalPermissionsService);
 
       const permissions = [
         { id: 'perm1', name: 'Permission 1', isGranted: false, isForced: false },

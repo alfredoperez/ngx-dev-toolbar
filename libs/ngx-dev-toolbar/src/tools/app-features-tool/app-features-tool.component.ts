@@ -7,17 +7,17 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DevToolbarIconComponent } from '../../components/icons/icon.component';
-import { DevToolbarInputComponent } from '../../components/input/input.component';
-import { DevToolbarListComponent } from '../../components/list/list.component';
-import { DevToolbarListItemComponent } from '../../components/list-item/list-item.component';
-import { DevToolbarSelectComponent } from '../../components/select/select.component';
-import { DevToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
-import { DevToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
+import { ToolbarIconComponent } from '../../components/icons/icon.component';
+import { ToolbarInputComponent } from '../../components/input/input.component';
+import { ToolbarListComponent } from '../../components/list/list.component';
+import { ToolbarListItemComponent } from '../../components/list-item/list-item.component';
+import { ToolbarSelectComponent } from '../../components/select/select.component';
+import { ToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
+import { ToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
 import { ToolViewState } from '../../models/tool-view-state.models';
-import { DevToolsStorageService } from '../../utils/storage.service';
-import { DevToolbarInternalAppFeaturesService } from './app-features-internal.service';
-import { AppFeatureFilter, DevToolbarAppFeature } from './app-features.models';
+import { ToolbarStorageService } from '../../utils/storage.service';
+import { ToolbarInternalAppFeaturesService } from './app-features-internal.service';
+import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
 
 /**
  * Component for managing app features in the dev toolbar.
@@ -30,23 +30,23 @@ import { AppFeatureFilter, DevToolbarAppFeature } from './app-features.models';
  *
  * @example
  * ```html
- * <ndt-app-features-tool />
+ * <ngt-app-features-tool />
  * ```
  */
 @Component({
-  selector: 'ndt-app-features-tool',
+  selector: 'ngt-app-features-tool',
   standalone: true,
   imports: [
     FormsModule,
-    DevToolbarToolComponent,
-    DevToolbarInputComponent,
-    DevToolbarSelectComponent,
-    DevToolbarIconComponent,
-    DevToolbarListComponent,
-    DevToolbarListItemComponent,
+    ToolbarToolComponent,
+    ToolbarInputComponent,
+    ToolbarSelectComponent,
+    ToolbarIconComponent,
+    ToolbarListComponent,
+    ToolbarListItemComponent,
   ],
   template: `
-    <ndt-toolbar-tool
+    <ngt-toolbar-tool
       [options]="options"
       title="App Features"
       icon="puzzle"
@@ -54,14 +54,14 @@ import { AppFeatureFilter, DevToolbarAppFeature } from './app-features.models';
     >
       <div class="container">
         <div class="tool-header">
-          <ndt-input
+          <ngt-input
             [value]="searchQuery()"
             (valueChange)="onSearchChange($event)"
             placeholder="Search features..."
           />
           <div class="filter-wrapper">
-            <ndt-icon name="filter" class="filter-icon" />
-            <ndt-select
+            <ngt-icon name="filter" class="filter-icon" />
+            <ngt-select
               [value]="activeFilter()"
               [options]="filterOptions"
               [size]="'medium'"
@@ -70,7 +70,7 @@ import { AppFeatureFilter, DevToolbarAppFeature } from './app-features.models';
           </div>
         </div>
 
-        <ndt-list
+        <ngt-list
           [hasItems]="!hasNoFeatures()"
           [hasResults]="!hasNoFilteredFeatures()"
           emptyMessage="No app features found"
@@ -78,25 +78,25 @@ import { AppFeatureFilter, DevToolbarAppFeature } from './app-features.models';
           noResultsMessage="No features match your filter"
         >
           @for (feature of filteredFeatures(); track feature.id) {
-            <ndt-list-item
+            <ngt-list-item
               [title]="feature.name"
               [description]="feature.description"
               [isForced]="feature.isForced"
               [currentValue]="feature.isEnabled"
               [originalValue]="feature.originalValue"
             >
-              <ndt-select
+              <ngt-select
                 [value]="getFeatureValue(feature)"
                 [options]="featureValueOptions"
                 [ariaLabel]="'Set value for ' + feature.name"
                 (valueChange)="onFeatureChange(feature.id, $event ?? '')"
                 size="small"
               />
-            </ndt-list-item>
+            </ngt-list-item>
           }
-        </ndt-list>
+        </ngt-list>
       </div>
-    </ndt-toolbar-tool>
+    </ngt-toolbar-tool>
   `,
   styles: [
     `
@@ -112,10 +112,10 @@ import { AppFeatureFilter, DevToolbarAppFeature } from './app-features.models';
         position: relative;
         flex-shrink: 0;
         display: flex;
-        gap: var(--ndt-spacing-sm);
-        margin-bottom: var(--ndt-spacing-sm);
+        gap: var(--ngt-spacing-sm);
+        margin-bottom: var(--ngt-spacing-sm);
 
-        ndt-input {
+        ngt-input {
           flex: 1;
         }
 
@@ -123,7 +123,7 @@ import { AppFeatureFilter, DevToolbarAppFeature } from './app-features.models';
           flex: 0 0 auto;
           display: flex;
           align-items: center;
-          gap: var(--ndt-spacing-md);
+          gap: var(--ngt-spacing-md);
 
           .filter-icon {
             width: 18px;
@@ -132,7 +132,7 @@ import { AppFeatureFilter, DevToolbarAppFeature } from './app-features.models';
             opacity: 0.6;
           }
 
-          ndt-select {
+          ngt-select {
             flex: 0 0 auto;
             min-width: 180px;
           }
@@ -142,10 +142,10 @@ import { AppFeatureFilter, DevToolbarAppFeature } from './app-features.models';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DevToolbarAppFeaturesToolComponent {
+export class ToolbarAppFeaturesToolComponent {
   // Injects
-  private readonly appFeaturesService = inject(DevToolbarInternalAppFeaturesService);
-  private readonly storageService = inject(DevToolsStorageService);
+  private readonly appFeaturesService = inject(ToolbarInternalAppFeaturesService);
+  private readonly storageService = inject(ToolbarStorageService);
 
   // Constants
   private readonly VIEW_STATE_KEY = 'app-features-view';
@@ -226,8 +226,8 @@ export class DevToolbarAppFeaturesToolComponent {
     description: 'Override product features to test different tiers and configurations',
     isClosable: true,
     size: 'tall',
-    id: 'ndt-app-features',
-  } as DevToolbarWindowOptions;
+    id: 'ngt-app-features',
+  } as ToolbarWindowOptions;
 
   protected readonly filterOptions = [
     { value: 'all', label: 'All Features' },
@@ -289,7 +289,7 @@ export class DevToolbarAppFeaturesToolComponent {
    * - Returns 'on' if forced to enabled
    * - Returns 'off' if forced to disabled
    */
-  protected getFeatureValue(feature: DevToolbarAppFeature): string {
+  protected getFeatureValue(feature: ToolbarAppFeature): string {
     if (!feature.isForced) return '';
     return feature.isEnabled ? 'on' : 'off';
   }

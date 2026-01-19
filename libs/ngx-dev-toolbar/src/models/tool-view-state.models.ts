@@ -1,6 +1,6 @@
 /**
  * Persisted view state for a tool's UI (search, filter, sort).
- * Stored in localStorage via DevToolsStorageService.
+ * Stored in localStorage via ToolbarStorageService.
  */
 export interface ToolViewState {
   /** Current search query text */

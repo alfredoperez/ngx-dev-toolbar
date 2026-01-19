@@ -1,20 +1,20 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DevToolsService } from '../../models/dev-tools.interface';
-import { DevToolbarInternalFeatureFlagService } from './feature-flags-internal.service';
-import { DevToolbarFlag } from './feature-flags.models';
+import { ToolbarService } from '../../models/toolbar.interface';
+import { ToolbarInternalFeatureFlagService } from './feature-flags-internal.service';
+import { ToolbarFlag } from './feature-flags.models';
 
 @Injectable({ providedIn: 'root' })
-export class DevToolbarFeatureFlagService
-  implements DevToolsService<DevToolbarFlag>
+export class ToolbarFeatureFlagService
+  implements ToolbarService<ToolbarFlag>
 {
-  private internalService = inject(DevToolbarInternalFeatureFlagService);
+  private internalService = inject(ToolbarInternalFeatureFlagService);
 
   /**
    * Sets the available flags that will be displayed in the tool on the dev toolbar
    * @param flags The flags to be displayed
    */
-  setAvailableOptions(flags: DevToolbarFlag[]): void {
+  setAvailableOptions(flags: ToolbarFlag[]): void {
     this.internalService.setAppFlags(flags);
   }
 
@@ -22,7 +22,7 @@ export class DevToolbarFeatureFlagService
    * Gets the flags that were forced/modified through the tool on the dev toolbar
    * @returns Observable of forced flags array
    */
-  getForcedValues(): Observable<DevToolbarFlag[]> {
+  getForcedValues(): Observable<ToolbarFlag[]> {
     return this.internalService.getForcedFlags();
   }
 
@@ -49,7 +49,7 @@ export class DevToolbarFeatureFlagService
    * });
    * ```
    */
-  getValues(): Observable<DevToolbarFlag[]> {
+  getValues(): Observable<ToolbarFlag[]> {
     return this.internalService.flags$;
   }
 }

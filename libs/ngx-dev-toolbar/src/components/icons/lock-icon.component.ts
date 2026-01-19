@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
-  selector: 'ndt-lock-icon',
+  selector: 'ngt-lock-icon',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

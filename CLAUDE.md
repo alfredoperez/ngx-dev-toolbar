@@ -57,21 +57,21 @@ nx lint ngx-dev-toolbar
 
 The main library (`libs/ngx-dev-toolbar/`) follows this structure:
 
-- **`src/dev-toolbar.component.ts`**: Main toolbar component that wraps all tools and manages visibility/animations
-- **`src/dev-toolbar-state.service.ts`**: Centralized state management using Angular signals for toolbar visibility, active tool, theme, and delay settings
+- **`src/toolbar.component.ts`**: Main toolbar component that wraps all tools and manages visibility/animations
+- **`src/toolbar-state.service.ts`**: Centralized state management using Angular signals for toolbar visibility, active tool, theme, and delay settings
 - **`src/tools/`**: Individual tool implementations (feature-flags, language, network-mocker, home)
 - **`src/components/`**: Reusable UI components (button, input, select, card, window, icons)
-- **`src/models/`**: Shared interfaces and types (DevToolsService interface)
+- **`src/models/`**: Shared interfaces and types (ToolbarService interface)
 - **`src/utils/`**: Utility services (storage service for localStorage persistence)
 
 ### Tool Architecture
 
 Each tool follows a consistent pattern:
 
-1. **Tool Component** (`*-tool.component.ts`): Main UI component that wraps content in `DevToolbarToolComponent`
+1. **Tool Component** (`*-tool.component.ts`): Main UI component that wraps content in `ToolbarToolComponent`
 2. **Service Layer**:
    - **Internal Service** (`*-internal.service.ts`): Manages tool-specific state using signals
-   - **Public Service** (`*.service.ts`): Public API implementing `DevToolsService<T>` interface with `setAvailableOptions()` and `getForcedValues()` methods
+   - **Public Service** (`*.service.ts`): Public API implementing `ToolbarService<T>` interface with `setAvailableOptions()` and `getForcedValues()` methods
 3. **Models** (`*.models.ts`): Type definitions for the tool's data structures
 
 ### State Management Pattern
@@ -85,7 +85,7 @@ The library uses Angular signals extensively:
 ### Component System
 
 Reusable components are in `src/components/`:
-- **DevToolbarToolComponent**: Main wrapper providing window management, positioning, and animations
+- **ToolbarToolComponent**: Main wrapper providing window management, positioning, and animations
 - **Input/Select/Button**: Form controls with consistent styling and two-way binding
 - **Card/ClickableCard**: Content containers with hover effects
 - **Window**: Modal-like container with header, description, and closable behavior
@@ -135,8 +135,8 @@ Reusable components are in `src/components/`:
 
 The library uses a **hybrid CSS architecture** combining component-scoped styles with global overlay styles:
 
-- **Class Naming**: Use `ndt-` prefix ONLY for global/overlay classes (outside Shadow DOM). Component-scoped classes don't need prefixes.
-- **Design Tokens**: All theme values use CSS custom properties (`--ndt-*` prefix)
+- **Class Naming**: Use `ngt-` prefix ONLY for global/overlay classes (outside Shadow DOM). Component-scoped classes don't need prefixes.
+- **Design Tokens**: All theme values use CSS custom properties (`--ngt-*` prefix)
 - **Theme Support**: Light/dark themes via `[attr.data-theme]="theme()"`
 - **Defensive CSS**: Explicit spacing patterns to resist external CSS resets
 
@@ -153,11 +153,11 @@ The library uses a **hybrid CSS architecture** combining component-scoped styles
 .container {
   display: flex;
   flex-direction: column;
-  margin-top: var(--ndt-spacing-sm); // Defensive spacing against CSS resets
-  gap: var(--ndt-spacing-md);
+  margin-top: var(--ngt-spacing-sm); // Defensive spacing against CSS resets
+  gap: var(--ngt-spacing-md);
 }
 
-.ndt-window {
+.ngt-window {
   contain: layout style; // Isolates window from external CSS interference
 }
 
@@ -165,7 +165,7 @@ The library uses a **hybrid CSS architecture** combining component-scoped styles
   flex: 1;
   overflow: auto;
   min-height: 0;
-  padding-top: var(--ndt-spacing-md); // Prevents overlap with header
+  padding-top: var(--ngt-spacing-md); // Prevents overlap with header
 }
 ```
 
@@ -175,23 +175,23 @@ The library uses a **hybrid CSS architecture** combining component-scoped styles
 
 ### Creating Custom Tools
 
-1. Implement the tool component extending `DevToolbarToolComponent`
-2. Create a service implementing `DevToolsService<T>` interface
+1. Implement the tool component extending `ToolbarToolComponent`
+2. Create a service implementing `ToolbarService<T>` interface
 3. Define models/interfaces for type safety
 4. Use signals for state management
 5. Export from `libs/ngx-dev-toolbar/src/index.ts`
-6. Add to `DevToolbarComponent` template
+6. Add to `ToolbarComponent` template
 
 Reference: `TOOLBAR_TOOL_GUIDE.md` contains comprehensive guide with examples.
 
 ### Using in Applications
 
 ```typescript
-import { DevToolbarComponent } from 'ngx-dev-toolbar';
+import { ToolbarComponent } from 'ngx-dev-toolbar';
 
 @Component({
-  imports: [DevToolbarComponent],
-  template: `<ndt-toolbar [config]="toolbarConfig"></ndt-toolbar>`
+  imports: [ToolbarComponent],
+  template: `<ngt-toolbar [config]="toolbarConfig"></ngt-toolbar>`
 })
 export class AppComponent {
   toolbarConfig = {
@@ -207,10 +207,10 @@ export class AppComponent {
 
 ### Toolbar Configuration
 
-The toolbar accepts a `DevToolbarConfig` object to control its behavior:
+The toolbar accepts a `ToolbarConfig` object to control its behavior:
 
 ```typescript
-interface DevToolbarConfig {
+interface ToolbarConfig {
   enabled?: boolean;              // Master switch (default: true)
   showLanguageTool?: boolean;     // Show/hide individual tools (default: true)
   showFeatureFlagsTool?: boolean;
@@ -232,7 +232,7 @@ interface DevToolbarConfig {
 
 ### Tool Services API
 
-All tool services follow the `DevToolsService<T>` interface:
+All tool services follow the `ToolbarService<T>` interface:
 - `setAvailableOptions(options: T[])`: Set options displayed in the tool
 - `getForcedValues(): Observable<T[]>`: Get values overridden through the toolbar
 
@@ -259,34 +259,34 @@ All tool services follow the `DevToolsService<T>` interface:
 
 ```scss
 // Colors
---ndt-background-primary
---ndt-background-secondary
---ndt-text-primary
---ndt-text-secondary
---ndt-text-muted
---ndt-border-primary
+--ngt-background-primary
+--ngt-background-secondary
+--ngt-text-primary
+--ngt-text-secondary
+--ngt-text-muted
+--ngt-border-primary
 
 // Spacing
---ndt-spacing-xs
---ndt-spacing-sm
---ndt-spacing-md
---ndt-spacing-lg
+--ngt-spacing-xs
+--ngt-spacing-sm
+--ngt-spacing-md
+--ngt-spacing-lg
 
 // Border Radius
---ndt-border-radius-small
---ndt-border-radius-medium
---ndt-border-radius-large
+--ngt-border-radius-small
+--ngt-border-radius-medium
+--ngt-border-radius-large
 
 // Font Sizes
---ndt-font-size-xs
---ndt-font-size-sm
---ndt-font-size-md
---ndt-font-size-lg
+--ngt-font-size-xs
+--ngt-font-size-sm
+--ngt-font-size-md
+--ngt-font-size-lg
 ```
 
 ## Active Technologies
 - TypeScript 5.5, Angular 19.0 + Angular 19.0, Angular CDK 19.0, RxJS 7.8 (005-badges-each-tools)
-- localStorage via `DevToolsStorageService` (prefix: `AngularDevTools.`) (005-badges-each-tools)
+- localStorage via `ToolbarStorageService` (prefix: `AngularToolbar.`) (005-badges-each-tools)
 
 ## Recent Changes
 - 005-badges-each-tools: Added TypeScript 5.5, Angular 19.0 + Angular 19.0, Angular CDK 19.0, RxJS 7.8

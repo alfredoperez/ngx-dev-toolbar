@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 /**
  * Interface that should be implemented by any tool service that is used in the dev toolbar
  */
-export interface DevToolsService<OptionType> {
+export interface ToolbarService<OptionType> {
   /**
    * Sets the available options that will be displayed in the tool on the dev toolbar
    * @param options The options to be displayed

@@ -1,10 +1,10 @@
 import { IconName } from '../icons/icon.models';
 
-export interface DevToolbarWindowPosition {
+export interface ToolbarWindowPosition {
   x: number;
   y: number;
 }
-export interface DevToolbarWindowOptions {
+export interface ToolbarWindowOptions {
   id: string;
   /**
    * The title of the window, this can be different from the name of the tool
@@ -25,9 +25,9 @@ export interface DevToolbarWindowOptions {
   isBeta?: boolean;
 }
 
-export interface DevToolbarToolOptions {
+export interface ToolbarToolOptions {
   icon: IconName;
   name: string;
-  windowOptions: DevToolbarWindowOptions;
+  windowOptions: ToolbarWindowOptions;
   isBeta?: boolean;
 }

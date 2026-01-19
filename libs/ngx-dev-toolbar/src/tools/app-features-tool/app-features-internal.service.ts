@@ -1,9 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable, combineLatest, map } from 'rxjs';
-import { DevToolbarStateService } from '../../dev-toolbar-state.service';
-import { DevToolsStorageService } from '../../utils/storage.service';
-import { DevToolbarAppFeature, ForcedAppFeaturesState } from './app-features.models';
+import { ToolbarStateService } from '../../toolbar-state.service';
+import { ToolbarStorageService } from '../../utils/storage.service';
+import { ToolbarAppFeature, ForcedAppFeaturesState } from './app-features.models';
 
 /**
  * Internal service for managing app features state and forced overrides.
@@ -14,15 +14,15 @@ import { DevToolbarAppFeature, ForcedAppFeaturesState } from './app-features.mod
  * - localStorage persistence
  * - State validation and cleanup
  *
- * @internal This service is for internal toolbar use only. Consumers should use DevToolbarAppFeaturesService.
+ * @internal This service is for internal toolbar use only. Consumers should use ToolbarAppFeaturesService.
  */
 @Injectable({ providedIn: 'root' })
-export class DevToolbarInternalAppFeaturesService {
+export class ToolbarInternalAppFeaturesService {
   private readonly STORAGE_KEY = 'app-features';
-  private storageService = inject(DevToolsStorageService);
-  private stateService = inject(DevToolbarStateService);
+  private storageService = inject(ToolbarStorageService);
+  private stateService = inject(ToolbarStateService);
 
-  private appFeaturesSubject = new BehaviorSubject<DevToolbarAppFeature[]>([]);
+  private appFeaturesSubject = new BehaviorSubject<ToolbarAppFeature[]>([]);
   private forcedFeaturesSubject = new BehaviorSubject<ForcedAppFeaturesState>({
     enabled: [],
     disabled: [],
@@ -33,7 +33,7 @@ export class DevToolbarInternalAppFeaturesService {
   /**
    * Observable stream of all features with merged forced state
    */
-  public features$: Observable<DevToolbarAppFeature[]> = combineLatest([
+  public features$: Observable<ToolbarAppFeature[]> = combineLatest([
     this.appFeaturesSubject.asObservable(),
     this.forcedFeatures$,
   ]).pipe(
@@ -56,7 +56,7 @@ export class DevToolbarInternalAppFeaturesService {
    * @param features - Array of app features to configure
    * @throws Error if duplicate feature IDs or empty IDs are detected
    */
-  setAppFeatures(features: DevToolbarAppFeature[]): void {
+  setAppFeatures(features: ToolbarAppFeature[]): void {
     // Validate for empty IDs
     const emptyIdFeature = features.find((f) => !f.id || f.id.trim() === '');
     if (emptyIdFeature) {
@@ -89,14 +89,14 @@ export class DevToolbarInternalAppFeaturesService {
   /**
    * Get observable stream of app features (natural state, no forced state merged)
    */
-  getAppFeatures(): Observable<DevToolbarAppFeature[]> {
+  getAppFeatures(): Observable<ToolbarAppFeature[]> {
     return this.appFeaturesSubject.asObservable();
   }
 
   /**
    * Get observable stream of features that have forced overrides
    */
-  getForcedFeatures(): Observable<DevToolbarAppFeature[]> {
+  getForcedFeatures(): Observable<ToolbarAppFeature[]> {
     return this.features$.pipe(
       map((features) => {
         // If toolbar is disabled, return empty array (no forced values)
@@ -201,9 +201,9 @@ export class DevToolbarInternalAppFeaturesService {
    * @returns Features with merged forced state
    */
   private mergeForcedState(
-    appFeatures: DevToolbarAppFeature[],
+    appFeatures: ToolbarAppFeature[],
     forcedState: ForcedAppFeaturesState
-  ): DevToolbarAppFeature[] {
+  ): ToolbarAppFeature[] {
     // If toolbar is disabled, return app features without overrides
     if (!this.stateService.isEnabled()) {
       return appFeatures;

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
-  selector: 'ndt-discord-icon',
+  selector: 'ngt-discord-icon',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

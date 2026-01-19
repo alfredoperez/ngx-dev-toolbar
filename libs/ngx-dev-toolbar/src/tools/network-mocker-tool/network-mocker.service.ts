@@ -4,7 +4,7 @@ import { MockRequest, MockRequestConfig } from './network-mocker.models';
 @Injectable({
   providedIn: 'root',
 })
-export class DevToolbarNetworkMockerService {
+export class ToolbarNetworkMockerService {
   private readonly mockRequests = signal<MockRequest[]>([]);
   private readonly isMockingEnabled = signal(false);
 

@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DevToolsService } from '../../models/dev-tools.interface';
-import { DevToolbarInternalPermissionsService } from './permissions-internal.service';
-import { DevToolbarPermission, ForcedPermissionsState } from './permissions.models';
+import { ToolbarService } from '../../models/toolbar.interface';
+import { ToolbarInternalPermissionsService } from './permissions-internal.service';
+import { ToolbarPermission, ForcedPermissionsState } from './permissions.models';
 
 /**
  * Public service for integrating the Permissions Tool with your application.
@@ -13,7 +13,7 @@ import { DevToolbarPermission, ForcedPermissionsState } from './permissions.mode
  *
  * @example
  * ```typescript
- * constructor(private permissionsService: DevToolbarPermissionsService) {
+ * constructor(private permissionsService: ToolbarPermissionsService) {
  *   // Register permissions
  *   this.permissionsService.setAvailableOptions([
  *     { id: 'can-edit', name: 'Can Edit', isGranted: false, isForced: false }
@@ -27,10 +27,10 @@ import { DevToolbarPermission, ForcedPermissionsState } from './permissions.mode
  * ```
  */
 @Injectable({ providedIn: 'root' })
-export class DevToolbarPermissionsService
-  implements DevToolsService<DevToolbarPermission>
+export class ToolbarPermissionsService
+  implements ToolbarService<ToolbarPermission>
 {
-  private internalService = inject(DevToolbarInternalPermissionsService);
+  private internalService = inject(ToolbarInternalPermissionsService);
 
   /**
    * Sets the available permissions that will be displayed in the toolbar tool.
@@ -51,7 +51,7 @@ export class DevToolbarPermissionsService
    * ]);
    * ```
    */
-  setAvailableOptions(permissions: DevToolbarPermission[]): void {
+  setAvailableOptions(permissions: ToolbarPermission[]): void {
     this.internalService.setAppPermissions(permissions);
   }
 
@@ -70,7 +70,7 @@ export class DevToolbarPermissionsService
    * });
    * ```
    */
-  getForcedValues(): Observable<DevToolbarPermission[]> {
+  getForcedValues(): Observable<ToolbarPermission[]> {
     return this.internalService.getForcedPermissions();
   }
 
@@ -97,7 +97,7 @@ export class DevToolbarPermissionsService
    * });
    * ```
    */
-  getValues(): Observable<DevToolbarPermission[]> {
+  getValues(): Observable<ToolbarPermission[]> {
     return this.internalService.permissions$;
   }
 

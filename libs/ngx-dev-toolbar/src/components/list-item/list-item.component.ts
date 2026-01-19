@@ -7,19 +7,19 @@ import { CommonModule } from '@angular/common';
  *
  * @example
  * ```html
- * <ndt-list-item
+ * <ngt-list-item
  *   title="Analytics Dashboard"
  *   description="Advanced reporting tools"
  *   [isForced]="false"
  *   [currentValue]="true"
  *   [originalValue]="undefined"
  * >
- *   <ndt-select ... />
- * </ndt-list-item>
+ *   <ngt-select ... />
+ * </ngt-list-item>
  * ```
  */
 @Component({
-  selector: 'ndt-list-item',
+  selector: 'ngt-list-item',
   standalone: true,
   imports: [CommonModule],
   template: `
@@ -46,7 +46,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./list-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DevToolbarListItemComponent {
+export class ToolbarListItemComponent {
   /**
    * Display title for the list item
    * @example "Analytics Dashboard"

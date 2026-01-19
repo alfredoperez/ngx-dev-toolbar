@@ -75,8 +75,8 @@ async function bootstrap() {
 
   // 👇👇 Initialize toolbar only in development 👇👇
   if (isDevMode()) {
-    const { initDevToolbar } = await import('ngx-dev-toolbar');
-    initDevToolbar(appRef);
+    const { initToolbar } = await import('ngx-dev-toolbar');
+    initToolbar(appRef);
   }
 }
 

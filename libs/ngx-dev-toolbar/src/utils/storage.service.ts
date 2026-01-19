@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
-export class DevToolsStorageService {
-  private readonly PREFIX = 'AngularDevTools.';
+export class ToolbarStorageService {
+  private readonly PREFIX = 'AngularToolbar.';
   private readonly TOOLS_KEY = `${this.PREFIX}keys`;
   private readonly SETTINGS_KEY = `${this.PREFIX}settings`;
 

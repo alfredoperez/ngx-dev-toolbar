@@ -36,8 +36,8 @@ async function bootstrap() &#123;
 
   // Initialize toolbar only in development
   if (isDevMode()) &#123;
-    const &#123; initDevToolbar &#125; = await import('ngx-dev-toolbar');
-    initDevToolbar(appRef);
+    const &#123; initToolbar &#125; = await import('ngx-dev-toolbar');
+    initToolbar(appRef);
   &#125;
 &#125;
 
@@ -46,7 +46,7 @@ bootstrap();</code></pre>
     <p>That's it! No template changes needed. The toolbar automatically attaches to the DOM.</p>
 
     <h3>2. Configure Tools (Optional)</h3>
-    <pre><code>initDevToolbar(appRef, &#123;
+    <pre><code>initToolbar(appRef, &#123;
   config: &#123;
     showFeatureFlagsTool: true,
     showPermissionsTool: true,

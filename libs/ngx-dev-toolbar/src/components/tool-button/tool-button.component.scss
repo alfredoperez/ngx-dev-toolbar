@@ -14,19 +14,19 @@ $dimensions: devtools.$dimensions;
   height: map.get($dimensions, toolbar-height);
   border: 0;
   background: transparent;
-  color: var(--ndt-text-primary);
-  transition: var(--ndt-transition-default);
+  color: var(--ngt-text-primary);
+  transition: var(--ngt-transition-default);
   cursor: pointer;
   opacity: 0.5;
   position: relative;
 
   &--active {
-    background: var(--ndt-hover-bg);
+    background: var(--ngt-hover-bg);
     opacity: 1;
   }
 
   &:hover {
-    background: var(--ndt-hover-bg);
+    background: var(--ngt-hover-bg);
     opacity: 1;
   }
 
@@ -62,13 +62,13 @@ $dimensions: devtools.$dimensions;
   bottom: calc(100% + 1.2rem);
   left: 50%;
   transform: translateX(-50%);
-  background: var(--ndt-bg-primary);
-  color: var(--ndt-text-primary);
+  background: var(--ngt-bg-primary);
+  color: var(--ngt-text-primary);
   padding: 0.5rem 0.75rem;
-  border-radius: var(--ndt-border-radius-medium);
+  border-radius: var(--ngt-border-radius-medium);
   font-size: 0.75rem;
   white-space: nowrap;
   pointer-events: none;
   z-index: 1000;
-  box-shadow: var(--ndt-shadow-tooltip);
+  box-shadow: var(--ngt-shadow-tooltip);
 }

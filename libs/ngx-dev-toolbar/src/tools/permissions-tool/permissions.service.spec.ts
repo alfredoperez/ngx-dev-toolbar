@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { DevToolbarPermissionsService } from './permissions.service';
-import { DevToolbarInternalPermissionsService } from './permissions-internal.service';
-import { DevToolbarPermission } from './permissions.models';
+import { ToolbarPermissionsService } from './permissions.service';
+import { ToolbarInternalPermissionsService } from './permissions-internal.service';
+import { ToolbarPermission } from './permissions.models';
 
-describe('DevToolbarPermissionsService', () => {
-  let service: DevToolbarPermissionsService;
-  let internalService: jest.Mocked<DevToolbarInternalPermissionsService>;
+describe('ToolbarPermissionsService', () => {
+  let service: ToolbarPermissionsService;
+  let internalService: jest.Mocked<ToolbarInternalPermissionsService>;
 
   beforeEach(() => {
     const internalServiceMock = {
@@ -17,21 +17,21 @@ describe('DevToolbarPermissionsService', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        DevToolbarPermissionsService,
+        ToolbarPermissionsService,
         {
-          provide: DevToolbarInternalPermissionsService,
+          provide: ToolbarInternalPermissionsService,
           useValue: internalServiceMock,
         },
       ],
     });
 
     internalService = TestBed.inject(
-      DevToolbarInternalPermissionsService
-    ) as jest.Mocked<DevToolbarInternalPermissionsService>;
-    service = TestBed.inject(DevToolbarPermissionsService);
+      ToolbarInternalPermissionsService
+    ) as jest.Mocked<ToolbarInternalPermissionsService>;
+    service = TestBed.inject(ToolbarPermissionsService);
   });
 
-  it('should implement DevToolsService interface', () => {
+  it('should implement ToolbarService interface', () => {
     expect(service.setAvailableOptions).toBeDefined();
     expect(service.getForcedValues).toBeDefined();
     expect(service.getValues).toBeDefined();
@@ -39,7 +39,7 @@ describe('DevToolbarPermissionsService', () => {
 
   describe('setAvailableOptions', () => {
     it('should call internal service setAppPermissions', () => {
-      const permissions: DevToolbarPermission[] = [
+      const permissions: ToolbarPermission[] = [
         { id: 'perm1', name: 'Permission 1', isGranted: true, isForced: false },
       ];
 
@@ -53,7 +53,7 @@ describe('DevToolbarPermissionsService', () => {
 
   describe('getForcedValues', () => {
     it('should return observable of forced permissions', (done) => {
-      const forcedPermissions: DevToolbarPermission[] = [
+      const forcedPermissions: ToolbarPermission[] = [
         { id: 'perm1', name: 'Permission 1', isGranted: true, isForced: true },
       ];
       internalService.getForcedPermissions = jest
@@ -69,7 +69,7 @@ describe('DevToolbarPermissionsService', () => {
 
   describe('getValues', () => {
     it('should return all permissions with overrides applied', (done) => {
-      const allPermissions: DevToolbarPermission[] = [
+      const allPermissions: ToolbarPermission[] = [
         { id: 'perm1', name: 'Permission 1', isGranted: true, isForced: true },
         { id: 'perm2', name: 'Permission 2', isGranted: false, isForced: false },
       ];
@@ -94,7 +94,7 @@ describe('DevToolbarPermissionsService', () => {
     });
 
     it('should distinguish between forced and natural permissions', (done) => {
-      const permissions: DevToolbarPermission[] = [
+      const permissions: ToolbarPermission[] = [
         { id: 'natural', name: 'Natural', isGranted: true, isForced: false },
         { id: 'forced', name: 'Forced', isGranted: false, isForced: true },
       ];

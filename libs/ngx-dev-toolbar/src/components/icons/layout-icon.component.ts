@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
-  selector: 'ndt-layout-icon',
+  selector: 'ngt-layout-icon',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

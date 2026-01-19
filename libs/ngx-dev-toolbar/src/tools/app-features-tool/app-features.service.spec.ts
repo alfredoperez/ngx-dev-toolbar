@@ -1,20 +1,20 @@
 import { TestBed } from '@angular/core/testing';
 import { firstValueFrom } from 'rxjs';
-import { DevToolsService } from '../../models/dev-tools.interface';
-import { DevToolsStorageService } from '../../utils/storage.service';
-import { DevToolbarInternalAppFeaturesService } from './app-features-internal.service';
-import { DevToolbarAppFeaturesService } from './app-features.service';
-import { DevToolbarAppFeature, ForcedAppFeaturesState } from './app-features.models';
+import { ToolbarService } from '../../models/toolbar.interface';
+import { ToolbarStorageService } from '../../utils/storage.service';
+import { ToolbarInternalAppFeaturesService } from './app-features-internal.service';
+import { ToolbarAppFeaturesService } from './app-features.service';
+import { ToolbarAppFeature, ForcedAppFeaturesState } from './app-features.models';
 
-describe('DevToolbarAppFeaturesService', () => {
-  let service: DevToolbarAppFeaturesService;
-  let internalService: DevToolbarInternalAppFeaturesService;
+describe('ToolbarAppFeaturesService', () => {
+  let service: ToolbarAppFeaturesService;
+  let internalService: ToolbarInternalAppFeaturesService;
 
   const createMockFeature = (
     id: string,
     name: string,
     isEnabled = false
-  ): DevToolbarAppFeature => ({
+  ): ToolbarAppFeature => ({
     id,
     name,
     isEnabled,
@@ -30,23 +30,23 @@ describe('DevToolbarAppFeaturesService', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        DevToolbarAppFeaturesService,
-        DevToolbarInternalAppFeaturesService,
-        { provide: DevToolsStorageService, useValue: storageServiceMock },
+        ToolbarAppFeaturesService,
+        ToolbarInternalAppFeaturesService,
+        { provide: ToolbarStorageService, useValue: storageServiceMock },
       ],
     });
 
-    service = TestBed.inject(DevToolbarAppFeaturesService);
-    internalService = TestBed.inject(DevToolbarInternalAppFeaturesService);
+    service = TestBed.inject(ToolbarAppFeaturesService);
+    internalService = TestBed.inject(ToolbarInternalAppFeaturesService);
   });
 
-  describe('Task 14: DevToolsService interface compliance', () => {
-    it('should implement DevToolsService interface', () => {
+  describe('Task 14: ToolbarService interface compliance', () => {
+    it('should implement ToolbarService interface', () => {
       expect(service).toBeDefined();
-      expect(service).toBeInstanceOf(DevToolbarAppFeaturesService);
+      expect(service).toBeInstanceOf(ToolbarAppFeaturesService);
 
-      // Verify it conforms to DevToolsService interface
-      const devToolsService: DevToolsService<DevToolbarAppFeature> = service;
+      // Verify it conforms to ToolbarService interface
+      const devToolsService: ToolbarService<ToolbarAppFeature> = service;
       expect(devToolsService.setAvailableOptions).toBeDefined();
       expect(devToolsService.getForcedValues).toBeDefined();
     });
@@ -79,7 +79,7 @@ describe('DevToolbarAppFeaturesService', () => {
   describe('Task 14: Public API delegation to internal service', () => {
     it('should delegate setAvailableOptions() to internal service setAppFeatures()', () => {
       const setAppFeaturesSpy = jest.spyOn(internalService, 'setAppFeatures');
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics'),
       ];
 
@@ -91,7 +91,7 @@ describe('DevToolbarAppFeaturesService', () => {
 
     it('should delegate getForcedValues() to internal service getForcedFeatures()', async () => {
       const getForcedFeaturesSpy = jest.spyOn(internalService, 'getForcedFeatures');
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics', false),
       ];
 
@@ -124,7 +124,7 @@ describe('DevToolbarAppFeaturesService', () => {
         internalService,
         'getCurrentForcedState'
       );
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics', false),
       ];
 
@@ -143,7 +143,7 @@ describe('DevToolbarAppFeaturesService', () => {
 
   describe('Task 14: Error propagation from internal service', () => {
     it('should throw error on duplicate feature IDs via setAvailableOptions()', () => {
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics'),
         createMockFeature('analytics', 'Duplicate'), // Duplicate ID
       ];
@@ -154,7 +154,7 @@ describe('DevToolbarAppFeaturesService', () => {
     });
 
     it('should throw error on empty feature ID via setAvailableOptions()', () => {
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('', 'Invalid Feature'),
       ];
 
@@ -166,7 +166,7 @@ describe('DevToolbarAppFeaturesService', () => {
 
   describe('Task 14: Integration with internal service', () => {
     it('should emit forced features when feature forced via internal service', async () => {
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics', false),
         createMockFeature('multi-user', 'Multi-User', false),
       ];
@@ -189,7 +189,7 @@ describe('DevToolbarAppFeaturesService', () => {
     });
 
     it('should apply preset state and trigger getForcedValues() emission', async () => {
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics', false),
         createMockFeature('multi-user', 'Multi-User', false),
         createMockFeature('white-label', 'White Label', false),
@@ -216,7 +216,7 @@ describe('DevToolbarAppFeaturesService', () => {
     });
 
     it('should return current forced state matching internal service state', () => {
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics', false),
         createMockFeature('multi-user', 'Multi-User', false),
       ];
@@ -237,7 +237,7 @@ describe('DevToolbarAppFeaturesService', () => {
 
     it('should filter invalid feature IDs when applying preset', async () => {
       const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics', false),
       ];
 
@@ -267,7 +267,7 @@ describe('DevToolbarAppFeaturesService', () => {
 
   describe('getValues', () => {
     it('should return all features with overrides applied', async () => {
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics', false),
         createMockFeature('multi-user', 'Multi-User', true),
       ];
@@ -292,7 +292,7 @@ describe('DevToolbarAppFeaturesService', () => {
     });
 
     it('should return all features when no overrides exist', async () => {
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics', false),
         createMockFeature('multi-user', 'Multi-User', true),
       ];
@@ -306,7 +306,7 @@ describe('DevToolbarAppFeaturesService', () => {
     });
 
     it('should emit new values when overrides change', (done) => {
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics', false),
       ];
 
@@ -333,7 +333,7 @@ describe('DevToolbarAppFeaturesService', () => {
     });
 
     it('should handle multiple features with mixed overrides', async () => {
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics', false),
         createMockFeature('multi-user', 'Multi-User', true),
         createMockFeature('white-label', 'White Label', false),
@@ -366,7 +366,7 @@ describe('DevToolbarAppFeaturesService', () => {
     });
 
     it('should correctly identify forced features using isForced property', async () => {
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('natural', 'Natural Feature', true),
         createMockFeature('forced', 'Forced Feature', true),
       ];
@@ -386,7 +386,7 @@ describe('DevToolbarAppFeaturesService', () => {
     });
 
     it('should show difference between getValues and getForcedValues', async () => {
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('analytics', 'Analytics', false),
         createMockFeature('multi-user', 'Multi-User', true),
         createMockFeature('white-label', 'White Label', false),
@@ -409,7 +409,7 @@ describe('DevToolbarAppFeaturesService', () => {
     });
 
     it('should delegate to internal service features$ observable', async () => {
-      const features: DevToolbarAppFeature[] = [
+      const features: ToolbarAppFeature[] = [
         createMockFeature('test', 'Test', false),
       ];
 

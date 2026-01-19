@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import {
-  DevToolbarPermissionsService,
-  DevToolbarPermission,
+  ToolbarPermissionsService,
+  ToolbarPermission,
 } from 'ngx-dev-toolbar';
 
 /**
@@ -16,13 +16,13 @@ import {
  */
 @Injectable({ providedIn: 'root' })
 export class DemoPermissionsService {
-  private readonly permissionsService = inject(DevToolbarPermissionsService);
+  private readonly permissionsService = inject(ToolbarPermissionsService);
 
   /**
    * Define sample permissions for the demo application.
    * In a real app, these would come from your backend/auth service.
    */
-  private readonly samplePermissions: DevToolbarPermission[] = [
+  private readonly samplePermissions: ToolbarPermission[] = [
     {
       id: 'can-add-users',
       name: 'Add Users',
@@ -92,7 +92,7 @@ export class DemoPermissionsService {
    * Convert permission array to a map for easy lookup.
    */
   private buildPermissionsMap(
-    permissions: DevToolbarPermission[]
+    permissions: ToolbarPermission[]
   ): Record<string, boolean> {
     return permissions.reduce(
       (acc, permission) => {

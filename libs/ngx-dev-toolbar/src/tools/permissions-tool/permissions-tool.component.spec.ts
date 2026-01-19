@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { DevToolsStorageService } from '../../utils/storage.service';
-import { DevToolbarPermissionsToolComponent } from './permissions-tool.component';
-import { DevToolbarInternalPermissionsService } from './permissions-internal.service';
-import { DevToolbarPermission } from './permissions.models';
+import { ToolbarStorageService } from '../../utils/storage.service';
+import { ToolbarPermissionsToolComponent } from './permissions-tool.component';
+import { ToolbarInternalPermissionsService } from './permissions-internal.service';
+import { ToolbarPermission } from './permissions.models';
 
-describe('DevToolbarPermissionsToolComponent', () => {
-  let component: DevToolbarPermissionsToolComponent;
-  let fixture: ComponentFixture<DevToolbarPermissionsToolComponent>;
-  let internalService: jest.Mocked<DevToolbarInternalPermissionsService>;
+describe('ToolbarPermissionsToolComponent', () => {
+  let component: ToolbarPermissionsToolComponent;
+  let fixture: ComponentFixture<ToolbarPermissionsToolComponent>;
+  let internalService: jest.Mocked<ToolbarInternalPermissionsService>;
 
-  const mockPermissions: DevToolbarPermission[] = [
+  const mockPermissions: ToolbarPermission[] = [
     {
       id: 'perm1',
       name: 'Edit Posts',
@@ -36,7 +36,7 @@ describe('DevToolbarPermissionsToolComponent', () => {
   ];
 
   beforeEach(async () => {
-    const permissionsSignal = signal<DevToolbarPermission[]>(mockPermissions);
+    const permissionsSignal = signal<ToolbarPermission[]>(mockPermissions);
 
     const internalServiceMock = {
       permissions: permissionsSignal,
@@ -50,23 +50,23 @@ describe('DevToolbarPermissionsToolComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [DevToolbarPermissionsToolComponent, NoopAnimationsModule],
+      imports: [ToolbarPermissionsToolComponent, NoopAnimationsModule],
       providers: [
         {
-          provide: DevToolbarInternalPermissionsService,
+          provide: ToolbarInternalPermissionsService,
           useValue: internalServiceMock,
         },
         {
-          provide: DevToolsStorageService,
+          provide: ToolbarStorageService,
           useValue: storageServiceMock,
         },
       ],
     }).compileComponents();
 
     internalService = TestBed.inject(
-      DevToolbarInternalPermissionsService
-    ) as jest.Mocked<DevToolbarInternalPermissionsService>;
-    fixture = TestBed.createComponent(DevToolbarPermissionsToolComponent);
+      ToolbarInternalPermissionsService
+    ) as jest.Mocked<ToolbarInternalPermissionsService>;
+    fixture = TestBed.createComponent(ToolbarPermissionsToolComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -289,7 +289,7 @@ describe('DevToolbarPermissionsToolComponent', () => {
   describe('empty states', () => {
     it('should detect when permissions array is empty', async () => {
       // Create a new test setup with empty permissions
-      const emptyPermissionsSignal = signal<DevToolbarPermission[]>([]);
+      const emptyPermissionsSignal = signal<ToolbarPermission[]>([]);
       const emptyServiceMock = {
         permissions: emptyPermissionsSignal,
         setPermission: jest.fn(),
@@ -303,20 +303,20 @@ describe('DevToolbarPermissionsToolComponent', () => {
 
       TestBed.resetTestingModule();
       await TestBed.configureTestingModule({
-        imports: [DevToolbarPermissionsToolComponent, NoopAnimationsModule],
+        imports: [ToolbarPermissionsToolComponent, NoopAnimationsModule],
         providers: [
           {
-            provide: DevToolbarInternalPermissionsService,
+            provide: ToolbarInternalPermissionsService,
             useValue: emptyServiceMock,
           },
           {
-            provide: DevToolsStorageService,
+            provide: ToolbarStorageService,
             useValue: storageServiceMock,
           },
         ],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(DevToolbarPermissionsToolComponent);
+      fixture = TestBed.createComponent(ToolbarPermissionsToolComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
 
@@ -351,7 +351,7 @@ describe('DevToolbarPermissionsToolComponent', () => {
     });
 
     it('should return denied when permission is forced and not granted', () => {
-      const forcedDenied: DevToolbarPermission = {
+      const forcedDenied: ToolbarPermission = {
         id: 'test',
         name: 'Test',
         isGranted: false,

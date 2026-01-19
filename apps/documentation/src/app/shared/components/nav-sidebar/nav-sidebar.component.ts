@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { DevToolbarIconComponent, IconName } from 'ngx-dev-toolbar';
+import { ToolbarIconComponent, IconName } from 'ngx-dev-toolbar';
 
 interface DocNavItem {
   label: string;
@@ -17,7 +17,7 @@ interface DocNavSection {
 @Component({
   selector: 'app-nav-sidebar',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive, DevToolbarIconComponent],
+  imports: [CommonModule, RouterLink, RouterLinkActive, ToolbarIconComponent],
   templateUrl: './nav-sidebar.component.html',
   styleUrls: ['./nav-sidebar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

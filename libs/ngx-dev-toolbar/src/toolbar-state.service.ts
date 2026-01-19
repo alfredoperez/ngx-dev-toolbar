@@ -1,21 +1,21 @@
 import { Injectable, computed, signal } from '@angular/core';
-import { DevToolbarConfig } from './models/dev-toolbar-config.interface';
+import { ToolbarConfig } from './models/toolbar-config.interface';
 
-interface DevToolbarState {
+interface ToolbarState {
   isHidden: boolean;
   activeToolId: string | null;
   error: string | null;
   theme: 'light' | 'dark';
   delay: number;
-  config: DevToolbarConfig;
+  config: ToolbarConfig;
 }
 
 @Injectable({
   providedIn: 'root',
 })
-export class DevToolbarStateService {
+export class ToolbarStateService {
   // Initial state
-  private state = signal<DevToolbarState>({
+  private state = signal<ToolbarState>({
     isHidden: true,
     activeToolId: null,
     delay: 3000,
@@ -97,7 +97,7 @@ export class DevToolbarStateService {
     }));
   }
 
-  setConfig(config: DevToolbarConfig): void {
+  setConfig(config: ToolbarConfig): void {
     this.state.update((state) => ({
       ...state,
       config,

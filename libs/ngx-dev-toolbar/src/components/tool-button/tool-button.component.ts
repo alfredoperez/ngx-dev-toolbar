@@ -15,10 +15,10 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { DevToolbarStateService } from '../../dev-toolbar-state.service';
+import { ToolbarStateService } from '../../toolbar-state.service';
 
 @Component({
-  selector: 'ndt-tool-button',
+  selector: 'ngt-tool-button',
   standalone: true,
   template: `
     <button
@@ -68,9 +68,9 @@ import { DevToolbarStateService } from '../../dev-toolbar-state.service';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DevToolbarToolButtonComponent {
+export class ToolbarToolButtonComponent {
   // Injects
-  private readonly state = inject(DevToolbarStateService);
+  private readonly state = inject(ToolbarStateService);
   private readonly elementRef = inject(ElementRef);
 
   // Inputs

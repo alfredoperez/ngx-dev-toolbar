@@ -1,9 +1,9 @@
 import { InjectionToken } from '@angular/core';
-import { DevToolsService } from './models/dev-tools.interface';
-import { DevToolbarAppFeature } from './tools/app-features-tool/app-features.models';
-import { DevToolbarFlag } from './tools/feature-flags-tool/feature-flags.models';
+import { ToolbarService } from './models/toolbar.interface';
+import { ToolbarAppFeature } from './tools/app-features-tool/app-features.models';
+import { ToolbarFlag } from './tools/feature-flags-tool/feature-flags.models';
 import { Language } from './tools/language-tool/language.models';
-import { DevToolbarPermission } from './tools/permissions-tool/permissions.models';
+import { ToolbarPermission } from './tools/permissions-tool/permissions.models';
 
 /**
  * InjectionToken for the Feature Flags service.
@@ -15,15 +15,15 @@ import { DevToolbarPermission } from './tools/permissions-tool/permissions.model
  * @example
  * ```typescript
  * // In your service
- * private devToolbar = inject(DEV_TOOLBAR_FEATURE_FLAGS, { optional: true });
+ * private devToolbar = inject(TOOLBAR_FEATURE_FLAGS, { optional: true });
  *
  * // Safe to call - no-op if toolbar is not provided
  * this.devToolbar?.setAvailableOptions(flags);
  * ```
  */
-export const DEV_TOOLBAR_FEATURE_FLAGS = new InjectionToken<
-  DevToolsService<DevToolbarFlag>
->('DEV_TOOLBAR_FEATURE_FLAGS');
+export const TOOLBAR_FEATURE_FLAGS = new InjectionToken<
+  ToolbarService<ToolbarFlag>
+>('TOOLBAR_FEATURE_FLAGS');
 
 /**
  * InjectionToken for the Permissions service.
@@ -35,15 +35,15 @@ export const DEV_TOOLBAR_FEATURE_FLAGS = new InjectionToken<
  * @example
  * ```typescript
  * // In your service
- * private devToolbar = inject(DEV_TOOLBAR_PERMISSIONS, { optional: true });
+ * private devToolbar = inject(TOOLBAR_PERMISSIONS, { optional: true });
  *
  * // Safe to call - no-op if toolbar is not provided
  * this.devToolbar?.setAvailableOptions(permissions);
  * ```
  */
-export const DEV_TOOLBAR_PERMISSIONS = new InjectionToken<
-  DevToolsService<DevToolbarPermission>
->('DEV_TOOLBAR_PERMISSIONS');
+export const TOOLBAR_PERMISSIONS = new InjectionToken<
+  ToolbarService<ToolbarPermission>
+>('TOOLBAR_PERMISSIONS');
 
 /**
  * InjectionToken for the Language service.
@@ -55,15 +55,15 @@ export const DEV_TOOLBAR_PERMISSIONS = new InjectionToken<
  * @example
  * ```typescript
  * // In your service
- * private devToolbar = inject(DEV_TOOLBAR_LANGUAGE, { optional: true });
+ * private devToolbar = inject(TOOLBAR_LANGUAGE, { optional: true });
  *
  * // Safe to call - no-op if toolbar is not provided
  * this.devToolbar?.setAvailableOptions(languages);
  * ```
  */
-export const DEV_TOOLBAR_LANGUAGE = new InjectionToken<
-  DevToolsService<Language>
->('DEV_TOOLBAR_LANGUAGE');
+export const TOOLBAR_LANGUAGE = new InjectionToken<
+  ToolbarService<Language>
+>('TOOLBAR_LANGUAGE');
 
 /**
  * InjectionToken for the App Features service.
@@ -75,12 +75,12 @@ export const DEV_TOOLBAR_LANGUAGE = new InjectionToken<
  * @example
  * ```typescript
  * // In your service
- * private devToolbar = inject(DEV_TOOLBAR_APP_FEATURES, { optional: true });
+ * private devToolbar = inject(TOOLBAR_APP_FEATURES, { optional: true });
  *
  * // Safe to call - no-op if toolbar is not provided
  * this.devToolbar?.setAvailableOptions(features);
  * ```
  */
-export const DEV_TOOLBAR_APP_FEATURES = new InjectionToken<
-  DevToolsService<DevToolbarAppFeature>
->('DEV_TOOLBAR_APP_FEATURES');
+export const TOOLBAR_APP_FEATURES = new InjectionToken<
+  ToolbarService<ToolbarAppFeature>
+>('TOOLBAR_APP_FEATURES');

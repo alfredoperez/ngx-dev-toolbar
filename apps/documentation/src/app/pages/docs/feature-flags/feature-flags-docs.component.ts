@@ -18,7 +18,7 @@ export class FeatureFlagsDocsComponent {
     fileName: 'app.component.ts',
     code: `
 import { Component, inject, OnInit } from '@angular/core';
-import { DevToolbarFeatureFlagService } from 'ngx-dev-toolbar';
+import { ToolbarFeatureFlagService } from 'ngx-dev-toolbar';
 
 @Component({
   selector: 'app-root',
@@ -31,7 +31,7 @@ import { DevToolbarFeatureFlagService } from 'ngx-dev-toolbar';
   \`
 })
 export class AppComponent implements OnInit {
-  private featureFlagsService = inject(DevToolbarFeatureFlagService);
+  private featureFlagsService = inject(ToolbarFeatureFlagService);
   darkModeEnabled = false;
 
   ngOnInit() {
@@ -70,11 +70,11 @@ export class AppComponent implements OnInit {
     fileName: 'feature-flag.service.ts',
     code: `
 import { Injectable, inject, signal, computed } from '@angular/core';
-import { DevToolbarFeatureFlagService } from 'ngx-dev-toolbar';
+import { ToolbarFeatureFlagService } from 'ngx-dev-toolbar';
 
 @Injectable({ providedIn: 'root' })
 export class FeatureFlagService {
-  private toolbarService = inject(DevToolbarFeatureFlagService);
+  private toolbarService = inject(ToolbarFeatureFlagService);
 
   private flags = signal<Map<string, boolean>>(new Map());
 
@@ -113,12 +113,12 @@ export class FeatureFlagService {
   apiMethods: ApiMethod[] = [
     {
       name: 'setAvailableOptions',
-      signature: 'setAvailableOptions(flags: DevToolbarFlag[]): void',
+      signature: 'setAvailableOptions(flags: ToolbarFlag[]): void',
       description: 'Defines the available feature flags that can be toggled in the toolbar.',
       parameters: [
         {
           name: 'flags',
-          type: 'DevToolbarFlag[]',
+          type: 'ToolbarFlag[]',
           description: 'Array of feature flag definitions with id, name, current state'
         }
       ],
@@ -138,11 +138,11 @@ this.featureFlagsService.setAvailableOptions([
     },
     {
       name: 'getValues',
-      signature: 'getValues(): Observable<DevToolbarFlag[]>',
+      signature: 'getValues(): Observable<ToolbarFlag[]>',
       description: 'Gets ALL feature flags with overrides already applied. This is the recommended method for integration as it eliminates the need for manual merging. Each flag includes an isForced property.',
       parameters: [],
       returnType: {
-        type: 'Observable<DevToolbarFlag[]>',
+        type: 'Observable<ToolbarFlag[]>',
         description: 'Observable emitting all feature flags with overrides applied whenever changes occur'
       },
       example: {
@@ -159,11 +159,11 @@ this.featureFlagsService.getValues().subscribe(flags => {
     },
     {
       name: 'getForcedValues',
-      signature: 'getForcedValues(): Observable<DevToolbarFlag[]>',
+      signature: 'getForcedValues(): Observable<ToolbarFlag[]>',
       description: 'Gets only the feature flags that have been overridden through the toolbar. Legacy method - consider using getValues() instead.',
       parameters: [],
       returnType: {
-        type: 'Observable<DevToolbarFlag[]>',
+        type: 'Observable<ToolbarFlag[]>',
         description: 'Observable emitting only the forced feature flags whenever changes occur'
       },
       example: {
@@ -181,9 +181,9 @@ this.featureFlagsService.getForcedValues().subscribe(flags => {
 
   apiInterfaces: ApiInterface[] = [
     {
-      name: 'DevToolbarFlag',
+      name: 'ToolbarFlag',
       definition: `
-interface DevToolbarFlag {
+interface ToolbarFlag {
   id: string;
   name: string;
   description?: string;

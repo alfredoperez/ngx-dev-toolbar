@@ -7,35 +7,35 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DevToolbarIconComponent } from '../../components/icons/icon.component';
-import { DevToolbarInputComponent } from '../../components/input/input.component';
-import { DevToolbarListComponent } from '../../components/list/list.component';
-import { DevToolbarListItemComponent } from '../../components/list-item/list-item.component';
-import { DevToolbarSelectComponent } from '../../components/select/select.component';
-import { DevToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
-import { DevToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
+import { ToolbarIconComponent } from '../../components/icons/icon.component';
+import { ToolbarInputComponent } from '../../components/input/input.component';
+import { ToolbarListComponent } from '../../components/list/list.component';
+import { ToolbarListItemComponent } from '../../components/list-item/list-item.component';
+import { ToolbarSelectComponent } from '../../components/select/select.component';
+import { ToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
+import { ToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
 import { ToolViewState } from '../../models/tool-view-state.models';
-import { DevToolsStorageService } from '../../utils/storage.service';
-import { DevToolbarInternalPermissionsService } from './permissions-internal.service';
+import { ToolbarStorageService } from '../../utils/storage.service';
+import { ToolbarInternalPermissionsService } from './permissions-internal.service';
 import {
-  DevToolbarPermission,
+  ToolbarPermission,
   PermissionFilter,
 } from './permissions.models';
 
 @Component({
-  selector: 'ndt-permissions-tool',
+  selector: 'ngt-permissions-tool',
   standalone: true,
   imports: [
     FormsModule,
-    DevToolbarToolComponent,
-    DevToolbarInputComponent,
-    DevToolbarSelectComponent,
-    DevToolbarIconComponent,
-    DevToolbarListComponent,
-    DevToolbarListItemComponent,
+    ToolbarToolComponent,
+    ToolbarInputComponent,
+    ToolbarSelectComponent,
+    ToolbarIconComponent,
+    ToolbarListComponent,
+    ToolbarListItemComponent,
   ],
   template: `
-    <ndt-toolbar-tool
+    <ngt-toolbar-tool
       [options]="options"
       title="Permissions"
       icon="lock"
@@ -43,15 +43,15 @@ import {
     >
       <div class="container">
         <div class="tool-header">
-          <ndt-input
+          <ngt-input
             [value]="searchQuery()"
             (valueChange)="onSearchChange($event)"
             placeholder="Search permissions..."
             [ariaLabel]="'Search permissions'"
           />
           <div class="filter-wrapper">
-            <ndt-icon name="filter" class="filter-icon" />
-            <ndt-select
+            <ngt-icon name="filter" class="filter-icon" />
+            <ngt-select
               [value]="activeFilter()"
               [options]="filterOptions"
               [size]="'medium'"
@@ -61,7 +61,7 @@ import {
           </div>
         </div>
 
-        <ndt-list
+        <ngt-list
           [hasItems]="!hasNoPermissions()"
           [hasResults]="!hasNoFilteredPermissions()"
           emptyMessage="No permissions found"
@@ -69,25 +69,25 @@ import {
           noResultsMessage="No permissions match your filter"
         >
           @for (permission of filteredPermissions(); track permission.id) {
-            <ndt-list-item
+            <ngt-list-item
               [title]="permission.name"
               [description]="permission.description"
               [isForced]="permission.isForced"
               [currentValue]="permission.isGranted"
               [originalValue]="permission.originalValue"
             >
-              <ndt-select
+              <ngt-select
                 [value]="getPermissionValue(permission)"
                 [options]="permissionValueOptions"
                 [ariaLabel]="'Override state for ' + permission.name"
                 (valueChange)="onPermissionChange(permission.id, $event ?? '')"
                 size="small"
               />
-            </ndt-list-item>
+            </ngt-list-item>
           }
-        </ndt-list>
+        </ngt-list>
       </div>
-    </ndt-toolbar-tool>
+    </ngt-toolbar-tool>
   `,
   styles: [
     `
@@ -103,10 +103,10 @@ import {
         position: relative;
         flex-shrink: 0;
         display: flex;
-        gap: var(--ndt-spacing-sm);
-        margin-bottom: var(--ndt-spacing-sm);
+        gap: var(--ngt-spacing-sm);
+        margin-bottom: var(--ngt-spacing-sm);
 
-        ndt-input {
+        ngt-input {
           flex: 1;
         }
 
@@ -114,7 +114,7 @@ import {
           flex: 0 0 auto;
           display: flex;
           align-items: center;
-          gap: var(--ndt-spacing-md);
+          gap: var(--ngt-spacing-md);
 
           .filter-icon {
             width: 18px;
@@ -123,7 +123,7 @@ import {
             opacity: 0.6;
           }
 
-          ndt-select {
+          ngt-select {
             flex: 0 0 auto;
             min-width: 180px;
           }
@@ -133,12 +133,12 @@ import {
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DevToolbarPermissionsToolComponent {
+export class ToolbarPermissionsToolComponent {
   // Injects
   private readonly permissionsService = inject(
-    DevToolbarInternalPermissionsService
+    ToolbarInternalPermissionsService
   );
-  private readonly storageService = inject(DevToolsStorageService);
+  private readonly storageService = inject(ToolbarStorageService);
 
   // Constants
   private readonly VIEW_STATE_KEY = 'permissions-view';
@@ -221,9 +221,9 @@ export class DevToolbarPermissionsToolComponent {
     description: 'Manage permission overrides for your current session',
     isClosable: true,
     size: 'tall',
-    id: 'ndt-permissions',
+    id: 'ngt-permissions',
     isBeta: true,
-  } as DevToolbarWindowOptions;
+  } as ToolbarWindowOptions;
 
   protected readonly filterOptions = [
     { value: 'all', label: 'All Permissions' },
@@ -265,7 +265,7 @@ export class DevToolbarPermissionsToolComponent {
   }
 
   // Protected methods
-  protected getPermissionValue(permission: DevToolbarPermission): string {
+  protected getPermissionValue(permission: ToolbarPermission): string {
     if (!permission.isForced) return '';
     return permission.isGranted ? 'granted' : 'denied';
   }

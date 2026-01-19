@@ -7,31 +7,31 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DevToolbarIconComponent } from '../../components/icons/icon.component';
-import { DevToolbarInputComponent } from '../../components/input/input.component';
-import { DevToolbarListComponent } from '../../components/list/list.component';
-import { DevToolbarListItemComponent } from '../../components/list-item/list-item.component';
-import { DevToolbarSelectComponent } from '../../components/select/select.component';
-import { DevToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
-import { DevToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
+import { ToolbarIconComponent } from '../../components/icons/icon.component';
+import { ToolbarInputComponent } from '../../components/input/input.component';
+import { ToolbarListComponent } from '../../components/list/list.component';
+import { ToolbarListItemComponent } from '../../components/list-item/list-item.component';
+import { ToolbarSelectComponent } from '../../components/select/select.component';
+import { ToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
+import { ToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
 import { ToolViewState } from '../../models/tool-view-state.models';
-import { DevToolsStorageService } from '../../utils/storage.service';
-import { DevToolbarInternalFeatureFlagService } from './feature-flags-internal.service';
-import { DevToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
+import { ToolbarStorageService } from '../../utils/storage.service';
+import { ToolbarInternalFeatureFlagService } from './feature-flags-internal.service';
+import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
 @Component({
-  selector: 'ndt-feature-flags-tool',
+  selector: 'ngt-feature-flags-tool',
   standalone: true,
   imports: [
     FormsModule,
-    DevToolbarToolComponent,
-    DevToolbarInputComponent,
-    DevToolbarSelectComponent,
-    DevToolbarIconComponent,
-    DevToolbarListComponent,
-    DevToolbarListItemComponent,
+    ToolbarToolComponent,
+    ToolbarInputComponent,
+    ToolbarSelectComponent,
+    ToolbarIconComponent,
+    ToolbarListComponent,
+    ToolbarListItemComponent,
   ],
   template: `
-    <ndt-toolbar-tool
+    <ngt-toolbar-tool
       [options]="options"
       title="Feature Flags"
       icon="toggle-left"
@@ -39,14 +39,14 @@ import { DevToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
     >
       <div class="container">
         <div class="tool-header">
-          <ndt-input
+          <ngt-input
             [value]="searchQuery()"
             (valueChange)="onSearchChange($event)"
             placeholder="Search..."
           />
           <div class="filter-wrapper">
-            <ndt-icon name="filter" class="filter-icon" />
-            <ndt-select
+            <ngt-icon name="filter" class="filter-icon" />
+            <ngt-select
               [value]="activeFilter()"
               [options]="filterOptions"
               [size]="'medium'"
@@ -55,32 +55,32 @@ import { DevToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
           </div>
         </div>
 
-        <ndt-list
+        <ngt-list
           [hasItems]="!hasNoFlags()"
           [hasResults]="!hasNoFilteredFlags()"
           emptyMessage="No flags found"
           noResultsMessage="No flags found matching your filter"
         >
           @for (flag of filteredFlags(); track flag.id) {
-            <ndt-list-item
+            <ngt-list-item
               [title]="flag.name"
               [description]="flag.description"
               [isForced]="flag.isForced"
               [currentValue]="flag.isEnabled"
               [originalValue]="flag.originalValue"
             >
-              <ndt-select
+              <ngt-select
                 [value]="getFlagValue(flag)"
                 [options]="flagValueOptions"
                 [ariaLabel]="'Set value for ' + flag.name"
                 (valueChange)="onFlagChange(flag.id, $event ?? '')"
                 size="small"
               />
-            </ndt-list-item>
+            </ngt-list-item>
           }
-        </ndt-list>
+        </ngt-list>
       </div>
-    </ndt-toolbar-tool>
+    </ngt-toolbar-tool>
   `,
   styles: [
     `
@@ -96,10 +96,10 @@ import { DevToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
         position: relative;
         flex-shrink: 0;
         display: flex;
-        gap: var(--ndt-spacing-sm);
-        margin-bottom: var(--ndt-spacing-sm);
+        gap: var(--ngt-spacing-sm);
+        margin-bottom: var(--ngt-spacing-sm);
 
-        ndt-input {
+        ngt-input {
           flex: 1;
         }
 
@@ -107,7 +107,7 @@ import { DevToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
           flex: 0 0 auto;
           display: flex;
           align-items: center;
-          gap: var(--ndt-spacing-md);
+          gap: var(--ngt-spacing-md);
 
           .filter-icon {
             width: 18px;
@@ -116,7 +116,7 @@ import { DevToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
             opacity: 0.6;
           }
 
-          ndt-select {
+          ngt-select {
             flex: 0 0 auto;
             min-width: 180px;
           }
@@ -126,10 +126,10 @@ import { DevToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DevToolbarFeatureFlagsToolComponent {
+export class ToolbarFeatureFlagsToolComponent {
   // Injects
-  private readonly featureFlags = inject(DevToolbarInternalFeatureFlagService);
-  private readonly storageService = inject(DevToolsStorageService);
+  private readonly featureFlags = inject(ToolbarInternalFeatureFlagService);
+  private readonly storageService = inject(ToolbarStorageService);
 
   // Constants
   private readonly VIEW_STATE_KEY = 'feature-flags-view';
@@ -210,9 +210,9 @@ export class DevToolbarFeatureFlagsToolComponent {
     description: 'Manage the feature flags for your current session',
     isClosable: true,
     size: 'tall',
-    id: 'ndt-feature-flags',
+    id: 'ngt-feature-flags',
     isBeta: true,
-  } as DevToolbarWindowOptions;
+  } as ToolbarWindowOptions;
 
   protected readonly filterOptions = [
     { value: 'all', label: 'All Flags' },
@@ -254,7 +254,7 @@ export class DevToolbarFeatureFlagsToolComponent {
   }
 
   // Protected methods
-  protected getFlagValue(flag: DevToolbarFlag): string {
+  protected getFlagValue(flag: ToolbarFlag): string {
     if (!flag.isForced) return '';
     return flag.isEnabled ? 'on' : 'off';
   }

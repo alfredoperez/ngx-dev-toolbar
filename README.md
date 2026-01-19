@@ -1,4 +1,4 @@
-# Angular Dev Toolbar
+# Angular Toolbar
 
 [![npm version](https://badge.fury.io/js/ngx-dev-toolbar.svg)](https://www.npmjs.com/package/ngx-dev-toolbar)
 [![Downloads](https://img.shields.io/npm/dm/ngx-dev-toolbar.svg)](https://www.npmjs.com/package/ngx-dev-toolbar)
@@ -7,7 +7,7 @@
 
 A development toolbar for Angular 19+ applications that helps developers interact with the application more efficiently.
 
-![Dev Toolbar Demo](./docs/images/demo.gif)
+![Toolbar Demo](./docs/images/demo.gif)
 
 ## Why ngx-dev-toolbar?
 
@@ -41,8 +41,8 @@ async function bootstrap() {
 
   // Initialize toolbar only in development
   if (isDevMode()) {
-    const { initDevToolbar } = await import('ngx-dev-toolbar');
-    initDevToolbar(appRef);
+    const { initToolbar } = await import('ngx-dev-toolbar');
+    initToolbar(appRef);
   }
 }
 
@@ -65,11 +65,11 @@ That's it! No template changes needed. The toolbar automatically attaches to the
 ## Feature Flags
 
 ```typescript
-import { DevToolbarFeatureFlagService } from 'ngx-dev-toolbar';
+import { ToolbarFeatureFlagService } from 'ngx-dev-toolbar';
 
 @Component({...})
 export class AppComponent {
-  private featureFlagsService = inject(DevToolbarFeatureFlagService);
+  private featureFlagsService = inject(ToolbarFeatureFlagService);
 
   constructor() {
     this.featureFlagsService.setAvailableOptions([
@@ -91,11 +91,11 @@ this.featureFlagsService.getForcedValues().subscribe((flags) => {
 ## Permissions
 
 ```typescript
-import { DevToolbarPermissionsService } from 'ngx-dev-toolbar';
+import { ToolbarPermissionsService } from 'ngx-dev-toolbar';
 
 @Component({...})
 export class AppComponent {
-  private permissionsService = inject(DevToolbarPermissionsService);
+  private permissionsService = inject(ToolbarPermissionsService);
 
   constructor() {
     this.permissionsService.setAvailableOptions([
@@ -111,11 +111,11 @@ export class AppComponent {
 Test product-level feature availability like license tiers and subscription features:
 
 ```typescript
-import { DevToolbarAppFeaturesService } from 'ngx-dev-toolbar';
+import { ToolbarAppFeaturesService } from 'ngx-dev-toolbar';
 
 @Component({...})
 export class AppComponent {
-  private appFeaturesService = inject(DevToolbarAppFeaturesService);
+  private appFeaturesService = inject(ToolbarAppFeaturesService);
 
   constructor() {
     this.appFeaturesService.setAvailableOptions([
@@ -129,11 +129,11 @@ export class AppComponent {
 ## Language Switcher
 
 ```typescript
-import { DevToolbarLanguageService } from 'ngx-dev-toolbar';
+import { ToolbarLanguageService } from 'ngx-dev-toolbar';
 
 @Component({...})
 export class AppComponent {
-  private languageService = inject(DevToolbarLanguageService);
+  private languageService = inject(ToolbarLanguageService);
 
   constructor() {
     this.languageService.setAvailableOptions([
@@ -149,7 +149,7 @@ export class AppComponent {
 Configure which tools are visible:
 
 ```typescript
-initDevToolbar(appRef, {
+initToolbar(appRef, {
   config: {
     enabled: true,
     showLanguageTool: true,

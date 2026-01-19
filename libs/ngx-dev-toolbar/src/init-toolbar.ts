@@ -3,25 +3,25 @@ import {
   createComponent,
   EnvironmentInjector,
 } from '@angular/core';
-import { DevToolbarComponent } from './dev-toolbar.component';
-import { DevToolbarConfig } from './models/dev-toolbar-config.interface';
-import { provideDevToolbar } from './provide-dev-toolbar';
+import { ToolbarComponent } from './toolbar.component';
+import { ToolbarConfig } from './models/toolbar-config.interface';
+import { provideToolbar } from './provide-toolbar';
 
 /**
- * Options for initializing the dev toolbar dynamically.
+ * Options for initializing the toolbar dynamically.
  */
-export interface InitDevToolbarOptions {
+export interface InitToolbarOptions {
   /**
    * Configuration for the toolbar behavior.
    * Controls which tools are visible and whether the toolbar is enabled.
    */
-  config?: DevToolbarConfig;
+  config?: ToolbarConfig;
 }
 
 /**
- * Result of initializing the dev toolbar.
+ * Result of initializing the toolbar.
  */
-export interface InitDevToolbarResult {
+export interface InitToolbarResult {
   /**
    * Removes the toolbar from the DOM and cleans up resources.
    * Call this when you want to completely remove the toolbar.
@@ -30,10 +30,10 @@ export interface InitDevToolbarResult {
 }
 
 /**
- * Dynamically attaches the dev toolbar to the DOM without template changes.
+ * Dynamically attaches the Angular Toolbar to the DOM without template changes.
  *
  * This function creates and attaches the toolbar component directly to the document body,
- * eliminating the need to add `<ndt-toolbar>` to your component templates. Combined with
+ * eliminating the need to add `<ngt-toolbar>` to your component templates. Combined with
  * dynamic imports, this provides true zero production bundle impact.
  *
  * ## Basic Usage
@@ -49,8 +49,8 @@ export interface InitDevToolbarResult {
  *
  *   // Only import and initialize toolbar in development
  *   if (!environment.production) {
- *     const { initDevToolbar } = await import('ngx-dev-toolbar');
- *     initDevToolbar(appRef);
+ *     const { initToolbar } = await import('ngx-dev-toolbar');
+ *     initToolbar(appRef);
  *   }
  * }
  *
@@ -61,8 +61,8 @@ export interface InitDevToolbarResult {
  *
  * ```typescript
  * if (!environment.production) {
- *   const { initDevToolbar } = await import('ngx-dev-toolbar');
- *   initDevToolbar(appRef, {
+ *   const { initToolbar } = await import('ngx-dev-toolbar');
+ *   initToolbar(appRef, {
  *     config: {
  *       enabled: true,
  *       showFeatureFlagsTool: true,
@@ -76,7 +76,7 @@ export interface InitDevToolbarResult {
  * ## Cleanup
  *
  * ```typescript
- * const { destroy } = initDevToolbar(appRef);
+ * const { destroy } = initToolbar(appRef);
  *
  * // Later, to remove the toolbar
  * destroy();
@@ -84,14 +84,14 @@ export interface InitDevToolbarResult {
  *
  * ## Benefits
  *
- * 1. **Zero template changes** - No `<ndt-toolbar>` needed in any component
+ * 1. **Zero template changes** - No `<ngt-toolbar>` needed in any component
  * 2. **Complete isolation** - Toolbar exists outside the app's component tree
  * 3. **Easy to add/remove** - Single line in main.ts
  * 4. **True tree-shaking** - Dynamic import means it's completely excluded from prod
  *
  * ## Production Bundle Impact
  *
- * When using dynamic imports with `initDevToolbar()`:
+ * When using dynamic imports with `initToolbar()`:
  * - Production bundle: 0 bytes from toolbar
  * - Development only: ~45KB (services + UI components)
  *
@@ -99,14 +99,14 @@ export interface InitDevToolbarResult {
  * @param options - Optional configuration for the toolbar
  * @returns Object with destroy() method for cleanup
  */
-export function initDevToolbar(
+export function initToolbar(
   appRef: ApplicationRef,
-  options?: InitDevToolbarOptions
-): InitDevToolbarResult {
+  options?: InitToolbarOptions
+): InitToolbarResult {
   const injector = appRef.injector.get(EnvironmentInjector);
 
   // Create the toolbar component dynamically
-  const componentRef = createComponent(DevToolbarComponent, {
+  const componentRef = createComponent(ToolbarComponent, {
     environmentInjector: injector,
   });
 
@@ -131,7 +131,7 @@ export function initDevToolbar(
 }
 
 /**
- * Convenience function that combines provideDevToolbar() and initDevToolbar().
+ * Convenience function that combines provideToolbar() and initToolbar().
  *
  * Use this when you want to set up both the service providers and the UI in one call.
  * This is the recommended approach for most applications.
@@ -149,16 +149,16 @@ export function initDevToolbar(
  *
  *   // Set up toolbar providers before bootstrap
  *   if (!environment.production) {
- *     const { provideDevToolbar } = await import('ngx-dev-toolbar');
- *     providers = provideDevToolbar();
+ *     const { provideToolbar } = await import('ngx-dev-toolbar');
+ *     providers = provideToolbar();
  *   }
  *
  *   const appRef = await bootstrapApplication(AppComponent, { providers });
  *
  *   // Initialize toolbar UI after bootstrap
  *   if (!environment.production) {
- *     const { initDevToolbar } = await import('ngx-dev-toolbar');
- *     initDevToolbar(appRef, {
+ *     const { initToolbar } = await import('ngx-dev-toolbar');
+ *     initToolbar(appRef, {
  *       config: {
  *         showFeatureFlagsTool: true,
  *         showPermissionsTool: true,
@@ -179,14 +179,14 @@ export function initDevToolbar(
  *
  *   if (!environment.production) {
  *     const toolbar = await import('ngx-dev-toolbar');
- *     providers.push(...toolbar.provideDevToolbar());
+ *     providers.push(...toolbar.provideToolbar());
  *   }
  *
  *   const appRef = await bootstrapApplication(AppComponent, { providers });
  *
  *   if (!environment.production) {
  *     const toolbar = await import('ngx-dev-toolbar');
- *     toolbar.initDevToolbar(appRef, {
+ *     toolbar.initToolbar(appRef, {
  *       config: {
  *         showFeatureFlagsTool: true,
  *         showPermissionsTool: true,
@@ -196,5 +196,5 @@ export function initDevToolbar(
  * }
  * ```
  */
-// Re-export provideDevToolbar for convenience
-export { provideDevToolbar };
+// Re-export provideToolbar for convenience
+export { provideToolbar };

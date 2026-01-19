@@ -6,7 +6,7 @@
   font-family: devtools.$font-family;
 }
 
-.ndt-toolbar {
+.ngt-toolbar {
   @include devtools.devtools-theme;
 
   position: fixed;
@@ -16,10 +16,10 @@
   transform: translateX(-50%);
   display: flex;
   pointer-events: auto;
-  background: var(--ndt-bg-primary);
-  border: 1px solid var(--ndt-border-primary);
+  background: var(--ngt-bg-primary);
+  border: 1px solid var(--ngt-border-primary);
   border-radius: map.get(map.get(devtools.$dimensions, border-radius), full);
-  box-shadow: var(--ndt-shadow-toolbar);
+  box-shadow: var(--ngt-shadow-toolbar);
   height: map.get(devtools.$dimensions, toolbar-height);
   overflow: visible;
 
@@ -35,28 +35,28 @@ h3,
 h4,
 h5 {
   font-weight: 600;
-  color: var(--ndt-text-primary);
+  color: var(--ngt-text-primary);
   margin: 0;
 }
 
 h1 {
-  font-size: var(--ndt-font-size-xl);
+  font-size: var(--ngt-font-size-xl);
 }
 h2 {
-  font-size: var(--ndt-font-size-lg);
+  font-size: var(--ngt-font-size-lg);
 }
 h3 {
-  font-size: var(--ndt-font-size-md);
+  font-size: var(--ngt-font-size-md);
 }
 h4 {
-  font-size: var(--ndt-font-size-sm);
+  font-size: var(--ngt-font-size-sm);
 }
 h5 {
-  font-size: var(--ndt-font-size-xs);
+  font-size: var(--ngt-font-size-xs);
 }
 
 hr {
-  border: 1px solid var(--ndt-border-subtle);
+  border: 1px solid var(--ngt-border-subtle);
   margin: 1em 0;
 }
 

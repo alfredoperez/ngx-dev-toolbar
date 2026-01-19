@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { DevToolbarFeatureFlagService } from 'ngx-dev-toolbar';
+import { ToolbarFeatureFlagService } from 'ngx-dev-toolbar';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 
 export interface FeatureFlag {
@@ -12,7 +12,7 @@ export interface FeatureFlag {
   providedIn: 'root',
 })
 export class FeatureFlagsService {
-  devToolbarFeatureFlags = inject(DevToolbarFeatureFlagService);
+  devToolbarFeatureFlags = inject(ToolbarFeatureFlagService);
 
   private featureFlags: FeatureFlag[] = [
     {

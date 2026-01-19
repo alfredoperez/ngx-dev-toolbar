@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { DevToolbarIconComponent } from '../icons/icon.component';
+import { ToolbarIconComponent } from '../icons/icon.component';
 import { IconName } from '../icons/icon.models';
 
 @Component({
-  selector: 'ndt-link-button',
+  selector: 'ngt-link-button',
   standalone: true,
-  imports: [DevToolbarIconComponent],
+  imports: [ToolbarIconComponent],
   template: `
     <a
       [href]="url()"
@@ -14,7 +14,7 @@ import { IconName } from '../icons/icon.models';
       class="link-button"
     >
       <div class="link-button__icon">
-        <ndt-icon [name]="icon()" />
+        <ngt-icon [name]="icon()" />
       </div>
       <span class="link-button__text">
         <ng-content></ng-content>
@@ -24,7 +24,7 @@ import { IconName } from '../icons/icon.models';
   styleUrls: ['./link-button.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DevToolbarLinkButtonComponent {
+export class ToolbarLinkButtonComponent {
   readonly url = input.required<string>();
   readonly icon = input.required<IconName>();
 }

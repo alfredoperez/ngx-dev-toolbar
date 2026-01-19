@@ -5,29 +5,29 @@ import {
   input,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DevToolbarButtonComponent } from '../../components/button/button.component';
-import { DevToolbarClickableCardComponent } from '../../components/clickable-card/clickable-card.component';
-import { DevToolbarLinkButtonComponent } from '../../components/link-button/link-button.component';
-import { DevToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
-import { DevToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
-import { DevToolbarStateService } from '../../dev-toolbar-state.service';
-import { DevToolsStorageService } from '../../utils/storage.service';
+import { ToolbarButtonComponent } from '../../components/button/button.component';
+import { ToolbarClickableCardComponent } from '../../components/clickable-card/clickable-card.component';
+import { ToolbarLinkButtonComponent } from '../../components/link-button/link-button.component';
+import { ToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
+import { ToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
+import { ToolbarStateService } from '../../toolbar-state.service';
+import { ToolbarStorageService } from '../../utils/storage.service';
 import { SettingsService } from './settings.service';
 
 type ThemeType = 'light' | 'dark';
 
 @Component({
-  selector: 'ndt-home-tool',
+  selector: 'ngt-home-tool',
   standalone: true,
   imports: [
-    DevToolbarToolComponent,
+    ToolbarToolComponent,
     FormsModule,
-    DevToolbarButtonComponent,
-    DevToolbarClickableCardComponent,
-    DevToolbarLinkButtonComponent,
+    ToolbarButtonComponent,
+    ToolbarClickableCardComponent,
+    ToolbarLinkButtonComponent,
   ],
   template: `
-    <ndt-toolbar-tool [options]="options" title="Home" icon="angular">
+    <ngt-toolbar-tool [options]="options" title="Home" icon="angular">
       <section class="settings">
         <div class="settings-container">
           <div class="instruction">
@@ -39,7 +39,7 @@ type ThemeType = 'light' | 'dark';
             </div>
             <div class="instruction__control">
               <div class="instruction__control-button">
-                <ndt-button
+                <ngt-button
                   variant="icon"
                   icon="trash"
                   ariaLabel="Reset all settings"
@@ -49,13 +49,13 @@ type ThemeType = 'light' | 'dark';
             </div>
           </div>
           <div class="settings-actions">
-            <ndt-clickable-card
+            <ngt-clickable-card
               icon="export"
               title="Export Settings"
               subtitle="Export the current settings to share with other devs or use in your tests"
               (click)="onExportSettings()"
             />
-            <ndt-clickable-card
+            <ngt-clickable-card
               icon="import"
               title="Import Settings"
               subtitle="Import settings to reproduce a scenario"
@@ -66,28 +66,28 @@ type ThemeType = 'light' | 'dark';
 
         <div class="footer-links">
           @for (link of links; track link.url) {
-          <ndt-link-button [icon]="link.icon" [url]="link.url">
+          <ngt-link-button [icon]="link.icon" [url]="link.url">
             {{ link.label }}
-          </ndt-link-button>
+          </ngt-link-button>
           }
         </div>
       </section>
-    </ndt-toolbar-tool>
+    </ngt-toolbar-tool>
   `,
   styleUrls: ['./home-tool.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DevToolbarHomeToolComponent {
-  protected readonly state = inject(DevToolbarStateService);
+export class ToolbarHomeToolComponent {
+  protected readonly state = inject(ToolbarStateService);
   private readonly settingsService = inject(SettingsService);
-  private readonly storageService = inject(DevToolsStorageService);
+  private readonly storageService = inject(ToolbarStorageService);
 
   readonly badge = input<string | number>();
-  readonly title = `Angular Dev Toolbar`;
-  readonly options: DevToolbarWindowOptions = {
+  readonly title = `Angular Toolbar`;
+  readonly options: ToolbarWindowOptions = {
     title: this.title,
     isClosable: true,
-    id: 'ndt-home',
+    id: 'ngt-home',
     size: 'medium',
     description: '',
     isBeta: true,

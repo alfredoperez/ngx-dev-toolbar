@@ -7,20 +7,20 @@ import { CommonModule } from '@angular/common';
  *
  * @example
  * ```html
- * <ndt-list
+ * <ngt-list
  *   [hasItems]="items().length > 0"
  *   [hasResults]="filteredItems().length > 0"
  *   emptyMessage="No items found"
  *   noResultsMessage="No items match your filter"
  * >
  *   @for (item of filteredItems(); track item.id) {
- *     <ndt-list-item ... />
+ *     <ngt-list-item ... />
  *   }
- * </ndt-list>
+ * </ngt-list>
  * ```
  */
 @Component({
-  selector: 'ndt-list',
+  selector: 'ngt-list',
   standalone: true,
   imports: [CommonModule],
   template: `
@@ -44,7 +44,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DevToolbarListComponent {
+export class ToolbarListComponent {
   /**
    * Whether the list has any items at all (before filtering).
    * When false, shows the emptyMessage.

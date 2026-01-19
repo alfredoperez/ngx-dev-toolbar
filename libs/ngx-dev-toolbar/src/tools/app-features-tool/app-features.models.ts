@@ -4,7 +4,7 @@
  *
  * @example
  * ```typescript
- * const feature: DevToolbarAppFeature = {
+ * const feature: ToolbarAppFeature = {
  *   id: 'advanced-analytics',
  *   name: 'Advanced Analytics Dashboard',
  *   description: 'Access advanced reporting and data visualization tools',
@@ -13,7 +13,7 @@
  * };
  * ```
  */
-export interface DevToolbarAppFeature {
+export interface ToolbarAppFeature {
   /**
    * Unique identifier for the feature
    * @example 'advanced-analytics', 'multi-user-support', 'white-label-branding'

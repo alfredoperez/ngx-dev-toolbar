@@ -1,21 +1,21 @@
 import { TestBed } from '@angular/core/testing';
 import { firstValueFrom } from 'rxjs';
-import { DevToolsStorageService } from '../../utils/storage.service';
-import { DevToolbarInternalFeatureFlagService } from './feature-flags-internal.service';
-import { DevToolbarFeatureFlagService } from './feature-flags.service';
-import { DevToolbarFlag } from './feature-flags.models';
+import { ToolbarStorageService } from '../../utils/storage.service';
+import { ToolbarInternalFeatureFlagService } from './feature-flags-internal.service';
+import { ToolbarFeatureFlagService } from './feature-flags.service';
+import { ToolbarFlag } from './feature-flags.models';
 
-describe('DevToolbarFeatureFlagService', () => {
-  let service: DevToolbarFeatureFlagService;
-  let internalService: DevToolbarInternalFeatureFlagService;
-  let storageServiceMock: jest.Mocked<DevToolsStorageService>;
+describe('ToolbarFeatureFlagService', () => {
+  let service: ToolbarFeatureFlagService;
+  let internalService: ToolbarInternalFeatureFlagService;
+  let storageServiceMock: jest.Mocked<ToolbarStorageService>;
 
   const createMockFlag = (
     id: string,
     name: string,
     isEnabled = false,
     description?: string
-  ): DevToolbarFlag => ({
+  ): ToolbarFlag => ({
     id,
     name,
     description,
@@ -32,17 +32,17 @@ describe('DevToolbarFeatureFlagService', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        DevToolbarFeatureFlagService,
-        DevToolbarInternalFeatureFlagService,
-        { provide: DevToolsStorageService, useValue: mockStorage },
+        ToolbarFeatureFlagService,
+        ToolbarInternalFeatureFlagService,
+        { provide: ToolbarStorageService, useValue: mockStorage },
       ],
     });
 
-    service = TestBed.inject(DevToolbarFeatureFlagService);
-    internalService = TestBed.inject(DevToolbarInternalFeatureFlagService);
+    service = TestBed.inject(ToolbarFeatureFlagService);
+    internalService = TestBed.inject(ToolbarInternalFeatureFlagService);
     storageServiceMock = TestBed.inject(
-      DevToolsStorageService
-    ) as jest.Mocked<DevToolsStorageService>;
+      ToolbarStorageService
+    ) as jest.Mocked<ToolbarStorageService>;
   });
 
   afterEach(() => {

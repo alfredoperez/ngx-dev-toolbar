@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { firstValueFrom } from 'rxjs';
-import { DevToolsStorageService } from '../../utils/storage.service';
-import { DevToolbarInternalLanguageService } from './language-internal.service';
+import { ToolbarStorageService } from '../../utils/storage.service';
+import { ToolbarInternalLanguageService } from './language-internal.service';
 import { Language } from './language.models';
 
-describe('DevToolbarInternalLanguageService', () => {
-  let service: DevToolbarInternalLanguageService;
-  let storageService: jest.Mocked<DevToolsStorageService>;
+describe('ToolbarInternalLanguageService', () => {
+  let service: ToolbarInternalLanguageService;
+  let storageService: jest.Mocked<ToolbarStorageService>;
 
   const createMockLanguage = (id: string, name: string): Language => ({
     id,
@@ -22,15 +22,15 @@ describe('DevToolbarInternalLanguageService', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        DevToolbarInternalLanguageService,
-        { provide: DevToolsStorageService, useValue: storageServiceMock },
+        ToolbarInternalLanguageService,
+        { provide: ToolbarStorageService, useValue: storageServiceMock },
       ],
     });
 
-    service = TestBed.inject(DevToolbarInternalLanguageService);
+    service = TestBed.inject(ToolbarInternalLanguageService);
     storageService = TestBed.inject(
-      DevToolsStorageService
-    ) as jest.Mocked<DevToolsStorageService>;
+      ToolbarStorageService
+    ) as jest.Mocked<ToolbarStorageService>;
   });
 
   afterEach(() => {
@@ -53,11 +53,11 @@ describe('DevToolbarInternalLanguageService', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
         providers: [
-          DevToolbarInternalLanguageService,
-          { provide: DevToolsStorageService, useValue: storageService },
+          ToolbarInternalLanguageService,
+          { provide: ToolbarStorageService, useValue: storageService },
         ],
       });
-      const newService = TestBed.inject(DevToolbarInternalLanguageService);
+      const newService = TestBed.inject(ToolbarInternalLanguageService);
 
       const languages = [
         createMockLanguage('en', 'English'),
@@ -289,11 +289,11 @@ describe('DevToolbarInternalLanguageService', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
         providers: [
-          DevToolbarInternalLanguageService,
-          { provide: DevToolsStorageService, useValue: storageService },
+          ToolbarInternalLanguageService,
+          { provide: ToolbarStorageService, useValue: storageService },
         ],
       });
-      TestBed.inject(DevToolbarInternalLanguageService);
+      TestBed.inject(ToolbarInternalLanguageService);
 
       expect(storageService.get).toHaveBeenCalledWith('language');
     });
@@ -304,13 +304,13 @@ describe('DevToolbarInternalLanguageService', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
         providers: [
-          DevToolbarInternalLanguageService,
-          { provide: DevToolsStorageService, useValue: storageService },
+          ToolbarInternalLanguageService,
+          { provide: ToolbarStorageService, useValue: storageService },
         ],
       });
 
       expect(() =>
-        TestBed.inject(DevToolbarInternalLanguageService)
+        TestBed.inject(ToolbarInternalLanguageService)
       ).not.toThrow();
     });
 
@@ -320,11 +320,11 @@ describe('DevToolbarInternalLanguageService', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
         providers: [
-          DevToolbarInternalLanguageService,
-          { provide: DevToolsStorageService, useValue: storageService },
+          ToolbarInternalLanguageService,
+          { provide: ToolbarStorageService, useValue: storageService },
         ],
       });
-      const newService = TestBed.inject(DevToolbarInternalLanguageService);
+      const newService = TestBed.inject(ToolbarInternalLanguageService);
 
       expect(newService.languages()).toEqual([]);
     });

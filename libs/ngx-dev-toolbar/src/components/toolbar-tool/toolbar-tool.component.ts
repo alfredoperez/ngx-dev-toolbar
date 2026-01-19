@@ -10,27 +10,27 @@ import {
   input,
   viewChild,
 } from '@angular/core';
-import { DevToolbarStateService } from '../../dev-toolbar-state.service';
-import { DevToolbarIconComponent } from '../icons/icon.component';
+import { ToolbarStateService } from '../../toolbar-state.service';
+import { ToolbarIconComponent } from '../icons/icon.component';
 import { IconName } from '../icons/icon.models';
-import { DevToolbarToolButtonComponent } from '../tool-button/tool-button.component';
-import { DevToolbarWindowComponent } from '../window/window.component';
-import { DevToolbarWindowOptions } from './toolbar-tool.models';
+import { ToolbarToolButtonComponent } from '../tool-button/tool-button.component';
+import { ToolbarWindowComponent } from '../window/window.component';
+import { ToolbarWindowOptions } from './toolbar-tool.models';
 
 @Component({
-  selector: 'ndt-toolbar-tool',
+  selector: 'ngt-toolbar-tool',
   standalone: true,
   imports: [
     CdkConnectedOverlay,
     OverlayModule,
-    DevToolbarWindowComponent,
-    DevToolbarToolButtonComponent,
-    DevToolbarIconComponent,
+    ToolbarWindowComponent,
+    ToolbarToolButtonComponent,
+    ToolbarIconComponent,
   ],
   template: `
-    <div #trigger="cdkOverlayOrigin" class="ndt-toolbar-tool" cdkOverlayOrigin>
+    <div #trigger="cdkOverlayOrigin" class="ngt-toolbar-tool" cdkOverlayOrigin>
       <div
-        class="ndt-toolbar-tool__icon"
+        class="ngt-toolbar-tool__icon"
         (click)="onOpen()"
         (keydown.enter)="onOpen()"
         (keydown.space)="onOpen()"
@@ -38,11 +38,11 @@ import { DevToolbarWindowOptions } from './toolbar-tool.models';
       >
         <div #buttonContainer [attr.data-tooltip]="title()">
           @if (icon()) {
-          <ndt-tool-button [title]="title()" [toolId]="options().id" [badge]="badge()">
-            <ndt-icon [name]="icon()" />
-          </ndt-tool-button>
+          <ngt-tool-button [title]="title()" [toolId]="options().id" [badge]="badge()">
+            <ngt-icon [name]="icon()" />
+          </ngt-tool-button>
           } @else {
-          <ng-content select="ndt-tool-button"></ng-content>
+          <ng-content select="ngt-tool-button"></ng-content>
           }
         </div>
       </div>
@@ -55,12 +55,12 @@ import { DevToolbarWindowOptions } from './toolbar-tool.models';
         [cdkConnectedOverlayPositions]="positions()"
         [cdkConnectedOverlayWidth]="width()"
         [cdkConnectedOverlayHeight]="height()"
-        [cdkConnectedOverlayPanelClass]="['ndt-overlay-panel', 'ndt-tool-overlay']"
+        [cdkConnectedOverlayPanelClass]="['ngt-overlay-panel', 'ngt-tool-overlay']"
         cdkConnectedOverlay
       >
-        <ndt-window [@slideAnimation] [config]="options()" (closed)="onClose()">
+        <ngt-window [@slideAnimation] [config]="options()" (closed)="onClose()">
           <ng-content />
-        </ndt-window>
+        </ngt-window>
       </ng-template>
       }
     </div>
@@ -98,12 +98,12 @@ import { DevToolbarWindowOptions } from './toolbar-tool.models';
     ]),
   ],
 })
-export class DevToolbarToolComponent {
-  state = inject(DevToolbarStateService);
+export class ToolbarToolComponent {
+  state = inject(ToolbarStateService);
   buttonContainer = viewChild.required<ElementRef>('buttonContainer');
-  buttonComponent = contentChild(DevToolbarToolButtonComponent);
+  buttonComponent = contentChild(ToolbarToolButtonComponent);
 
-  options = input.required<DevToolbarWindowOptions>();
+  options = input.required<ToolbarWindowOptions>();
   icon = input.required<IconName>();
   title = input.required<string>();
   badge = input<string>();

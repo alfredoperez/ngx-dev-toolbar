@@ -18,7 +18,7 @@ export class AppFeaturesDocsComponent {
     fileName: 'app.component.ts',
     code: `
 import { Component, inject, signal } from '@angular/core';
-import { DevToolbarAppFeaturesService } from 'ngx-dev-toolbar';
+import { ToolbarAppFeaturesService } from 'ngx-dev-toolbar';
 
 @Component({
   selector: 'app-root',
@@ -32,7 +32,7 @@ import { DevToolbarAppFeaturesService } from 'ngx-dev-toolbar';
   \`
 })
 export class AppComponent {
-  private appFeaturesService = inject(DevToolbarAppFeaturesService);
+  private appFeaturesService = inject(ToolbarAppFeaturesService);
 
   hasAnalytics = signal(false);
   hasAdvancedReporting = signal(false);
@@ -74,12 +74,12 @@ export class AppComponent {
   apiMethods: ApiMethod[] = [
     {
       name: 'setAvailableOptions',
-      signature: 'setAvailableOptions(features: DevToolbarAppFeature[]): void',
+      signature: 'setAvailableOptions(features: ToolbarAppFeature[]): void',
       description: 'Defines the available application features that can be toggled in the toolbar.',
       parameters: [
         {
           name: 'features',
-          type: 'DevToolbarAppFeature[]',
+          type: 'ToolbarAppFeature[]',
           description: 'Array of product-level feature definitions'
         }
       ],
@@ -90,11 +90,11 @@ export class AppComponent {
     },
     {
       name: 'getForcedValues',
-      signature: 'getForcedValues(): Observable<DevToolbarAppFeature[]>',
+      signature: 'getForcedValues(): Observable<ToolbarAppFeature[]>',
       description: 'Gets an observable of app features that have been overridden through the toolbar.',
       parameters: [],
       returnType: {
-        type: 'Observable<DevToolbarAppFeature[]>',
+        type: 'Observable<ToolbarAppFeature[]>',
         description: 'Observable emitting forced app feature changes'
       }
     }

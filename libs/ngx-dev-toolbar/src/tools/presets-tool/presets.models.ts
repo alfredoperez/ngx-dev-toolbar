@@ -1,13 +1,13 @@
-export interface DevToolbarPreset {
+export interface ToolbarPreset {
   id: string;
   name: string;
   description?: string;
   createdAt: string;
   updatedAt: string;
-  config: DevToolbarPresetConfig;
+  config: ToolbarPresetConfig;
 }
 
-export interface DevToolbarPresetConfig {
+export interface ToolbarPresetConfig {
   featureFlags: {
     enabled: string[];
     disabled: string[];

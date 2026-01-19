@@ -7,7 +7,7 @@ import {
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'ndt-input',
+  selector: 'ngt-input',
   standalone: true,
   imports: [FormsModule],
   template: `
@@ -23,7 +23,7 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./input.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DevToolbarInputComponent {
+export class ToolbarInputComponent {
   value = model.required<string>();
 
   type = input<string>('text');

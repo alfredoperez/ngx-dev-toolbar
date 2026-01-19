@@ -1,8 +1,8 @@
 /**
- * Configuration options for the Dev Toolbar component.
+ * Configuration options for the Angular Toolbar component.
  * All tool flags are optional and default to true if not specified.
  */
-export interface DevToolbarConfig {
+export interface ToolbarConfig {
   /**
    * Master switch to enable/disable the entire toolbar.
    * When disabled:

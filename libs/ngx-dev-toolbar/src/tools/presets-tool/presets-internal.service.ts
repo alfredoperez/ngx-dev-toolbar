@@ -1,14 +1,14 @@
 import { Injectable, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { DevToolsStorageService } from '../../utils/storage.service';
-import { DevToolbarInternalFeatureFlagService } from '../feature-flags-tool/feature-flags-internal.service';
-import { DevToolbarInternalLanguageService } from '../language-tool/language-internal.service';
-import { DevToolbarInternalPermissionsService } from '../permissions-tool/permissions-internal.service';
-import { DevToolbarInternalAppFeaturesService } from '../app-features-tool/app-features-internal.service';
+import { ToolbarStorageService } from '../../utils/storage.service';
+import { ToolbarInternalFeatureFlagService } from '../feature-flags-tool/feature-flags-internal.service';
+import { ToolbarInternalLanguageService } from '../language-tool/language-internal.service';
+import { ToolbarInternalPermissionsService } from '../permissions-tool/permissions-internal.service';
+import { ToolbarInternalAppFeaturesService } from '../app-features-tool/app-features-internal.service';
 import {
-  DevToolbarPreset,
-  DevToolbarPresetConfig,
+  ToolbarPreset,
+  ToolbarPresetConfig,
   PresetCategoryOptions,
 } from './presets.models';
 
@@ -17,18 +17,18 @@ import {
  * Handles CRUD operations, captures current toolbar config, and applies presets.
  */
 @Injectable({ providedIn: 'root' })
-export class DevToolbarInternalPresetsService {
+export class ToolbarInternalPresetsService {
   private readonly STORAGE_KEY = 'presets';
-  private storageService = inject(DevToolsStorageService);
+  private storageService = inject(ToolbarStorageService);
 
   // Inject all other tool internal services (for reading/writing state)
-  private featureFlagsService = inject(DevToolbarInternalFeatureFlagService);
-  private languageService = inject(DevToolbarInternalLanguageService);
-  private permissionsService = inject(DevToolbarInternalPermissionsService);
-  private appFeaturesService = inject(DevToolbarInternalAppFeaturesService);
+  private featureFlagsService = inject(ToolbarInternalFeatureFlagService);
+  private languageService = inject(ToolbarInternalLanguageService);
+  private permissionsService = inject(ToolbarInternalPermissionsService);
+  private appFeaturesService = inject(ToolbarInternalAppFeaturesService);
 
-  private presetsSubject = new BehaviorSubject<DevToolbarPreset[]>([]);
-  public presets$: Observable<DevToolbarPreset[]> =
+  private presetsSubject = new BehaviorSubject<ToolbarPreset[]>([]);
+  public presets$: Observable<ToolbarPreset[]> =
     this.presetsSubject.asObservable();
   public presets = toSignal(this.presets$, { initialValue: [] });
 
@@ -43,8 +43,8 @@ export class DevToolbarInternalPresetsService {
     name: string,
     description?: string,
     categoryOptions?: PresetCategoryOptions
-  ): DevToolbarPreset {
-    const preset: DevToolbarPreset = {
+  ): ToolbarPreset {
+    const preset: ToolbarPreset = {
       id: this.generateId(),
       name,
       description,
@@ -107,9 +107,9 @@ export class DevToolbarInternalPresetsService {
   /**
    * Add a preset (used for import)
    */
-  addPreset(preset: DevToolbarPreset): DevToolbarPreset {
+  addPreset(preset: ToolbarPreset): ToolbarPreset {
     // Generate new ID to avoid conflicts
-    const newPreset: DevToolbarPreset = {
+    const newPreset: ToolbarPreset = {
       ...preset,
       id: this.generateId(),
       createdAt: new Date().toISOString(),
@@ -126,7 +126,7 @@ export class DevToolbarInternalPresetsService {
   /**
    * Get a preset by ID
    */
-  getPresetById(presetId: string): DevToolbarPreset | undefined {
+  getPresetById(presetId: string): ToolbarPreset | undefined {
     return this.presetsSubject.value.find((p) => p.id === presetId);
   }
 
@@ -135,7 +135,7 @@ export class DevToolbarInternalPresetsService {
    */
   private captureCurrentConfig(
     categoryOptions?: PresetCategoryOptions
-  ): DevToolbarPresetConfig {
+  ): ToolbarPresetConfig {
     // Default to including all categories if not specified
     const options = {
       includeFeatureFlags: categoryOptions?.includeFeatureFlags ?? true,
@@ -202,7 +202,7 @@ export class DevToolbarInternalPresetsService {
   private loadPresets(): void {
     try {
       const saved =
-        this.storageService.get<DevToolbarPreset[]>(this.STORAGE_KEY);
+        this.storageService.get<ToolbarPreset[]>(this.STORAGE_KEY);
       if (saved && Array.isArray(saved)) {
         this.presetsSubject.next(saved);
       }
