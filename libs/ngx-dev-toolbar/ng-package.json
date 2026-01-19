@@ -3,5 +3,6 @@
   "dest": "../../dist/libs/ngx-dev-toolbar",
   "lib": {
     "entryFile": "src/index.ts"
-  }
+  },
+  "assets": ["./docs"]
 }
