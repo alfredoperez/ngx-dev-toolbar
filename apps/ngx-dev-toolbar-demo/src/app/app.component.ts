@@ -6,13 +6,9 @@ import { TranslocoService } from '@jsverse/transloco';
 
 import {
   DevToolbarAppFeaturesService,
-  DevToolbarComponent,
-  DevToolbarConfig,
   DevToolbarFeatureFlagService,
   DevToolbarFlag,
   DevToolbarLanguageService,
-  DevToolbarToolComponent,
-  DevToolbarWindowOptions,
 } from 'ngx-dev-toolbar';
 import { firstValueFrom, map } from 'rxjs';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
@@ -35,8 +31,6 @@ import { FeatureFlagsService } from './services/feature-flags.service';
     PermissionDemoComponent,
     FeatureFlagsDemoComponent,
     AppFeaturesDemoComponent,
-    DevToolbarComponent,
-    DevToolbarToolComponent,
   ],
   template: `
     @if (useNewLayout() ) {
@@ -67,15 +61,6 @@ import { FeatureFlagsService } from './services/feature-flags.service';
       </main>
     </div>
     }
-    <ndt-toolbar [config]="toolbarConfig">
-      <ndt-toolbar-tool
-        [options]="options"
-        [icon]="'bolt'"
-        [title]="'Settings'"
-      >
-        <p>This is a custom tool</p>
-      </ndt-toolbar-tool>
-    </ndt-toolbar>
   `,
   styles: [
     `
@@ -151,23 +136,6 @@ export class AppComponent implements OnInit {
   public readonly appFeaturesConfig = inject(AppFeaturesConfigService);
 
   originalLang = this.translocoService.getActiveLang();
-
-  public options = {
-    title: 'Test',
-    description: 'Test',
-    isClosable: true,
-    size: 'medium',
-    id: 'test',
-    isBeta: true,
-  } as DevToolbarWindowOptions;
-
-  public toolbarConfig: DevToolbarConfig = {
-    showLanguageTool: true,
-    showFeatureFlagsTool: true,
-    showAppFeaturesTool: true,
-    showPermissionsTool: true,
-    showPresetsTool: true,
-  };
 
   useNewLayout = toSignal(
     this.featureFlagsService.select('newDemoApplicationLayout')

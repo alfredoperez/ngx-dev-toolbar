@@ -1,4 +1,4 @@
-# Implementation Plan: Tool Badges and UX Improvements
+****# Implementation Plan: Tool Badges and UX Improvements
 
 **Branch**: `005-badges-each-tools` | **Date**: 2025-12-29 | **Spec**: [spec.md](./spec.md)
 **Input**: Feature specification from `/specs/005-badges-each-tools/spec.md`

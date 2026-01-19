@@ -62,29 +62,25 @@ export class HowToUseSectionComponent {
   readonly steps: Step[] = [
     {
       id: 1,
-      title: 'Add Dev Toolbar',
-      description: 'Add the Dev Toolbar component to your Main Component',
+      title: 'Initialize Toolbar',
+      description: 'Add the Dev Toolbar to your main.ts with zero production bundle impact',
       code: `
-      @Component({
-        selector: 'app-root',
-        template:\`
-            <!-- 👇👇 Add the toolbar component 👇👇 -->
-            <ndt-toolbar>
+// main.ts
+import { bootstrapApplication } from '@angular/platform-browser';
+import { AppComponent } from './app/app.component';
+import { isDevMode } from '@angular/core';
 
-                <!--  Add any custom toolbar tool you created -->
-                <ndt-toolbar-tool
-                  [windowConfig]="windowConfig"
-                  [icon]="'gear'"
-                  [title]="'Settings'" >
-                      <p>This is a custom tool</p>
-                </ndt-toolbar-tool>
+async function bootstrap() {
+  const appRef = await bootstrapApplication(AppComponent, appConfig);
 
-            </ndt-toolbar>
-        \`,
-      })
-      export class AppComponent implements OnInit {
+  // 👇👇 Initialize toolbar only in development 👇👇
+  if (isDevMode()) {
+    const { initDevToolbar } = await import('ngx-dev-toolbar');
+    initDevToolbar(appRef);
+  }
+}
 
-      }
+bootstrap();
         `,
     },
     {

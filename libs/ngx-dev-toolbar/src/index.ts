@@ -1,3 +1,22 @@
+// Tree-shakeable tokens for dependency injection
+export {
+  DEV_TOOLBAR_FEATURE_FLAGS,
+  DEV_TOOLBAR_PERMISSIONS,
+  DEV_TOOLBAR_LANGUAGE,
+  DEV_TOOLBAR_APP_FEATURES,
+} from './tokens';
+
+// Provider function for tree-shakeable setup
+export { provideDevToolbar } from './provide-dev-toolbar';
+
+// Dynamic initialization (no template changes needed)
+export {
+  initDevToolbar,
+  type InitDevToolbarOptions,
+  type InitDevToolbarResult,
+} from './init-dev-toolbar';
+
+// Components
 export * from './components/icons/icon.component';
 export * from './components/icons/icon.models';
 export * from './components/list/list.component';

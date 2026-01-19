@@ -21,9 +21,9 @@ export class FeatureFlagsService {
       description: 'Enable dark theme throughout the application',
     },
     {
-      name: 'newDemoApplicationLayout',
+      name: 'newDashboard',
       enabled: false,
-      description: 'Use the modern responsive layout',
+      description: 'Enable the redesigned dashboard experience',
     },
     {
       name: 'betaFeatures',
@@ -31,9 +31,9 @@ export class FeatureFlagsService {
       description: 'Enable experimental beta features',
     },
     {
-      name: 'experimentalUI',
+      name: 'newNotifications',
       enabled: false,
-      description: 'Enable cutting-edge UI components',
+      description: 'Enable the new notifications system',
     },
   ];
 

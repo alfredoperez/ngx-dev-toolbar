@@ -31,12 +31,12 @@ export class AppFeaturesConfigService {
    */
   private readonly tierFeatures: Record<ProductTier, string[]> = {
     basic: [],
-    professional: ['analytics', 'multi-user'],
+    professional: ['analytics', 'bulk-export'],
     enterprise: [
       'analytics',
-      'multi-user',
+      'bulk-export',
       'white-label',
-      'sso-integration',
+      'notifications',
       'api-access',
     ],
   };
@@ -52,17 +52,17 @@ export class AppFeaturesConfigService {
       name: 'Analytics Dashboard',
       description: 'Advanced reporting and data visualization tools',
     },
-    'multi-user': {
-      name: 'Multi-User Support',
-      description: 'Team collaboration and user management features',
+    'bulk-export': {
+      name: 'Bulk Export',
+      description: 'Export large datasets to CSV, Excel, or PDF',
     },
     'white-label': {
       name: 'White Label Branding',
       description: 'Customize app branding with your logo and colors',
     },
-    'sso-integration': {
-      name: 'SSO Integration',
-      description: 'Single sign-on with enterprise identity providers',
+    notifications: {
+      name: 'Notifications',
+      description: 'Real-time push notifications and alerts',
     },
     'api-access': {
       name: 'API Access',

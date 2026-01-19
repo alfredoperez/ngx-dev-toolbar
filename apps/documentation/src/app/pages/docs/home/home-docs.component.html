@@ -25,23 +25,38 @@
   <!-- Quick Setup -->
   <section class="doc-section">
     <h2>Quick Setup</h2>
-    <h3>1. Import the Component</h3>
-    <p>Add the toolbar component to your app:</p>
-    <pre><code>import &#123; Component &#125; from '&#64;angular/core';
-import &#123; DevToolbarComponent &#125; from 'ngx-dev-toolbar';
+    <h3>1. Initialize in main.ts</h3>
+    <p>Add the toolbar to your application with zero production bundle impact:</p>
+    <pre><code>import &#123; bootstrapApplication &#125; from '&#64;angular/platform-browser';
+import &#123; AppComponent &#125; from './app/app.component';
+import &#123; isDevMode &#125; from '&#64;angular/core';
 
-&#64;Component(&#123;
-  selector: 'app-root',
-  standalone: true,
-  imports: [DevToolbarComponent],
-  template: `
-    &lt;ndt-toolbar /&gt;
-    &lt;router-outlet /&gt;
-  `
-&#125;)
-export class AppComponent &#123;&#125;</code></pre>
+async function bootstrap() &#123;
+  const appRef = await bootstrapApplication(AppComponent, appConfig);
 
-    <h3>2. Start Using the Tools</h3>
+  // Initialize toolbar only in development
+  if (isDevMode()) &#123;
+    const &#123; initDevToolbar &#125; = await import('ngx-dev-toolbar');
+    initDevToolbar(appRef);
+  &#125;
+&#125;
+
+bootstrap();</code></pre>
+
+    <p>That's it! No template changes needed. The toolbar automatically attaches to the DOM.</p>
+
+    <h3>2. Configure Tools (Optional)</h3>
+    <pre><code>initDevToolbar(appRef, &#123;
+  config: &#123;
+    showFeatureFlagsTool: true,
+    showPermissionsTool: true,
+    showLanguageTool: true,
+    showAppFeaturesTool: true,
+    showPresetsTool: true,
+  &#125;
+&#125;);</code></pre>
+
+    <h3>3. Start Using the Tools</h3>
     <p>
       Once installed, press <code>Ctrl+Shift+D</code> to toggle the toolbar. From there, you can access all available
       tools and start configuring your development environment.

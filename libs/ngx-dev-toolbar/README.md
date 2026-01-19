@@ -60,8 +60,8 @@ No more context switching or backend dependencies - everything you need is right
 
 ### 🔒 Production Ready
 
-- Hidden by default in production
-- Zero production impact
+- **Zero bundle impact** - Dynamic imports exclude toolbar from production builds
+- No template changes needed
 - Secure implementation
 
 ### 💾 Persistent State
@@ -73,29 +73,47 @@ No more context switching or backend dependencies - everything you need is right
 
 ## 📱 Quick Start
 
-<details>
-<summary><b>1. Installation</b></summary>
+### 1. Install
 
 ```bash
-npm install ngx-dev-toolbar --save-dev
+npm install ngx-dev-toolbar
 ```
 
-</details>
-
-<details>
-<summary><b>2. Import Component</b></summary>
+### 2. Initialize in main.ts
 
 ```typescript
-import { DevToolbarComponent } from 'ngx-dev-toolbar';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { AppComponent } from './app/app.component';
+import { isDevMode } from '@angular/core';
 
-@Component({
-  imports: [DevToolbarComponent],
-  template: ` <ndt-dev-toolbar> </ndt-dev-toolbar>`,
-})
-export class AppComponent {}
+async function bootstrap() {
+  const appRef = await bootstrapApplication(AppComponent, appConfig);
+
+  // Initialize toolbar only in development
+  if (isDevMode()) {
+    const { initDevToolbar } = await import('ngx-dev-toolbar');
+    initDevToolbar(appRef);
+  }
+}
+
+bootstrap();
 ```
 
-</details>
+That's it! No template changes needed. The toolbar automatically attaches to the DOM.
+
+### 3. Configure Tools (Optional)
+
+```typescript
+initDevToolbar(appRef, {
+  config: {
+    showFeatureFlagsTool: true,
+    showPermissionsTool: true,
+    showLanguageTool: true,
+    showAppFeaturesTool: true,
+    showPresetsTool: true,
+  }
+});
+```
 
 ## Available Tools
 
@@ -309,6 +327,27 @@ The `getValues()` method is available for:
 **None!** This is a non-breaking change. Both APIs work:
 - `getValues()` - New, recommended method
 - `getForcedValues()` - Legacy method, still supported
+
+## Custom Tools
+
+For custom tools, use the template-based approach in your component:
+
+```typescript
+import { DevToolbarComponent, DevToolbarToolComponent } from 'ngx-dev-toolbar';
+
+@Component({
+  imports: [DevToolbarComponent, DevToolbarToolComponent],
+  template: `
+    <ndt-toolbar>
+      <ndt-toolbar-tool [options]="options" [icon]="'bolt'" [title]="'My Tool'">
+        <p>Custom content here</p>
+      </ndt-toolbar-tool>
+    </ndt-toolbar>
+  `
+})
+```
+
+Note: When using custom tools, the toolbar will be bundled with your application.
 
 ## Contributing
 

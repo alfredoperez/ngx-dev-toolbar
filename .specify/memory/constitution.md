@@ -1,19 +1,24 @@
 <!--
   Sync Impact Report
   ===================
-  Version change: 0.0.0 → 1.0.0 (MAJOR - initial constitution adoption)
+  Version change: 1.0.0 → 2.0.0 (MAJOR - complete principle redefinition)
+
+  Modified principles:
+  - I. Angular Modern Patterns → I. Signals-First State Management (refocused)
+  - II. Defensive CSS Architecture → REMOVED (merged into Development Standards)
+  - III. Testing Standards → REMOVED (moved to Quality Gates)
+  - IV. Component Architecture → II. Standalone Components Only (refocused)
+  - V. Simplicity First → V. Minimal Configuration with Sensible Defaults (refocused)
 
   Added sections:
-  - I. Angular Modern Patterns
-  - II. Defensive CSS Architecture
-  - III. Testing Standards
-  - IV. Component Architecture
-  - V. Simplicity First
-  - Development Standards section
-  - Quality Gates section
+  - III. Zero Production Bundle Impact
+  - IV. Type-Safe APIs with Strict TypeScript
+
+  Removed sections:
+  - Development Standards > Technology Stack (redundant with CLAUDE.md)
 
   Templates requiring updates:
-  - .specify/templates/plan-template.md: ✅ Constitution Check section exists
+  - .specify/templates/plan-template.md: ✅ No changes needed (Constitution Check is generic)
   - .specify/templates/spec-template.md: ✅ No changes needed
   - .specify/templates/tasks-template.md: ✅ No changes needed
 
@@ -24,21 +29,79 @@
 
 ## Core Principles
 
-### I. Angular Modern Patterns
+### I. Signals-First State Management
 
-All components and services MUST follow Angular 19+ best practices:
+All state management MUST use Angular signals as the primary reactive primitive:
 
-- Components MUST use `standalone: true` explicitly
+- Component state MUST use `signal()` for mutable values and `computed()` for derived state
+- Services MUST expose state via `asReadonly()` signals and update via `signal.update()`
+- Side effects MUST use `effect()` for reactive DOM updates, localStorage sync, and external interactions
+- State transformations MUST be pure and immutable using spread operators
+- RxJS SHOULD only be used for HTTP responses and complex async orchestration where signals are insufficient
+- Zone.js-dependent patterns (OnPush without signals, async pipe for local state) MUST be avoided
+
+**Rationale**: Signal-based reactivity provides fine-grained updates, better performance, and eliminates
+common zone.js pitfalls. Signals are Angular's future direction, ensuring long-term maintainability.
+
+### II. Standalone Components Only
+
+All Angular constructs MUST be standalone without NgModule dependencies:
+
+- Components MUST use `standalone: true` explicitly (never rely on defaults)
 - Components MUST use `OnPush` change detection strategy
-- State MUST be managed using Angular signals (`signal()`, `computed()`, `effect()`)
-- Inputs and outputs MUST use function-based `input()` and `output()` instead of decorators
-- Forms MUST use Reactive Forms over Template-driven forms
-- Class bindings MUST be used instead of `ngClass`; style bindings instead of `ngStyle`
+- Inputs MUST use `input()` function instead of `@Input()` decorator
+- Outputs MUST use `output()` function instead of `@Output()` decorator
+- Dependencies MUST be imported directly in component `imports` array
+- NgModules MUST NOT be created or used anywhere in the library
 
-**Rationale**: Modern Angular patterns provide better performance, type safety, and maintainability.
-Signal-based reactivity eliminates common pitfalls with zone.js change detection.
+**Rationale**: Standalone components simplify the mental model, improve tree-shaking, and reduce
+boilerplate. They are Angular's recommended approach and ensure optimal bundle optimization.
 
-### II. Defensive CSS Architecture
+### III. Zero Production Bundle Impact
+
+The library MUST have zero impact on production bundles when not in use:
+
+- All exports MUST be tree-shakable (no side effects in module initialization)
+- Components MUST NOT execute code when not rendered
+- Services MUST use `providedIn: 'root'` with tree-shakable providers
+- No global styles, polyfills, or runtime patches that affect the host application
+- The library SHOULD be conditionally imported only in development environments
+- Bundle size impact MUST be documented and monitored
+
+**Rationale**: A development toolbar must never affect production performance or bundle size.
+Tree-shaking ensures unused code is eliminated, and conditional imports keep production builds clean.
+
+### IV. Type-Safe APIs with Strict TypeScript
+
+All public APIs MUST provide complete type safety with strict TypeScript:
+
+- All exports MUST have explicit type annotations (no implicit `any`)
+- Generic interfaces MUST be used for tool services (`DevToolsService<T>`)
+- Union types and discriminated unions MUST be preferred over `any` or `unknown`
+- Configuration objects MUST use interfaces with optional properties (not `Partial<T>`)
+- Public API changes MUST maintain backward compatibility or follow semver MAJOR bumps
+- TypeScript strict mode MUST be enabled (`strict: true` in tsconfig)
+
+**Rationale**: Type safety catches errors at compile time, improves IDE support, and serves as
+documentation. Strict TypeScript ensures the library integrates seamlessly with typed applications.
+
+### V. Minimal Configuration with Sensible Defaults
+
+The library MUST work out-of-the-box with zero configuration:
+
+- Default behavior MUST be functional without any configuration
+- All configuration options MUST be optional with documented defaults
+- The simplest use case MUST require only importing and rendering the component
+- Progressive disclosure: advanced features available but not required
+- Configuration MUST NOT require understanding library internals
+- Error messages MUST guide users toward correct configuration
+
+**Rationale**: Developer experience is paramount. A toolbar should enhance productivity immediately,
+not require extensive setup. Sensible defaults reduce cognitive load and onboarding friction.
+
+## Development Standards
+
+### CSS Architecture
 
 All styling MUST be resilient to external CSS interference:
 
@@ -46,26 +109,8 @@ All styling MUST be resilient to external CSS interference:
 - Theme values MUST use CSS custom properties with `--ndt-*` prefix
 - Spacing MUST be explicit (`padding-top`, `margin-top`, `gap`) - never rely on browser defaults
 - Overlay windows MUST use `contain: layout style` for CSS isolation
-- Flexbox layouts MUST use `flex-shrink: 0` on headers/footers and `min-height: 0` on scrollable content
 
-**Rationale**: The library integrates into applications with various CSS resets (Normalize, Tailwind,
-Bootstrap). Defensive patterns prevent visual regressions in real-world environments that the demo
-app cannot replicate.
-
-### III. Testing Standards
-
-All code MUST be tested according to these standards:
-
-- Unit tests MUST use Jest with the AAA pattern (Arrange, Act, Assert)
-- E2E tests MUST use Playwright
-- Mocks MUST use `jest.fn()` for functions and `HttpTestingController` for HTTP
-- Tests MUST include proper cleanup in `afterEach`
-- Component tests MUST verify inputs, outputs, and template rendering
-
-**Rationale**: Consistent testing patterns ensure reliability and make tests maintainable across
-the codebase. The AAA pattern provides clear test structure.
-
-### IV. Component Architecture
+### Tool Architecture Pattern
 
 All tools MUST follow the established component pattern:
 
@@ -77,32 +122,7 @@ All tools MUST follow the established component pattern:
 Component property order MUST be: Injects → Inputs → Outputs → Signals → Computed → Other →
 Public methods → Protected methods → Private methods.
 
-**Rationale**: Consistent architecture makes the codebase predictable. Developers can understand
-any tool by understanding one tool. The separation of internal/public services provides clean APIs.
-
-### V. Simplicity First
-
-All implementations MUST prioritize simplicity:
-
-- Changes MUST be limited to what is directly requested or clearly necessary
-- Features MUST NOT be added beyond the explicit request
-- Abstractions MUST NOT be created for one-time operations
-- Error handling MUST only validate at system boundaries (user input, external APIs)
-- Comments MUST only be added where logic is not self-evident
-- Unused code MUST be deleted completely - no backward-compatibility hacks
-
-**Rationale**: Over-engineering creates maintenance burden and obscures intent. YAGNI (You Aren't
-Gonna Need It) keeps the codebase lean and understandable.
-
-## Development Standards
-
-### Technology Stack
-
-- **Framework**: Angular 19.0+ with signals support
-- **Component Dev Kit**: Angular CDK 19.0
-- **Reactive Programming**: RxJS 7.8
-- **Monorepo Tooling**: Nx 20.3+
-- **Testing**: Jest (unit), Playwright (E2E)
+## Quality Gates
 
 ### Code Quality
 
@@ -110,16 +130,20 @@ Gonna Need It) keeps the codebase lean and understandable.
 - All tests MUST pass `nx test ngx-dev-toolbar`
 - Exports MUST be registered in `libs/ngx-dev-toolbar/src/index.ts`
 
-## Quality Gates
+### Testing Standards
+
+- Unit tests MUST use Jest with the AAA pattern (Arrange, Act, Assert)
+- E2E tests MUST use Playwright
+- Component tests MUST verify inputs, outputs, and template rendering
 
 ### Before Merging
 
 - [ ] All lint rules pass without warnings
 - [ ] All unit tests pass
 - [ ] E2E tests pass for affected features
-- [ ] New components follow the established architecture pattern
-- [ ] CSS follows defensive patterns documented in CLAUDE.md
-- [ ] No unnecessary abstractions or over-engineering
+- [ ] New components follow standalone + signals patterns
+- [ ] No production bundle impact introduced
+- [ ] Public APIs are fully typed
 
 ### Release Checklist
 
@@ -136,10 +160,8 @@ This constitution supersedes all other development practices for this project. A
 2. Update to this constitution file
 3. Migration plan for existing code if breaking changes are introduced
 
-All pull requests and code reviews MUST verify compliance with these principles. Complexity beyond
-these standards MUST be explicitly justified in the PR description.
+All pull requests and code reviews MUST verify compliance with these principles.
 
-For runtime development guidance, refer to `CLAUDE.md` which contains detailed implementation
-patterns and examples.
+For detailed implementation patterns and examples, refer to `CLAUDE.md`.
 
-**Version**: 1.0.0 | **Ratified**: 2025-12-29 | **Last Amended**: 2025-12-29
+**Version**: 2.0.0 | **Ratified**: 2025-12-29 | **Last Amended**: 2026-01-02

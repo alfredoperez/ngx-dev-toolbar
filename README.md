@@ -24,20 +24,32 @@ No more context switching or backend dependencies - everything you need is right
 ## Installation
 
 ```bash
-npm install ngx-dev-toolbar --save-dev
+npm install ngx-dev-toolbar
 ```
 
 ## Quick Start
 
-```typescript
-import { DevToolbarComponent } from 'ngx-dev-toolbar';
+Initialize the toolbar in your `main.ts` for zero production bundle impact:
 
-@Component({
-  imports: [DevToolbarComponent],
-  template: `<ndt-toolbar></ndt-toolbar>`,
-})
-export class AppComponent {}
+```typescript
+import { bootstrapApplication } from '@angular/platform-browser';
+import { AppComponent } from './app/app.component';
+import { isDevMode } from '@angular/core';
+
+async function bootstrap() {
+  const appRef = await bootstrapApplication(AppComponent, appConfig);
+
+  // Initialize toolbar only in development
+  if (isDevMode()) {
+    const { initDevToolbar } = await import('ngx-dev-toolbar');
+    initDevToolbar(appRef);
+  }
+}
+
+bootstrap();
 ```
+
+That's it! No template changes needed. The toolbar automatically attaches to the DOM.
 
 ## Available Tools
 
@@ -134,22 +146,19 @@ export class AppComponent {
 
 ## Configuration
 
-The toolbar accepts a configuration object to control visibility of tools:
+Configure which tools are visible:
 
 ```typescript
-@Component({
-  template: `<ndt-toolbar [config]="toolbarConfig"></ndt-toolbar>`,
-})
-export class AppComponent {
-  toolbarConfig = {
+initDevToolbar(appRef, {
+  config: {
     enabled: true,
     showLanguageTool: true,
     showFeatureFlagsTool: true,
     showAppFeaturesTool: true,
     showPermissionsTool: true,
     showPresetsTool: true,
-  };
-}
+  }
+});
 ```
 
 ## Keyboard Shortcuts
@@ -158,8 +167,9 @@ export class AppComponent {
 
 ## Features
 
+- **Zero Bundle Impact**: Dynamic imports exclude toolbar from production builds
 - **Persistent State**: Settings persist across page reloads
-- **Production Ready**: Hidden by default in production with zero impact
+- **No Template Changes**: Toolbar attaches automatically to the DOM
 - **Extensible**: Create custom tools to fit your workflow
 
 ## Documentation
