@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { FeatureFlagsService } from '../../services/feature-flags.service';
 
 /**
@@ -13,196 +12,209 @@ import { FeatureFlagsService } from '../../services/feature-flags.service';
   standalone: true,
   template: `
     <section class="feature-flags-demo">
-      <h2>Feature Flags Demo</h2>
-      <p class="demo-instruction">
-        Open the Feature Flags Tool from the dev toolbar to enable/disable features.
-        Watch the UI update in real-time as you toggle flags.
-      </p>
-
-      <div class="demo-grid">
-        <!-- Dark Mode Feature -->
-        @if (darkModeEnabled()) {
-          <div class="demo-card dark-mode-card">
-            <h3>🌙 Dark Mode</h3>
-            <p class="card-description">Dark theme is enabled</p>
-            <div class="dark-mode-preview">
-              <div class="preview-section">Dark UI Preview</div>
-              <div class="preview-section">Reduced eye strain</div>
-              <div class="preview-section">Better for night coding</div>
-            </div>
-          </div>
-        } @else {
-          <div class="demo-card">
-            <h3>☀️ Light Mode</h3>
-            <p class="card-description">Enable dark mode flag to see dark theme</p>
-            <div class="feature-disabled">
-              <span class="icon">🚫</span>
-              <span>Dark mode flag is disabled</span>
-            </div>
-          </div>
-        }
-
-        <!-- New Layout Feature -->
-        @if (newLayoutEnabled()) {
-          <div class="demo-card new-layout-card">
-            <h3>✨ Modern Layout</h3>
-            <p class="card-description">Using the new responsive layout</p>
-            <div class="layout-preview">
-              <div class="layout-grid">
-                <div class="layout-cell">Responsive</div>
-                <div class="layout-cell">Flexible</div>
-                <div class="layout-cell">Modern</div>
-              </div>
-            </div>
-          </div>
-        } @else {
-          <div class="demo-card">
-            <h3>📐 Classic Layout</h3>
-            <p class="card-description">Enable new layout flag to see modern design</p>
-            <div class="feature-disabled">
-              <span class="icon">🚫</span>
-              <span>New layout flag is disabled</span>
-            </div>
-          </div>
-        }
-
-        <!-- Beta Features -->
-        @if (betaFeaturesEnabled()) {
-          <div class="demo-card beta-card">
-            <h3>🧪 Beta Features</h3>
-            <p class="card-description">Experimental features unlocked</p>
-            <div class="beta-features-list">
-              <div class="beta-feature">⚡ Performance Mode</div>
-              <div class="beta-feature">🔍 Advanced Search</div>
-              <div class="beta-feature">📊 Real-time Analytics</div>
-            </div>
-          </div>
-        }
-
-        <!-- Experimental UI -->
-        @if (experimentalUiEnabled()) {
-          <div class="demo-card experimental-card">
-            <h3>🚀 Experimental UI</h3>
-            <p class="card-description">Cutting-edge UI components</p>
-            <button class="btn-experimental">Try New Button Style</button>
-            <div class="experimental-badge">EXPERIMENTAL</div>
-          </div>
-        }
+      <div class="demo-header">
+        <h2>Feature Flags</h2>
+        <p class="demo-description">
+          Toggle feature flags using the toolbar below to see how UI components respond in real-time.
+        </p>
       </div>
 
-      <div class="flags-status">
-        <h3>Current Feature Flags</h3>
-        <ul class="flags-list">
-          <li>Dark Mode: <strong class="status-{{ darkModeEnabled() ? 'enabled' : 'disabled' }}">{{ darkModeEnabled() ? 'Enabled' : 'Disabled' }}</strong></li>
-          <li>New Layout: <strong class="status-{{ newLayoutEnabled() ? 'enabled' : 'disabled' }}">{{ newLayoutEnabled() ? 'Enabled' : 'Disabled' }}</strong></li>
-          <li>Beta Features: <strong class="status-{{ betaFeaturesEnabled() ? 'enabled' : 'disabled' }}">{{ betaFeaturesEnabled() ? 'Enabled' : 'Disabled' }}</strong></li>
-          <li>Experimental UI: <strong class="status-{{ experimentalUiEnabled() ? 'enabled' : 'disabled' }}">{{ experimentalUiEnabled() ? 'Enabled' : 'Disabled' }}</strong></li>
-        </ul>
+      <div class="demo-card-grid">
+        <!-- Dark Mode Feature -->
+        <div class="demo-card">
+          <div class="card-header">
+            <h3>Dark Mode</h3>
+            <span class="status-badge" [class.on]="darkModeEnabled()" [class.off]="!darkModeEnabled()">
+              {{ darkModeEnabled() ? 'ON' : 'OFF' }}
+            </span>
+          </div>
+          <p class="card-description">Enable dark theme throughout the application</p>
+          @if (darkModeEnabled()) {
+            <div class="card-preview dark-preview">
+              <div class="preview-item">Dark UI Active</div>
+              <div class="preview-item">Reduced Eye Strain</div>
+            </div>
+          }
+        </div>
+
+        <!-- New Dashboard Feature -->
+        <div class="demo-card">
+          <div class="card-header">
+            <h3>New Dashboard</h3>
+            <span class="status-badge" [class.on]="newLayoutEnabled()" [class.off]="!newLayoutEnabled()">
+              {{ newLayoutEnabled() ? 'ON' : 'OFF' }}
+            </span>
+          </div>
+          <p class="card-description">Enable the redesigned dashboard experience</p>
+          @if (newLayoutEnabled()) {
+            <div class="card-preview layout-preview">
+              <div class="layout-grid">
+                <div class="layout-cell"></div>
+                <div class="layout-cell"></div>
+                <div class="layout-cell"></div>
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Beta Features -->
+        <div class="demo-card">
+          <div class="card-header">
+            <h3>Beta Features</h3>
+            <span class="status-badge" [class.on]="betaFeaturesEnabled()" [class.off]="!betaFeaturesEnabled()">
+              {{ betaFeaturesEnabled() ? 'ON' : 'OFF' }}
+            </span>
+          </div>
+          <p class="card-description">Enable experimental beta features</p>
+          @if (betaFeaturesEnabled()) {
+            <div class="card-preview beta-preview">
+              <div class="beta-item">Performance Mode</div>
+              <div class="beta-item">Advanced Search</div>
+              <div class="beta-item">Real-time Analytics</div>
+            </div>
+          }
+        </div>
+
+        <!-- New Notifications -->
+        <div class="demo-card">
+          <div class="card-header">
+            <h3>New Notifications</h3>
+            <span class="status-badge" [class.on]="newNotificationsEnabled()" [class.off]="!newNotificationsEnabled()">
+              {{ newNotificationsEnabled() ? 'ON' : 'OFF' }}
+            </span>
+          </div>
+          <p class="card-description">Enable the new notifications system</p>
+          @if (newNotificationsEnabled()) {
+            <div class="card-preview notifications-preview">
+              <div class="notification-item">
+                <span class="notification-dot"></span>
+                New message received
+              </div>
+              <div class="notification-item">
+                <span class="notification-dot success"></span>
+                Task completed
+              </div>
+            </div>
+          }
+        </div>
       </div>
     </section>
   `,
   styles: [`
     .feature-flags-demo {
-      padding: 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
+      animation: fadeIn 0.3s ease;
     }
 
-    h2 {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-      color: #333;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .demo-instruction {
-      color: #666;
-      margin-bottom: 2rem;
-      font-size: 1.1rem;
+    .demo-header {
+      margin-bottom: 1.5rem;
     }
 
-    .demo-grid {
+    .demo-header h2 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--demo-text, #1e293b);
+    }
+
+    .demo-description {
+      margin: 0;
+      color: var(--demo-text-muted, #64748b);
+      font-size: 0.9375rem;
+    }
+
+    .demo-card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 2rem;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
     }
 
     .demo-card {
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 1.5rem;
-      background: white;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      transition: transform 0.2s;
+      background: var(--demo-card-bg, #ffffff);
+      border: 1px solid var(--demo-border, #e2e8f0);
+      border-radius: var(--demo-radius, 8px);
+      padding: 1.25rem;
+      box-shadow: var(--demo-shadow, 0 1px 3px rgba(0, 0, 0, 0.1));
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
     .demo-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      border-color: var(--demo-primary, #6366f1);
     }
 
-    .demo-card h3 {
-      margin: 0 0 0.5rem 0;
-      color: #333;
-      font-size: 1.3rem;
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-header h3 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--demo-text, #1e293b);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.625rem;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.025em;
+      border-radius: 9999px;
+      flex-shrink: 0;
+    }
+
+    .status-badge.on {
+      background: var(--demo-success-bg, #dcfce7);
+      color: #166534;
+    }
+
+    .status-badge.off {
+      background: var(--demo-bg, #f8fafc);
+      color: var(--demo-text-muted, #64748b);
     }
 
     .card-description {
-      color: #666;
-      margin-bottom: 1rem;
-      font-size: 0.9rem;
+      margin: 0 0 1rem 0;
+      font-size: 0.875rem;
+      color: var(--demo-text-muted, #64748b);
+      line-height: 1.5;
     }
 
-    .feature-disabled {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 1rem;
-      background: #f8f9fa;
-      border-radius: 4px;
-      color: #666;
-      font-size: 0.9rem;
-    }
-
-    .feature-disabled .icon {
-      font-size: 1.5rem;
-    }
-
-    /* Dark Mode Card */
-    .dark-mode-card {
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-      color: white;
-      border: none;
-    }
-
-    .dark-mode-card h3,
-    .dark-mode-card .card-description {
-      color: white;
-    }
-
-    .dark-mode-preview {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .preview-section {
+    .card-preview {
       padding: 0.75rem;
-      background: rgba(255,255,255,0.1);
-      border-radius: 4px;
-      border-left: 3px solid #00d4ff;
+      background: var(--demo-bg, #f8fafc);
+      border-radius: 6px;
     }
 
-    /* New Layout Card */
-    .new-layout-card {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
+    /* Dark Mode Preview */
+    .dark-preview {
+      background: #1e293b;
     }
 
-    .new-layout-card h3,
-    .new-layout-card .card-description {
-      color: white;
+    .dark-preview .preview-item {
+      padding: 0.5rem;
+      color: #94a3b8;
+      font-size: 0.8125rem;
+      border-left: 2px solid #6366f1;
+      margin-bottom: 0.5rem;
+      padding-left: 0.75rem;
+    }
+
+    .dark-preview .preview-item:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Layout Preview */
+    .layout-preview {
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
     }
 
     .layout-grid {
@@ -212,115 +224,61 @@ import { FeatureFlagsService } from '../../services/feature-flags.service';
     }
 
     .layout-cell {
-      padding: 0.75rem;
-      background: rgba(255,255,255,0.2);
+      height: 2rem;
+      background: rgba(255, 255, 255, 0.3);
       border-radius: 4px;
-      text-align: center;
-      font-size: 0.9rem;
     }
 
-    /* Beta Card */
-    .beta-card {
-      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-      color: white;
-      border: none;
+    /* Beta Preview */
+    .beta-preview {
+      display: flex;
+      flex-direction: column;
+      gap: 0.375rem;
     }
 
-    .beta-card h3,
-    .beta-card .card-description {
-      color: white;
+    .beta-item {
+      padding: 0.375rem 0.5rem;
+      background: white;
+      border-radius: 4px;
+      font-size: 0.8125rem;
+      color: var(--demo-text, #1e293b);
+      border-left: 2px solid #f59e0b;
     }
 
-    .beta-features-list {
+    /* Notifications Preview */
+    .notifications-preview {
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
-    }
-
-    .beta-feature {
-      padding: 0.75rem;
-      background: rgba(255,255,255,0.2);
-      border-radius: 4px;
-      font-size: 0.95rem;
-    }
-
-    /* Experimental Card */
-    .experimental-card {
-      background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-      color: #333;
-      border: none;
-      position: relative;
-    }
-
-    .btn-experimental {
-      width: 100%;
-      padding: 0.75rem;
-      margin: 1rem 0;
       background: white;
-      color: #333;
-      border: 2px solid #43e97b;
-      border-radius: 4px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
+      border: 1px solid var(--demo-border, #e2e8f0);
     }
 
-    .btn-experimental:hover {
-      background: #43e97b;
-      color: white;
-      transform: scale(1.05);
-    }
-
-    .experimental-badge {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      padding: 0.25rem 0.75rem;
-      background: rgba(255,255,255,0.9);
-      color: #333;
-      border-radius: 12px;
-      font-size: 0.7rem;
-      font-weight: bold;
-    }
-
-    /* Flags Status */
-    .flags-status {
-      margin-top: 2rem;
-      padding: 1.5rem;
-      background: #f8f9fa;
-      border-radius: 8px;
-    }
-
-    .flags-status h3 {
-      margin-top: 0;
-      color: #333;
-    }
-
-    .flags-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 0.75rem;
-    }
-
-    .flags-list li {
-      padding: 0.75rem;
-      background: white;
+    .notification-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      font-size: 0.8125rem;
+      color: var(--demo-text, #1e293b);
+      background: var(--demo-bg, #f8fafc);
       border-radius: 4px;
     }
 
-    .status-enabled {
-      color: #28a745;
+    .notification-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #3b82f6;
+      flex-shrink: 0;
     }
 
-    .status-disabled {
-      color: #dc3545;
+    .notification-dot.success {
+      background: #22c55e;
     }
 
-    @media (max-width: 768px) {
-      .demo-grid {
+    @media (max-width: 640px) {
+      .demo-card-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -330,24 +288,8 @@ import { FeatureFlagsService } from '../../services/feature-flags.service';
 export class FeatureFlagsDemoComponent {
   private readonly featureFlagsService = inject(FeatureFlagsService);
 
-  // Convert observables to signals for each feature flag
-  protected readonly darkModeEnabled = toSignal(
-    this.featureFlagsService.select('darkMode'),
-    { initialValue: false }
-  );
-
-  protected readonly newLayoutEnabled = toSignal(
-    this.featureFlagsService.select('newDemoApplicationLayout'),
-    { initialValue: false }
-  );
-
-  protected readonly betaFeaturesEnabled = toSignal(
-    this.featureFlagsService.select('betaFeatures'),
-    { initialValue: false }
-  );
-
-  protected readonly experimentalUiEnabled = toSignal(
-    this.featureFlagsService.select('experimentalUI'),
-    { initialValue: false }
-  );
+  protected readonly darkModeEnabled = this.featureFlagsService.getFlag('dark-mode');
+  protected readonly newLayoutEnabled = this.featureFlagsService.getFlag('new-dashboard');
+  protected readonly betaFeaturesEnabled = this.featureFlagsService.getFlag('beta-features');
+  protected readonly newNotificationsEnabled = this.featureFlagsService.getFlag('new-notifications');
 }

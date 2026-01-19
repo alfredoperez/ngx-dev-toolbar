@@ -1,4 +1,5 @@
 import { Injectable, signal, computed } from '@angular/core';
+import { Feature, FEATURE_METADATA } from './app-features.models';
 
 /**
  * Product tier types representing different subscription levels
@@ -31,43 +32,14 @@ export class AppFeaturesConfigService {
    */
   private readonly tierFeatures: Record<ProductTier, string[]> = {
     basic: [],
-    professional: ['analytics', 'bulk-export'],
+    professional: [Feature.Analytics, Feature.BulkExport],
     enterprise: [
-      'analytics',
-      'bulk-export',
-      'white-label',
-      'notifications',
-      'api-access',
+      Feature.Analytics,
+      Feature.BulkExport,
+      Feature.WhiteLabel,
+      Feature.Notifications,
+      Feature.ApiAccess,
     ],
-  };
-
-  /**
-   * Feature metadata (names and descriptions for UI display)
-   */
-  private readonly featureMetadata: Record<
-    string,
-    { name: string; description: string }
-  > = {
-    analytics: {
-      name: 'Analytics Dashboard',
-      description: 'Advanced reporting and data visualization tools',
-    },
-    'bulk-export': {
-      name: 'Bulk Export',
-      description: 'Export large datasets to CSV, Excel, or PDF',
-    },
-    'white-label': {
-      name: 'White Label Branding',
-      description: 'Customize app branding with your logo and colors',
-    },
-    notifications: {
-      name: 'Notifications',
-      description: 'Real-time push notifications and alerts',
-    },
-    'api-access': {
-      name: 'API Access',
-      description: 'Full REST API access for custom integrations',
-    },
   };
 
   /**
@@ -79,8 +51,8 @@ export class AppFeaturesConfigService {
 
     return featureIds.map((id) => ({
       id,
-      name: this.featureMetadata[id]?.name || id,
-      description: this.featureMetadata[id]?.description || '',
+      name: FEATURE_METADATA[id]?.name || id,
+      description: FEATURE_METADATA[id]?.description || '',
       isEnabled: true, // All features in tier are naturally enabled
       isForced: false,
     }));
@@ -100,8 +72,8 @@ export class AppFeaturesConfigService {
 
     return Array.from(allFeatureIds).map((id) => ({
       id,
-      name: this.featureMetadata[id]?.name || id,
-      description: this.featureMetadata[id]?.description || '',
+      name: FEATURE_METADATA[id]?.name || id,
+      description: FEATURE_METADATA[id]?.description || '',
       isEnabled: enabledFeatures.includes(id),
       isForced: false,
     }));

@@ -1,21 +1,13 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { Component, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterOutlet } from '@angular/router';
 import { TranslocoService } from '@jsverse/transloco';
 
 import {
   ToolbarAppFeaturesService,
-  ToolbarFeatureFlagService,
-  ToolbarFlag,
   ToolbarLanguageService,
 } from 'ngx-dev-toolbar';
-import { firstValueFrom, map } from 'rxjs';
-import { NavBarComponent } from './components/nav-bar/nav-bar.component';
-import { ToolbarStatusSummaryComponent } from './components/toolbar-status-summary/toolbar-status-summary.component';
-import { PermissionDemoComponent } from './components/permission-demo/permission-demo.component';
-import { FeatureFlagsDemoComponent } from './components/feature-flags-demo/feature-flags-demo.component';
-import { AppFeaturesDemoComponent } from './components/app-features-demo/app-features-demo.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { AnalyticsService } from './services/analytics.service';
 import { AppFeaturesConfigService } from './services/app-features-config.service';
 import { FeatureFlagsService } from './services/feature-flags.service';
@@ -24,149 +16,57 @@ import { FeatureFlagsService } from './services/feature-flags.service';
   selector: 'app-root',
   standalone: true,
   imports: [
-    CommonModule,
     RouterOutlet,
-    NavBarComponent,
-    ToolbarStatusSummaryComponent,
-    PermissionDemoComponent,
-    FeatureFlagsDemoComponent,
-    AppFeaturesDemoComponent,
+    SidebarComponent,
   ],
   template: `
-    @if (useNewLayout() ) {
-    <!-- New Modern Layout -->
-    <div class="modern-layout">
-      <app-nav-bar />
-      <main class="modern-content">
-        <div class="detailed-demos">
-          <app-feature-flags-demo />
-          <app-permission-demo />
-          <app-features-demo />
-        </div>
-        <app-toolbar-status-summary />
+    <div class="demo-app">
+      <app-sidebar />
+      <main class="demo-content">
         <router-outlet />
       </main>
     </div>
-    } @else {
-    <div class="original-layout">
-      <app-nav-bar />
-      <main class="content">
-        <div class="detailed-demos">
-          <app-feature-flags-demo />
-          <app-permission-demo />
-          <app-features-demo />
-        </div>
-        <app-toolbar-status-summary />
-        <router-outlet />
-      </main>
-    </div>
-    }
   `,
-  styles: [
-    `
-      .modern-layout {
-        min-height: 100vh;
-        background: #f0f2f5;
-      }
-      .modern-content {
-        max-width: 1600px;
-        margin: 0 auto;
-        padding: 0;
+  styles: [`
+    .demo-app {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      min-height: 100vh;
+    }
+
+    .demo-content {
+      background: var(--demo-bg, #f8fafc);
+      padding: 1.5rem 2rem;
+      overflow-y: auto;
+      max-height: 100vh;
+    }
+
+    @media (max-width: 768px) {
+      .demo-app {
+        grid-template-columns: 1fr;
       }
 
-      .detailed-demos {
-        margin-top: 2rem;
-        padding: 0 2rem 2rem 2rem;
-        display: flex;
-        flex-direction: column;
-        gap: 3rem;
+      .demo-content {
+        padding: 1rem;
+        max-height: none;
       }
-
-      .detailed-demos > * {
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-      }
-
-      .original-layout {
-        background: #f0f2f5;
-        min-height: 100vh;
-      }
-
-      .original-layout .content {
-        max-width: 1600px;
-        margin: 0 auto;
-        padding: 0;
-      }
-
-      .original-layout .detailed-demos {
-        margin-top: 2rem;
-        padding: 0 1rem 1rem 1rem;
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-      }
-
-      .original-layout .detailed-demos > * {
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-      }
-
-      @media (max-width: 768px) {
-        .detailed-demos {
-          padding: 0 1rem 1rem 1rem;
-          gap: 1.5rem;
-        }
-      }
-    `,
-  ],
+    }
+  `],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   private readonly languageToolbarService = inject(ToolbarLanguageService);
   private readonly analyticsService = inject(AnalyticsService);
   private readonly translocoService = inject(TranslocoService);
-  private readonly toolbarFeatureFlagsService = inject(
-    ToolbarFeatureFlagService
-  );
   private readonly featureFlagsService = inject(FeatureFlagsService);
-  private readonly toolbarAppFeaturesService = inject(
-    ToolbarAppFeaturesService
-  );
+  private readonly toolbarAppFeaturesService = inject(ToolbarAppFeaturesService);
   public readonly appFeaturesConfig = inject(AppFeaturesConfigService);
 
   originalLang = this.translocoService.getActiveLang();
 
-  useNewLayout = toSignal(
-    this.featureFlagsService.select('newDemoApplicationLayout')
-  );
-
-  ngOnInit(): void {
-    this.loadFlags();
-    this.analyticsService.trackEvent('Loaded Application', '--', '--');
-  }
-
-  private async loadFlags(): Promise<void> {
-    // Gets the flags from the application and sets them in the toolbar
-    const flags: ToolbarFlag[] = await firstValueFrom(
-      this.featureFlagsService.flags$.pipe(
-        map((flags) =>
-          flags.map(
-            (flag) =>
-              ({
-                id: flag.name,
-                name: flag.name,
-                description: flag.description,
-                isEnabled: flag.enabled,
-              } as ToolbarFlag)
-          )
-        )
-      )
-    );
-    this.toolbarFeatureFlagsService.setAvailableOptions(flags);
-  }
-
   constructor() {
+    // Track app load
+    this.analyticsService.trackEvent('Loaded Application', '--', '--');
+
     // Configure available languages
     this.languageToolbarService.setAvailableOptions([
       { id: 'en', name: 'English' },

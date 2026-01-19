@@ -3,27 +3,27 @@ import { Route } from '@angular/router';
 export const appRoutes: Route[] = [
   {
     path: '',
-    loadComponent: () =>
-      import('./features/home/home.component').then((m) => m.HomeComponent),
+    redirectTo: 'feature-flags',
+    pathMatch: 'full',
   },
   {
     path: 'feature-flags',
     loadComponent: () =>
-      import('./features/feature-flags/feature-flags.component').then(
-        (m) => m.FeatureFlagsComponent
+      import('./components/feature-flags-demo/feature-flags-demo.component').then(
+        (m) => m.FeatureFlagsDemoComponent
       ),
   },
   {
-    path: 'languages',
+    path: 'permissions',
     loadComponent: () =>
-      import('./features/languages/languages.component').then(
-        (m) => m.LanguagesComponent
+      import('./components/permission-demo/permission-demo.component').then(
+        (m) => m.PermissionDemoComponent
       ),
   },
   {
     path: 'app-features',
     loadComponent: () =>
-      import('./pages/app-features-demo/app-features-demo.component').then(
+      import('./components/app-features-demo/app-features-demo.component').then(
         (m) => m.AppFeaturesDemoComponent
       ),
   },

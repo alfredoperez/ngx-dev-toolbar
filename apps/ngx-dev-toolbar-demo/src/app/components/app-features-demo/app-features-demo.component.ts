@@ -12,467 +12,451 @@ import { AppFeaturesConfigService } from '../../services/app-features-config.ser
   standalone: true,
   template: `
     <section class="app-features-demo">
-      <h2>App Features Demo</h2>
-      <p class="demo-instruction">
-        Open the App Features Tool from the dev toolbar to test different subscription tiers.
-        Force premium features on/off to test upgrade flows and feature gating.
-      </p>
-
-      <div class="tier-selector">
-        <h3>Current Tier: <span class="tier-badge tier-{{ config.currentTier() }}">{{ getTierDisplayName() }}</span></h3>
-        <div class="tier-buttons">
-          @for (tier of tiers; track tier.id) {
-            <button
-              [class.active]="config.currentTier() === tier.id"
-              (click)="config.setTier(tier.id)"
-              class="tier-btn"
-            >
-              {{ tier.name }}
-            </button>
-          }
+      <div class="demo-header">
+        <div class="header-content">
+          <h2>App Features</h2>
+          <p class="demo-description">
+            Test different subscription tier features using the toolbar below.
+          </p>
         </div>
-        <p class="hint">💡 Or use the App Features Tool to force specific features</p>
+        <div class="tier-selector">
+          <span class="tier-label">Current Tier:</span>
+          <div class="tier-buttons">
+            @for (tier of tiers; track tier.id) {
+              <button
+                [class.active]="config.currentTier() === tier.id"
+                (click)="config.setTier(tier.id)"
+                class="tier-btn"
+                type="button"
+              >
+                {{ tier.name }}
+              </button>
+            }
+          </div>
+        </div>
       </div>
 
-      <div class="demo-grid">
+      <div class="demo-card-grid">
         <!-- Analytics Dashboard -->
-        @if (hasAnalytics()) {
-          <div class="demo-card analytics-card">
-            <h3>📊 Analytics Dashboard</h3>
-            <p class="card-description">Professional Tier Feature</p>
-            <div class="analytics-preview">
-              <div class="chart-placeholder">📈 Chart Data</div>
-              <div class="stats-row">
-                <div class="stat">1,234 Users</div>
-                <div class="stat">89% Engagement</div>
+        <div class="demo-card" [class.locked]="!hasAnalytics()">
+          <div class="card-header">
+            <h3>Analytics Dashboard</h3>
+            <span class="tier-badge professional">Pro</span>
+          </div>
+          <p class="card-description">View detailed usage metrics and insights</p>
+          @if (hasAnalytics()) {
+            <div class="card-preview stats-preview">
+              <div class="stat-item">
+                <span class="stat-value">1,234</span>
+                <span class="stat-label">Users</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-value">89%</span>
+                <span class="stat-label">Rate</span>
               </div>
             </div>
-            <span class="feature-badge">Available</span>
-          </div>
-        } @else {
-          <div class="demo-card locked-card">
-            <h3>📊 Analytics Dashboard</h3>
-            <p class="card-description">Professional Tier Feature</p>
-            <div class="feature-locked">
+            <span class="feature-status available">Available</span>
+          } @else {
+            <div class="locked-state">
               <span class="lock-icon">🔒</span>
-              <p>Upgrade to Professional to unlock</p>
-              <button class="btn-upgrade" (click)="config.setTier('professional')">Upgrade Now</button>
+              <span>Upgrade to Professional</span>
             </div>
-          </div>
-        }
+          }
+        </div>
 
         <!-- Multi-User Support -->
-        @if (hasMultiUser()) {
-          <div class="demo-card multiuser-card">
-            <h3>👥 Multi-User Collaboration</h3>
-            <p class="card-description">Professional Tier Feature</p>
-            <div class="users-preview">
-              <div class="user-avatar">JD</div>
-              <div class="user-avatar">AS</div>
-              <div class="user-avatar">MK</div>
-              <div class="user-avatar">+5</div>
-            </div>
-            <span class="feature-badge">Available</span>
+        <div class="demo-card" [class.locked]="!hasMultiUser()">
+          <div class="card-header">
+            <h3>Multi-User</h3>
+            <span class="tier-badge professional">Pro</span>
           </div>
-        } @else {
-          <div class="demo-card locked-card">
-            <h3>👥 Multi-User Collaboration</h3>
-            <p class="card-description">Professional Tier Feature</p>
-            <div class="feature-locked">
+          <p class="card-description">Collaborate with your team members</p>
+          @if (hasMultiUser()) {
+            <div class="card-preview users-preview">
+              <span class="user-avatar">JD</span>
+              <span class="user-avatar">AS</span>
+              <span class="user-avatar">MK</span>
+              <span class="user-avatar more">+5</span>
+            </div>
+            <span class="feature-status available">Available</span>
+          } @else {
+            <div class="locked-state">
               <span class="lock-icon">🔒</span>
-              <p>Upgrade to Professional for team features</p>
+              <span>Upgrade to Professional</span>
             </div>
-          </div>
-        }
+          }
+        </div>
 
         <!-- White Label Branding -->
-        @if (hasWhiteLabel()) {
-          <div class="demo-card whitelabel-card">
-            <h3>🎨 White Label Branding</h3>
-            <p class="card-description">Enterprise Tier Feature</p>
-            <div class="branding-preview">
-              <div class="color-swatch" style="background: #667eea"></div>
-              <div class="color-swatch" style="background: #764ba2"></div>
-              <div class="color-swatch" style="background: #f093fb"></div>
-            </div>
-            <span class="feature-badge enterprise">Enterprise</span>
+        <div class="demo-card" [class.locked]="!hasWhiteLabel()">
+          <div class="card-header">
+            <h3>White Label</h3>
+            <span class="tier-badge enterprise">Enterprise</span>
           </div>
-        } @else {
-          <div class="demo-card locked-card">
-            <h3>🎨 White Label Branding</h3>
-            <p class="card-description">Enterprise Tier Feature</p>
-            <div class="feature-locked">
+          <p class="card-description">Custom branding and styling options</p>
+          @if (hasWhiteLabel()) {
+            <div class="card-preview branding-preview">
+              <span class="color-swatch" style="background: #6366f1"></span>
+              <span class="color-swatch" style="background: #8b5cf6"></span>
+              <span class="color-swatch" style="background: #f59e0b"></span>
+            </div>
+            <span class="feature-status available enterprise">Enterprise</span>
+          } @else {
+            <div class="locked-state">
               <span class="lock-icon">🔒</span>
-              <p>Enterprise exclusive feature</p>
-              <button class="btn-upgrade enterprise" (click)="config.setTier('enterprise')">Contact Sales</button>
+              <span>Enterprise only</span>
             </div>
-          </div>
-        }
+          }
+        </div>
 
         <!-- SSO Integration -->
-        @if (hasSso()) {
-          <div class="demo-card sso-card">
-            <h3>🔐 SSO Integration</h3>
-            <p class="card-description">Enterprise Tier Feature</p>
-            <div class="sso-preview">
-              <div class="sso-provider">Azure AD</div>
-              <div class="sso-provider">Okta</div>
-              <div class="sso-provider">Google</div>
-            </div>
-            <span class="feature-badge enterprise">Enterprise</span>
+        <div class="demo-card" [class.locked]="!hasSso()">
+          <div class="card-header">
+            <h3>SSO Integration</h3>
+            <span class="tier-badge enterprise">Enterprise</span>
           </div>
-        } @else {
-          <div class="demo-card locked-card">
-            <h3>🔐 SSO Integration</h3>
-            <p class="card-description">Enterprise Tier Feature</p>
-            <div class="feature-locked">
+          <p class="card-description">Single sign-on with identity providers</p>
+          @if (hasSso()) {
+            <div class="card-preview sso-preview">
+              <span class="sso-provider">Azure AD</span>
+              <span class="sso-provider">Okta</span>
+              <span class="sso-provider">Google</span>
+            </div>
+            <span class="feature-status available enterprise">Enterprise</span>
+          } @else {
+            <div class="locked-state">
               <span class="lock-icon">🔒</span>
-              <p>Enterprise identity providers</p>
+              <span>Enterprise only</span>
             </div>
-          </div>
-        }
+          }
+        </div>
 
         <!-- API Access -->
-        @if (hasApiAccess()) {
-          <div class="demo-card api-card">
-            <h3>🔌 API Access</h3>
-            <p class="card-description">Enterprise Tier Feature</p>
-            <div class="api-preview">
+        <div class="demo-card" [class.locked]="!hasApiAccess()">
+          <div class="card-header">
+            <h3>API Access</h3>
+            <span class="tier-badge enterprise">Enterprise</span>
+          </div>
+          <p class="card-description">Programmatic access to platform data</p>
+          @if (hasApiAccess()) {
+            <div class="card-preview api-preview">
               <code>GET /api/v1/data</code>
               <code>POST /api/v1/resource</code>
             </div>
-            <span class="feature-badge enterprise">Enterprise</span>
-          </div>
-        }
-      </div>
-
-      <div class="features-status">
-        <h3>Available Features</h3>
-        <ul class="features-list">
-          <li>Analytics: <strong class="status-{{ hasAnalytics() ? 'enabled' : 'disabled' }}">{{ hasAnalytics() ? 'Available' : 'Locked' }}</strong></li>
-          <li>Multi-User: <strong class="status-{{ hasMultiUser() ? 'enabled' : 'disabled' }}">{{ hasMultiUser() ? 'Available' : 'Locked' }}</strong></li>
-          <li>White Label: <strong class="status-{{ hasWhiteLabel() ? 'enabled' : 'disabled' }}">{{ hasWhiteLabel() ? 'Available' : 'Locked' }}</strong></li>
-          <li>SSO: <strong class="status-{{ hasSso() ? 'enabled' : 'disabled' }}">{{ hasSso() ? 'Available' : 'Locked' }}</strong></li>
-          <li>API Access: <strong class="status-{{ hasApiAccess() ? 'enabled' : 'disabled' }}">{{ hasApiAccess() ? 'Available' : 'Locked' }}</strong></li>
-        </ul>
+            <span class="feature-status available enterprise">Enterprise</span>
+          } @else {
+            <div class="locked-state">
+              <span class="lock-icon">🔒</span>
+              <span>Enterprise only</span>
+            </div>
+          }
+        </div>
       </div>
     </section>
   `,
   styles: [`
     .app-features-demo {
-      padding: 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
+      animation: fadeIn 0.3s ease;
     }
 
-    h2 {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-      color: #333;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .demo-instruction {
-      color: #666;
-      margin-bottom: 2rem;
-      font-size: 1.1rem;
+    .demo-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .header-content h2 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--demo-text, #1e293b);
+    }
+
+    .demo-description {
+      margin: 0;
+      color: var(--demo-text-muted, #64748b);
+      font-size: 0.9375rem;
     }
 
     .tier-selector {
-      margin-bottom: 2rem;
-      padding: 1.5rem;
-      background: #f8f9fa;
-      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
     }
 
-    .tier-selector h3 {
-      margin: 0 0 1rem 0;
-      color: #333;
-    }
-
-    .tier-badge {
-      padding: 0.25rem 0.75rem;
-      border-radius: 12px;
-      font-size: 0.9rem;
-      font-weight: bold;
-    }
-
-    .tier-badge.tier-basic {
-      background: #e3f2fd;
-      color: #1976d2;
-    }
-
-    .tier-badge.tier-professional {
-      background: #f3e5f5;
-      color: #7b1fa2;
-    }
-
-    .tier-badge.tier-enterprise {
-      background: #fff3e0;
-      color: #e65100;
+    .tier-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--demo-text-muted, #64748b);
     }
 
     .tier-buttons {
       display: flex;
-      gap: 1rem;
-      margin-bottom: 1rem;
+      gap: 0.375rem;
+      background: var(--demo-bg, #f8fafc);
+      padding: 0.25rem;
+      border-radius: 8px;
     }
 
     .tier-btn {
-      flex: 1;
-      padding: 0.75rem 1.5rem;
-      border: 2px solid #ddd;
+      padding: 0.5rem 0.875rem;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      background: transparent;
+      border: none;
       border-radius: 6px;
-      background: white;
       cursor: pointer;
-      font-size: 1rem;
+      color: var(--demo-text-muted, #64748b);
       transition: all 0.2s;
     }
 
     .tier-btn:hover {
-      border-color: #007bff;
-      transform: translateY(-2px);
+      color: var(--demo-text, #1e293b);
     }
 
     .tier-btn.active {
-      border-color: #007bff;
-      background: #e3f2fd;
-      font-weight: 600;
+      background: white;
+      color: var(--demo-primary, #6366f1);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
-    .hint {
-      color: #856404;
-      background: #fff3cd;
-      padding: 0.75rem;
-      border-radius: 4px;
-      margin: 0;
-      font-size: 0.9rem;
-    }
-
-    .demo-grid {
+    .demo-card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 2rem;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
     }
 
     .demo-card {
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 1.5rem;
-      background: white;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      background: var(--demo-card-bg, #ffffff);
+      border: 1px solid var(--demo-border, #e2e8f0);
+      border-radius: var(--demo-radius, 8px);
+      padding: 1.25rem;
+      box-shadow: var(--demo-shadow, 0 1px 3px rgba(0, 0, 0, 0.1));
+      transition: border-color 0.2s, box-shadow 0.2s;
       position: relative;
-      transition: transform 0.2s;
     }
 
     .demo-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      border-color: var(--demo-primary, #6366f1);
     }
 
-    .demo-card h3 {
-      margin: 0 0 0.5rem 0;
-      color: #333;
-      font-size: 1.3rem;
+    .demo-card.locked {
+      opacity: 0.75;
     }
 
-    .card-description {
-      color: #666;
-      margin-bottom: 1rem;
-      font-size: 0.9rem;
+    .demo-card.locked:hover {
+      border-color: var(--demo-border, #e2e8f0);
     }
 
-    .feature-badge {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      padding: 0.25rem 0.75rem;
-      background: #28a745;
-      color: white;
-      border-radius: 12px;
-      font-size: 0.75rem;
-      font-weight: bold;
-    }
-
-    .feature-badge.enterprise {
-      background: #e65100;
-    }
-
-    .locked-card {
-      opacity: 0.7;
-      background: #f8f9fa;
-    }
-
-    .feature-locked {
-      text-align: center;
-      padding: 1rem;
-    }
-
-    .lock-icon {
-      font-size: 3rem;
-      display: block;
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
       margin-bottom: 0.5rem;
     }
 
-    .feature-locked p {
-      color: #666;
-      margin: 0.5rem 0;
-    }
-
-    .btn-upgrade {
-      margin-top: 1rem;
-      padding: 0.75rem 1.5rem;
-      background: #007bff;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
+    .card-header h3 {
+      margin: 0;
+      font-size: 1rem;
       font-weight: 600;
-      transition: all 0.2s;
+      color: var(--demo-text, #1e293b);
     }
 
-    .btn-upgrade:hover {
-      background: #0056b3;
-      transform: scale(1.05);
-    }
-
-    .btn-upgrade.enterprise {
-      background: #e65100;
-    }
-
-    .btn-upgrade.enterprise:hover {
-      background: #bf360c;
-    }
-
-    /* Card-specific styles */
-    .analytics-preview {
-      padding: 1rem;
-      background: #f8f9fa;
+    .tier-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.125rem 0.5rem;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.025em;
       border-radius: 4px;
+      flex-shrink: 0;
     }
 
-    .chart-placeholder {
-      padding: 2rem;
-      background: white;
-      border: 2px dashed #ddd;
-      border-radius: 4px;
-      text-align: center;
+    .tier-badge.professional {
+      background: #f3e5f5;
+      color: #7b1fa2;
+    }
+
+    .tier-badge.enterprise {
+      background: #fff3e0;
+      color: #e65100;
+    }
+
+    .card-description {
+      margin: 0 0 1rem 0;
+      font-size: 0.875rem;
+      color: var(--demo-text-muted, #64748b);
+      line-height: 1.5;
+    }
+
+    .card-preview {
+      padding: 0.75rem;
+      background: var(--demo-bg, #f8fafc);
+      border-radius: 6px;
       margin-bottom: 0.75rem;
     }
 
-    .stats-row {
+    .feature-status {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.625rem;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.025em;
+      border-radius: 9999px;
+    }
+
+    .feature-status.available {
+      background: var(--demo-success-bg, #dcfce7);
+      color: #166534;
+    }
+
+    .feature-status.enterprise {
+      background: #fff3e0;
+      color: #e65100;
+    }
+
+    .locked-state {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      background: var(--demo-bg, #f8fafc);
+      border-radius: 6px;
+      color: var(--demo-text-muted, #64748b);
+      font-size: 0.875rem;
+    }
+
+    .lock-icon {
+      font-size: 1rem;
+    }
+
+    /* Stats Preview */
+    .stats-preview {
       display: flex;
       justify-content: space-around;
     }
 
-    .stat {
-      font-weight: 600;
-      color: #007bff;
+    .stat-item {
+      text-align: center;
     }
 
+    .stat-value {
+      display: block;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--demo-primary, #6366f1);
+    }
+
+    .stat-label {
+      display: block;
+      font-size: 0.6875rem;
+      color: var(--demo-text-muted, #64748b);
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+    }
+
+    /* Users Preview */
     .users-preview {
       display: flex;
-      gap: 0.5rem;
-      padding: 1rem;
+      gap: 0.375rem;
     }
 
     .user-avatar {
-      width: 48px;
-      height: 48px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
       color: white;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: bold;
-      font-size: 0.9rem;
-    }
-
-    .branding-preview {
-      display: flex;
-      gap: 0.75rem;
-      padding: 1rem;
-    }
-
-    .color-swatch {
-      width: 60px;
-      height: 60px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-
-    .sso-preview {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      padding: 1rem;
-    }
-
-    .sso-provider {
-      padding: 0.75rem;
-      background: #f8f9fa;
-      border-radius: 4px;
-      border-left: 3px solid #007bff;
+      font-size: 0.75rem;
       font-weight: 600;
     }
 
-    .api-preview {
-      padding: 1rem;
-      background: #1a1a2e;
+    .user-avatar.more {
+      background: var(--demo-bg-hover, #f1f5f9);
+      color: var(--demo-text-muted, #64748b);
+    }
+
+    /* Branding Preview */
+    .branding-preview {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .color-swatch {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    }
+
+    /* SSO Preview */
+    .sso-preview {
+      display: flex;
+      flex-direction: column;
+      gap: 0.375rem;
+    }
+
+    .sso-provider {
+      padding: 0.375rem 0.5rem;
+      background: white;
       border-radius: 4px;
+      font-size: 0.8125rem;
+      color: var(--demo-text, #1e293b);
+      border-left: 2px solid var(--demo-primary, #6366f1);
+    }
+
+    /* API Preview */
+    .api-preview {
+      background: #1e293b;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
     }
 
     .api-preview code {
-      display: block;
-      color: #43e97b;
-      font-family: 'Courier New', monospace;
-      margin: 0.5rem 0;
-    }
-
-    /* Features Status */
-    .features-status {
-      margin-top: 2rem;
-      padding: 1.5rem;
-      background: #f8f9fa;
-      border-radius: 8px;
-    }
-
-    .features-status h3 {
-      margin-top: 0;
-      color: #333;
-    }
-
-    .features-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 0.75rem;
-    }
-
-    .features-list li {
-      padding: 0.75rem;
-      background: white;
-      border-radius: 4px;
-    }
-
-    .status-enabled {
-      color: #28a745;
-    }
-
-    .status-disabled {
-      color: #dc3545;
+      color: #22c55e;
+      font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+      font-size: 0.75rem;
     }
 
     @media (max-width: 768px) {
-      .demo-grid {
-        grid-template-columns: 1fr;
+      .demo-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .tier-selector {
+        flex-direction: column;
+        align-items: stretch;
       }
 
       .tier-buttons {
-        flex-direction: column;
+        justify-content: stretch;
+      }
+
+      .tier-btn {
+        flex: 1;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .demo-card-grid {
+        grid-template-columns: 1fr;
       }
     }
   `],
@@ -482,12 +466,11 @@ export class AppFeaturesDemoComponent {
   protected readonly config = inject(AppFeaturesConfigService);
 
   protected readonly tiers = [
-    { id: 'basic' as const, name: 'Basic (Free)' },
-    { id: 'professional' as const, name: 'Professional' },
+    { id: 'basic' as const, name: 'Basic' },
+    { id: 'professional' as const, name: 'Pro' },
     { id: 'enterprise' as const, name: 'Enterprise' },
   ];
 
-  // Computed signals for each feature
   protected readonly hasAnalytics = computed(() =>
     this.config.isFeatureEnabled('analytics')
   );
@@ -507,9 +490,4 @@ export class AppFeaturesDemoComponent {
   protected readonly hasApiAccess = computed(() =>
     this.config.isFeatureEnabled('api-access')
   );
-
-  protected getTierDisplayName(): string {
-    const tier = this.config.currentTier();
-    return tier.charAt(0).toUpperCase() + tier.slice(1);
-  }
 }

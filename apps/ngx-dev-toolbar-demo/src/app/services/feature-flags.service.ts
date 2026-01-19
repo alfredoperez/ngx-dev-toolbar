@@ -1,72 +1,66 @@
-import { Injectable, inject } from '@angular/core';
+import { computed, effect, inject, Injectable, Signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ToolbarFeatureFlagService } from 'ngx-dev-toolbar';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { LaunchDarklyService } from './launch-darkly.service';
 
-export interface FeatureFlag {
-  name: string;
-  enabled: boolean;
-  description: string;
-}
-
+/**
+ * Feature flags service - Simple pattern using getValues().
+ *
+ * This service:
+ * 1. Gets flags from LaunchDarkly (the "real" source)
+ * 2. Registers them with the toolbar
+ * 3. Uses getValues() which returns all flags with overrides already applied
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class FeatureFlagsService {
-  devToolbarFeatureFlags = inject(ToolbarFeatureFlagService);
+  private launchDarkly = inject(LaunchDarklyService);
+  private toolbarService = inject(ToolbarFeatureFlagService);
 
-  private featureFlags: FeatureFlag[] = [
-    {
-      name: 'darkMode',
-      enabled: false,
-      description: 'Enable dark theme throughout the application',
-    },
-    {
-      name: 'newDashboard',
-      enabled: false,
-      description: 'Enable the redesigned dashboard experience',
-    },
-    {
-      name: 'betaFeatures',
-      enabled: false,
-      description: 'Enable experimental beta features',
-    },
-    {
-      name: 'newNotifications',
-      enabled: false,
-      description: 'Enable the new notifications system',
-    },
-  ];
+  // Descriptions for toolbar display (LaunchDarkly doesn't provide these)
+  private readonly descriptions: Record<string, string> = {
+    'dark-mode': 'Enable dark theme throughout the application',
+    'new-dashboard': 'Enable the redesigned dashboard experience',
+    'beta-features': 'Enable experimental beta features',
+    'new-notifications': 'Enable the new notifications system',
+  };
 
-  private flagsSubject = new BehaviorSubject<FeatureFlag[]>(this.featureFlags);
+  // Get flags from LaunchDarkly
+  private ldFlags = toSignal(this.launchDarkly.getFlags(), { initialValue: [] });
 
-  readonly flags$ = this.flagsSubject.asObservable();
+  // Get all flags with toolbar overrides already applied
+  private flags = toSignal(this.toolbarService.getValues(), { initialValue: [] });
 
-  select(flagName: string): Observable<boolean> {
-    // Use getValues() to get all flags with overrides already applied
-    return this.devToolbarFeatureFlags.getValues().pipe(
-      map(toolbarFlags => {
-        // Check if toolbar has this flag with override
-        const toolbarFlag = toolbarFlags.find(f => f.id === flagName);
-        if (toolbarFlag) {
-          return toolbarFlag.isEnabled;
-        }
-        // Fall back to local flag value if not in toolbar
-        const localFlag = this.featureFlags.find(f => f.name === flagName);
-        return localFlag?.enabled ?? false;
-      })
-    );
+  constructor() {
+    // When LaunchDarkly flags load, register them with the toolbar
+    effect(() => {
+      const flags = this.ldFlags();
+      if (flags.length) {
+        this.toolbarService.setAvailableOptions(
+          flags.map((f) => ({
+            id: f.key,
+            name: this.formatName(f.key),
+            description: this.descriptions[f.key] ?? '',
+            isEnabled: f.value,
+            isForced: false,
+          }))
+        );
+      }
+    });
   }
 
-  toggleFlag(flagName: string): void {
-    const flags = [...this.featureFlags];
-    const flagIndex = flags.findIndex((f) => f.name === flagName);
-    if (flagIndex !== -1) {
-      flags[flagIndex] = {
-        ...flags[flagIndex],
-        enabled: !flags[flagIndex].enabled,
-      };
-      this.featureFlags = flags;
-      this.flagsSubject.next(flags);
-    }
+  /**
+   * Get a flag value. Returns toolbar value with overrides already applied.
+   */
+  getFlag(id: string): Signal<boolean> {
+    return computed(() => this.flags().find((f) => f.id === id)?.isEnabled ?? false);
+  }
+
+  private formatName(key: string): string {
+    return key
+      .split('-')
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' ');
   }
 }
