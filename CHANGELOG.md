@@ -1,3 +1,13 @@
+## 3.0.1 (2026-01-19)
+
+### Documentation
+
+- redesign README for v3.0.0 ([21292f4](https://github.com/alfredoperez/ngx-dev-toolbar/commit/21292f4))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 # 3.0.0 (2026-01-19)
 
 ### Features
