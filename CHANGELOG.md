@@ -1,3 +1,22 @@
+# 3.0.0 (2026-01-19)
+
+### Features
+
+- add dynamic initialization API for zero production bundle impact ([bde57e0](https://github.com/alfredoperez/ngx-dev-toolbar/commit/bde57e0))
+- ⚠️  rebrand from "Angular Dev Toolbar" to "Angular Toolbar" ([5911dd1](https://github.com/alfredoperez/ngx-dev-toolbar/commit/5911dd1))
+
+### Refactor
+
+- **demo:** redesign layout with sidebar navigation ([d46adcf](https://github.com/alfredoperez/ngx-dev-toolbar/commit/d46adcf))
+
+### ⚠️  Breaking Changes
+
+- This release includes significant naming changes    across the library.
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 ## 2.1.1 (2025-12-30)
 
 ### Features
