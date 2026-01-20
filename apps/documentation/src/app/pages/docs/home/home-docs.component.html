@@ -19,7 +19,7 @@
   <section class="doc-section">
     <h2>Installation</h2>
     <p>Install the package via npm:</p>
-    <pre><code>npm install ngx-dev-toolbar</code></pre>
+    <app-code-example [example]="installExample"></app-code-example>
   </section>
 
   <!-- Quick Setup -->
@@ -27,34 +27,12 @@
     <h2>Quick Setup</h2>
     <h3>1. Initialize in main.ts</h3>
     <p>Add the toolbar to your application with zero production bundle impact:</p>
-    <pre><code>import &#123; bootstrapApplication &#125; from '&#64;angular/platform-browser';
-import &#123; AppComponent &#125; from './app/app.component';
-import &#123; isDevMode &#125; from '&#64;angular/core';
-
-async function bootstrap() &#123;
-  const appRef = await bootstrapApplication(AppComponent, appConfig);
-
-  // Initialize toolbar only in development
-  if (isDevMode()) &#123;
-    const &#123; initToolbar &#125; = await import('ngx-dev-toolbar');
-    initToolbar(appRef);
-  &#125;
-&#125;
-
-bootstrap();</code></pre>
+    <app-code-example [example]="basicSetupExample"></app-code-example>
 
     <p>That's it! No template changes needed. The toolbar automatically attaches to the DOM.</p>
 
     <h3>2. Configure Tools (Optional)</h3>
-    <pre><code>initToolbar(appRef, &#123;
-  config: &#123;
-    showFeatureFlagsTool: true,
-    showPermissionsTool: true,
-    showLanguageTool: true,
-    showAppFeaturesTool: true,
-    showPresetsTool: true,
-  &#125;
-&#125;);</code></pre>
+    <app-code-example [example]="configExample"></app-code-example>
 
     <h3>3. Start Using the Tools</h3>
     <p>
@@ -68,7 +46,6 @@ bootstrap();</code></pre>
     <h2>Key Features</h2>
     <ul>
       <li><strong>Feature Flags:</strong> Override feature flag states at runtime for testing different configurations</li>
-      <li><strong>Language Switcher:</strong> Test your app in different languages without changing system settings</li>
       <li><strong>Permissions:</strong> Force grant or deny permissions to test authorization logic</li>
       <li><strong>App Features:</strong> Toggle application features on and off for development and testing</li>
       <li><strong>Presets:</strong> Save and restore complete toolbar configurations for different testing scenarios</li>
@@ -83,12 +60,6 @@ bootstrap();</code></pre>
         <h3>🚩 Feature Flags</h3>
         <p>Override feature flags to test different application states without backend changes.</p>
         <a routerLink="/docs/feature-flags" class="tool-link">View Documentation →</a>
-      </div>
-
-      <div class="tool-card">
-        <h3>🌍 Language Switcher</h3>
-        <p>Test multi-language support by switching between configured languages instantly.</p>
-        <a routerLink="/docs/language" class="tool-link">View Documentation →</a>
       </div>
 
       <div class="tool-card">
@@ -117,7 +88,6 @@ bootstrap();</code></pre>
     <p>Explore the individual tool documentation to learn how to integrate and use each feature:</p>
     <ul>
       <li><a routerLink="/docs/feature-flags">Feature Flags Tool</a> - Configure and override feature flags</li>
-      <li><a routerLink="/docs/language">Language Switcher Tool</a> - Set up multi-language testing</li>
       <li><a routerLink="/docs/permissions">Permissions Tool</a> - Test authorization scenarios</li>
       <li><a routerLink="/docs/app-features">App Features Tool</a> - Manage feature toggles</li>
       <li><a routerLink="/docs/presets">Presets Tool</a> - Create reusable configurations</li>

@@ -36,7 +36,6 @@ export class NavSidebarComponent {
       title: 'Tools',
       items: [
         { label: 'Feature Flags', path: '/docs/feature-flags', icon: 'toggle-left' },
-        { label: 'Language Switcher', path: '/docs/language', icon: 'translate' },
         { label: 'Permissions', path: '/docs/permissions', icon: 'lock' },
         { label: 'App Features', path: '/docs/app-features', icon: 'lightbulb' },
         { label: 'Presets', path: '/docs/presets', icon: 'star' }
