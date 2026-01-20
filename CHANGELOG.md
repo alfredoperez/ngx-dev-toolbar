@@ -1,3 +1,13 @@
+## 3.0.3 (2026-01-20)
+
+### Documentation
+
+- optimize README images ([207bbb7](https://github.com/alfredoperez/ngx-dev-toolbar/commit/207bbb7))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 ## 3.0.2 (2026-01-20)
 
 ### Documentation
