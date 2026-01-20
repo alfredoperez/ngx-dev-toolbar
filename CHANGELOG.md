@@ -1,3 +1,13 @@
+## 3.0.2 (2026-01-20)
+
+### Documentation
+
+- use hero image in README ([23a16bc](https://github.com/alfredoperez/ngx-dev-toolbar/commit/23a16bc))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 ## 3.0.1 (2026-01-19)
 
 ### Documentation
