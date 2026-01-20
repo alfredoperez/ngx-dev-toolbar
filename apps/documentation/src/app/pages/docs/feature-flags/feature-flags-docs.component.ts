@@ -1,13 +1,12 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CodeExampleComponent } from '../../../shared/components/code-example/code-example.component';
-import { ApiReferenceComponent } from '../../../shared/components/api-reference/api-reference.component';
-import { CodeExample, ApiMethod, ApiInterface } from '../../../shared/models/documentation.models';
+import { CodeExample } from '../../../shared/models/documentation.models';
 
 @Component({
   selector: 'app-feature-flags-docs',
   standalone: true,
-  imports: [CommonModule, CodeExampleComponent, ApiReferenceComponent],
+  imports: [CommonModule, CodeExampleComponent],
   templateUrl: './feature-flags-docs.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -109,98 +108,4 @@ export class FeatureFlagService {
     description: 'Advanced pattern using signals for reactive feature flag management',
     showLineNumbers: true
   };
-
-  apiMethods: ApiMethod[] = [
-    {
-      name: 'setAvailableOptions',
-      signature: 'setAvailableOptions(flags: ToolbarFlag[]): void',
-      description: 'Defines the available feature flags that can be toggled in the toolbar.',
-      parameters: [
-        {
-          name: 'flags',
-          type: 'ToolbarFlag[]',
-          description: 'Array of feature flag definitions with id, name, current state'
-        }
-      ],
-      returnType: {
-        type: 'void',
-        description: 'No return value'
-      },
-      example: {
-        language: 'typescript',
-        code: `
-this.featureFlagsService.setAvailableOptions([
-  { id: 'beta-feature', name: 'Beta Feature', isEnabled: false, isForced: false },
-  { id: 'experimental', name: 'Experimental Mode', isEnabled: false, isForced: false }
-]);
-        `.trim()
-      }
-    },
-    {
-      name: 'getValues',
-      signature: 'getValues(): Observable<ToolbarFlag[]>',
-      description: 'Gets ALL feature flags with overrides already applied. This is the recommended method for integration as it eliminates the need for manual merging. Each flag includes an isForced property.',
-      parameters: [],
-      returnType: {
-        type: 'Observable<ToolbarFlag[]>',
-        description: 'Observable emitting all feature flags with overrides applied whenever changes occur'
-      },
-      example: {
-        language: 'typescript',
-        code: `
-this.featureFlagsService.getValues().subscribe(flags => {
-  const darkMode = flags.find(f => f.id === 'dark-mode');
-  if (darkMode?.isEnabled) {
-    // Apply dark mode
-  }
-});
-        `.trim()
-      }
-    },
-    {
-      name: 'getForcedValues',
-      signature: 'getForcedValues(): Observable<ToolbarFlag[]>',
-      description: 'Gets only the feature flags that have been overridden through the toolbar. Legacy method - consider using getValues() instead.',
-      parameters: [],
-      returnType: {
-        type: 'Observable<ToolbarFlag[]>',
-        description: 'Observable emitting only the forced feature flags whenever changes occur'
-      },
-      example: {
-        language: 'typescript',
-        code: `
-this.featureFlagsService.getForcedValues().subscribe(flags => {
-  flags.forEach(flag => {
-    console.log(\`\${flag.name}: \${flag.isEnabled}\`);
-  });
-});
-        `.trim()
-      }
-    }
-  ];
-
-  apiInterfaces: ApiInterface[] = [
-    {
-      name: 'ToolbarFlag',
-      definition: `
-interface ToolbarFlag {
-  id: string;
-  name: string;
-  description?: string;
-  link?: string;
-  isEnabled: boolean;
-  isForced: boolean;
-}
-      `.trim(),
-      description: 'Represents a feature flag in the developer toolbar',
-      properties: [
-        { name: 'id', type: 'string', description: 'Unique identifier for the flag' },
-        { name: 'name', type: 'string', description: 'Display name shown in the UI' },
-        { name: 'description', type: 'string', description: 'Optional description of the feature', optional: true },
-        { name: 'link', type: 'string', description: 'Optional link to documentation', optional: true },
-        { name: 'isEnabled', type: 'boolean', description: 'Whether the flag is currently enabled' },
-        { name: 'isForced', type: 'boolean', description: 'Whether the flag value has been overridden via toolbar' }
-      ]
-    }
-  ];
 }

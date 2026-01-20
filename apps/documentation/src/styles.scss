@@ -161,46 +161,6 @@ pre[class*="language-"] {
   }
 }
 
-.use-case-list {
-  list-style: none;
-  padding: 0;
-
-  li {
-    margin: 2rem 0;
-    padding: 1.5rem;
-    background: rgba(99, 102, 241, 0.08);
-    border-left: 4px solid #6366f1;
-    border-radius: 8px;
-    transition: all 0.2s ease;
-
-    &:hover {
-      background: rgba(99, 102, 241, 0.12);
-      transform: translateX(4px);
-    }
-
-    h3 {
-      margin: 0 0 0.5rem 0;
-      color: #f9fafb;
-    }
-
-    p {
-      margin: 0.5rem 0;
-      color: #e5e7eb;
-    }
-
-    .example {
-      margin-top: 0.75rem;
-      padding: 0.75rem;
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 6px;
-      font-size: 0.875rem;
-      font-style: italic;
-      color: #a5b4fc;
-      border: 1px solid rgba(99, 102, 241, 0.2);
-    }
-  }
-}
-
 .related-tools {
   list-style: none;
   padding: 0;

@@ -14,33 +14,16 @@
 
   <section class="doc-section">
     <h2>Use Cases</h2>
-    <ul class="use-case-list">
-      <li>
-        <h3>Testing Access Control</h3>
-        <p>Verify that UI elements and features are properly hidden/shown based on permissions.</p>
-      </li>
-      <li>
-        <h3>Role Simulation</h3>
-        <p>Test application behavior as different user roles (admin, editor, viewer) without switching accounts.</p>
-      </li>
-      <li>
-        <h3>Security Testing</h3>
-        <p>Ensure restricted features are properly protected when permissions are denied.</p>
-      </li>
+    <ul>
+      <li><strong>Testing Access Control:</strong> Verify that UI elements and features are properly hidden/shown based on permissions</li>
+      <li><strong>Role Simulation:</strong> Test application behavior as different user roles (admin, editor, viewer) without switching accounts</li>
+      <li><strong>Security Testing:</strong> Ensure restricted features are properly protected when permissions are denied</li>
     </ul>
   </section>
 
   <section class="doc-section">
     <h2>Quick Start</h2>
     <app-code-example [example]="basicExample" />
-  </section>
-
-  <section class="doc-section">
-    <h2>API Reference</h2>
-    <app-api-reference
-      [serviceName]="'ToolbarPermissionsService'"
-      [methods]="apiMethods"
-    />
   </section>
 
   <section class="doc-section">

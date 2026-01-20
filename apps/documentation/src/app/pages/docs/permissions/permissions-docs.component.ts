@@ -2,13 +2,12 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { CodeExampleComponent } from '../../../shared/components/code-example/code-example.component';
-import { ApiReferenceComponent } from '../../../shared/components/api-reference/api-reference.component';
-import { CodeExample, ApiMethod } from '../../../shared/models/documentation.models';
+import { CodeExample } from '../../../shared/models/documentation.models';
 
 @Component({
   selector: 'app-permissions-docs',
   standalone: true,
-  imports: [CommonModule, RouterLink, CodeExampleComponent, ApiReferenceComponent],
+  imports: [CommonModule, RouterLink, CodeExampleComponent],
   templateUrl: './permissions-docs.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -70,33 +69,4 @@ export class AppComponent {
     description: 'Basic setup for Permissions Tool - define permissions and handle changes',
     showLineNumbers: true
   };
-
-  apiMethods: ApiMethod[] = [
-    {
-      name: 'setAvailableOptions',
-      signature: 'setAvailableOptions(permissions: ToolbarPermission[]): void',
-      description: 'Defines the available permissions that can be overridden in the toolbar.',
-      parameters: [
-        {
-          name: 'permissions',
-          type: 'ToolbarPermission[]',
-          description: 'Array of permission definitions'
-        }
-      ],
-      returnType: {
-        type: 'void',
-        description: 'No return value'
-      }
-    },
-    {
-      name: 'getForcedValues',
-      signature: 'getForcedValues(): Observable<ToolbarPermission[]>',
-      description: 'Gets an observable of permissions that have been overridden through the toolbar.',
-      parameters: [],
-      returnType: {
-        type: 'Observable<ToolbarPermission[]>',
-        description: 'Observable emitting forced permission changes'
-      }
-    }
-  ];
 }

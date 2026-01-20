@@ -2,13 +2,12 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { CodeExampleComponent } from '../../../shared/components/code-example/code-example.component';
-import { ApiReferenceComponent } from '../../../shared/components/api-reference/api-reference.component';
-import { CodeExample, ApiMethod } from '../../../shared/models/documentation.models';
+import { CodeExample } from '../../../shared/models/documentation.models';
 
 @Component({
   selector: 'app-app-features-docs',
   standalone: true,
-  imports: [CommonModule, RouterLink, CodeExampleComponent, ApiReferenceComponent],
+  imports: [CommonModule, RouterLink, CodeExampleComponent],
   templateUrl: './app-features-docs.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -70,33 +69,4 @@ export class AppComponent {
     description: 'Basic setup for App Features Tool - test product-level features',
     showLineNumbers: true
   };
-
-  apiMethods: ApiMethod[] = [
-    {
-      name: 'setAvailableOptions',
-      signature: 'setAvailableOptions(features: ToolbarAppFeature[]): void',
-      description: 'Defines the available application features that can be toggled in the toolbar.',
-      parameters: [
-        {
-          name: 'features',
-          type: 'ToolbarAppFeature[]',
-          description: 'Array of product-level feature definitions'
-        }
-      ],
-      returnType: {
-        type: 'void',
-        description: 'No return value'
-      }
-    },
-    {
-      name: 'getForcedValues',
-      signature: 'getForcedValues(): Observable<ToolbarAppFeature[]>',
-      description: 'Gets an observable of app features that have been overridden through the toolbar.',
-      parameters: [],
-      returnType: {
-        type: 'Observable<ToolbarAppFeature[]>',
-        description: 'Observable emitting forced app feature changes'
-      }
-    }
-  ];
 }

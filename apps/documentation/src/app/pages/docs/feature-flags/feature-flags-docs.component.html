@@ -14,42 +14,17 @@
 
   <section class="doc-section">
     <h2>Use Cases</h2>
-    <ul class="use-case-list">
-      <li>
-        <h3>Testing New Features</h3>
-        <p>Enable experimental features during development without modifying backend feature flag configuration.</p>
-        <p class="example">Example: Test dark mode toggle without deploying backend changes</p>
-      </li>
-      <li>
-        <h3>Debugging Production Issues</h3>
-        <p>Quickly enable/disable features to isolate bugs in production-like environments.</p>
-        <p class="example">Example: Disable problematic feature to identify root cause</p>
-      </li>
-      <li>
-        <h3>Demo Preparation</h3>
-        <p>Force-enable premium features for demos without changing your environment.</p>
-        <p class="example">Example: Show all features during a client presentation</p>
-      </li>
-      <li>
-        <h3>Testing Edge Cases</h3>
-        <p>Test application behavior with different flag combinations.</p>
-        <p class="example">Example: Verify UI handles disabled features gracefully</p>
-      </li>
+    <ul>
+      <li><strong>Testing New Features:</strong> Enable experimental features during development without modifying backend configuration</li>
+      <li><strong>Debugging:</strong> Quickly enable/disable features to isolate bugs in production-like environments</li>
+      <li><strong>Demo Preparation:</strong> Force-enable premium features for demos without changing your environment</li>
+      <li><strong>Edge Case Testing:</strong> Test application behavior with different flag combinations</li>
     </ul>
   </section>
 
   <section class="doc-section">
     <h2>Quick Start</h2>
     <app-code-example [example]="basicExample" />
-  </section>
-
-  <section class="doc-section">
-    <h2>API Reference</h2>
-    <app-api-reference
-      [serviceName]="'ToolbarFeatureFlagService'"
-      [methods]="apiMethods"
-      [interfaces]="apiInterfaces"
-    />
   </section>
 
   <section class="doc-section">
