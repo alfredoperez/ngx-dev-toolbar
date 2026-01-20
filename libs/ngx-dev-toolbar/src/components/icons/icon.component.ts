@@ -13,6 +13,7 @@ import { CodeIconComponent } from './code-icon.component';
 import { DatabaseIconComponent } from './database-icon.component';
 import { DiscordIconComponent } from './discord-icon.component';
 import { DocsIconComponent } from './docs-icon.component';
+import { EditIconComponent } from './edit-icon.component';
 import { ExportIconComponent } from './export-icon.component';
 import { FilterIconComponent } from './filter-icon.component';
 import { GaugeIconComponent } from './gauge-icon.component';
@@ -47,6 +48,7 @@ import { UsersIconComponent } from './users-icon.component';
     DatabaseIconComponent,
     DocsIconComponent,
     DiscordIconComponent,
+    EditIconComponent,
     ExportIconComponent,
     FilterIconComponent,
     GaugeIconComponent,
@@ -83,6 +85,8 @@ import { UsersIconComponent } from './users-icon.component';
     <ngt-database-icon [fill]="fill()" />
     } @case ('docs') {
     <ngt-docs-icon [fill]="fill()" />
+    } @case ('edit') {
+    <ngt-edit-icon [fill]="fill()" />
     } @case ('export') {
     <ngt-export-icon [fill]="fill()" />
     } @case ('filter') {

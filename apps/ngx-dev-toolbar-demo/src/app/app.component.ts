@@ -6,6 +6,7 @@ import { TranslocoService } from '@jsverse/transloco';
 import {
   ToolbarAppFeaturesService,
   ToolbarLanguageService,
+  ToolbarPresetsService,
 } from 'ngx-dev-toolbar';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { AnalyticsService } from './services/analytics.service';
@@ -59,6 +60,7 @@ export class AppComponent {
   private readonly translocoService = inject(TranslocoService);
   private readonly featureFlagsService = inject(FeatureFlagsService);
   private readonly toolbarAppFeaturesService = inject(ToolbarAppFeaturesService);
+  private readonly presetsService = inject(ToolbarPresetsService);
   public readonly appFeaturesConfig = inject(AppFeaturesConfigService);
 
   originalLang = this.translocoService.getActiveLang();
@@ -103,5 +105,47 @@ export class AppComponent {
           this.appFeaturesConfig.forceFeature(feature.id, feature.isEnabled);
         });
       });
+
+    // Initialize sample presets for demo
+    this.presetsService.initializePresets([
+      {
+        name: 'Admin User',
+        description: 'Full admin access with all features enabled',
+        config: {
+          featureFlags: {
+            enabled: ['new-dashboard', 'dark-mode', 'beta-features', 'new-notifications'],
+            disabled: [],
+          },
+          permissions: {
+            granted: ['can-add-users', 'can-add-permissions', 'can-manage-comments', 'can-view-dashboard', 'can-admin'],
+            denied: [],
+          },
+          appFeatures: {
+            enabled: ['analytics', 'bulk-export', 'white-label', 'notifications', 'api-access'],
+            disabled: [],
+          },
+          language: 'en',
+        },
+      },
+      {
+        name: 'Basic Viewer',
+        description: 'Read-only access with minimal features',
+        config: {
+          featureFlags: {
+            enabled: [],
+            disabled: ['beta-features', 'new-notifications'],
+          },
+          permissions: {
+            granted: ['can-view-dashboard', 'can-manage-comments'],
+            denied: ['can-add-users', 'can-add-permissions', 'can-admin'],
+          },
+          appFeatures: {
+            enabled: ['analytics'],
+            disabled: ['bulk-export', 'white-label', 'api-access'],
+          },
+          language: null,
+        },
+      },
+    ]);
   }
 }

@@ -6,6 +6,7 @@ export type IconName =
   | 'database'
   | 'discord'
   | 'docs'
+  | 'edit'
   | 'export'
   | 'filter'
   | 'flag'

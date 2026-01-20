@@ -5,6 +5,9 @@ export interface ToolbarPreset {
   createdAt: string;
   updatedAt: string;
   config: ToolbarPresetConfig;
+  isFavorite?: boolean;
+  /** True if this preset was added via code (initializePresets) and cannot be edited/deleted */
+  isSystem?: boolean;
 }
 
 export interface ToolbarPresetConfig {
@@ -33,4 +36,14 @@ export interface PresetCategoryOptions {
   selectedFlagIds?: string[];
   selectedPermissionIds?: string[];
   selectedFeatureIds?: string[];
+}
+
+/**
+ * Options for partial preset application
+ */
+export interface PartialApplyOptions {
+  applyFeatureFlags?: boolean;
+  applyPermissions?: boolean;
+  applyAppFeatures?: boolean;
+  applyLanguage?: boolean;
 }

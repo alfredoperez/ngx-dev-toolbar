@@ -4,6 +4,7 @@ import { ToolbarInternalPresetsService } from './presets-internal.service';
 import {
   ToolbarPreset,
   ToolbarPresetConfig,
+  PartialApplyOptions,
 } from './presets.models';
 
 /**
@@ -65,6 +66,40 @@ export class ToolbarPresetsService {
   }
 
   /**
+   * Toggle favorite status for a preset
+   * @param presetId - ID of the preset to toggle
+   */
+  toggleFavorite(presetId: string): void {
+    this.internalService.toggleFavorite(presetId);
+  }
+
+  /**
+   * Apply a preset with partial options (only selected categories)
+   * @param presetId - ID of the preset to apply
+   * @param options - Options for which categories to apply
+   */
+  async partialApplyPreset(
+    presetId: string,
+    options: PartialApplyOptions
+  ): Promise<void> {
+    return this.internalService.partialApplyPreset(presetId, options);
+  }
+
+  /**
+   * Update only the metadata (name, description) of a preset
+   * @param presetId - ID of the preset to update
+   * @param name - New name for the preset
+   * @param description - New description for the preset
+   */
+  updatePresetMetadata(
+    presetId: string,
+    name: string,
+    description?: string
+  ): void {
+    this.internalService.updatePresetMetadata(presetId, name, description);
+  }
+
+  /**
    * Export a preset as JSON string
    * @param presetId - ID of the preset to export
    * @returns JSON string representation of the preset
@@ -89,9 +124,10 @@ export class ToolbarPresetsService {
   /**
    * Initialize presets with predefined configurations.
    * Useful for setting up default presets that all developers can use.
+   * Skips presets that already exist (by name) to avoid duplicates.
    *
    * @param presets - Array of preset configurations to initialize
-   * @returns Array of created presets
+   * @returns Array of created presets (only newly added ones)
    *
    * @example
    * ```typescript
@@ -140,14 +176,22 @@ export class ToolbarPresetsService {
    * ```
    */
   initializePresets(presets: InitialPreset[]): ToolbarPreset[] {
-    return presets.map((preset) =>
-      this.internalService.addPreset({
-        id: '', // Will be generated
-        createdAt: '', // Will be generated
-        updatedAt: '', // Will be generated
-        ...preset,
-      })
+    const existingPresets = this.internalService.presets();
+    const existingNames = new Set(
+      existingPresets.map((p) => p.name.toLowerCase())
     );
+
+    return presets
+      .filter((preset) => !existingNames.has(preset.name.toLowerCase()))
+      .map((preset) =>
+        this.internalService.addPreset({
+          id: '', // Will be generated
+          createdAt: '', // Will be generated
+          updatedAt: '', // Will be generated
+          isSystem: true, // Mark as system preset (not editable)
+          ...preset,
+        })
+      );
   }
 
   /**

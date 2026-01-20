@@ -10,6 +10,7 @@ import {
   ToolbarPreset,
   ToolbarPresetConfig,
   PresetCategoryOptions,
+  PartialApplyOptions,
 } from './presets.models';
 
 /**
@@ -128,6 +129,65 @@ export class ToolbarInternalPresetsService {
    */
   getPresetById(presetId: string): ToolbarPreset | undefined {
     return this.presetsSubject.value.find((p) => p.id === presetId);
+  }
+
+  /**
+   * Toggle favorite status for a preset
+   */
+  toggleFavorite(presetId: string): void {
+    const presets = this.presetsSubject.value.map((p) =>
+      p.id === presetId ? { ...p, isFavorite: !p.isFavorite } : p
+    );
+    this.presetsSubject.next(presets);
+    this.storageService.set(this.STORAGE_KEY, presets);
+  }
+
+  /**
+   * Apply a preset with partial options (only selected categories)
+   */
+  async partialApplyPreset(
+    presetId: string,
+    options: PartialApplyOptions
+  ): Promise<void> {
+    const preset = this.presetsSubject.value.find((p) => p.id === presetId);
+    if (!preset) return;
+
+    if (options.applyFeatureFlags) {
+      this.featureFlagsService.applyPresetFlags(preset.config.featureFlags);
+    }
+    if (options.applyLanguage) {
+      await this.languageService.applyPresetLanguage(preset.config.language);
+    }
+    if (options.applyPermissions) {
+      this.permissionsService.applyPresetPermissions(preset.config.permissions);
+    }
+    if (options.applyAppFeatures) {
+      this.appFeaturesService.applyForcedState(preset.config.appFeatures);
+    }
+  }
+
+  /**
+   * Update only the metadata (name, description) of a preset without changing config
+   */
+  updatePresetMetadata(
+    presetId: string,
+    name: string,
+    description?: string
+  ): void {
+    const presets = this.presetsSubject.value.map((preset) => {
+      if (preset.id === presetId) {
+        return {
+          ...preset,
+          name,
+          description,
+          updatedAt: new Date().toISOString(),
+        };
+      }
+      return preset;
+    });
+
+    this.presetsSubject.next(presets);
+    this.storageService.set(this.STORAGE_KEY, presets);
   }
 
   /**
