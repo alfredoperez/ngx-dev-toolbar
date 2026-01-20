@@ -37,7 +37,7 @@ jobs:
       - name: Build documentation
         run: npx nx run documentation:build --configuration=production
       - name: Build demo
-        run: npx nx run ngx-dev-toolbar-demo:build --configuration=production
+        run: npx nx run ngx-dev-toolbar-demo:build --configuration=demo
       - name: Combine builds
         run: |
           mkdir -p dist/apps/documentation/browser/demo

@@ -28,7 +28,23 @@
       },
       "configurations": {
         "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "4kb",
+              "maximumError": "8kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "demo": {
           "baseHref": "/ngx-dev-toolbar/demo/",
+          "browser": "apps/ngx-dev-toolbar-demo/src/main.demo.ts",
           "budgets": [
             {
               "type": "initial",
