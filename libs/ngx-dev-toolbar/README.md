@@ -9,9 +9,9 @@
 
 **A development toolbar for Angular applications.**
 
-[Documentation](https://alfredoperez.github.io/ngx-dev-toolbar/) · [Demo](https://alfredoperez.github.io/ngx-dev-toolbar/)
+[Documentation](https://alfredoperez.github.io/ngx-dev-toolbar/) · [Demo](https://alfredoperez.github.io/ngx-dev-toolbar/demo/)
 
-![Angular Toolbar](./docs/images/hero.jpg)
+![Angular Toolbar](https://raw.githubusercontent.com/alfredoperez/ngx-dev-toolbar/main/libs/ngx-dev-toolbar/docs/images/hero.jpg)
 
 </div>
 
@@ -74,7 +74,7 @@ export class AppComponent {
 }
 ```
 
-![Feature Flags Tool](./docs/images/feature-flags-tool.png)
+![Feature Flags Tool](https://raw.githubusercontent.com/alfredoperez/ngx-dev-toolbar/main/libs/ngx-dev-toolbar/docs/images/feature-flags-tool.png)
 
 Get flags with overrides applied:
 

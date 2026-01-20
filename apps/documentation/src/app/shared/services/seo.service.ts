@@ -35,13 +35,13 @@ export class SeoService {
 
   private getDefaults(): Partial<SeoConfig> {
     return {
-      image: 'assets/social-preview.png',
+      image: 'https://alfredoperez.github.io/ngx-dev-toolbar/assets/images/angular-toolbar-thumbnail.png',
       type: 'website',
       author: 'Alfredo Perez',
       twitterHandle: '@alfrodo_perez',
       blueskyHandle: '@alfredoperez.bsky.social',
       linkedInProfile: 'https://www.linkedin.com/in/alfredo-perez',
-      url: 'https://ngx-dev-toolbar.dev',
+      url: 'https://alfredoperez.github.io/ngx-dev-toolbar/',
     };
   }
 

@@ -63,7 +63,7 @@ export class HowToUseSectionComponent {
     {
       id: 1,
       title: 'Initialize Toolbar',
-      description: 'Add the Dev Toolbar to your main.ts with zero production bundle impact',
+      description: 'Add Angular Toolbar to your main.ts with zero production bundle impact',
       code: `
 // main.ts
 import { bootstrapApplication } from '@angular/platform-browser';
@@ -87,7 +87,7 @@ bootstrap();
       id: 2,
       title: 'Configure Flags',
       description:
-        'Set available options of Dev Toolbar Feature Flags service, from the service where your application is managing the feature flags',
+        'Set available options of Angular Toolbar Feature Flags service, from the service where your application is managing the feature flags',
       code: `
       // 1. Get the flags from the service
       this.appFlagsService.flags$.pipe(
@@ -112,7 +112,7 @@ bootstrap();
       id: 3,
       title: 'Read Flag Values',
       description:
-        'Get the forced values from the Dev Toolbar Feature Flags to find forced values of the flags',
+        'Get the forced values from Angular Toolbar Feature Flags to find forced values of the flags',
       code: `
       flags$ = combineLatest([
         // 1. Get the flags from the application

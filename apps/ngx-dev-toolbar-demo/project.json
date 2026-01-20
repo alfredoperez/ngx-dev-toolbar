@@ -28,6 +28,7 @@
       },
       "configurations": {
         "production": {
+          "baseHref": "/ngx-dev-toolbar/demo/",
           "budgets": [
             {
               "type": "initial",

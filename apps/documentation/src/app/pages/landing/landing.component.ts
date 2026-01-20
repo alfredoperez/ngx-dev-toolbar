@@ -26,7 +26,7 @@ export class LandingComponent implements OnInit {
 
   ngOnInit() {
     this.seo.setData({
-      title: 'ngx-dev-toolbar - Supercharge Your Angular Development',
+      title: 'Angular Toolbar - Supercharge Your Angular Development',
       description:
         'A powerful development toolbar for Angular applications that helps developers interact with their application in a more efficient way. Toggle features, switch languages, and mock data - all without leaving your browser.',
       keywords: [
@@ -43,13 +43,6 @@ export class LandingComponent implements OnInit {
         'Angular DevTools',
         'Angular Development Environment',
       ],
-      image: 'assets/social-preview.png',
-      type: 'website',
-      author: 'Alfredo Perez',
-      twitterHandle: '@alfrodo_perez',
-      blueskyHandle: '@alfredoperez.bsky.social',
-      linkedInProfile: 'https://www.linkedin.com/in/alfredo-perez',
-      url: 'https://ngx-dev-toolbar.dev',
     });
   }
 }
