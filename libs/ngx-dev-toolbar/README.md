@@ -11,7 +11,7 @@
 
 [Documentation](https://alfredoperez.github.io/ngx-dev-toolbar/) · [Demo](https://alfredoperez.github.io/ngx-dev-toolbar/)
 
-![Angular Toolbar](./docs/images/hero.png)
+![Angular Toolbar](./docs/images/hero.jpg)
 
 </div>
 
