@@ -25,8 +25,10 @@ export interface SelectOption {
   template: `
     <div
       class="ngt-select"
+
       [class.small]="size() === 'small'"
       [class.open]="isOpen()"
+      [class.placeholder]="isPlaceholder()"
       [attr.aria-label]="ariaLabel()"
       [attr.aria-expanded]="isOpen()"
       [attr.aria-controls]="selectMenuId"
@@ -59,16 +61,16 @@ export interface SelectOption {
         [attr.data-theme]="theme()"
       >
         @for (option of options(); track option.value) {
-        <button
-          class="select-menu-item"
-          [class.selected]="option.value === value()"
-          [attr.aria-selected]="option.value === value()"
-          cdkMenuItem
-          type="button"
-          (click)="selectOption(option)"
-        >
-          {{ option.label }}
-        </button>
+          <button
+            class="select-menu-item"
+            [class.selected]="option.value === value()"
+            [attr.aria-selected]="option.value === value()"
+            cdkMenuItem
+            type="button"
+            (click)="selectOption(option)"
+          >
+            {{ option.label }}
+          </button>
         }
       </div>
     </ng-template>
@@ -84,6 +86,7 @@ export class ToolbarSelectComponent {
   ariaLabel = input<string>('');
   label = input<string>('');
   size = input<'small' | 'medium'>('medium');
+  placeholder = input<string>('Select an option');
   readonly theme = computed(() => this.devToolbarStateService.theme());
 
   protected readonly selectMenuId = `select-menu-${Math.random()
@@ -91,9 +94,11 @@ export class ToolbarSelectComponent {
     .slice(2, 11)}`;
   isOpen = signal(false);
 
+  isPlaceholder = computed(() => !this.options()?.some((opt) => opt.value === this.value()));
+
   selectedLabel = computed(() => {
     const selected = this.options()?.find((opt) => opt.value === this.value());
-    return selected?.label ?? '';
+    return selected?.label ?? this.placeholder();
   });
 
   positions: ConnectedPosition[] = [

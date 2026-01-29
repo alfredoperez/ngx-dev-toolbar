@@ -59,6 +59,10 @@
     }
   }
 
+  &.placeholder {
+    color: rgba(0, 0, 0, 0.4);
+  }
+
   &__value {
     flex: 1;
     white-space: nowrap;
