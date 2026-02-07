@@ -1,0 +1,129 @@
+---
+title: Feature Flags Tool
+tagline: Test feature toggles without backend changes
+section: tools
+order: 2
+icon: toggle-left
+description: Override feature flag states at runtime during development and testing with the Angular Toolbar Feature Flags tool
+keywords: ['feature flags', 'angular', 'toolbar', 'testing', 'feature toggles']
+---
+
+## Overview
+
+The Feature Flags tool allows developers to override feature flag states at runtime during development and testing.
+This enables testing different feature combinations without modifying backend configuration or redeploying applications.
+
+## Use Cases
+
+- **Testing New Features:** Enable experimental features during development without modifying backend configuration
+- **Debugging:** Quickly enable/disable features to isolate bugs in production-like environments
+- **Demo Preparation:** Force-enable premium features for demos without changing your environment
+- **Edge Case Testing:** Test application behavior with different flag combinations
+
+## Quick Start
+
+```typescript title="app.component.ts"
+import { Component, inject, OnInit } from '@angular/core';
+import { ToolbarFeatureFlagService } from 'ngx-dev-toolbar';
+
+@Component({
+  selector: 'app-root',
+  template: `
+    <div>
+      @if (darkModeEnabled) {
+        <p>Dark mode is enabled!</p>
+      }
+    </div>
+  `
+})
+export class AppComponent implements OnInit {
+  private featureFlagsService = inject(ToolbarFeatureFlagService);
+  darkModeEnabled = false;
+
+  ngOnInit() {
+    // Define available feature flags
+    this.featureFlagsService.setAvailableOptions([
+      {
+        id: 'dark-mode',
+        name: 'Dark Mode',
+        description: 'Enable dark theme',
+        isEnabled: false,
+        isForced: false
+      },
+      {
+        id: 'new-ui',
+        name: 'New UI',
+        description: 'Enable redesigned interface',
+        isEnabled: false,
+        isForced: false
+      }
+    ]);
+
+    // Subscribe to all values with overrides applied (recommended)
+    this.featureFlagsService.getValues().subscribe(flags => {
+      const darkMode = flags.find(f => f.id === 'dark-mode');
+      this.darkModeEnabled = darkMode?.isEnabled || false;
+    });
+  }
+}
+```
+
+## Advanced Usage
+
+```typescript title="feature-flag.service.ts"
+import { Injectable, inject, signal, computed } from '@angular/core';
+import { ToolbarFeatureFlagService } from 'ngx-dev-toolbar';
+
+@Injectable({ providedIn: 'root' })
+export class FeatureFlagService {
+  private toolbarService = inject(ToolbarFeatureFlagService);
+
+  private flags = signal<Map<string, boolean>>(new Map());
+
+  // Computed signals for specific features
+  isDarkModeEnabled = computed(() => this.flags().get('dark-mode') ?? false);
+  isNewUIEnabled = computed(() => this.flags().get('new-ui') ?? false);
+
+  initialize(availableFlags: { id: string; name: string; defaultValue: boolean }[]) {
+    // Set available options in toolbar
+    this.toolbarService.setAvailableOptions(
+      availableFlags.map(flag => ({
+        id: flag.id,
+        name: flag.name,
+        isEnabled: flag.defaultValue,
+        isForced: false
+      }))
+    );
+
+    // Subscribe to all values with overrides applied
+    this.toolbarService.getValues().subscribe(allFlags => {
+      const flagMap = new Map<string, boolean>();
+      allFlags.forEach(flag => flagMap.set(flag.id, flag.isEnabled));
+      this.flags.set(flagMap);
+    });
+  }
+
+  isEnabled(flagId: string): boolean {
+    return this.flags().get(flagId) ?? false;
+  }
+}
+```
+
+### Best Practices
+
+- Always provide meaningful names and descriptions for feature flags
+- Use computed signals for reactive flag state management
+- Initialize flags early in application lifecycle (app initialization or root component)
+- Subscribe to forced values to get toolbar overrides
+- Persist flag state across page reloads (handled automatically by the toolbar)
+
+## Integration with State Management
+
+The Feature Flags tool integrates seamlessly with Angular's reactive state management using signals and observables.
+When a flag is toggled in the toolbar, your application receives the updated state through the `getForcedValues()` observable.
+
+## Related Tools
+
+- [Permissions Tool](/ngx-dev-toolbar/docs/permissions/) — Test permission-based access control
+- [App Features Tool](/ngx-dev-toolbar/docs/app-features/) — Test product-level features
+- [Presets Tool](/ngx-dev-toolbar/docs/presets/) — Save and load flag configurations

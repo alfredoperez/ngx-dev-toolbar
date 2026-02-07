@@ -1,0 +1,68 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import NavSidebar from '../components/NavSidebar.astro';
+
+interface Props {
+  title: string;
+  tagline: string;
+  description?: string;
+  keywords?: string[];
+  prevPage?: { title: string; href: string };
+  nextPage?: { title: string; href: string };
+}
+
+const { title, tagline, description, keywords, prevPage, nextPage } = Astro.props;
+const seoDescription = description || `${tagline} - Angular Toolbar Documentation`;
+---
+
+<BaseLayout title={title} description={seoDescription} keywords={keywords}>
+  <div class="flex">
+    <NavSidebar />
+
+    <main class="flex-1 min-w-0 lg:pl-0">
+      <div class="max-w-3xl mx-auto px-6 py-12 lg:px-8 lg:py-16">
+        <!-- Doc Hero -->
+        <header class="mb-12">
+          <h1 class="text-3xl sm:text-4xl font-bold text-white tracking-tight">{title}</h1>
+          <p class="mt-3 text-lg text-gray-400">{tagline}</p>
+        </header>
+
+        <!-- Content -->
+        <article class="prose prose-invert max-w-none
+          prose-headings:scroll-mt-20
+          prose-h2:text-xl prose-h2:font-semibold prose-h2:text-white prose-h2:mt-12 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b prose-h2:border-gray-800
+          prose-h3:text-lg prose-h3:font-medium prose-h3:text-gray-200 prose-h3:mt-8 prose-h3:mb-3
+          prose-p:text-gray-400 prose-p:leading-relaxed
+          prose-a:text-brand-400 prose-a:no-underline hover:prose-a:text-brand-300 hover:prose-a:underline
+          prose-strong:text-gray-200
+          prose-code:text-brand-300 prose-code:bg-surface-3 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none
+          prose-li:text-gray-400
+          prose-table:border-collapse
+          prose-th:bg-surface-3 prose-th:text-gray-300 prose-th:font-semibold prose-th:text-sm prose-th:px-4 prose-th:py-3 prose-th:text-left prose-th:border prose-th:border-gray-700
+          prose-td:text-gray-400 prose-td:text-sm prose-td:px-4 prose-td:py-3 prose-td:border prose-td:border-gray-700/50
+          prose-pre:bg-surface-2 prose-pre:border prose-pre:border-gray-700/50
+        ">
+          <slot />
+        </article>
+
+        <!-- Prev/Next Navigation -->
+        {(prevPage || nextPage) && (
+          <nav class="mt-16 pt-8 border-t border-gray-800 flex justify-between gap-4">
+            {prevPage ? (
+              <a href={prevPage.href} class="group flex flex-col items-start gap-1 text-left">
+                <span class="text-xs font-medium uppercase tracking-wider text-gray-500 group-hover:text-brand-400 transition-colors">Previous</span>
+                <span class="text-sm font-medium text-gray-300 group-hover:text-white transition-colors">&larr; {prevPage.title}</span>
+              </a>
+            ) : <div />}
+            {nextPage ? (
+              <a href={nextPage.href} class="group flex flex-col items-end gap-1 text-right ml-auto">
+                <span class="text-xs font-medium uppercase tracking-wider text-gray-500 group-hover:text-brand-400 transition-colors">Next</span>
+                <span class="text-sm font-medium text-gray-300 group-hover:text-white transition-colors">{nextPage.title} &rarr;</span>
+              </a>
+            ) : <div />}
+          </nav>
+        )}
+      </div>
+    </main>
+  </div>
+</BaseLayout>

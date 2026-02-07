@@ -1,0 +1,143 @@
+---
+interface NavItem {
+  label: string;
+  path: string;
+  icon: string;
+}
+
+interface NavSection {
+  title: string;
+  items: NavItem[];
+}
+
+const navSections: NavSection[] = [
+  {
+    title: 'Getting Started',
+    items: [
+      { label: 'Home', path: '/ngx-dev-toolbar/docs/', icon: 'docs' },
+    ],
+  },
+  {
+    title: 'Tools',
+    items: [
+      { label: 'Feature Flags', path: '/ngx-dev-toolbar/docs/feature-flags/', icon: 'toggle-left' },
+      { label: 'Language', path: '/ngx-dev-toolbar/docs/language/', icon: 'translate' },
+      { label: 'Permissions', path: '/ngx-dev-toolbar/docs/permissions/', icon: 'lock' },
+      { label: 'App Features', path: '/ngx-dev-toolbar/docs/app-features/', icon: 'lightbulb' },
+      { label: 'Presets', path: '/ngx-dev-toolbar/docs/presets/', icon: 'star' },
+    ],
+  },
+  {
+    title: 'Guides',
+    items: [
+      { label: 'Create a Custom Tool', path: '/ngx-dev-toolbar/docs/guides/custom-tool/', icon: 'puzzle' },
+    ],
+  },
+];
+
+const currentPath = Astro.url.pathname;
+
+function isActive(path: string): boolean {
+  // Normalize both paths for comparison
+  const normalizedCurrent = currentPath.replace(/\/$/, '') || '/';
+  const normalizedPath = path.replace(/\/$/, '') || '/';
+  return normalizedCurrent === normalizedPath;
+}
+
+const icons: Record<string, string> = {
+  docs: `<path d="M213.66,66.34l-40-40A8,8,0,0,0,168,24H88A16,16,0,0,0,72,40V56H56A16,16,0,0,0,40,72V216a16,16,0,0,0,16,16H168a16,16,0,0,0,16-16V200h16a16,16,0,0,0,16-16V72A8,8,0,0,0,213.66,66.34ZM168,216H56V72h76.69L168,107.31v84.53c0,.06,0,.11,0,.16s0,.1,0,.16V216Zm32-32H184V104a8,8,0,0,0-2.34-5.66l-40-40A8,8,0,0,0,136,56H88V40h76.69L200,75.31Zm-56-32a8,8,0,0,1-8,8H88a8,8,0,0,1,0-16h48A8,8,0,0,1,144,152Zm0,32a8,8,0,0,1-8,8H88a8,8,0,0,1,0-16h48A8,8,0,0,1,144,184Z"/>`,
+  'toggle-left': `<path d="M112,128A32,32,0,1,1,80,96,32,32,0,0,1,112,128Z" opacity="0.2"/><path d="M176,56H80a72,72,0,0,0,0,144h96a72,72,0,0,0,0-144Zm0,128H80A56,56,0,0,1,80,72h96a56,56,0,0,1,0,112ZM80,88a40,40,0,1,0,40,40A40,40,0,0,0,80,88Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,80,152Z"/>`,
+  translate: `<path d="M250.73,210.63l-56-112a12,12,0,0,0-21.46,0l-20.52,41A84.2,84.2,0,0,1,114,126.22,107.48,107.48,0,0,0,139.33,68H160a12,12,0,0,0,0-24H108V32a12,12,0,0,0-24,0V44H32a12,12,0,0,0,0,24h83.13A83.69,83.69,0,0,1,96,110.35,84,84,0,0,1,83.6,91a12,12,0,1,0-21.81,10A107.55,107.55,0,0,0,78,126.24,83.54,83.54,0,0,1,32,140a12,12,0,0,0,0,24,107.47,107.47,0,0,0,64-21.07,108.4,108.4,0,0,0,45.39,19.44l-24.13,48.26a12,12,0,1,0,21.46,10.73L151.41,196h65.17l12.68,25.36a12,12,0,1,0,21.47-10.73ZM163.41,172,184,130.83,204.58,172Z"/>`,
+  lock: `<path d="M208,80H176V56a48,48,0,0,0-96,0V80H48A16,16,0,0,0,32,96V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V96A16,16,0,0,0,208,80ZM96,56a32,32,0,0,1,64,0V80H96ZM208,208H48V96H208V208Zm-68-56a12,12,0,1,1-12-12A12,12,0,0,1,140,152Z"/>`,
+  lightbulb: `<path d="M176,232a8,8,0,0,1-8,8H88a8,8,0,0,1,0-16h80A8,8,0,0,1,176,232Zm40-128a87.55,87.55,0,0,1-33.64,69.21A16.24,16.24,0,0,0,176,186v6a16,16,0,0,1-16,16H96a16,16,0,0,1-16-16v-6a16,16,0,0,0-6.23-12.66A87.59,87.59,0,0,1,40,104.49C39.74,56.83,78.26,17.14,125.88,16A88,88,0,0,1,216,104Zm-16,0a72,72,0,0,0-73.74-72c-39,.92-70.47,33.39-70.26,72.39a71.65,71.65,0,0,0,27.64,56.3A32,32,0,0,1,96,186v6h64v-6a32.15,32.15,0,0,1,12.47-25.35A71.65,71.65,0,0,0,200,104Zm-16.11-9.34a57.6,57.6,0,0,0-46.56-46.55,8,8,0,0,0-2.66,15.78c16.57,2.79,30.63,16.85,33.44,33.45A8,8,0,0,0,176,104a9,9,0,0,0,1.35-.11A8,8,0,0,0,183.89,94.66Z"/>`,
+  star: `<path d="M229.06,108.79l-48.7,42,14.88,62.79a8.4,8.4,0,0,1-12.52,9.17L128,189.09,73.28,222.74a8.4,8.4,0,0,1-12.52-9.17l14.88-62.79-48.7-42A8.46,8.46,0,0,1,31.73,94L95.64,88.8l24.62-59.6a8.36,8.36,0,0,1,15.48,0l24.62,59.6L224.27,94A8.46,8.46,0,0,1,229.06,108.79Z" opacity="0.2"/><path d="M239.18,97.26A16.38,16.38,0,0,0,224.92,86l-59-4.76L143.14,26.15a16.36,16.36,0,0,0-30.27,0L90.11,81.23,31.08,86a16.46,16.46,0,0,0-9.37,28.86l45,38.83L53,211.75a16.38,16.38,0,0,0,24.5,17.82L128,198.49l50.53,31.08A16.4,16.4,0,0,0,203,211.75l-13.76-58.07,45-38.83A16.43,16.43,0,0,0,239.18,97.26Zm-15.34,5.47-48.7,42a8,8,0,0,0-2.56,7.91l14.88,62.8a.37.37,0,0,1-.17.48c-.18.14-.23.11-.38,0l-54.72-33.65a8,8,0,0,0-8.38,0L69.09,215.94c-.15.09-.19.12-.38,0a.37.37,0,0,1-.17-.48l14.88-62.8a8,8,0,0,0-2.56-7.91l-48.7-42c-.12-.1-.23-.19-.13-.5s.18-.27.33-.29l63.92-5.16A8,8,0,0,0,103,91.86l24.62-59.61c.08-.17.11-.25.35-.25s.27.08.35.25L153,91.86a8,8,0,0,0,6.75,4.92l63.92,5.16c.15,0,.24,0,.33.29S224,102.63,223.84,102.73Z"/>`,
+  puzzle: `<path d="M204,168a28,28,0,0,0,12-2.69V208a8,8,0,0,1-8,8H64a8,8,0,0,1-8-8V165.31a28,28,0,1,1,0-50.62V72a8,8,0,0,1,8-8h46.69a28,28,0,1,1,50.61,0H208a8,8,0,0,1,8,8v42.69A28,28,0,1,0,204,168Z" opacity="0.2"/><path d="M220.27,158.54a8,8,0,0,0-7.7-.46,20,20,0,1,1,0-36.16A8,8,0,0,0,224,114.69V72a16,16,0,0,0-16-16H171.78a35.36,35.36,0,0,0,.22-4,36.15,36.15,0,0,0-11.36-26.25,36,36,0,0,0-60.55,23.63,36.56,36.56,0,0,0,.14,6.62H64A16,16,0,0,0,48,72v32.22a35.36,35.36,0,0,0-4-.22,36.12,36.12,0,0,0-26.24,11.36,35.7,35.7,0,0,0-9.69,27,36.08,36.08,0,0,0,33.31,33.6,36.56,36.56,0,0,0,6.62-.14V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V165.31A8,8,0,0,0,220.27,158.54ZM208,208H64V165.31a8,8,0,0,0-11.43-7.23,20,20,0,1,1,0-36.16A8,8,0,0,0,64,114.69V72h46.69a8,8,0,0,0,7.23-11.43,20,20,0,1,1,36.16,0A8,8,0,0,0,161.31,72H208v32.23a35.68,35.68,0,0,0-6.62-.14A36,36,0,0,0,204,176a35.36,35.36,0,0,0,4-.22Z"/>`,
+};
+---
+
+<button
+  class="sidebar-toggle lg:hidden fixed top-4 left-4 z-50 p-2.5 bg-surface-1/95 border border-brand-500/30 rounded-lg backdrop-blur-sm shadow-lg hover:bg-surface-3 hover:border-brand-500/50 focus:outline-2 focus:outline-brand-500 focus:outline-offset-2 transition-colors"
+  id="sidebar-toggle"
+  aria-label="Toggle navigation"
+>
+  <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+  </svg>
+</button>
+
+<div class="sidebar-overlay hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-40 lg:hidden" id="sidebar-overlay"></div>
+
+<aside
+  class="sidebar fixed top-0 left-0 bottom-0 w-72 xl:w-80 bg-gradient-to-b from-surface-1 to-surface-3 border-r border-brand-500/20 overflow-y-auto z-50 -translate-x-full lg:translate-x-0 lg:sticky lg:h-screen transition-transform duration-300 shadow-[4px_0_12px_rgba(0,0,0,0.3)]"
+  id="sidebar"
+>
+  <!-- Header -->
+  <div class="px-6 py-6 border-b border-brand-500/20 bg-black/20">
+    <a href="/ngx-dev-toolbar/" class="block">
+      <h2 class="text-xl font-bold gradient-text tracking-tight">Angular Toolbar</h2>
+    </a>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="py-2">
+    {navSections.map((section) => (
+      <div class="mb-6 last:mb-0">
+        <h3 class="px-5 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500">
+          {section.title}
+        </h3>
+        <ul class="px-2">
+          {section.items.map((item) => (
+            <li>
+              <a
+                href={item.path}
+                class:list={[
+                  'flex items-center gap-3 px-5 py-2.5 rounded-lg text-[0.9375rem] font-medium mb-0.5 transition-all duration-200',
+                  isActive(item.path)
+                    ? 'bg-gradient-to-r from-brand-500/20 to-brand-700/20 text-white font-semibold border-l-[3px] border-brand-500 shadow-[0_2px_8px_rgba(99,102,241,0.3)]'
+                    : 'text-gray-400 hover:bg-brand-500/10 hover:text-gray-200 hover:translate-x-1',
+                ]}
+              >
+                <svg
+                  class:list={[
+                    'w-5 h-5 flex-shrink-0 transition-colors',
+                    isActive(item.path) ? 'text-brand-400' : 'text-gray-500',
+                  ]}
+                  viewBox="0 0 256 256"
+                  fill="currentColor"
+                  set:html={icons[item.icon]}
+                />
+                <span class="truncate">{item.label}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </nav>
+</aside>
+
+<script>
+  const toggle = document.getElementById('sidebar-toggle');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+
+  function openSidebar() {
+    sidebar?.classList.remove('-translate-x-full');
+    overlay?.classList.remove('hidden');
+  }
+
+  function closeSidebar() {
+    sidebar?.classList.add('-translate-x-full');
+    overlay?.classList.add('hidden');
+  }
+
+  toggle?.addEventListener('click', () => {
+    if (sidebar?.classList.contains('-translate-x-full')) {
+      openSidebar();
+    } else {
+      closeSidebar();
+    }
+  });
+
+  overlay?.addEventListener('click', closeSidebar);
+</script>

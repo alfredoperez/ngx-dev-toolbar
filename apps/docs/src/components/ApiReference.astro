@@ -1,0 +1,112 @@
+---
+interface Parameter {
+  name: string;
+  type: string;
+  description: string;
+}
+
+interface ReturnType {
+  type: string;
+  description: string;
+}
+
+interface ApiMethod {
+  name: string;
+  signature: string;
+  description: string;
+  parameters: Parameter[];
+  returnType: ReturnType;
+}
+
+interface ApiProperty {
+  name: string;
+  type: string;
+  description: string;
+}
+
+interface ApiInterface {
+  name: string;
+  definition: string;
+  description: string;
+  properties: ApiProperty[];
+}
+
+interface Props {
+  serviceName: string;
+  methods: ApiMethod[];
+  interfaces?: ApiInterface[];
+}
+
+const { serviceName, methods, interfaces = [] } = Astro.props;
+---
+
+<div class="api-reference my-8 rounded-lg border border-gray-700/50 bg-surface-2 overflow-hidden">
+  <div class="px-5 py-4 border-b border-gray-700/50 bg-surface-3">
+    <h3 class="text-lg font-semibold text-white m-0">{serviceName}</h3>
+  </div>
+
+  <!-- Methods -->
+  {methods.length > 0 && (
+    <div class="p-5">
+      <h4 class="text-sm font-semibold uppercase tracking-wider text-gray-400 mb-4">Methods</h4>
+      <div class="space-y-6">
+        {methods.map((method) => (
+          <div class="border border-gray-700/30 rounded-lg p-4 bg-surface-1/50">
+            <div class="font-mono text-sm text-brand-400 mb-2">{method.signature}</div>
+            <p class="text-sm text-gray-400 mb-3">{method.description}</p>
+
+            {method.parameters.length > 0 && (
+              <div class="mb-3">
+                <span class="text-xs font-semibold uppercase tracking-wider text-gray-500">Parameters</span>
+                <div class="mt-2 space-y-1">
+                  {method.parameters.map((param) => (
+                    <div class="flex gap-2 text-sm">
+                      <code class="text-brand-300 whitespace-nowrap">{param.name}: {param.type}</code>
+                      <span class="text-gray-500">&mdash;</span>
+                      <span class="text-gray-400">{param.description}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div>
+              <span class="text-xs font-semibold uppercase tracking-wider text-gray-500">Returns</span>
+              <div class="mt-1 text-sm">
+                <code class="text-brand-300">{method.returnType.type}</code>
+                <span class="text-gray-500 ml-2">&mdash; {method.returnType.description}</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <!-- Interfaces -->
+  {interfaces.length > 0 && (
+    <div class="p-5 border-t border-gray-700/50">
+      <h4 class="text-sm font-semibold uppercase tracking-wider text-gray-400 mb-4">Interfaces</h4>
+      <div class="space-y-6">
+        {interfaces.map((iface) => (
+          <div class="border border-gray-700/30 rounded-lg p-4 bg-surface-1/50">
+            <div class="font-mono text-sm text-brand-400 mb-2">{iface.name}</div>
+            <p class="text-sm text-gray-400 mb-3">{iface.description}</p>
+            <pre class="text-sm bg-surface-0 rounded p-3 mb-3 overflow-x-auto"><code class="text-gray-300">{iface.definition}</code></pre>
+            {iface.properties.length > 0 && (
+              <div class="space-y-1">
+                {iface.properties.map((prop) => (
+                  <div class="flex gap-2 text-sm">
+                    <code class="text-brand-300 whitespace-nowrap">{prop.name}: {prop.type}</code>
+                    <span class="text-gray-500">&mdash;</span>
+                    <span class="text-gray-400">{prop.description}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+</div>

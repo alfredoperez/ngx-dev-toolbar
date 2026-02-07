@@ -35,18 +35,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build documentation
-        run: npx nx run documentation:build --configuration=production
+        run: npx nx run docs:build
       - name: Build demo
         run: npx nx run ngx-dev-toolbar-demo:build --configuration=demo
       - name: Combine builds
         run: |
-          mkdir -p dist/apps/documentation/browser/demo
-          cp -r dist/apps/ngx-dev-toolbar-demo/browser/* dist/apps/documentation/browser/demo/
+          mkdir -p dist/apps/docs/demo
+          cp -r dist/apps/ngx-dev-toolbar-demo/browser/* dist/apps/docs/demo/
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'dist/apps/documentation/browser'
+          path: 'dist/apps/docs'
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4

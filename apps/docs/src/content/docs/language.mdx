@@ -1,0 +1,139 @@
+---
+title: Language Switcher Tool
+tagline: Test internationalization without reloading
+section: tools
+order: 3
+icon: translate
+description: Quickly switch between languages during development to test translations and i18n layouts
+keywords: ['language', 'i18n', 'internationalization', 'angular', 'toolbar', 'transloco']
+---
+
+import ApiReference from '../../components/ApiReference.astro';
+
+## Overview
+
+The Language Switcher tool allows developers to quickly switch between different languages during development and testing.
+This enables testing translations and internationalization (i18n) without manually changing browser settings or application configuration.
+
+## Use Cases
+
+### Testing Translations
+Quickly verify translations across different languages without reloading the application.
+
+### Layout Verification
+Check UI layout with different text lengths (e.g., German vs. English).
+
+### RTL Support Testing
+Test right-to-left language support (Arabic, Hebrew) with a single click.
+
+### Demo Scenarios
+Demonstrate multi-language support during client presentations.
+
+## Quick Start
+
+```typescript title="app.component.ts"
+import { Component, inject, OnInit } from '@angular/core';
+import { ToolbarLanguageService } from 'ngx-dev-toolbar';
+
+@Component({
+  selector: 'app-root',
+  template: '<p>{{ "HELLO" | translate }}</p>'
+})
+export class AppComponent implements OnInit {
+  private languageService = inject(ToolbarLanguageService);
+
+  ngOnInit() {
+    // Define available languages
+    this.languageService.setAvailableOptions([
+      { id: 'en', name: 'English' },
+      { id: 'es', name: 'Español' },
+      { id: 'fr', name: 'Français' }
+    ]);
+
+    // Subscribe to language changes from toolbar
+    this.languageService.getForcedValues().subscribe(languages => {
+      const selected = languages[0];
+      if (selected) {
+        // Update your i18n service
+        console.log('Language changed to:', selected.name);
+      }
+    });
+  }
+}
+```
+
+## API Reference
+
+<ApiReference
+  serviceName="ToolbarLanguageService"
+  methods={[
+    {
+      name: 'setAvailableOptions',
+      signature: 'setAvailableOptions(languages: Language[]): void',
+      description: 'Defines the available languages that can be selected in the toolbar.',
+      parameters: [
+        {
+          name: 'languages',
+          type: 'Language[]',
+          description: 'Array of language objects with id and name'
+        }
+      ],
+      returnType: {
+        type: 'void',
+        description: 'No return value'
+      }
+    },
+    {
+      name: 'getForcedValues',
+      signature: 'getForcedValues(): Observable<Language[]>',
+      description: 'Gets an observable of the selected language from the toolbar.',
+      parameters: [],
+      returnType: {
+        type: 'Observable<Language[]>',
+        description: 'Observable emitting array with selected language (single item)'
+      }
+    }
+  ]}
+  interfaces={[
+    {
+      name: 'Language',
+      definition: `interface Language {\n  id: string;\n  name: string;\n}`,
+      description: 'Represents a language option in the developer toolbar',
+      properties: [
+        { name: 'id', type: 'string', description: 'Language code (e.g., "en", "es", "fr")' },
+        { name: 'name', type: 'string', description: 'Display name of the language' }
+      ]
+    }
+  ]}
+/>
+
+## Advanced Usage
+
+```typescript title="i18n-integration.service.ts"
+import { Injectable, inject } from '@angular/core';
+import { ToolbarLanguageService } from 'ngx-dev-toolbar';
+import { TranslocoService } from '@ngneat/transloco';
+
+@Injectable({ providedIn: 'root' })
+export class I18nIntegrationService {
+  private toolbarService = inject(ToolbarLanguageService);
+  private transloco = inject(TranslocoService);
+
+  initialize(supportedLanguages: { id: string; name: string }[]) {
+    // Configure toolbar with available languages
+    this.toolbarService.setAvailableOptions(supportedLanguages);
+
+    // Subscribe to toolbar language changes
+    this.toolbarService.getForcedValues().subscribe(languages => {
+      if (languages.length > 0) {
+        const newLang = languages[0].id;
+        this.transloco.setActiveLang(newLang);
+      }
+    });
+  }
+}
+```
+
+## Related Tools
+
+- [Presets Tool](/ngx-dev-toolbar/docs/presets/) — Save language configurations with other settings

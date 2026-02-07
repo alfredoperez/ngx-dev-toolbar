@@ -1,0 +1,93 @@
+---
+title: Presets Tool
+tagline: Save and load complete toolbar configurations
+section: tools
+order: 6
+icon: star
+description: Save and quickly load complete toolbar configurations including feature flags, language, permissions, and app features
+keywords: ['presets', 'configuration', 'angular', 'toolbar', 'testing scenarios']
+---
+
+## Overview
+
+The Presets Tool allows developers to save and quickly load complete toolbar configurations.
+A preset can include feature flags, language settings, permissions, and app features — creating a complete testing environment with a single click.
+
+## Use Cases
+
+- **Testing Scenarios:** Save configurations for different test scenarios (Basic User, Admin, Enterprise Demo, etc.)
+- **Team Collaboration:** Share preset configurations with team members for consistent testing environments
+- **Quick Environment Switching:** Switch between different user roles or license tiers instantly without manual configuration
+- **Demo Preparation:** Create presets for different demo scenarios and switch between them seamlessly
+
+## Quick Start
+
+```typescript title="app.component.ts"
+import { Component, inject } from '@angular/core';
+import { ToolbarPresetsService } from 'ngx-dev-toolbar';
+
+@Component({
+  selector: 'app-root',
+  template: '<router-outlet />'
+})
+export class AppComponent {
+  private presetsService = inject(ToolbarPresetsService);
+
+  ngOnInit() {
+    // Subscribe to preset changes
+    this.presetsService.getForcedValues().subscribe(presets => {
+      console.log('Active presets:', presets);
+      // Presets automatically apply settings to all tools
+    });
+  }
+}
+```
+
+## Preset Configuration Structure
+
+```typescript title="preset-creation.ts"
+// Create a preset programmatically
+const enterprisePreset: ToolbarPreset = {
+  id: 'enterprise-demo',
+  name: 'Enterprise Demo',
+  description: 'All premium features enabled for demos',
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+  config: {
+    featureFlags: {
+      enabled: ['dark-mode', 'advanced-search'],
+      disabled: []
+    },
+    language: 'en',
+    permissions: {
+      granted: ['can-edit', 'can-delete', 'can-admin'],
+      denied: []
+    },
+    appFeatures: {
+      enabled: ['analytics', 'advanced-reporting', 'white-label'],
+      disabled: []
+    }
+  }
+};
+
+// Presets are managed through the toolbar UI
+// This example shows the data structure only
+```
+
+## How Presets Work
+
+Presets automatically apply configurations to all other tools in the toolbar. When you load a preset:
+
+1. Feature flags are set according to the preset's `featureFlags` configuration
+2. Language is changed to the preset's `language` value
+3. Permissions are granted/denied according to the preset's `permissions` configuration
+4. App features are enabled/disabled according to the preset's `appFeatures` configuration
+
+All tools listen to preset changes and update their state accordingly.
+
+## Related Tools
+
+- [Feature Flags Tool](/ngx-dev-toolbar/docs/feature-flags/) — Managed by presets
+- [Language Tool](/ngx-dev-toolbar/docs/language/) — Managed by presets
+- [Permissions Tool](/ngx-dev-toolbar/docs/permissions/) — Managed by presets
+- [App Features Tool](/ngx-dev-toolbar/docs/app-features/) — Managed by presets
