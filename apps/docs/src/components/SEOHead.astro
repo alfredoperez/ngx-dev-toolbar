@@ -1,0 +1,68 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  keywords?: string[];
+  image?: string;
+  url?: string;
+}
+
+const {
+  title,
+  description,
+  keywords = [],
+  image = 'https://alfredoperez.github.io/ngx-dev-toolbar/assets/images/angular-toolbar-thumbnail.png',
+  url = 'https://alfredoperez.github.io/ngx-dev-toolbar/',
+} = Astro.props;
+
+const fullTitle = title.includes('Angular Toolbar') ? title : `${title} | Angular Toolbar`;
+const author = 'Alfredo Perez';
+const twitterHandle = '@alfrodo_perez';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: fullTitle,
+  description,
+  author: {
+    '@type': 'Person',
+    name: author,
+    url,
+    sameAs: [
+      'https://www.linkedin.com/in/alfredo-perez',
+      `https://twitter.com/${twitterHandle.replace('@', '')}`,
+      'https://bsky.app/profile/alfredoperez.bsky.social',
+    ],
+  },
+  applicationCategory: 'DeveloperApplication',
+  operatingSystem: 'Any',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+};
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+{keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}
+<meta name="author" content={author} />
+
+<!-- Open Graph -->
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content="website" />
+<meta property="og:url" content={url} />
+<meta property="og:image" content={image} />
+<meta property="og:see_also" content="https://www.linkedin.com/in/alfredo-perez" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />
+<meta name="twitter:creator" content={twitterHandle} />
+<meta name="twitter:site" content={twitterHandle} />
+
+<!-- Bluesky -->
+<meta name="bluesky:creator" content="@alfredoperez.bsky.social" />
+
+<!-- JSON-LD -->
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

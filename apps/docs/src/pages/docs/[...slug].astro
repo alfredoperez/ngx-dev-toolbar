@@ -1,0 +1,52 @@
+---
+import { getCollection } from 'astro:content';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+
+export async function getStaticPaths() {
+  const docs = await getCollection('docs');
+
+  // Sort by order for prev/next navigation
+  const sorted = docs.sort((a, b) => a.data.order - b.data.order);
+
+  return sorted.map((entry, index) => {
+    const prev = index > 0 ? sorted[index - 1] : null;
+    const next = index < sorted.length - 1 ? sorted[index + 1] : null;
+
+    // Map slug: "index" -> empty string for /docs/, otherwise use the slug
+    const slug = entry.slug === 'index' ? undefined : entry.slug;
+
+    return {
+      params: { slug },
+      props: {
+        entry,
+        prevPage: prev
+          ? {
+              title: prev.data.title,
+              href: `/ngx-dev-toolbar/docs/${prev.slug === 'index' ? '' : prev.slug + '/'}`,
+            }
+          : null,
+        nextPage: next
+          ? {
+              title: next.data.title,
+              href: `/ngx-dev-toolbar/docs/${next.slug === 'index' ? '' : next.slug + '/'}`,
+            }
+          : null,
+      },
+    };
+  });
+}
+
+const { entry, prevPage, nextPage } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<DocsLayout
+  title={entry.data.title}
+  tagline={entry.data.tagline}
+  description={entry.data.description}
+  keywords={entry.data.keywords}
+  prevPage={prevPage}
+  nextPage={nextPage}
+>
+  <Content />
+</DocsLayout>
