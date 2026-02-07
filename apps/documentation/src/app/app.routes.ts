@@ -33,6 +33,10 @@ export const routes: Routes = [
       {
         path: 'presets',
         loadComponent: () => import('./pages/docs/presets/presets-docs.component').then(m => m.PresetsDocsComponent)
+      },
+      {
+        path: 'guides/custom-tool',
+        loadComponent: () => import('./pages/docs/guides/custom-tool/custom-tool-guide.component').then(m => m.CustomToolGuideComponent)
       }
     ]
   },
