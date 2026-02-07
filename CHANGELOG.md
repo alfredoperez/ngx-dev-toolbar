@@ -1,3 +1,28 @@
+## 3.1.0 (2026-02-07)
+
+### Features
+
+- deploy demo app to GitHub Pages and fix npm images ([48649ad](https://github.com/alfredoperez/ngx-dev-toolbar/commit/48649ad))
+- **presets-tool:** improve UI/UX with compact layout and config badges ([1e1a607](https://github.com/alfredoperez/ngx-dev-toolbar/commit/1e1a607))
+
+### Bug Fixes
+
+- use demo configuration to show toolbar in deployed demo ([ffdcb25](https://github.com/alfredoperez/ngx-dev-toolbar/commit/ffdcb25))
+- documentation code highlighting and hide beta language tool ([170dc34](https://github.com/alfredoperez/ngx-dev-toolbar/commit/170dc34))
+
+### Documentation
+
+- update documentation website ([aee100e](https://github.com/alfredoperez/ngx-dev-toolbar/commit/aee100e))
+- expose UI components, add step-view and custom tool guide ([59a3bad](https://github.com/alfredoperez/ngx-dev-toolbar/commit/59a3bad))
+
+### Cleanup
+
+- standardize ngt- prefix and remove deprecated DevToolbar aliases ([9ee45d8](https://github.com/alfredoperez/ngx-dev-toolbar/commit/9ee45d8))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 ## 3.0.3 (2026-01-20)
 
 ### Documentation
