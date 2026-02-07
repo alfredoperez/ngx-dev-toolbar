@@ -79,13 +79,13 @@ All tool components follow this structure:
 
 ```typescript
 @Component({
-  selector: 'ndt-tool-name',
+  selector: 'ngt-tool-name',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ndt-toolbar-tool [options]="options" title="Tool Name" icon="icon-name">
+    <ngt-toolbar-tool [options]="options" title="Tool Name" icon="icon-name">
       <!-- Tool content -->
-    </ndt-toolbar-tool>
+    </ngt-toolbar-tool>
   `
 })
 export class ToolComponent {
@@ -113,7 +113,7 @@ export class ToolComponent {
     description: 'Tool description',
     isClosable: true,
     size: 'medium',
-    id: 'ndt-tool-name'
+    id: 'ngt-tool-name'
   };
 
   // 7. Public methods
@@ -748,18 +748,18 @@ import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { DevToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
 
 @Component({
-  selector: 'ndt-my-tool',
+  selector: 'ngt-my-tool',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DevToolbarToolComponent],
   template: `
-    <ndt-toolbar-tool
+    <ngt-toolbar-tool
       [options]="options"
       title="My Tool"
       icon="settings"
     >
       <!-- Your tool UI here -->
-    </ndt-toolbar-tool>
+    </ngt-toolbar-tool>
   `
 })
 export class MyToolComponent {
@@ -770,7 +770,7 @@ export class MyToolComponent {
     description: 'My custom tool description',
     isClosable: true,
     size: 'medium',
-    id: 'ndt-my-tool'
+    id: 'ngt-my-tool'
   };
 }
 ```
@@ -789,7 +789,7 @@ import { MyToolComponent } from './tools/my-tool/my-tool.component';
     MyToolComponent
   ],
   template: `
-    <ndt-my-tool />
+    <ngt-my-tool />
   `
 })
 export class DevToolbarComponent {}
