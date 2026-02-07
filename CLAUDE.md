@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## General Rules
+
+- **Never add Claude Code attribution** to commits, PRs, code comments, or any generated content (no "Co-Authored-By: Claude", no "Generated with Claude Code", etc.)
+
 ## Project Overview
 
 **ngx-dev-toolbar** is an Angular 19+ development toolbar library that provides tools for feature flags, language switching, theme management, user session control, and network request mocking. It's built as a standalone Angular component library using Nx monorepo architecture.

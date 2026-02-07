@@ -17,14 +17,14 @@ export class PresetsDocsComponent {
     fileName: 'app.component.ts',
     code: `
 import { Component, inject } from '@angular/core';
-import { DevToolbarPresetsService } from 'ngx-dev-toolbar';
+import { ToolbarPresetsService } from 'ngx-dev-toolbar';
 
 @Component({
   selector: 'app-root',
   template: '<router-outlet />'
 })
 export class AppComponent {
-  private presetsService = inject(DevToolbarPresetsService);
+  private presetsService = inject(ToolbarPresetsService);
 
   ngOnInit() {
     // Subscribe to preset changes
@@ -44,7 +44,7 @@ export class AppComponent {
     fileName: 'preset-creation.ts',
     code: `
 // Create a preset programmatically
-const enterprisePreset: DevToolbarPreset = {
+const enterprisePreset: ToolbarPreset = {
   id: 'enterprise-demo',
   name: 'Enterprise Demo',
   description: 'All premium features enabled for demos',
