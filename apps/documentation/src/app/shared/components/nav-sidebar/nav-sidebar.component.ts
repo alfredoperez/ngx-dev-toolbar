@@ -40,6 +40,12 @@ export class NavSidebarComponent {
         { label: 'App Features', path: '/docs/app-features', icon: 'lightbulb' },
         { label: 'Presets', path: '/docs/presets', icon: 'star' }
       ]
+    },
+    {
+      title: 'Guides',
+      items: [
+        { label: 'Create a Custom Tool', path: '/docs/guides/custom-tool', icon: 'puzzle' }
+      ]
     }
   ];
 

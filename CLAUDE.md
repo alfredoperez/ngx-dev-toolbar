@@ -169,7 +169,7 @@ The library uses a **hybrid CSS architecture** combining component-scoped styles
 }
 ```
 
-**Reference**: See `knowledge/code-style/defensive-css.md` and `knowledge/project/patterns/css-architecture.md` for complete patterns.
+**Reference**: See the defensive CSS patterns and examples above.
 
 ## Key Integration Points
 
@@ -182,7 +182,7 @@ The library uses a **hybrid CSS architecture** combining component-scoped styles
 5. Export from `libs/ngx-dev-toolbar/src/index.ts`
 6. Add to `ToolbarComponent` template
 
-Reference: `TOOLBAR_TOOL_GUIDE.md` contains comprehensive guide with examples.
+Reference: See the [Create a Custom Tool](https://alfredoperez.github.io/ngx-dev-toolbar/docs/guides/custom-tool) guide on the documentation website.
 
 ### Using in Applications
 

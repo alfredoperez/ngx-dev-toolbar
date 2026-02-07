@@ -1,0 +1,230 @@
+<div class="doc-page">
+  <header class="doc-hero">
+    <h1>Create a Custom Tool</h1>
+    <p class="tagline">Build your own toolbar tools using the exported UI components</p>
+  </header>
+
+  <section class="doc-section">
+    <h2>Overview</h2>
+    <p>
+      The ngx-dev-toolbar exports its UI components so you can build custom tools that integrate seamlessly
+      with the toolbar. Each tool follows a consistent pattern: a <strong>model</strong> defining data structures,
+      an <strong>internal service</strong> managing state with signals, and a <strong>component</strong> that wraps
+      its content in <code>ToolbarToolComponent</code>.
+    </p>
+  </section>
+
+  <section class="doc-section">
+    <h2>Available Components</h2>
+    <p>All components are exported from <code>ngx-dev-toolbar</code> and can be imported directly:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Component</th>
+          <th>Selector</th>
+          <th>Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>ToolbarToolComponent</code></td>
+          <td><code>ngt-toolbar-tool</code></td>
+          <td>Main wrapper providing window management, positioning, and animations</td>
+        </tr>
+        <tr>
+          <td><code>ToolbarButtonComponent</code></td>
+          <td><code>ngt-button</code></td>
+          <td>Action buttons with optional icon and label</td>
+        </tr>
+        <tr>
+          <td><code>ToolbarInputComponent</code></td>
+          <td><code>ngt-input</code></td>
+          <td>Text inputs with two-way binding via <code>[(value)]</code></td>
+        </tr>
+        <tr>
+          <td><code>ToolbarSelectComponent</code></td>
+          <td><code>ngt-select</code></td>
+          <td>Dropdown selection with CDK overlay positioning</td>
+        </tr>
+        <tr>
+          <td><code>ToolbarCardComponent</code></td>
+          <td><code>ngt-card</code></td>
+          <td>Content container with hover effects</td>
+        </tr>
+        <tr>
+          <td><code>ToolbarClickableCardComponent</code></td>
+          <td><code>ngt-clickable-card</code></td>
+          <td>Interactive card with icon, title, and subtitle</td>
+        </tr>
+        <tr>
+          <td><code>ToolbarListComponent</code></td>
+          <td><code>ngt-list</code></td>
+          <td>List container with empty states and no-results handling</td>
+        </tr>
+        <tr>
+          <td><code>ToolbarListItemComponent</code></td>
+          <td><code>ngt-list-item</code></td>
+          <td>List items with optional badge</td>
+        </tr>
+        <tr>
+          <td><code>ToolbarStepViewComponent</code></td>
+          <td><code>ngt-step-view</code></td>
+          <td>Multi-step view switcher with back navigation</td>
+        </tr>
+        <tr>
+          <td><code>ToolbarIconComponent</code></td>
+          <td><code>ngt-icon</code></td>
+          <td>SVG icons with consistent sizing</td>
+        </tr>
+        <tr>
+          <td><code>ToolbarLinkButtonComponent</code></td>
+          <td><code>ngt-link-button</code></td>
+          <td>External link button with icon</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="doc-section">
+    <h2>Step-by-Step Guide</h2>
+
+    <h3>1. Define Your Model</h3>
+    <p>Create a TypeScript interface that describes the data your tool manages:</p>
+    <app-code-example [example]="modelsExample" />
+
+    <h3>2. Create the Internal Service</h3>
+    <p>
+      Use Angular signals for state management. The service should expose readonly signals
+      and update methods:
+    </p>
+    <app-code-example [example]="serviceExample" />
+
+    <h3>3. Build the Component</h3>
+    <p>
+      Wrap your tool's content in <code>ToolbarToolComponent</code>. This provides the window
+      management, overlay positioning, and animations automatically:
+    </p>
+    <app-code-example [example]="componentExample" />
+
+    <h3>4. Register Your Tool</h3>
+    <p>
+      Add your tool component to the toolbar's template in your application. Custom tools
+      appear alongside the built-in tools in the toolbar strip.
+    </p>
+  </section>
+
+  <section class="doc-section">
+    <h2>Window Options</h2>
+    <p>
+      Configure how your tool's window appears using <code>ToolbarWindowOptions</code>:
+    </p>
+    <app-code-example [example]="windowOptionsExample" />
+  </section>
+
+  <section class="doc-section">
+    <h2>Available Icons</h2>
+    <p>
+      The <code>ToolbarIconComponent</code> supports the following icon names via the <code>IconName</code> type:
+    </p>
+    <p>
+      <code>angular</code>, <code>bolt</code>, <code>bug</code>, <code>code</code>,
+      <code>database</code>, <code>discord</code>, <code>docs</code>, <code>edit</code>,
+      <code>export</code>, <code>filter</code>, <code>flag</code>, <code>gauge</code>,
+      <code>gear</code>, <code>git-branch</code>, <code>import</code>, <code>layout</code>,
+      <code>lighting</code>, <code>lightbulb</code>, <code>lock</code>, <code>moon</code>,
+      <code>network</code>, <code>puzzle</code>, <code>refresh</code>, <code>star</code>,
+      <code>sun</code>, <code>terminal</code>, <code>toggle-left</code>, <code>translate</code>,
+      <code>trash</code>, <code>user</code>
+    </p>
+  </section>
+
+  <section class="doc-section">
+    <h2>Multi-Step Tools</h2>
+    <p>
+      For tools that need multiple views (e.g., list/create/edit), use the
+      <code>ToolbarStepViewComponent</code> with the <code>ngtStep</code> directive.
+      It handles back navigation and step switching automatically:
+    </p>
+    <app-code-example [example]="stepViewExample" />
+    <h3>How it Works</h3>
+    <ul>
+      <li><strong><code>[currentStep]</code></strong> &mdash; Bind to a signal that tracks the active step name</li>
+      <li><strong><code>[defaultStep]</code></strong> &mdash; The "home" step (back button is hidden on this step)</li>
+      <li><strong><code>(back)</code></strong> &mdash; Emitted when the user clicks the back button</li>
+      <li><strong><code>ngtStep</code></strong> &mdash; Structural directive marking each step template</li>
+      <li><strong><code>stepTitle</code></strong> &mdash; Optional title shown in the header for each step</li>
+    </ul>
+  </section>
+
+  <section class="doc-section">
+    <h2>Styling</h2>
+    <p>
+      Use the toolbar's design tokens for consistent styling. All tokens use the <code>--ngt-</code> prefix:
+    </p>
+    <app-code-example [example]="stylingExample" />
+
+    <h3>Design Tokens Reference</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Token</th>
+          <th>Usage</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Colors</td><td><code>--ngt-background-primary</code></td><td>Primary background</td></tr>
+        <tr><td>Colors</td><td><code>--ngt-background-secondary</code></td><td>Secondary background</td></tr>
+        <tr><td>Colors</td><td><code>--ngt-text-primary</code></td><td>Primary text</td></tr>
+        <tr><td>Colors</td><td><code>--ngt-text-secondary</code></td><td>Secondary text</td></tr>
+        <tr><td>Colors</td><td><code>--ngt-text-muted</code></td><td>Muted text</td></tr>
+        <tr><td>Colors</td><td><code>--ngt-border-primary</code></td><td>Border color</td></tr>
+        <tr><td>Spacing</td><td><code>--ngt-spacing-xs</code></td><td>Extra-small spacing</td></tr>
+        <tr><td>Spacing</td><td><code>--ngt-spacing-sm</code></td><td>Small spacing</td></tr>
+        <tr><td>Spacing</td><td><code>--ngt-spacing-md</code></td><td>Medium spacing</td></tr>
+        <tr><td>Spacing</td><td><code>--ngt-spacing-lg</code></td><td>Large spacing</td></tr>
+        <tr><td>Radius</td><td><code>--ngt-border-radius-small</code></td><td>Small border radius</td></tr>
+        <tr><td>Radius</td><td><code>--ngt-border-radius-medium</code></td><td>Medium border radius</td></tr>
+        <tr><td>Radius</td><td><code>--ngt-border-radius-large</code></td><td>Large border radius</td></tr>
+        <tr><td>Font</td><td><code>--ngt-font-size-xs</code></td><td>Extra-small font</td></tr>
+        <tr><td>Font</td><td><code>--ngt-font-size-sm</code></td><td>Small font</td></tr>
+        <tr><td>Font</td><td><code>--ngt-font-size-md</code></td><td>Medium font</td></tr>
+        <tr><td>Font</td><td><code>--ngt-font-size-lg</code></td><td>Large font</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Defensive CSS</h3>
+    <p>
+      When building custom tools, follow these defensive CSS practices to ensure your tool
+      works correctly in any host application:
+    </p>
+    <ul>
+      <li>Always use <strong>explicit spacing</strong> (<code>padding-top</code>, <code>margin-top</code>, <code>gap</code>) instead of relying on browser defaults</li>
+      <li>Use <code>flex-shrink: 0</code> on headers/footers to prevent collapse</li>
+      <li>Use <code>min-height: 0</code> on scrollable content areas</li>
+    </ul>
+  </section>
+
+  <section class="doc-section">
+    <h2>Best Practices</h2>
+    <ul>
+      <li>Use <strong>OnPush change detection</strong> for all components</li>
+      <li>Use <strong>Angular signals</strong> for state management (<code>signal()</code>, <code>computed()</code>)</li>
+      <li>Keep state transformations <strong>pure and immutable</strong> (spread operators, <code>.filter()</code>, <code>.map()</code>)</li>
+      <li>Follow the <strong>component property order</strong>: injects, inputs, outputs, signals, computed, methods</li>
+      <li>Use <strong>standalone: true</strong> for all components</li>
+      <li>Add <strong>aria-label</strong> attributes to interactive elements for accessibility</li>
+      <li>Use the <code>ToolbarStorageService</code> if you need to persist state across page reloads</li>
+    </ul>
+  </section>
+
+  <section class="doc-section">
+    <h2>Complete Example</h2>
+    <p>
+      Here's a full Notes Tool that combines a model, service, and component with
+      multi-step navigation:
+    </p>
+    <app-code-example [example]="completeExample" />
+  </section>
+</div>
