@@ -1,0 +1,85 @@
+---
+title: Getting Started
+description: A comprehensive development toolbar for Angular applications
+---
+
+## What is Angular Toolbar?
+
+**Angular Toolbar** (`ngx-dev-toolbar`) is a powerful Angular 19+ library that provides an interactive development toolbar
+for testing and debugging feature flags, language switching, permissions, app features, and more — all without
+modifying your backend or redeploying your application.
+
+## Installation
+
+Install the package via npm:
+
+```bash
+npm install ngx-dev-toolbar
+```
+
+## Quick Setup
+
+### 1. Initialize in main.ts
+
+Add the toolbar to your application with zero production bundle impact:
+
+```typescript title="main.ts"
+import { bootstrapApplication } from '@angular/platform-browser';
+import { AppComponent } from './app/app.component';
+import { isDevMode } from '@angular/core';
+
+async function bootstrap() {
+  const appRef = await bootstrapApplication(AppComponent, appConfig);
+
+  // Initialize toolbar only in development
+  if (isDevMode()) { // [!code highlight]
+    const { initToolbar } = await import('ngx-dev-toolbar'); // [!code highlight]
+    initToolbar(appRef); // [!code highlight]
+  } // [!code highlight]
+}
+
+bootstrap();
+```
+
+That's it! No template changes needed. The toolbar automatically attaches to the DOM.
+
+### 2. Configure Tools (Optional)
+
+```typescript title="main.ts"
+initToolbar(appRef, {
+  config: {
+    showFeatureFlagsTool: true,
+    showPermissionsTool: true,
+    showLanguageTool: true,
+    showAppFeaturesTool: true,
+    showPresetsTool: true,
+  }
+});
+```
+
+### 3. Start Using the Tools
+
+Once installed, press `Ctrl+Shift+D` to toggle the toolbar. From there, you can access all available
+tools and start configuring your development environment.
+
+## Key Features
+
+- **Feature Flags:** Override feature flag states at runtime for testing different configurations
+- **Permissions:** Force grant or deny permissions to test authorization logic
+- **App Features:** Toggle application features on and off for development and testing
+- **Presets:** Save and restore complete toolbar configurations for different testing scenarios
+
+## Available Tools
+
+Explore each tool to learn how to integrate and use it:
+
+- [Feature Flags](/ngx-dev-toolbar/feature-flags/) — Override feature flags to test different application states
+- [Language](/ngx-dev-toolbar/language/) — Switch languages instantly for i18n testing
+- [Permissions](/ngx-dev-toolbar/permissions/) — Force permissions to test authorization scenarios
+- [App Features](/ngx-dev-toolbar/app-features/) — Toggle application features for testing
+- [Presets](/ngx-dev-toolbar/presets/) — Save and restore complete toolbar configurations
+
+## Resources
+
+- [GitHub Repository](https://github.com/alfredoperez/ngx-dev-toolbar)
+- [NPM Package](https://www.npmjs.com/package/ngx-dev-toolbar)

@@ -1,11 +1,6 @@
 ---
 title: Feature Flags Tool
-tagline: Test feature toggles without backend changes
-section: tools
-order: 2
-icon: toggle-left
-description: Override feature flag states at runtime during development and testing with the Angular Toolbar Feature Flags tool
-keywords: ['feature flags', 'angular', 'toolbar', 'testing', 'feature toggles']
+description: Test feature toggles without backend changes
 ---
 
 ## Overview
@@ -42,7 +37,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     // Define available feature flags
-    this.featureFlagsService.setAvailableOptions([
+    this.featureFlagsService.setAvailableOptions([ // [!code highlight]
       {
         id: 'dark-mode',
         name: 'Dark Mode',
@@ -60,7 +55,7 @@ export class AppComponent implements OnInit {
     ]);
 
     // Subscribe to all values with overrides applied (recommended)
-    this.featureFlagsService.getValues().subscribe(flags => {
+    this.featureFlagsService.getValues().subscribe(flags => { // [!code highlight]
       const darkMode = flags.find(f => f.id === 'dark-mode');
       this.darkModeEnabled = darkMode?.isEnabled || false;
     });
@@ -124,6 +119,6 @@ When a flag is toggled in the toolbar, your application receives the updated sta
 
 ## Related Tools
 
-- [Permissions Tool](/ngx-dev-toolbar/docs/permissions/) — Test permission-based access control
-- [App Features Tool](/ngx-dev-toolbar/docs/app-features/) — Test product-level features
-- [Presets Tool](/ngx-dev-toolbar/docs/presets/) — Save and load flag configurations
+- [Permissions Tool](/ngx-dev-toolbar/permissions/) — Test permission-based access control
+- [App Features Tool](/ngx-dev-toolbar/app-features/) — Test product-level features
+- [Presets Tool](/ngx-dev-toolbar/presets/) — Save and load flag configurations
