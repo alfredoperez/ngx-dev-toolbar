@@ -1,14 +1,7 @@
 ---
 title: Language Switcher Tool
-tagline: Test internationalization without reloading
-section: tools
-order: 3
-icon: translate
-description: Quickly switch between languages during development to test translations and i18n layouts
-keywords: ['language', 'i18n', 'internationalization', 'angular', 'toolbar', 'transloco']
+description: Test internationalization without reloading
 ---
-
-import ApiReference from '../../components/ApiReference.astro';
 
 ## Overview
 
@@ -64,48 +57,28 @@ export class AppComponent implements OnInit {
 
 ## API Reference
 
-<ApiReference
-  serviceName="ToolbarLanguageService"
-  methods={[
-    {
-      name: 'setAvailableOptions',
-      signature: 'setAvailableOptions(languages: Language[]): void',
-      description: 'Defines the available languages that can be selected in the toolbar.',
-      parameters: [
-        {
-          name: 'languages',
-          type: 'Language[]',
-          description: 'Array of language objects with id and name'
-        }
-      ],
-      returnType: {
-        type: 'void',
-        description: 'No return value'
-      }
-    },
-    {
-      name: 'getForcedValues',
-      signature: 'getForcedValues(): Observable<Language[]>',
-      description: 'Gets an observable of the selected language from the toolbar.',
-      parameters: [],
-      returnType: {
-        type: 'Observable<Language[]>',
-        description: 'Observable emitting array with selected language (single item)'
-      }
-    }
-  ]}
-  interfaces={[
-    {
-      name: 'Language',
-      definition: `interface Language {\n  id: string;\n  name: string;\n}`,
-      description: 'Represents a language option in the developer toolbar',
-      properties: [
-        { name: 'id', type: 'string', description: 'Language code (e.g., "en", "es", "fr")' },
-        { name: 'name', type: 'string', description: 'Display name of the language' }
-      ]
-    }
-  ]}
-/>
+### `ToolbarLanguageService`
+
+#### Methods
+
+| Method | Signature | Description |
+|--------|-----------|-------------|
+| `setAvailableOptions` | `setAvailableOptions(languages: Language[]): void` | Defines the available languages that can be selected in the toolbar. |
+| `getForcedValues` | `getForcedValues(): Observable<Language[]>` | Gets an observable of the selected language from the toolbar. |
+
+#### `Language` Interface
+
+```typescript
+interface Language {
+  id: string;
+  name: string;
+}
+```
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `id` | `string` | Language code (e.g., `"en"`, `"es"`, `"fr"`) |
+| `name` | `string` | Display name of the language |
 
 ## Advanced Usage
 
@@ -136,4 +109,4 @@ export class I18nIntegrationService {
 
 ## Related Tools
 
-- [Presets Tool](/ngx-dev-toolbar/docs/presets/) — Save language configurations with other settings
+- [Presets Tool](/ngx-dev-toolbar/presets/) — Save language configurations with other settings
