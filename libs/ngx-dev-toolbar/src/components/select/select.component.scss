@@ -60,7 +60,7 @@
   }
 
   &.placeholder {
-    color: rgba(0, 0, 0, 0.4);
+    color: var(--ngt-text-muted);
   }
 
   &__value {

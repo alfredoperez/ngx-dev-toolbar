@@ -1,14 +1,14 @@
 import { bootstrapApplication } from '@angular/platform-browser';
+import { isDevMode } from '@angular/core';
 import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
-import { isDevMode } from '@angular/core';
+import { provideToolbar, initToolbar } from 'ngx-dev-toolbar';
 
 async function bootstrap() {
   // Add toolbar providers for service injection
   let providers = [...(appConfig.providers || [])];
 
   if (isDevMode()) {
-    const { provideToolbar } = await import('ngx-dev-toolbar');
     providers = [...providers, ...provideToolbar()];
   }
 
@@ -19,7 +19,6 @@ async function bootstrap() {
 
   // Initialize toolbar UI
   if (isDevMode()) {
-    const { initToolbar } = await import('ngx-dev-toolbar');
     initToolbar(appRef, {
       config: {
         showLanguageTool: true,
