@@ -62,21 +62,22 @@ import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
           noResultsMessage="No flags found matching your filter"
         >
           @for (flag of filteredFlags(); track flag.id) {
-            <ngt-list-item
-              [title]="flag.name"
-              [description]="flag.description"
-              [isForced]="flag.isForced"
-              [currentValue]="flag.isEnabled"
-              [originalValue]="flag.originalValue"
-            >
-              <ngt-select
-                [value]="getFlagValue(flag)"
-                [options]="flagValueOptions"
-                [ariaLabel]="'Set value for ' + flag.name"
-                (valueChange)="onFlagChange(flag.id, $event ?? '')"
-                size="small"
-              />
-            </ngt-list-item>
+          <ngt-list-item
+            [title]="flag.name"
+            [description]="flag.description"
+            [isForced]="flag.isForced"
+            [currentValue]="flag.isEnabled"
+            [originalValue]="flag.originalValue"
+          >
+            <ngt-select
+              [value]="getFlagValue(flag)"
+              [options]="flagValueOptions"
+              [placeholder]="getFlagPlaceholder(flag)"
+              [ariaLabel]="'Set value for ' + flag.name"
+              (valueChange)="onFlagChange(flag.id, $event ?? '')"
+              size="small"
+            />
+          </ngt-list-item>
           }
         </ngt-list>
       </div>
@@ -257,5 +258,9 @@ export class ToolbarFeatureFlagsToolComponent {
   protected getFlagValue(flag: ToolbarFlag): string {
     if (!flag.isForced) return '';
     return flag.isEnabled ? 'on' : 'off';
+  }
+
+  protected getFlagPlaceholder(flag: ToolbarFlag): string {
+    return flag.isEnabled ? 'On' : 'Off';
   }
 }
