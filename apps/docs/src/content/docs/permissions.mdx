@@ -1,0 +1,75 @@
+---
+title: Permissions Tool
+description: Test role-based access control without backend changes
+---
+
+## Overview
+
+The Permissions Tool allows developers to override user permissions at runtime for testing different access control scenarios.
+This enables testing permission-based UI and functionality without changing user roles or backend configuration.
+
+## Use Cases
+
+- **Testing Access Control:** Verify that UI elements and features are properly hidden/shown based on permissions
+- **Role Simulation:** Test application behavior as different user roles (admin, editor, viewer) without switching accounts
+- **Security Testing:** Ensure restricted features are properly protected when permissions are denied
+
+## Quick Start
+
+```typescript title="app.component.ts"
+import { Component, inject, signal } from '@angular/core';
+import { ToolbarPermissionsService } from 'ngx-dev-toolbar';
+
+@Component({
+  selector: 'app-root',
+  template: `
+    @if (canEdit()) {
+      <button>Edit</button>
+    }
+    @if (canDelete()) {
+      <button>Delete</button>
+    }
+  `
+})
+export class AppComponent {
+  private permissionsService = inject(ToolbarPermissionsService);
+
+  canEdit = signal(false);
+  canDelete = signal(false);
+
+  ngOnInit() {
+    // Define available permissions
+    this.permissionsService.setAvailableOptions([
+      {
+        id: 'can-edit',
+        name: 'Can Edit',
+        description: 'Permission to edit records',
+        isGranted: false,
+        isForced: false
+      },
+      {
+        id: 'can-delete',
+        name: 'Can Delete',
+        description: 'Permission to delete records',
+        isGranted: false,
+        isForced: false
+      }
+    ]);
+
+    // Subscribe to forced permission values
+    this.permissionsService.getForcedValues().subscribe(permissions => {
+      const edit = permissions.find(p => p.id === 'can-edit');
+      const del = permissions.find(p => p.id === 'can-delete');
+
+      this.canEdit.set(edit?.isGranted || false);
+      this.canDelete.set(del?.isGranted || false);
+    });
+  }
+}
+```
+
+## Related Tools
+
+- [Feature Flags Tool](/ngx-dev-toolbar/feature-flags/) — Test feature toggles
+- [App Features Tool](/ngx-dev-toolbar/app-features/) — Test product-level features
+- [Presets Tool](/ngx-dev-toolbar/presets/) — Save permission configurations

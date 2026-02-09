@@ -144,6 +144,146 @@ export class AppComponent {
 }
 ```
 
+## Creating Custom Tools
+
+Build your own toolbar tools using the exported UI components. Here's a complete Notes tool:
+
+```typescript
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { Injectable } from '@angular/core';
+import {
+  ToolbarToolComponent,
+  ToolbarWindowOptions,
+  ToolbarButtonComponent,
+  ToolbarInputComponent,
+  ToolbarListComponent,
+  ToolbarListItemComponent,
+  ToolbarStepViewComponent,
+  ToolbarStepDirective,
+} from 'ngx-dev-toolbar';
+
+// 1. Define your model
+interface Note {
+  id: string;
+  title: string;
+  content: string;
+}
+
+// 2. Create a service with signal-based state
+@Injectable({ providedIn: 'root' })
+class NotesService {
+  private readonly _notes = signal<Note[]>([]);
+  readonly notes = this._notes.asReadonly();
+
+  add(title: string, content: string): void {
+    this._notes.update(notes => [
+      ...notes,
+      { id: crypto.randomUUID(), title, content },
+    ]);
+  }
+
+  remove(id: string): void {
+    this._notes.update(notes => notes.filter(n => n.id !== id));
+  }
+}
+
+// 3. Build the component
+@Component({
+  selector: 'app-notes-tool',
+  standalone: true,
+  imports: [
+    ToolbarToolComponent,
+    ToolbarButtonComponent,
+    ToolbarInputComponent,
+    ToolbarListComponent,
+    ToolbarListItemComponent,
+    ToolbarStepViewComponent,
+    ToolbarStepDirective,
+  ],
+  template: `
+    <ngt-toolbar-tool [options]="windowOptions" title="Notes" icon="edit">
+      <ngt-step-view
+        [currentStep]="viewMode()"
+        defaultStep="list"
+        (back)="viewMode.set('list')"
+      >
+        <!-- List view -->
+        <ng-template ngtStep="list">
+          <ngt-button (click)="viewMode.set('create')" icon="edit">
+            Add Note
+          </ngt-button>
+          <ngt-list
+            [hasItems]="notesService.notes().length > 0"
+            emptyMessage="No notes yet"
+            emptyHint="Click 'Add Note' to create one"
+          >
+            @for (note of notesService.notes(); track note.id) {
+              <ngt-list-item [label]="note.title">
+                <ngt-button
+                  variant="icon"
+                  icon="trash"
+                  ariaLabel="Delete"
+                  (click)="notesService.remove(note.id)"
+                />
+              </ngt-list-item>
+            }
+          </ngt-list>
+        </ng-template>
+
+        <!-- Create view -->
+        <ng-template ngtStep="create" stepTitle="New Note">
+          <ngt-input [(value)]="newTitle" placeholder="Title" ariaLabel="Note title" />
+          <ngt-input [(value)]="newContent" placeholder="Content" ariaLabel="Note content" />
+          <ngt-button (click)="onCreate()" label="Save" />
+        </ng-template>
+      </ngt-step-view>
+    </ngt-toolbar-tool>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class NotesToolComponent {
+  protected readonly notesService = inject(NotesService);
+
+  viewMode = signal<'list' | 'create'>('list');
+  newTitle = signal('');
+  newContent = signal('');
+
+  readonly windowOptions: ToolbarWindowOptions = {
+    id: 'notes',
+    title: 'Notes',
+    description: 'Quick development notes',
+    size: 'medium',
+  };
+
+  onCreate(): void {
+    if (this.newTitle()) {
+      this.notesService.add(this.newTitle(), this.newContent());
+      this.newTitle.set('');
+      this.newContent.set('');
+      this.viewMode.set('list');
+    }
+  }
+}
+```
+
+### Exported UI Components
+
+| Component | Selector | Purpose |
+|-----------|----------|---------|
+| `ToolbarToolComponent` | `ngt-toolbar-tool` | Window wrapper with positioning and animations |
+| `ToolbarButtonComponent` | `ngt-button` | Buttons with optional icon |
+| `ToolbarInputComponent` | `ngt-input` | Text inputs with two-way binding |
+| `ToolbarSelectComponent` | `ngt-select` | Dropdown selection |
+| `ToolbarListComponent` | `ngt-list` | List with empty/no-results states |
+| `ToolbarListItemComponent` | `ngt-list-item` | List items with optional badge |
+| `ToolbarCardComponent` | `ngt-card` | Content container |
+| `ToolbarClickableCardComponent` | `ngt-clickable-card` | Interactive card with icon |
+| `ToolbarStepViewComponent` | `ngt-step-view` | Multi-step view switcher |
+| `ToolbarIconComponent` | `ngt-icon` | 30+ SVG icons |
+| `ToolbarLinkButtonComponent` | `ngt-link-button` | External link button |
+
+For a complete guide, see: [Create a Custom Tool](https://alfredoperez.github.io/ngx-dev-toolbar/docs/guides/custom-tool)
+
 ## Configuration
 
 Configure which tools are visible:

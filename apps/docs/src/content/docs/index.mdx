@@ -1,0 +1,65 @@
+---
+title: Angular Toolbar
+description: Dev tools for Angular — toggle feature flags, manage permissions, and save presets without touching code.
+template: splash
+hero:
+  title: Angular Toolbar
+  tagline: Dev tools for Angular — toggle feature flags, manage permissions, and save presets without leaving your current page or touching production code.
+  image:
+    file: ../../assets/hero-demo.jpg
+  actions:
+    - text: Get Started
+      link: /ngx-dev-toolbar/getting-started/
+      icon: right-arrow
+      variant: primary
+    - text: Try Demo
+      link: /ngx-dev-toolbar/demo/
+      icon: rocket
+      variant: secondary
+    - text: View on GitHub
+      link: https://github.com/alfredoperez/ngx-dev-toolbar
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## Install
+
+```bash
+npm install ngx-dev-toolbar
+```
+
+## See It in Action
+
+<div class="demo-section">
+  <div class="demo-container">
+    <img src="/ngx-dev-toolbar/assets/demos/toolbar-tool-demo.gif" alt="Angular Toolbar demo showing feature flags, permissions, and preset management" loading="lazy" />
+  </div>
+  <p class="demo-caption">Toggle feature flags, manage permissions, and save presets — all from the toolbar.</p>
+</div>
+
+## Built-in Tools
+
+<CardGrid>
+  <Card title="Feature Flags" icon="setting">
+    Toggle features on or off in real-time without backend changes. Test different user experiences and validate A/B scenarios during development.
+  </Card>
+  <Card title="Permissions" icon="approve-check-circle">
+    Test role-based access control by forcing permissions on or off. Verify authorization logic without switching user accounts.
+  </Card>
+  <Card title="Presets" icon="star">
+    Save complete toolbar configurations as presets. Switch between QA, demo, and debug setups with one click.
+  </Card>
+  <Card title="Custom Tools" icon="puzzle">
+    Build your own tools using the toolbar's extensible architecture. See the [custom tool guide](/ngx-dev-toolbar/guides/custom-tool/).
+  </Card>
+</CardGrid>
+
+## Key Features
+
+- **Zero Production Impact** — toolbar code is tree-shaken out of production builds
+- **Secure Implementation** — only loads in development mode via `isDevMode()`
+- **Persistent Settings** — all overrides are saved to localStorage across sessions
+- **Hidden by Default** — toggle visibility with `Ctrl+Shift+D`
+- **Custom Tools Support** — extend the toolbar with your own tools

@@ -1,0 +1,112 @@
+---
+title: Language Switcher Tool
+description: Test internationalization without reloading
+---
+
+## Overview
+
+The Language Switcher tool allows developers to quickly switch between different languages during development and testing.
+This enables testing translations and internationalization (i18n) without manually changing browser settings or application configuration.
+
+## Use Cases
+
+### Testing Translations
+Quickly verify translations across different languages without reloading the application.
+
+### Layout Verification
+Check UI layout with different text lengths (e.g., German vs. English).
+
+### RTL Support Testing
+Test right-to-left language support (Arabic, Hebrew) with a single click.
+
+### Demo Scenarios
+Demonstrate multi-language support during client presentations.
+
+## Quick Start
+
+```typescript title="app.component.ts"
+import { Component, inject, OnInit } from '@angular/core';
+import { ToolbarLanguageService } from 'ngx-dev-toolbar';
+
+@Component({
+  selector: 'app-root',
+  template: '<p>{{ "HELLO" | translate }}</p>'
+})
+export class AppComponent implements OnInit {
+  private languageService = inject(ToolbarLanguageService);
+
+  ngOnInit() {
+    // Define available languages
+    this.languageService.setAvailableOptions([
+      { id: 'en', name: 'English' },
+      { id: 'es', name: 'Español' },
+      { id: 'fr', name: 'Français' }
+    ]);
+
+    // Subscribe to language changes from toolbar
+    this.languageService.getForcedValues().subscribe(languages => {
+      const selected = languages[0];
+      if (selected) {
+        // Update your i18n service
+        console.log('Language changed to:', selected.name);
+      }
+    });
+  }
+}
+```
+
+## API Reference
+
+### `ToolbarLanguageService`
+
+#### Methods
+
+| Method | Signature | Description |
+|--------|-----------|-------------|
+| `setAvailableOptions` | `setAvailableOptions(languages: Language[]): void` | Defines the available languages that can be selected in the toolbar. |
+| `getForcedValues` | `getForcedValues(): Observable<Language[]>` | Gets an observable of the selected language from the toolbar. |
+
+#### `Language` Interface
+
+```typescript
+interface Language {
+  id: string;
+  name: string;
+}
+```
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `id` | `string` | Language code (e.g., `"en"`, `"es"`, `"fr"`) |
+| `name` | `string` | Display name of the language |
+
+## Advanced Usage
+
+```typescript title="i18n-integration.service.ts"
+import { Injectable, inject } from '@angular/core';
+import { ToolbarLanguageService } from 'ngx-dev-toolbar';
+import { TranslocoService } from '@ngneat/transloco';
+
+@Injectable({ providedIn: 'root' })
+export class I18nIntegrationService {
+  private toolbarService = inject(ToolbarLanguageService);
+  private transloco = inject(TranslocoService);
+
+  initialize(supportedLanguages: { id: string; name: string }[]) {
+    // Configure toolbar with available languages
+    this.toolbarService.setAvailableOptions(supportedLanguages);
+
+    // Subscribe to toolbar language changes
+    this.toolbarService.getForcedValues().subscribe(languages => {
+      if (languages.length > 0) {
+        const newLang = languages[0].id;
+        this.transloco.setActiveLang(newLang);
+      }
+    });
+  }
+}
+```
+
+## Related Tools
+
+- [Presets Tool](/ngx-dev-toolbar/presets/) — Save language configurations with other settings

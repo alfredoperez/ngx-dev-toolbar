@@ -1,0 +1,454 @@
+---
+title: Create a Custom Tool
+description: Build your own toolbar tools using the exported UI components
+---
+
+## Overview
+
+The ngx-dev-toolbar exports its UI components so you can build custom tools that integrate seamlessly
+with the toolbar. Each tool follows a consistent pattern: a **model** defining data structures,
+an **internal service** managing state with signals, and a **component** that wraps
+its content in `ToolbarToolComponent`.
+
+## Available Components
+
+All components are exported from `ngx-dev-toolbar` and can be imported directly:
+
+| Component | Selector | Purpose |
+|---|---|---|
+| `ToolbarToolComponent` | `ngt-toolbar-tool` | Main wrapper providing window management, positioning, and animations |
+| `ToolbarButtonComponent` | `ngt-button` | Action buttons with optional icon and label |
+| `ToolbarInputComponent` | `ngt-input` | Text inputs with two-way binding via `[(value)]` |
+| `ToolbarSelectComponent` | `ngt-select` | Dropdown selection with CDK overlay positioning |
+| `ToolbarCardComponent` | `ngt-card` | Content container with hover effects |
+| `ToolbarClickableCardComponent` | `ngt-clickable-card` | Interactive card with icon, title, and subtitle |
+| `ToolbarListComponent` | `ngt-list` | List container with empty states and no-results handling |
+| `ToolbarListItemComponent` | `ngt-list-item` | List items with optional badge |
+| `ToolbarStepViewComponent` | `ngt-step-view` | Multi-step view switcher with back navigation |
+| `ToolbarIconComponent` | `ngt-icon` | SVG icons with consistent sizing |
+| `ToolbarLinkButtonComponent` | `ngt-link-button` | External link button with icon |
+
+## Step-by-Step Guide
+
+### 1. Define Your Model
+
+Create a TypeScript interface that describes the data your tool manages:
+
+```typescript title="notes.models.ts"
+export interface Note {
+  id: string;
+  title: string;
+  content: string;
+  createdAt: Date;
+}
+```
+
+### 2. Create the Internal Service
+
+Use Angular signals for state management. The service should expose readonly signals
+and update methods:
+
+```typescript title="notes-internal.service.ts"
+import { Injectable, signal } from '@angular/core';
+import { Note } from './notes.models';
+
+@Injectable({ providedIn: 'root' })
+export class NotesInternalService {
+  private readonly _notes = signal<Note[]>([]);
+  readonly notes = this._notes.asReadonly();
+
+  addNote(note: Note): void {
+    this._notes.update(notes => [...notes, note]);
+  }
+
+  removeNote(id: string): void {
+    this._notes.update(notes => notes.filter(n => n.id !== id));
+  }
+
+  updateNote(id: string, updates: Partial<Note>): void {
+    this._notes.update(notes =>
+      notes.map(n => n.id === id ? { ...n, ...updates } : n)
+    );
+  }
+}
+```
+
+### 3. Build the Component
+
+Wrap your tool's content in `ToolbarToolComponent`. This provides the window
+management, overlay positioning, and animations automatically:
+
+```typescript title="notes-tool.component.ts"
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ToolbarToolComponent,
+  ToolbarWindowOptions,
+  ToolbarButtonComponent,
+  ToolbarInputComponent,
+  ToolbarListComponent,
+  ToolbarListItemComponent,
+} from 'ngx-dev-toolbar';
+import { NotesInternalService } from './notes-internal.service';
+
+@Component({
+  selector: 'app-notes-tool',
+  standalone: true,
+  imports: [
+    ToolbarToolComponent,
+    ToolbarButtonComponent,
+    ToolbarInputComponent,
+    ToolbarListComponent,
+    ToolbarListItemComponent,
+  ],
+  template: `
+    <ngt-toolbar-tool
+      [options]="windowOptions"
+      title="Notes"
+      icon="edit"
+    >
+      <ngt-list
+        [hasItems]="notesService.notes().length > 0"
+        emptyMessage="No notes yet"
+      >
+        @for (note of notesService.notes(); track note.id) {
+          <ngt-list-item [label]="note.title" />
+        }
+      </ngt-list>
+    </ngt-toolbar-tool>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class NotesToolComponent {
+  protected readonly notesService = inject(NotesInternalService);
+
+  readonly windowOptions: ToolbarWindowOptions = {
+    id: 'notes',
+    title: 'Notes',
+    description: 'Quick notes for development',
+    size: 'medium',
+  };
+}
+```
+
+### 4. Register Your Tool
+
+Add your tool component to the toolbar's template in your application. Custom tools
+appear alongside the built-in tools in the toolbar strip.
+
+## Window Options
+
+Configure how your tool's window appears using `ToolbarWindowOptions`:
+
+```typescript title="window-options.ts"
+const windowOptions: ToolbarWindowOptions = {
+  id: 'my-tool',                // Unique tool identifier
+  title: 'My Tool',             // Window title
+  description: 'Tool info',     // Optional description shown in header
+  isClosable: true,             // Show close button (default: true)
+  placement: 'bottom-center',   // Window position relative to toolbar
+  size: 'medium',               // 'small' | 'medium' | 'tall' | 'large'
+  isBeta: false,                // Show beta badge
+};
+
+// Available placements:
+// 'bottom-left' | 'bottom-center' | 'bottom-right'
+// 'top-left'    | 'top-center'    | 'top-right'
+
+// Available sizes:
+// 'small'  - compact tools
+// 'medium' - standard tools (default)
+// 'tall'   - tools with long lists
+// 'large'  - tools needing more space
+```
+
+## Available Icons
+
+The `ToolbarIconComponent` supports the following icon names via the `IconName` type:
+
+`angular`, `bolt`, `bug`, `code`, `database`, `discord`, `docs`, `edit`,
+`export`, `filter`, `flag`, `gauge`, `gear`, `git-branch`, `import`, `layout`,
+`lighting`, `lightbulb`, `lock`, `moon`, `network`, `puzzle`, `refresh`, `star`,
+`sun`, `terminal`, `toggle-left`, `translate`, `trash`, `user`
+
+## Multi-Step Tools
+
+For tools that need multiple views (e.g., list/create/edit), use the
+`ToolbarStepViewComponent` with the `ngtStep` directive.
+It handles back navigation and step switching automatically:
+
+```typescript title="multi-step-tool.component.ts"
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import {
+  ToolbarToolComponent,
+  ToolbarWindowOptions,
+  ToolbarStepViewComponent,
+  ToolbarStepDirective,
+  ToolbarButtonComponent,
+} from 'ngx-dev-toolbar';
+
+@Component({
+  selector: 'app-multi-step-tool',
+  standalone: true,
+  imports: [
+    ToolbarToolComponent,
+    ToolbarStepViewComponent,
+    ToolbarStepDirective,
+    ToolbarButtonComponent,
+  ],
+  template: `
+    <ngt-toolbar-tool [options]="windowOptions" title="Items" icon="star">
+      <ngt-step-view
+        [currentStep]="viewMode()"
+        defaultStep="list"
+        (back)="viewMode.set('list')"
+      >
+        <ng-template ngtStep="list" stepTitle="All Items">
+          <p>Your list content here...</p>
+          <ngt-button (click)="viewMode.set('create')">
+            Create New
+          </ngt-button>
+        </ng-template>
+
+        <ng-template ngtStep="create" stepTitle="Create Item">
+          <p>Your create form here...</p>
+        </ng-template>
+
+        <ng-template ngtStep="edit" stepTitle="Edit Item">
+          <p>Your edit form here...</p>
+        </ng-template>
+      </ngt-step-view>
+    </ngt-toolbar-tool>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class MultiStepToolComponent {
+  viewMode = signal<'list' | 'create' | 'edit'>('list');
+
+  readonly windowOptions: ToolbarWindowOptions = {
+    id: 'items',
+    title: 'Items',
+    size: 'medium',
+  };
+}
+```
+
+### How it Works
+
+- **`[currentStep]`** — Bind to a signal that tracks the active step name
+- **`[defaultStep]`** — The "home" step (back button is hidden on this step)
+- **`(back)`** — Emitted when the user clicks the back button
+- **`ngtStep`** — Structural directive marking each step template
+- **`stepTitle`** — Optional title shown in the header for each step
+
+## Styling
+
+Use the toolbar's design tokens for consistent styling. All tokens use the `--ngt-` prefix:
+
+```css title="notes-tool.component.scss"
+/* Use design tokens for consistent styling */
+.notes-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ngt-spacing-md);
+  padding-top: var(--ngt-spacing-md);
+}
+
+.note-item {
+  padding: var(--ngt-spacing-sm) var(--ngt-spacing-md);
+  border-radius: var(--ngt-border-radius-medium);
+  background: var(--ngt-background-secondary);
+  color: var(--ngt-text-primary);
+  border: 1px solid var(--ngt-border-primary);
+}
+
+.note-item__title {
+  font-size: var(--ngt-font-size-md);
+  font-weight: 600;
+  color: var(--ngt-text-primary);
+}
+
+.note-item__content {
+  font-size: var(--ngt-font-size-sm);
+  color: var(--ngt-text-secondary);
+  margin-top: var(--ngt-spacing-xs);
+}
+```
+
+### Design Tokens Reference
+
+| Category | Token | Usage |
+|---|---|---|
+| Colors | `--ngt-background-primary` | Primary background |
+| Colors | `--ngt-background-secondary` | Secondary background |
+| Colors | `--ngt-text-primary` | Primary text |
+| Colors | `--ngt-text-secondary` | Secondary text |
+| Colors | `--ngt-text-muted` | Muted text |
+| Colors | `--ngt-border-primary` | Border color |
+| Spacing | `--ngt-spacing-xs` | Extra-small spacing |
+| Spacing | `--ngt-spacing-sm` | Small spacing |
+| Spacing | `--ngt-spacing-md` | Medium spacing |
+| Spacing | `--ngt-spacing-lg` | Large spacing |
+| Radius | `--ngt-border-radius-small` | Small border radius |
+| Radius | `--ngt-border-radius-medium` | Medium border radius |
+| Radius | `--ngt-border-radius-large` | Large border radius |
+| Font | `--ngt-font-size-xs` | Extra-small font |
+| Font | `--ngt-font-size-sm` | Small font |
+| Font | `--ngt-font-size-md` | Medium font |
+| Font | `--ngt-font-size-lg` | Large font |
+
+### Defensive CSS
+
+When building custom tools, follow these defensive CSS practices to ensure your tool
+works correctly in any host application:
+
+- Always use **explicit spacing** (`padding-top`, `margin-top`, `gap`) instead of relying on browser defaults
+- Use `flex-shrink: 0` on headers/footers to prevent collapse
+- Use `min-height: 0` on scrollable content areas
+
+## Best Practices
+
+- Use **OnPush change detection** for all components
+- Use **Angular signals** for state management (`signal()`, `computed()`)
+- Keep state transformations **pure and immutable** (spread operators, `.filter()`, `.map()`)
+- Follow the **component property order**: injects, inputs, outputs, signals, computed, methods
+- Use **standalone: true** for all components
+- Add **aria-label** attributes to interactive elements for accessibility
+- Use the `ToolbarStorageService` if you need to persist state across page reloads
+
+## Complete Example
+
+Here's a full Notes Tool that combines a model, service, and component with
+multi-step navigation:
+
+```typescript title="notes-tool-complete.component.ts"
+import { ChangeDetectionStrategy, Component, inject, signal, computed } from '@angular/core';
+import { Injectable } from '@angular/core';
+import {
+  ToolbarToolComponent,
+  ToolbarWindowOptions,
+  ToolbarButtonComponent,
+  ToolbarInputComponent,
+  ToolbarListComponent,
+  ToolbarListItemComponent,
+  ToolbarStepViewComponent,
+  ToolbarStepDirective,
+} from 'ngx-dev-toolbar';
+
+// --- Model ---
+interface Note {
+  id: string;
+  title: string;
+  content: string;
+}
+
+// --- Service ---
+@Injectable({ providedIn: 'root' })
+class NotesService {
+  private readonly _notes = signal<Note[]>([]);
+  readonly notes = this._notes.asReadonly();
+
+  add(title: string, content: string): void {
+    this._notes.update(notes => [
+      ...notes,
+      { id: crypto.randomUUID(), title, content }
+    ]);
+  }
+
+  remove(id: string): void {
+    this._notes.update(notes => notes.filter(n => n.id !== id));
+  }
+}
+
+// --- Component ---
+@Component({
+  selector: 'app-notes-tool',
+  standalone: true,
+  imports: [
+    ToolbarToolComponent,
+    ToolbarButtonComponent,
+    ToolbarInputComponent,
+    ToolbarListComponent,
+    ToolbarListItemComponent,
+    ToolbarStepViewComponent,
+    ToolbarStepDirective,
+  ],
+  template: `
+    <ngt-toolbar-tool [options]="windowOptions" title="Notes" icon="edit">
+      <ngt-step-view
+        [currentStep]="viewMode()"
+        defaultStep="list"
+        (back)="viewMode.set('list')"
+      >
+        <ng-template ngtStep="list" stepTitle="All Notes">
+          <ngt-button (click)="viewMode.set('create')" icon="edit">
+            Add Note
+          </ngt-button>
+          <ngt-list
+            [hasItems]="notesService.notes().length > 0"
+            emptyMessage="No notes yet"
+            emptyHint="Click 'Add Note' to create one"
+          >
+            @for (note of notesService.notes(); track note.id) {
+              <ngt-list-item [label]="note.title">
+                <ngt-button
+                  variant="icon"
+                  icon="trash"
+                  ariaLabel="Delete"
+                  (click)="notesService.remove(note.id)"
+                />
+              </ngt-list-item>
+            }
+          </ngt-list>
+        </ng-template>
+
+        <ng-template ngtStep="create" stepTitle="New Note">
+          <div class="form">
+            <ngt-input
+              [(value)]="newTitle"
+              placeholder="Note title"
+              ariaLabel="Note title"
+            />
+            <ngt-input
+              [(value)]="newContent"
+              placeholder="Note content"
+              ariaLabel="Note content"
+            />
+            <ngt-button (click)="onCreate()" label="Save" />
+          </div>
+        </ng-template>
+      </ngt-step-view>
+    </ngt-toolbar-tool>
+  `,
+  styles: `
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ngt-spacing-sm);
+      padding-top: var(--ngt-spacing-sm);
+    }
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class NotesToolComponent {
+  protected readonly notesService = inject(NotesService);
+  viewMode = signal<'list' | 'create'>('list');
+  newTitle = signal('');
+  newContent = signal('');
+
+  readonly windowOptions: ToolbarWindowOptions = {
+    id: 'notes',
+    title: 'Notes',
+    description: 'Quick development notes',
+    size: 'medium',
+  };
+
+  onCreate(): void {
+    if (this.newTitle()) {
+      this.notesService.add(this.newTitle(), this.newContent());
+      this.newTitle.set('');
+      this.newContent.set('');
+      this.viewMode.set('list');
+    }
+  }
+}
+```

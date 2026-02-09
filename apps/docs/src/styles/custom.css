@@ -1,0 +1,103 @@
+/* Starlight theme customization for Angular Toolbar docs */
+
+/* ── Color palette ───────────────────────────────────── */
+:root {
+  --sl-color-accent-low: #1e1b4b;
+  --sl-color-accent: #6366f1;
+  --sl-color-accent-high: #c7d2fe;
+  --sl-color-white: #ffffff;
+  --sl-color-gray-1: #e5e7eb;
+  --sl-color-gray-2: #9ca3af;
+  --sl-color-gray-3: #6b7280;
+  --sl-color-gray-4: #374151;
+  --sl-color-gray-5: #1e2433;
+  --sl-color-gray-6: #131825;
+  --sl-color-black: #0d1117;
+  --sl-font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --sl-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* ── Header ──────────────────────────────────────────── */
+header.header {
+  background-color: rgba(22, 27, 46, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom-color: rgba(99, 102, 241, 0.08);
+}
+
+/* ── Sidebar ─────────────────────────────────────────── */
+
+/* Active page — replace bright block with subtle tint + left accent */
+nav.sidebar-content a[aria-current='page'],
+nav.sidebar-content a[aria-current='page']:hover,
+nav.sidebar-content a[aria-current='page']:focus {
+  background-color: rgba(99, 102, 241, 0.12);
+  color: var(--sl-color-accent-high);
+  border-inline-start: 2px solid var(--sl-color-accent);
+  padding-inline-start: calc(var(--sl-sidebar-item-padding-inline) - 2px);
+  font-weight: 600;
+}
+
+/* Sidebar link hover transition */
+nav.sidebar-content a {
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+nav.sidebar-content a:hover {
+  background-color: rgba(99, 102, 241, 0.06);
+}
+
+/* Group headings — uppercase, smaller, letter-spaced */
+.sidebar-content .top-level > li > details > summary span.large {
+  text-transform: uppercase;
+  font-size: var(--sl-text-xs);
+  letter-spacing: 0.06em;
+  color: var(--sl-color-gray-2);
+}
+
+/* ── Card hover effects ──────────────────────────────── */
+.card {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  border-color: rgba(99, 102, 241, 0.3);
+  box-shadow: 0 2px 12px rgba(99, 102, 241, 0.08);
+}
+
+/* ── Demo section ────────────────────────────────────── */
+.demo-section {
+  margin-block: 2rem;
+  text-align: center;
+}
+
+.demo-container {
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  margin-inline: auto;
+  max-width: 720px;
+}
+
+.demo-container img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.demo-caption {
+  margin-block-start: 0.75rem;
+  color: var(--sl-color-gray-3);
+  font-size: var(--sl-text-sm, 0.875rem);
+}
+
+/* ── Hero refinements ────────────────────────────────── */
+.hero .action.minimal {
+  opacity: 0.8;
+  transition: opacity 0.15s ease;
+}
+
+.hero .action.minimal:hover {
+  opacity: 1;
+}

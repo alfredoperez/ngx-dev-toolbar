@@ -1,0 +1,75 @@
+---
+title: App Features Tool
+description: Test product-level features and license tiers
+---
+
+## Overview
+
+The App Features Tool allows developers to test product-level features that are typically controlled by license tiers,
+deployment configuration, or environment settings. This enables testing premium features without changing deployment configuration.
+
+## Use Cases
+
+- **License Tier Testing:** Test application behavior across different subscription tiers (Basic, Pro, Enterprise)
+- **Premium Feature Development:** Develop and test premium features without upgrading your development environment
+- **Demo Preparation:** Enable all features for demonstrations without changing your environment configuration
+
+## Quick Start
+
+```typescript title="app.component.ts"
+import { Component, inject, signal } from '@angular/core';
+import { ToolbarAppFeaturesService } from 'ngx-dev-toolbar';
+
+@Component({
+  selector: 'app-root',
+  template: `
+    @if (hasAnalytics()) {
+      <app-analytics-dashboard />
+    }
+    @if (hasAdvancedReporting()) {
+      <app-advanced-reports />
+    }
+  `
+})
+export class AppComponent {
+  private appFeaturesService = inject(ToolbarAppFeaturesService);
+
+  hasAnalytics = signal(false);
+  hasAdvancedReporting = signal(false);
+
+  ngOnInit() {
+    // Define available app features
+    this.appFeaturesService.setAvailableOptions([
+      {
+        id: 'analytics',
+        name: 'Analytics Dashboard',
+        description: 'Advanced analytics and insights',
+        isEnabled: false,
+        isForced: false
+      },
+      {
+        id: 'advanced-reporting',
+        name: 'Advanced Reporting',
+        description: 'Export and custom reports',
+        isEnabled: false,
+        isForced: false
+      }
+    ]);
+
+    // Subscribe to forced feature values
+    this.appFeaturesService.getForcedValues().subscribe(features => {
+      const analytics = features.find(f => f.id === 'analytics');
+      const reporting = features.find(f => f.id === 'advanced-reporting');
+
+      this.hasAnalytics.set(analytics?.isEnabled || false);
+      this.hasAdvancedReporting.set(reporting?.isEnabled || false);
+    });
+  }
+}
+```
+
+## Related Tools
+
+- [Feature Flags Tool](/ngx-dev-toolbar/feature-flags/) — Test development feature toggles
+- [Permissions Tool](/ngx-dev-toolbar/permissions/) — Test role-based access
+- [Presets Tool](/ngx-dev-toolbar/presets/) — Save feature configurations for different tiers
