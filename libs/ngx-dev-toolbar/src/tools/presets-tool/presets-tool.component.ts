@@ -327,6 +327,10 @@ type ToastType = 'success' | 'error';
             (dragleave)="onDragLeave($event)"
             (drop)="onFileDrop($event)"
             (click)="fileInput.click()"
+            (keydown.enter)="fileInput.click()"
+            (keydown.space)="fileInput.click()"
+            tabindex="0"
+            role="button"
           >
             <input
               #fileInput
