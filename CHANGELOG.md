@@ -1,3 +1,21 @@
+## 3.1.1 (2026-02-09)
+
+### Bug Fixes
+
+- regenerate package-lock.json for cross-platform CI compatibility ([991b1bd](https://github.com/alfredoperez/ngx-dev-toolbar/commit/991b1bd))
+- raise anyComponentStyle budget to 12kb for demo build ([3c5e0b7](https://github.com/alfredoperez/ngx-dev-toolbar/commit/3c5e0b7))
+- improve select placeholder for dark theme and edge cases ([#25](https://github.com/alfredoperez/ngx-dev-toolbar/pull/25))
+
+### Documentation
+
+- migrate documentation site from Angular to Astro ([#21](https://github.com/alfredoperez/ngx-dev-toolbar/pull/21))
+- improve site design with refined theme, demo section, and search removal ([8ec6e1b](https://github.com/alfredoperez/ngx-dev-toolbar/commit/8ec6e1b))
+- make docs build target cacheable for Nx Cloud DTE ([03f0b8b](https://github.com/alfredoperez/ngx-dev-toolbar/commit/03f0b8b))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 ## 3.1.0 (2026-02-07)
 
 ### Features
