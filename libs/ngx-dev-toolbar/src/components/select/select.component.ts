@@ -25,7 +25,6 @@ export interface SelectOption {
   template: `
     <div
       class="ngt-select"
-
       [class.small]="size() === 'small'"
       [class.open]="isOpen()"
       [class.placeholder]="isPlaceholder()"
@@ -94,7 +93,10 @@ export class ToolbarSelectComponent {
     .slice(2, 11)}`;
   isOpen = signal(false);
 
-  isPlaceholder = computed(() => !this.options()?.some((opt) => opt.value === this.value()));
+  isPlaceholder = computed(() => {
+    const options = this.options();
+    return !!options?.length && !options.some((opt) => opt.value === this.value());
+  });
 
   selectedLabel = computed(() => {
     const selected = this.options()?.find((opt) => opt.value === this.value());
