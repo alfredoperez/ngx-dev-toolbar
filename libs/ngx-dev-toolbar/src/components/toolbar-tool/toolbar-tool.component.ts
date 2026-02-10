@@ -18,7 +18,7 @@ import { ToolbarWindowComponent } from '../window/window.component';
 import { ToolbarWindowOptions } from './toolbar-tool.models';
 
 @Component({
-  selector: 'ngt-toolbar-tool',
+  selector: 'ndt-toolbar-tool',
   standalone: true,
   imports: [
     CdkConnectedOverlay,
@@ -28,9 +28,9 @@ import { ToolbarWindowOptions } from './toolbar-tool.models';
     ToolbarIconComponent,
   ],
   template: `
-    <div #trigger="cdkOverlayOrigin" class="ngt-toolbar-tool" cdkOverlayOrigin>
+    <div #trigger="cdkOverlayOrigin" class="ndt-toolbar-tool" cdkOverlayOrigin>
       <div
-        class="ngt-toolbar-tool__icon"
+        class="ndt-toolbar-tool__icon"
         (click)="onOpen()"
         (keydown.enter)="onOpen()"
         (keydown.space)="onOpen()"
@@ -38,11 +38,11 @@ import { ToolbarWindowOptions } from './toolbar-tool.models';
       >
         <div #buttonContainer [attr.data-tooltip]="title()">
           @if (icon()) {
-          <ngt-tool-button [title]="title()" [toolId]="options().id" [badge]="badge()">
-            <ngt-icon [name]="icon()" />
-          </ngt-tool-button>
+          <ndt-tool-button [title]="title()" [toolId]="options().id" [badge]="badge()">
+            <ndt-icon [name]="icon()" />
+          </ndt-tool-button>
           } @else {
-          <ng-content select="ngt-tool-button"></ng-content>
+          <ng-content select="ndt-tool-button"></ng-content>
           }
         </div>
       </div>
@@ -55,12 +55,12 @@ import { ToolbarWindowOptions } from './toolbar-tool.models';
         [cdkConnectedOverlayPositions]="positions()"
         [cdkConnectedOverlayWidth]="width()"
         [cdkConnectedOverlayHeight]="height()"
-        [cdkConnectedOverlayPanelClass]="['ngt-overlay-panel', 'ngt-tool-overlay']"
+        [cdkConnectedOverlayPanelClass]="['ndt-overlay-panel', 'ndt-tool-overlay']"
         cdkConnectedOverlay
       >
-        <ngt-window [@slideAnimation] [config]="options()" (closed)="onClose()">
+        <ndt-window [@slideAnimation] [config]="options()" (closed)="onClose()">
           <ng-content />
-        </ngt-window>
+        </ndt-window>
       </ng-template>
       }
     </div>

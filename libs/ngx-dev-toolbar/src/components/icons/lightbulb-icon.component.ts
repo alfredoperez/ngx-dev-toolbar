@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
-  selector: 'ngt-lightbulb-icon',
+  selector: 'ndt-lightbulb-icon',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

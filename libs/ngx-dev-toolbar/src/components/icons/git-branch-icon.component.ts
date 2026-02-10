@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
-  selector: 'ngt-git-branch-icon',
+  selector: 'ndt-git-branch-icon',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

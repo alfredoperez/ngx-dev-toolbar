@@ -16,17 +16,17 @@ All components are exported from `ngx-dev-toolbar` and can be imported directly:
 
 | Component | Selector | Purpose |
 |---|---|---|
-| `ToolbarToolComponent` | `ngt-toolbar-tool` | Main wrapper providing window management, positioning, and animations |
-| `ToolbarButtonComponent` | `ngt-button` | Action buttons with optional icon and label |
-| `ToolbarInputComponent` | `ngt-input` | Text inputs with two-way binding via `[(value)]` |
-| `ToolbarSelectComponent` | `ngt-select` | Dropdown selection with CDK overlay positioning |
-| `ToolbarCardComponent` | `ngt-card` | Content container with hover effects |
-| `ToolbarClickableCardComponent` | `ngt-clickable-card` | Interactive card with icon, title, and subtitle |
-| `ToolbarListComponent` | `ngt-list` | List container with empty states and no-results handling |
-| `ToolbarListItemComponent` | `ngt-list-item` | List items with optional badge |
-| `ToolbarStepViewComponent` | `ngt-step-view` | Multi-step view switcher with back navigation |
-| `ToolbarIconComponent` | `ngt-icon` | SVG icons with consistent sizing |
-| `ToolbarLinkButtonComponent` | `ngt-link-button` | External link button with icon |
+| `ToolbarToolComponent` | `ndt-toolbar-tool` | Main wrapper providing window management, positioning, and animations |
+| `ToolbarButtonComponent` | `ndt-button` | Action buttons with optional icon and label |
+| `ToolbarInputComponent` | `ndt-input` | Text inputs with two-way binding via `[(value)]` |
+| `ToolbarSelectComponent` | `ndt-select` | Dropdown selection with CDK overlay positioning |
+| `ToolbarCardComponent` | `ndt-card` | Content container with hover effects |
+| `ToolbarClickableCardComponent` | `ndt-clickable-card` | Interactive card with icon, title, and subtitle |
+| `ToolbarListComponent` | `ndt-list` | List container with empty states and no-results handling |
+| `ToolbarListItemComponent` | `ndt-list-item` | List items with optional badge |
+| `ToolbarStepViewComponent` | `ndt-step-view` | Multi-step view switcher with back navigation |
+| `ToolbarIconComponent` | `ndt-icon` | SVG icons with consistent sizing |
+| `ToolbarLinkButtonComponent` | `ndt-link-button` | External link button with icon |
 
 ## Step-by-Step Guide
 
@@ -101,20 +101,20 @@ import { NotesInternalService } from './notes-internal.service';
     ToolbarListItemComponent,
   ],
   template: `
-    <ngt-toolbar-tool
+    <ndt-toolbar-tool
       [options]="windowOptions"
       title="Notes"
       icon="edit"
     >
-      <ngt-list
+      <ndt-list
         [hasItems]="notesService.notes().length > 0"
         emptyMessage="No notes yet"
       >
         @for (note of notesService.notes(); track note.id) {
-          <ngt-list-item [label]="note.title" />
+          <ndt-list-item [label]="note.title" />
         }
-      </ngt-list>
-    </ngt-toolbar-tool>
+      </ndt-list>
+    </ndt-toolbar-tool>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -196,17 +196,17 @@ import {
     ToolbarButtonComponent,
   ],
   template: `
-    <ngt-toolbar-tool [options]="windowOptions" title="Items" icon="star">
-      <ngt-step-view
+    <ndt-toolbar-tool [options]="windowOptions" title="Items" icon="star">
+      <ndt-step-view
         [currentStep]="viewMode()"
         defaultStep="list"
         (back)="viewMode.set('list')"
       >
         <ng-template ngtStep="list" stepTitle="All Items">
           <p>Your list content here...</p>
-          <ngt-button (click)="viewMode.set('create')">
+          <ndt-button (click)="viewMode.set('create')">
             Create New
-          </ngt-button>
+          </ndt-button>
         </ng-template>
 
         <ng-template ngtStep="create" stepTitle="Create Item">
@@ -216,8 +216,8 @@ import {
         <ng-template ngtStep="edit" stepTitle="Edit Item">
           <p>Your edit form here...</p>
         </ng-template>
-      </ngt-step-view>
-    </ngt-toolbar-tool>
+      </ndt-step-view>
+    </ndt-toolbar-tool>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -242,35 +242,35 @@ export class MultiStepToolComponent {
 
 ## Styling
 
-Use the toolbar's design tokens for consistent styling. All tokens use the `--ngt-` prefix:
+Use the toolbar's design tokens for consistent styling. All tokens use the `--ndt-` prefix:
 
 ```css title="notes-tool.component.scss"
 /* Use design tokens for consistent styling */
 .notes-container {
   display: flex;
   flex-direction: column;
-  gap: var(--ngt-spacing-md);
-  padding-top: var(--ngt-spacing-md);
+  gap: var(--ndt-spacing-md);
+  padding-top: var(--ndt-spacing-md);
 }
 
 .note-item {
-  padding: var(--ngt-spacing-sm) var(--ngt-spacing-md);
-  border-radius: var(--ngt-border-radius-medium);
-  background: var(--ngt-background-secondary);
-  color: var(--ngt-text-primary);
-  border: 1px solid var(--ngt-border-primary);
+  padding: var(--ndt-spacing-sm) var(--ndt-spacing-md);
+  border-radius: var(--ndt-border-radius-medium);
+  background: var(--ndt-background-secondary);
+  color: var(--ndt-text-primary);
+  border: 1px solid var(--ndt-border-primary);
 }
 
 .note-item__title {
-  font-size: var(--ngt-font-size-md);
+  font-size: var(--ndt-font-size-md);
   font-weight: 600;
-  color: var(--ngt-text-primary);
+  color: var(--ndt-text-primary);
 }
 
 .note-item__content {
-  font-size: var(--ngt-font-size-sm);
-  color: var(--ngt-text-secondary);
-  margin-top: var(--ngt-spacing-xs);
+  font-size: var(--ndt-font-size-sm);
+  color: var(--ndt-text-secondary);
+  margin-top: var(--ndt-spacing-xs);
 }
 ```
 
@@ -278,23 +278,23 @@ Use the toolbar's design tokens for consistent styling. All tokens use the `--ng
 
 | Category | Token | Usage |
 |---|---|---|
-| Colors | `--ngt-background-primary` | Primary background |
-| Colors | `--ngt-background-secondary` | Secondary background |
-| Colors | `--ngt-text-primary` | Primary text |
-| Colors | `--ngt-text-secondary` | Secondary text |
-| Colors | `--ngt-text-muted` | Muted text |
-| Colors | `--ngt-border-primary` | Border color |
-| Spacing | `--ngt-spacing-xs` | Extra-small spacing |
-| Spacing | `--ngt-spacing-sm` | Small spacing |
-| Spacing | `--ngt-spacing-md` | Medium spacing |
-| Spacing | `--ngt-spacing-lg` | Large spacing |
-| Radius | `--ngt-border-radius-small` | Small border radius |
-| Radius | `--ngt-border-radius-medium` | Medium border radius |
-| Radius | `--ngt-border-radius-large` | Large border radius |
-| Font | `--ngt-font-size-xs` | Extra-small font |
-| Font | `--ngt-font-size-sm` | Small font |
-| Font | `--ngt-font-size-md` | Medium font |
-| Font | `--ngt-font-size-lg` | Large font |
+| Colors | `--ndt-background-primary` | Primary background |
+| Colors | `--ndt-background-secondary` | Secondary background |
+| Colors | `--ndt-text-primary` | Primary text |
+| Colors | `--ndt-text-secondary` | Secondary text |
+| Colors | `--ndt-text-muted` | Muted text |
+| Colors | `--ndt-border-primary` | Border color |
+| Spacing | `--ndt-spacing-xs` | Extra-small spacing |
+| Spacing | `--ndt-spacing-sm` | Small spacing |
+| Spacing | `--ndt-spacing-md` | Medium spacing |
+| Spacing | `--ndt-spacing-lg` | Large spacing |
+| Radius | `--ndt-border-radius-small` | Small border radius |
+| Radius | `--ndt-border-radius-medium` | Medium border radius |
+| Radius | `--ndt-border-radius-large` | Large border radius |
+| Font | `--ndt-font-size-xs` | Extra-small font |
+| Font | `--ndt-font-size-sm` | Small font |
+| Font | `--ndt-font-size-md` | Medium font |
+| Font | `--ndt-font-size-lg` | Large font |
 
 ### Defensive CSS
 
@@ -373,58 +373,58 @@ class NotesService {
     ToolbarStepDirective,
   ],
   template: `
-    <ngt-toolbar-tool [options]="windowOptions" title="Notes" icon="edit">
-      <ngt-step-view
+    <ndt-toolbar-tool [options]="windowOptions" title="Notes" icon="edit">
+      <ndt-step-view
         [currentStep]="viewMode()"
         defaultStep="list"
         (back)="viewMode.set('list')"
       >
         <ng-template ngtStep="list" stepTitle="All Notes">
-          <ngt-button (click)="viewMode.set('create')" icon="edit">
+          <ndt-button (click)="viewMode.set('create')" icon="edit">
             Add Note
-          </ngt-button>
-          <ngt-list
+          </ndt-button>
+          <ndt-list
             [hasItems]="notesService.notes().length > 0"
             emptyMessage="No notes yet"
             emptyHint="Click 'Add Note' to create one"
           >
             @for (note of notesService.notes(); track note.id) {
-              <ngt-list-item [label]="note.title">
-                <ngt-button
+              <ndt-list-item [label]="note.title">
+                <ndt-button
                   variant="icon"
                   icon="trash"
                   ariaLabel="Delete"
                   (click)="notesService.remove(note.id)"
                 />
-              </ngt-list-item>
+              </ndt-list-item>
             }
-          </ngt-list>
+          </ndt-list>
         </ng-template>
 
         <ng-template ngtStep="create" stepTitle="New Note">
           <div class="form">
-            <ngt-input
+            <ndt-input
               [(value)]="newTitle"
               placeholder="Note title"
               ariaLabel="Note title"
             />
-            <ngt-input
+            <ndt-input
               [(value)]="newContent"
               placeholder="Note content"
               ariaLabel="Note content"
             />
-            <ngt-button (click)="onCreate()" label="Save" />
+            <ndt-button (click)="onCreate()" label="Save" />
           </div>
         </ng-template>
-      </ngt-step-view>
-    </ngt-toolbar-tool>
+      </ndt-step-view>
+    </ndt-toolbar-tool>
   `,
   styles: `
     .form {
       display: flex;
       flex-direction: column;
-      gap: var(--ngt-spacing-sm);
-      padding-top: var(--ngt-spacing-sm);
+      gap: var(--ndt-spacing-sm);
+      padding-top: var(--ndt-spacing-sm);
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

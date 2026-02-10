@@ -7,20 +7,20 @@ import { CommonModule } from '@angular/common';
  *
  * @example
  * ```html
- * <ngt-list
+ * <ndt-list
  *   [hasItems]="items().length > 0"
  *   [hasResults]="filteredItems().length > 0"
  *   emptyMessage="No items found"
  *   noResultsMessage="No items match your filter"
  * >
  *   @for (item of filteredItems(); track item.id) {
- *     <ngt-list-item ... />
+ *     <ndt-list-item ... />
  *   }
- * </ngt-list>
+ * </ndt-list>
  * ```
  */
 @Component({
-  selector: 'ngt-list',
+  selector: 'ndt-list',
   standalone: true,
   imports: [CommonModule],
   template: `

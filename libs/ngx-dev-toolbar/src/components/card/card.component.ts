@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 
 @Component({
-  selector: 'ngt-card',
+  selector: 'ndt-card',
   standalone: true,
   template: `
     <div

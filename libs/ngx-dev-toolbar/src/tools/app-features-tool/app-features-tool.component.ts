@@ -30,11 +30,11 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
  *
  * @example
  * ```html
- * <ngt-app-features-tool />
+ * <ndt-app-features-tool />
  * ```
  */
 @Component({
-  selector: 'ngt-app-features-tool',
+  selector: 'ndt-app-features-tool',
   standalone: true,
   imports: [
     FormsModule,
@@ -46,7 +46,7 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
     ToolbarListItemComponent,
   ],
   template: `
-    <ngt-toolbar-tool
+    <ndt-toolbar-tool
       [options]="options"
       title="App Features"
       icon="puzzle"
@@ -54,14 +54,14 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
     >
       <div class="container">
         <div class="tool-header">
-          <ngt-input
+          <ndt-input
             [value]="searchQuery()"
             (valueChange)="onSearchChange($event)"
             placeholder="Search features..."
           />
           <div class="filter-wrapper">
-            <ngt-icon name="filter" class="filter-icon" />
-            <ngt-select
+            <ndt-icon name="filter" class="filter-icon" />
+            <ndt-select
               [value]="activeFilter()"
               [options]="filterOptions"
               [size]="'medium'"
@@ -70,7 +70,7 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
           </div>
         </div>
 
-        <ngt-list
+        <ndt-list
           [hasItems]="!hasNoFeatures()"
           [hasResults]="!hasNoFilteredFeatures()"
           emptyMessage="No app features found"
@@ -78,25 +78,25 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
           noResultsMessage="No features match your filter"
         >
           @for (feature of filteredFeatures(); track feature.id) {
-            <ngt-list-item
+            <ndt-list-item
               [title]="feature.name"
               [description]="feature.description"
               [isForced]="feature.isForced"
               [currentValue]="feature.isEnabled"
               [originalValue]="feature.originalValue"
             >
-              <ngt-select
+              <ndt-select
                 [value]="getFeatureValue(feature)"
                 [options]="featureValueOptions"
                 [ariaLabel]="'Set value for ' + feature.name"
                 (valueChange)="onFeatureChange(feature.id, $event ?? '')"
                 size="small"
               />
-            </ngt-list-item>
+            </ndt-list-item>
           }
-        </ngt-list>
+        </ndt-list>
       </div>
-    </ngt-toolbar-tool>
+    </ndt-toolbar-tool>
   `,
   styles: [
     `
@@ -112,10 +112,10 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
         position: relative;
         flex-shrink: 0;
         display: flex;
-        gap: var(--ngt-spacing-sm);
-        margin-bottom: var(--ngt-spacing-sm);
+        gap: var(--ndt-spacing-sm);
+        margin-bottom: var(--ndt-spacing-sm);
 
-        ngt-input {
+        ndt-input {
           flex: 1;
         }
 
@@ -123,7 +123,7 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
           flex: 0 0 auto;
           display: flex;
           align-items: center;
-          gap: var(--ngt-spacing-md);
+          gap: var(--ndt-spacing-md);
 
           .filter-icon {
             width: 18px;
@@ -132,7 +132,7 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
             opacity: 0.6;
           }
 
-          ngt-select {
+          ndt-select {
             flex: 0 0 auto;
             min-width: 180px;
           }
@@ -226,7 +226,7 @@ export class ToolbarAppFeaturesToolComponent {
     description: 'Override product features to test different tiers and configurations',
     isClosable: true,
     size: 'tall',
-    id: 'ngt-app-features',
+    id: 'ndt-app-features',
   } as ToolbarWindowOptions;
 
   protected readonly filterOptions = [

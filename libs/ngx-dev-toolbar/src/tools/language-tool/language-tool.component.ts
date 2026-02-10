@@ -8,15 +8,15 @@ import { ToolbarInternalLanguageService } from './language-internal.service';
 import { Language } from './language.models';
 
 @Component({
-  selector: 'ngt-language-tool',
+  selector: 'ndt-language-tool',
   standalone: true,
   imports: [ToolbarToolComponent, ToolbarSelectComponent],
   styleUrls: ['./language-tool.component.scss'],
   template: `
-    <ngt-toolbar-tool title="Languages" icon="translate" [options]="options">
+    <ndt-toolbar-tool title="Languages" icon="translate" [options]="options">
       <div class="language-select">
         <label for="language-select">Language</label>
-        <ngt-select
+        <ndt-select
           id="language-select"
           [value]="activeLanguage()"
           [options]="languageOptions()"
@@ -24,7 +24,7 @@ import { Language } from './language.models';
           (valueChange)="onLanguageChange($event ?? '')"
         />
       </div>
-    </ngt-toolbar-tool>
+    </ndt-toolbar-tool>
   `,
 })
 export class ToolbarLanguageToolComponent {
@@ -34,7 +34,7 @@ export class ToolbarLanguageToolComponent {
     title: 'Languages',
     description: 'Set the language for your current session',
     size: 'small',
-    id: 'ngt-language',
+    id: 'ndt-language',
     isBeta: true,
     isClosable: true,
   } as ToolbarWindowOptions;

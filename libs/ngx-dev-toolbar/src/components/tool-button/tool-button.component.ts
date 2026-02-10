@@ -18,7 +18,7 @@ import {
 import { ToolbarStateService } from '../../toolbar-state.service';
 
 @Component({
-  selector: 'ngt-tool-button',
+  selector: 'ndt-tool-button',
   standalone: true,
   template: `
     <button

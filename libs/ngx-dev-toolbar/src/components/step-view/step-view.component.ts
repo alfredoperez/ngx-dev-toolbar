@@ -11,13 +11,13 @@ import { ToolbarButtonComponent } from '../button/button.component';
 import { ToolbarStepDirective } from './step-view.directive';
 
 @Component({
-  selector: 'ngt-step-view',
+  selector: 'ndt-step-view',
   standalone: true,
   imports: [NgTemplateOutlet, ToolbarButtonComponent],
   template: `
     @if (!isDefaultStep()) {
       <div class="step-header">
-        <ngt-button (click)="back.emit()" ariaLabel="Back">\u2190 Back</ngt-button>
+        <ndt-button (click)="back.emit()" ariaLabel="Back">\u2190 Back</ndt-button>
         @if (activeTitle()) {
           <span class="step-title">{{ activeTitle() }}</span>
         }
@@ -37,16 +37,16 @@ import { ToolbarStepDirective } from './step-view.directive';
     .step-header {
       display: flex;
       align-items: center;
-      gap: var(--ngt-spacing-sm);
-      padding-bottom: var(--ngt-spacing-sm);
-      margin-bottom: var(--ngt-spacing-sm);
-      border-bottom: 1px solid var(--ngt-border-primary);
+      gap: var(--ndt-spacing-sm);
+      padding-bottom: var(--ndt-spacing-sm);
+      margin-bottom: var(--ndt-spacing-sm);
+      border-bottom: 1px solid var(--ndt-border-primary);
     }
 
     .step-title {
-      font-size: var(--ngt-font-size-md);
+      font-size: var(--ndt-font-size-md);
       font-weight: 600;
-      color: var(--ngt-text-primary);
+      color: var(--ndt-text-primary);
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -64,7 +64,7 @@ export class ToolbarStepViewComponent {
   );
 
   readonly activeStep = computed(() =>
-    this.steps().find((s) => s.ngtStep() === this.currentStep())
+    this.steps().find((s) => s.ndtStep() === this.currentStep())
   );
 
   readonly activeTitle = computed(() => this.activeStep()?.stepTitle() ?? '');

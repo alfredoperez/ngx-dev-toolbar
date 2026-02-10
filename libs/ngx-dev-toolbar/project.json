@@ -2,7 +2,7 @@
   "name": "ngx-dev-toolbar",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/ngx-dev-toolbar/src",
-  "prefix": "ngt",
+  "prefix": "ndt",
   "projectType": "library",
   "tags": [],
   "release": {

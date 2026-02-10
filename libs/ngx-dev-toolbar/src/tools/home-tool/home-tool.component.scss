@@ -14,22 +14,22 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: var(--ngt-spacing-sm);
+  gap: var(--ndt-spacing-sm);
 
   &__label {
     display: flex;
     flex-direction: column;
-    gap: var(--ngt-spacing-xs);
+    gap: var(--ndt-spacing-xs);
 
     &-text {
-      color: var(--ngt-text-primary);
-      font-size: var(--ngt-font-size-sm);
+      color: var(--ndt-text-primary);
+      font-size: var(--ndt-font-size-sm);
       font-weight: 500;
     }
 
     &-description {
-      color: var(--ngt-text-muted);
-      font-size: var(--ngt-font-size-xs);
+      color: var(--ndt-text-muted);
+      font-size: var(--ndt-font-size-xs);
     }
   }
 
@@ -40,17 +40,17 @@
 
 .instruction__control-button {
   display: flex;
-  gap: var(--ngt-spacing-xs);
+  gap: var(--ndt-spacing-xs);
   justify-content: flex-end;
 }
 .settings-container {
   display: flex;
   flex-direction: column;
-  gap: var(--ngt-spacing-md);
+  gap: var(--ndt-spacing-md);
 
   .settings-actions {
     display: flex;
-    gap: var(--ngt-spacing-md);
+    gap: var(--ndt-spacing-md);
 
     > * {
       width: 50%;
@@ -61,10 +61,10 @@
 
 .footer-links {
   margin-top: auto;
-  padding-top: var(--ngt-spacing-lg);
-  border-top: 1px solid var(--ngt-border-subtle);
+  padding-top: var(--ndt-spacing-lg);
+  border-top: 1px solid var(--ndt-border-subtle);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  gap: var(--ngt-spacing-lg);
+  gap: var(--ndt-spacing-lg);
 }

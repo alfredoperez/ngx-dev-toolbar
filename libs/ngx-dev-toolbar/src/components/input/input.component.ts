@@ -7,7 +7,7 @@ import {
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'ngt-input',
+  selector: 'ndt-input',
   standalone: true,
   imports: [FormsModule],
   template: `

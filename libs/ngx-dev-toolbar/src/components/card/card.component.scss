@@ -5,20 +5,20 @@
 }
 
 .card {
-  background: var(--ngt-bg-primary);
-  border-radius: var(--ngt-border-radius-large);
-  padding: var(--ngt-spacing-md);
+  background: var(--ndt-bg-primary);
+  border-radius: var(--ndt-border-radius-large);
+  padding: var(--ndt-spacing-md);
   cursor: pointer;
-  transition: var(--ngt-transition-default);
-  border: 1px solid var(--ngt-border-subtle);
+  transition: var(--ndt-transition-default);
+  border: 1px solid var(--ndt-border-subtle);
   position: relative;
   flex: 1;
   height: 120px;
   display: flex;
 
   &:hover {
-    background: var(--ngt-hover-bg);
-    border-color: var(--ngt-primary);
-    box-shadow: 0 0 0 1px rgba(var(--ngt-primary-rgb), 0.3);
+    background: var(--ndt-hover-bg);
+    border-color: var(--ndt-primary);
+    box-shadow: 0 0 0 1px rgba(var(--ndt-primary-rgb), 0.3);
   }
 }

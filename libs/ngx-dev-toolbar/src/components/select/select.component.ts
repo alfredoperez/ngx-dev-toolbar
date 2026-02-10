@@ -19,12 +19,12 @@ export interface SelectOption {
 }
 
 @Component({
-  selector: 'ngt-select',
+  selector: 'ndt-select',
   standalone: true,
   imports: [CommonModule, FormsModule, OverlayModule, CdkMenuModule],
   template: `
     <div
-      class="ngt-select"
+      class="ndt-select"
       [class.small]="size() === 'small'"
       [class.open]="isOpen()"
       [class.placeholder]="isPlaceholder()"
@@ -49,12 +49,12 @@ export interface SelectOption {
       [cdkConnectedOverlayOrigin]="trigger"
       [cdkConnectedOverlayOpen]="isOpen()"
       [cdkConnectedOverlayPositions]="positions"
-      [cdkConnectedOverlayPanelClass]="['ngt-overlay-panel', 'ngt-select-overlay']"
+      [cdkConnectedOverlayPanelClass]="['ndt-overlay-panel', 'ndt-select-overlay']"
       (overlayOutsideClick)="close()"
     >
       <div
         [id]="selectMenuId"
-        class="ngt-select-menu"
+        class="ndt-select-menu"
         cdkMenu
         role="listbox"
         [attr.data-theme]="theme()"

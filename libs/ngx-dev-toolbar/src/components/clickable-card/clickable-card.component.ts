@@ -4,21 +4,21 @@ import { ToolbarIconComponent } from '../icons/icon.component';
 import { IconName } from '../icons/icon.models';
 
 @Component({
-  selector: 'ngt-clickable-card',
+  selector: 'ndt-clickable-card',
   standalone: true,
   imports: [ToolbarCardComponent, ToolbarIconComponent],
   template: `
-    <ngt-card (clicked)="onClick()">
+    <ndt-card (clicked)="onClick()">
       <div class="clickable-card">
         <div class="clickable-card__icon">
-          <ngt-icon [name]="icon()" />
+          <ndt-icon [name]="icon()" />
         </div>
         <div class="clickable-card__content">
           <div class="clickable-card__title">{{ title() }}</div>
           <div class="clickable-card__subtitle">{{ subtitle() }}</div>
         </div>
       </div>
-    </ngt-card>
+    </ndt-card>
   `,
   styleUrls: ['./clickable-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

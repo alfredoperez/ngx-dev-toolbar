@@ -38,7 +38,7 @@ import { TrashIconComponent } from './trash-icon.component';
 import { UsersIconComponent } from './users-icon.component';
 
 @Component({
-  selector: 'ngt-icon',
+  selector: 'ndt-icon',
   standalone: true,
   imports: [
     AngularIconComponent,
@@ -74,63 +74,63 @@ import { UsersIconComponent } from './users-icon.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @switch (name()) { @case ('angular') {
-    <ngt-angular-icon />
+    <ndt-angular-icon />
     } @case ('bolt') {
-    <ngt-bolt-icon [fill]="fill()" />
+    <ndt-bolt-icon [fill]="fill()" />
     } @case ('bug') {
-    <ngt-bug-icon [fill]="fill()" />
+    <ndt-bug-icon [fill]="fill()" />
     } @case ('code') {
-    <ngt-code-icon [fill]="fill()" />
+    <ndt-code-icon [fill]="fill()" />
     } @case ('database') {
-    <ngt-database-icon [fill]="fill()" />
+    <ndt-database-icon [fill]="fill()" />
     } @case ('docs') {
-    <ngt-docs-icon [fill]="fill()" />
+    <ndt-docs-icon [fill]="fill()" />
     } @case ('edit') {
-    <ngt-edit-icon [fill]="fill()" />
+    <ndt-edit-icon [fill]="fill()" />
     } @case ('export') {
-    <ngt-export-icon [fill]="fill()" />
+    <ndt-export-icon [fill]="fill()" />
     } @case ('filter') {
-    <ngt-filter-icon [fill]="fill()" />
+    <ndt-filter-icon [fill]="fill()" />
     } @case ('gauge') {
-    <ngt-gauge-icon [fill]="fill()" />
+    <ndt-gauge-icon [fill]="fill()" />
     } @case ('gear') {
-    <ngt-gear-icon [fill]="fill()" />
+    <ndt-gear-icon [fill]="fill()" />
     } @case ('git-branch') {
-    <ngt-git-branch-icon [fill]="fill()" />
+    <ndt-git-branch-icon [fill]="fill()" />
     } @case ('import') {
-    <ngt-import-icon [fill]="fill()" />
+    <ndt-import-icon [fill]="fill()" />
     } @case ('layout') {
-    <ngt-layout-icon [fill]="fill()" />
+    <ndt-layout-icon [fill]="fill()" />
     } @case ('lighting') {
-    <ngt-lighting-icon [fill]="fill()" />
+    <ndt-lighting-icon [fill]="fill()" />
     } @case ('lightbulb') {
-    <ngt-lightbulb-icon [fill]="fill()" />
+    <ndt-lightbulb-icon [fill]="fill()" />
     } @case ('lock') {
-    <ngt-lock-icon [fill]="fill()" />
+    <ndt-lock-icon [fill]="fill()" />
     } @case ('network') {
-    <ngt-network-icon [fill]="fill()" />
+    <ndt-network-icon [fill]="fill()" />
     } @case ('puzzle') {
-    <ngt-puzzle-icon [fill]="fill()" />
+    <ndt-puzzle-icon [fill]="fill()" />
     } @case ('refresh') {
-    <ngt-refresh-icon [fill]="fill()" />
+    <ndt-refresh-icon [fill]="fill()" />
     } @case ('star') {
-    <ngt-star-icon [fill]="fill()" />
+    <ndt-star-icon [fill]="fill()" />
     } @case ('terminal') {
-    <ngt-terminal-icon [fill]="fill()" />
+    <ndt-terminal-icon [fill]="fill()" />
     } @case ('toggle-left') {
-    <ngt-toggle-left-icon [fill]="fill()" />
+    <ndt-toggle-left-icon [fill]="fill()" />
     } @case ('user') {
-    <ngt-users-icon [fill]="fill()" />
+    <ndt-users-icon [fill]="fill()" />
     } @case ('sun') {
-    <ngt-sun-icon [fill]="fill()" />
+    <ndt-sun-icon [fill]="fill()" />
     } @case ('moon') {
-    <ngt-moon-icon [fill]="fill()" />
+    <ndt-moon-icon [fill]="fill()" />
     } @case ('translate') {
-    <ngt-translate-icon [fill]="fill()" />
+    <ndt-translate-icon [fill]="fill()" />
     } @case ('discord') {
-    <ngt-discord-icon [fill]="fill()" />
+    <ndt-discord-icon [fill]="fill()" />
     } @case ('trash') {
-    <ngt-trash-icon [fill]="fill()" />
+    <ndt-trash-icon [fill]="fill()" />
     } }
   `,
 })

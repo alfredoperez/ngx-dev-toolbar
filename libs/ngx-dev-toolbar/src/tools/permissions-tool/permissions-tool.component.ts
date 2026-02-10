@@ -23,7 +23,7 @@ import {
 } from './permissions.models';
 
 @Component({
-  selector: 'ngt-permissions-tool',
+  selector: 'ndt-permissions-tool',
   standalone: true,
   imports: [
     FormsModule,
@@ -35,7 +35,7 @@ import {
     ToolbarListItemComponent,
   ],
   template: `
-    <ngt-toolbar-tool
+    <ndt-toolbar-tool
       [options]="options"
       title="Permissions"
       icon="lock"
@@ -43,15 +43,15 @@ import {
     >
       <div class="container">
         <div class="tool-header">
-          <ngt-input
+          <ndt-input
             [value]="searchQuery()"
             (valueChange)="onSearchChange($event)"
             placeholder="Search permissions..."
             [ariaLabel]="'Search permissions'"
           />
           <div class="filter-wrapper">
-            <ngt-icon name="filter" class="filter-icon" />
-            <ngt-select
+            <ndt-icon name="filter" class="filter-icon" />
+            <ndt-select
               [value]="activeFilter()"
               [options]="filterOptions"
               [size]="'medium'"
@@ -61,7 +61,7 @@ import {
           </div>
         </div>
 
-        <ngt-list
+        <ndt-list
           [hasItems]="!hasNoPermissions()"
           [hasResults]="!hasNoFilteredPermissions()"
           emptyMessage="No permissions found"
@@ -69,25 +69,25 @@ import {
           noResultsMessage="No permissions match your filter"
         >
           @for (permission of filteredPermissions(); track permission.id) {
-            <ngt-list-item
+            <ndt-list-item
               [title]="permission.name"
               [description]="permission.description"
               [isForced]="permission.isForced"
               [currentValue]="permission.isGranted"
               [originalValue]="permission.originalValue"
             >
-              <ngt-select
+              <ndt-select
                 [value]="getPermissionValue(permission)"
                 [options]="permissionValueOptions"
                 [ariaLabel]="'Override state for ' + permission.name"
                 (valueChange)="onPermissionChange(permission.id, $event ?? '')"
                 size="small"
               />
-            </ngt-list-item>
+            </ndt-list-item>
           }
-        </ngt-list>
+        </ndt-list>
       </div>
-    </ngt-toolbar-tool>
+    </ndt-toolbar-tool>
   `,
   styles: [
     `
@@ -103,10 +103,10 @@ import {
         position: relative;
         flex-shrink: 0;
         display: flex;
-        gap: var(--ngt-spacing-sm);
-        margin-bottom: var(--ngt-spacing-sm);
+        gap: var(--ndt-spacing-sm);
+        margin-bottom: var(--ndt-spacing-sm);
 
-        ngt-input {
+        ndt-input {
           flex: 1;
         }
 
@@ -114,7 +114,7 @@ import {
           flex: 0 0 auto;
           display: flex;
           align-items: center;
-          gap: var(--ngt-spacing-md);
+          gap: var(--ndt-spacing-md);
 
           .filter-icon {
             width: 18px;
@@ -123,7 +123,7 @@ import {
             opacity: 0.6;
           }
 
-          ngt-select {
+          ndt-select {
             flex: 0 0 auto;
             min-width: 180px;
           }
@@ -221,7 +221,7 @@ export class ToolbarPermissionsToolComponent {
     description: 'Manage permission overrides for your current session',
     isClosable: true,
     size: 'tall',
-    id: 'ngt-permissions',
+    id: 'ndt-permissions',
     isBeta: true,
   } as ToolbarWindowOptions;
 

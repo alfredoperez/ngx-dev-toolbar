@@ -3,7 +3,7 @@ import { ToolbarIconComponent } from '../icons/icon.component';
 import { IconName } from '../icons/icon.models';
 
 @Component({
-  selector: 'ngt-button',
+  selector: 'ndt-button',
   standalone: true,
   imports: [ToolbarIconComponent],
   template: `
@@ -15,7 +15,7 @@ import { IconName } from '../icons/icon.models';
       [class.button--icon]="variant() === 'icon'"
     >
       @if (icon()) {
-        <ngt-icon [name]="icon() || 'star'" />
+        <ndt-icon [name]="icon() || 'star'" />
       }
       @if (label()) {
         <span class="button__label">{{ label() }}</span>

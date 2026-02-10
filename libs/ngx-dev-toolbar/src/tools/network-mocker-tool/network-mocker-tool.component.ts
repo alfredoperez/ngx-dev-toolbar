@@ -15,7 +15,7 @@ import { MockRequestConfig } from './network-mocker.models';
 import { ToolbarNetworkMockerService } from './network-mocker.service';
 
 @Component({
-  selector: 'ngt-network-mocker-tool',
+  selector: 'ndt-network-mocker-tool',
   standalone: true,
   imports: [
     FormsModule,
@@ -25,7 +25,7 @@ import { ToolbarNetworkMockerService } from './network-mocker.service';
     ToolbarSelectComponent,
   ],
   template: `
-    <ngt-toolbar-tool [options]="options" title="Network Mocker" icon="network">
+    <ndt-toolbar-tool [options]="options" title="Network Mocker" icon="network">
       <div class="container">
         <div class="tool-header">
           <h3>Mock Network Requests</h3>
@@ -34,12 +34,12 @@ import { ToolbarNetworkMockerService } from './network-mocker.service';
 
         <div class="form">
           <div class="form-row">
-            <ngt-input
+            <ndt-input
               [(value)]="newMockUrl"
               placeholder="Enter URL pattern (e.g., /api/users/*)"
               ariaLabel="Mock URL"
             />
-            <ngt-select
+            <ndt-select
               [(value)]="newMockMethod"
               [options]="httpMethods"
               size="small"
@@ -48,13 +48,13 @@ import { ToolbarNetworkMockerService } from './network-mocker.service';
           </div>
 
           <div class="form-row">
-            <ngt-input
+            <ndt-input
               [(value)]="newMockStatus"
               placeholder="Status code (default: 200)"
               type="number"
               ariaLabel="Status Code"
             />
-            <ngt-input
+            <ndt-input
               [(value)]="newMockResponse"
               placeholder="Response JSON (optional)"
               ariaLabel="Response JSON"
@@ -62,8 +62,8 @@ import { ToolbarNetworkMockerService } from './network-mocker.service';
           </div>
 
           <div class="actions">
-            <ngt-button label="Add Mock" icon="import" (click)="onAddMock()" />
-            <ngt-button
+            <ndt-button label="Add Mock" icon="import" (click)="onAddMock()" />
+            <ndt-button
               [label]="
                 isMockingEnabled() ? 'Disable Mocking' : 'Enable Mocking'
               "
@@ -88,13 +88,13 @@ import { ToolbarNetworkMockerService } from './network-mocker.service';
               <div class="mock-status">{{ mock.status }}</div>
             </div>
             <div class="mock-actions">
-              <ngt-button
+              <ndt-button
                 variant="icon"
                 [icon]="mock.isActive ? 'star' : 'moon'"
                 [ariaLabel]="mock.isActive ? 'Disable mock' : 'Enable mock'"
                 (click)="onToggleMock(mock.id)"
               />
-              <ngt-button
+              <ndt-button
                 variant="icon"
                 icon="trash"
                 ariaLabel="Remove mock"
@@ -110,7 +110,7 @@ import { ToolbarNetworkMockerService } from './network-mocker.service';
         </div>
         }
       </div>
-    </ngt-toolbar-tool>
+    </ndt-toolbar-tool>
   `,
   styles: [
     `
@@ -119,7 +119,7 @@ import { ToolbarNetworkMockerService } from './network-mocker.service';
         display: flex;
         flex-direction: column;
         height: 100%;
-        gap: var(--ngt-spacing-md);
+        gap: var(--ndt-spacing-md);
         padding: 0;
       }
 
@@ -129,47 +129,47 @@ import { ToolbarNetworkMockerService } from './network-mocker.service';
         flex-shrink: 0;
 
         h3 {
-          margin: 0 0 var(--ngt-spacing-sm) 0;
-          font-size: var(--ngt-font-size-lg);
-          color: var(--ngt-text-primary);
+          margin: 0 0 var(--ndt-spacing-sm) 0;
+          font-size: var(--ndt-font-size-lg);
+          color: var(--ndt-text-primary);
           font-weight: 600;
         }
 
         p {
           margin: 0;
-          font-size: var(--ngt-font-size-sm);
-          color: var(--ngt-text-muted);
+          font-size: var(--ndt-font-size-sm);
+          color: var(--ndt-text-muted);
         }
       }
 
       .form {
         display: flex;
         flex-direction: column;
-        gap: var(--ngt-spacing-sm);
+        gap: var(--ndt-spacing-sm);
         flex-shrink: 0;
-        padding: var(--ngt-spacing-md);
-        background: var(--ngt-background-secondary);
-        border: 1px solid var(--ngt-border-primary);
-        border-radius: var(--ngt-border-radius-medium);
+        padding: var(--ndt-spacing-md);
+        background: var(--ndt-background-secondary);
+        border: 1px solid var(--ndt-border-primary);
+        border-radius: var(--ndt-border-radius-medium);
       }
 
       .form-row {
         display: flex;
-        gap: var(--ngt-spacing-sm);
+        gap: var(--ndt-spacing-sm);
 
-        ngt-input {
+        ndt-input {
           flex: 1;
         }
 
-        ngt-select {
+        ndt-select {
           flex: 0 0 120px;
         }
       }
 
       .actions {
         display: flex;
-        gap: var(--ngt-spacing-sm);
-        margin-top: var(--ngt-spacing-sm);
+        gap: var(--ndt-spacing-sm);
+        margin-top: var(--ndt-spacing-sm);
       }
 
       .empty {
@@ -177,23 +177,23 @@ import { ToolbarNetworkMockerService } from './network-mocker.service';
         align-items: center;
         justify-content: center;
         flex: 1;
-        color: var(--ngt-text-muted);
+        color: var(--ndt-text-muted);
         text-align: center;
-        font-size: var(--ngt-font-size-sm);
+        font-size: var(--ndt-font-size-sm);
       }
 
       .mocks-list {
         display: flex;
         flex-direction: column;
-        gap: var(--ngt-spacing-sm);
+        gap: var(--ndt-spacing-sm);
         flex: 1;
         min-height: 0;
         overflow-y: auto;
 
         h4 {
-          margin: 0 0 var(--ngt-spacing-sm) 0;
-          font-size: var(--ngt-font-size-md);
-          color: var(--ngt-text-primary);
+          margin: 0 0 var(--ndt-spacing-sm) 0;
+          font-size: var(--ndt-font-size-md);
+          color: var(--ndt-text-primary);
           font-weight: 600;
         }
 
@@ -202,16 +202,16 @@ import { ToolbarNetworkMockerService } from './network-mocker.service';
         }
 
         &::-webkit-scrollbar-track {
-          background: var(--ngt-background-secondary);
+          background: var(--ndt-background-secondary);
           border-radius: 4px;
         }
 
         &::-webkit-scrollbar-thumb {
-          background: var(--ngt-border-primary);
+          background: var(--ndt-border-primary);
           border-radius: 4px;
 
           &:hover {
-            background: var(--ngt-hover-bg);
+            background: var(--ndt-hover-bg);
           }
         }
       }
@@ -219,58 +219,58 @@ import { ToolbarNetworkMockerService } from './network-mocker.service';
       .mock-item {
         display: flex;
         align-items: center;
-        gap: var(--ngt-spacing-sm);
-        padding: var(--ngt-spacing-sm);
-        background: var(--ngt-background-secondary);
-        border: 1px solid var(--ngt-border-primary);
-        border-radius: var(--ngt-border-radius-small);
+        gap: var(--ndt-spacing-sm);
+        padding: var(--ndt-spacing-sm);
+        background: var(--ndt-background-secondary);
+        border: 1px solid var(--ndt-border-primary);
+        border-radius: var(--ndt-border-radius-small);
 
         .mock-info {
           flex: 1;
           display: flex;
           align-items: center;
-          gap: var(--ngt-spacing-sm);
+          gap: var(--ndt-spacing-sm);
         }
 
         .mock-method {
           font-weight: 600;
-          font-size: var(--ngt-font-size-xs);
-          color: var(--ngt-primary);
-          background: var(--ngt-primary-background);
+          font-size: var(--ndt-font-size-xs);
+          color: var(--ndt-primary);
+          background: var(--ndt-primary-background);
           padding: 2px 6px;
-          border-radius: var(--ngt-border-radius-small);
+          border-radius: var(--ndt-border-radius-small);
           min-width: 40px;
           text-align: center;
         }
 
         .mock-url {
           flex: 1;
-          font-size: var(--ngt-font-size-sm);
-          color: var(--ngt-text-primary);
+          font-size: var(--ndt-font-size-sm);
+          color: var(--ndt-text-primary);
           font-family: monospace;
         }
 
         .mock-status {
-          font-size: var(--ngt-font-size-xs);
-          color: var(--ngt-text-muted);
+          font-size: var(--ndt-font-size-xs);
+          color: var(--ndt-text-muted);
           min-width: 30px;
           text-align: center;
         }
 
         .mock-actions {
           display: flex;
-          gap: var(--ngt-spacing-xs);
+          gap: var(--ndt-spacing-xs);
         }
       }
 
       .status {
         text-align: center;
-        padding: var(--ngt-spacing-sm) var(--ngt-spacing-md);
-        background: var(--ngt-success-background);
-        border: 1px solid var(--ngt-success-border);
-        border-radius: var(--ngt-border-radius-small);
-        color: var(--ngt-success-text);
-        font-size: var(--ngt-font-size-sm);
+        padding: var(--ndt-spacing-sm) var(--ndt-spacing-md);
+        background: var(--ndt-success-background);
+        border: 1px solid var(--ndt-success-border);
+        border-radius: var(--ndt-border-radius-small);
+        color: var(--ndt-success-text);
+        font-size: var(--ndt-font-size-sm);
         flex-shrink: 0;
       }
     `,
@@ -303,7 +303,7 @@ export class ToolbarNetworkMockerToolComponent {
     description: 'Intercept and mock HTTP requests for testing and development',
     isClosable: true,
     size: 'tall',
-    id: 'ngt-network-mocker',
+    id: 'ndt-network-mocker',
     isBeta: true,
   } as ToolbarWindowOptions;
 

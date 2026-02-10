@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
-  selector: 'ngt-bug-icon',
+  selector: 'ndt-bug-icon',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

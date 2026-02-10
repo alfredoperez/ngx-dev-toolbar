@@ -87,7 +87,7 @@ describe('ToolbarStorageService', () => {
 
       service.remove(key);
 
-      expect(storageMock['ngt-testKey']).toBeUndefined();
+      expect(storageMock['ndt-testKey']).toBeUndefined();
     });
 
     it('should keep other values in localStorage', () => {

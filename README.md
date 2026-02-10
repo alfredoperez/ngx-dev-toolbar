@@ -208,43 +208,43 @@ class NotesService {
     ToolbarStepDirective,
   ],
   template: `
-    <ngt-toolbar-tool [options]="windowOptions" title="Notes" icon="edit">
-      <ngt-step-view
+    <ndt-toolbar-tool [options]="windowOptions" title="Notes" icon="edit">
+      <ndt-step-view
         [currentStep]="viewMode()"
         defaultStep="list"
         (back)="viewMode.set('list')"
       >
         <!-- List view -->
         <ng-template ngtStep="list">
-          <ngt-button (click)="viewMode.set('create')" icon="edit">
+          <ndt-button (click)="viewMode.set('create')" icon="edit">
             Add Note
-          </ngt-button>
-          <ngt-list
+          </ndt-button>
+          <ndt-list
             [hasItems]="notesService.notes().length > 0"
             emptyMessage="No notes yet"
             emptyHint="Click 'Add Note' to create one"
           >
             @for (note of notesService.notes(); track note.id) {
-              <ngt-list-item [label]="note.title">
-                <ngt-button
+              <ndt-list-item [label]="note.title">
+                <ndt-button
                   variant="icon"
                   icon="trash"
                   ariaLabel="Delete"
                   (click)="notesService.remove(note.id)"
                 />
-              </ngt-list-item>
+              </ndt-list-item>
             }
-          </ngt-list>
+          </ndt-list>
         </ng-template>
 
         <!-- Create view -->
         <ng-template ngtStep="create" stepTitle="New Note">
-          <ngt-input [(value)]="newTitle" placeholder="Title" ariaLabel="Note title" />
-          <ngt-input [(value)]="newContent" placeholder="Content" ariaLabel="Note content" />
-          <ngt-button (click)="onCreate()" label="Save" />
+          <ndt-input [(value)]="newTitle" placeholder="Title" ariaLabel="Note title" />
+          <ndt-input [(value)]="newContent" placeholder="Content" ariaLabel="Note content" />
+          <ndt-button (click)="onCreate()" label="Save" />
         </ng-template>
-      </ngt-step-view>
-    </ngt-toolbar-tool>
+      </ndt-step-view>
+    </ndt-toolbar-tool>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -277,17 +277,17 @@ export class NotesToolComponent {
 
 | Component | Selector | Purpose |
 |-----------|----------|---------|
-| `ToolbarToolComponent` | `ngt-toolbar-tool` | Window wrapper with positioning and animations |
-| `ToolbarButtonComponent` | `ngt-button` | Buttons with optional icon |
-| `ToolbarInputComponent` | `ngt-input` | Text inputs with two-way binding |
-| `ToolbarSelectComponent` | `ngt-select` | Dropdown selection |
-| `ToolbarListComponent` | `ngt-list` | List with empty/no-results states |
-| `ToolbarListItemComponent` | `ngt-list-item` | List items with optional badge |
-| `ToolbarCardComponent` | `ngt-card` | Content container |
-| `ToolbarClickableCardComponent` | `ngt-clickable-card` | Interactive card with icon |
-| `ToolbarStepViewComponent` | `ngt-step-view` | Multi-step view switcher |
-| `ToolbarIconComponent` | `ngt-icon` | 30+ SVG icons |
-| `ToolbarLinkButtonComponent` | `ngt-link-button` | External link button |
+| `ToolbarToolComponent` | `ndt-toolbar-tool` | Window wrapper with positioning and animations |
+| `ToolbarButtonComponent` | `ndt-button` | Buttons with optional icon |
+| `ToolbarInputComponent` | `ndt-input` | Text inputs with two-way binding |
+| `ToolbarSelectComponent` | `ndt-select` | Dropdown selection |
+| `ToolbarListComponent` | `ndt-list` | List with empty/no-results states |
+| `ToolbarListItemComponent` | `ndt-list-item` | List items with optional badge |
+| `ToolbarCardComponent` | `ndt-card` | Content container |
+| `ToolbarClickableCardComponent` | `ndt-clickable-card` | Interactive card with icon |
+| `ToolbarStepViewComponent` | `ndt-step-view` | Multi-step view switcher |
+| `ToolbarIconComponent` | `ndt-icon` | 30+ SVG icons |
+| `ToolbarLinkButtonComponent` | `ndt-link-button` | External link button |
 
 For a complete guide, see: [Create a Custom Tool](https://alfredoperez.github.io/ngx-dev-toolbar/docs/guides/custom-tool)
 

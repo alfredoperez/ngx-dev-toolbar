@@ -3,7 +3,7 @@ import { ToolbarIconComponent } from '../icons/icon.component';
 import { IconName } from '../icons/icon.models';
 
 @Component({
-  selector: 'ngt-link-button',
+  selector: 'ndt-link-button',
   standalone: true,
   imports: [ToolbarIconComponent],
   template: `
@@ -14,7 +14,7 @@ import { IconName } from '../icons/icon.models';
       class="link-button"
     >
       <div class="link-button__icon">
-        <ngt-icon [name]="icon()" />
+        <ndt-icon [name]="icon()" />
       </div>
       <span class="link-button__text">
         <ng-content></ng-content>

@@ -24,7 +24,7 @@ type ViewMode = 'list' | 'create' | 'edit' | 'import' | 'apply' | 'delete';
 type ToastType = 'success' | 'error';
 
 @Component({
-  selector: 'ngt-presets-tool',
+  selector: 'ndt-presets-tool',
   standalone: true,
   imports: [
     FormsModule,
@@ -34,7 +34,7 @@ type ToastType = 'success' | 'error';
     ToolbarIconComponent,
   ],
   template: `
-    <ngt-toolbar-tool [options]="options" title="Presets" icon="layout">
+    <ndt-toolbar-tool [options]="options" title="Presets" icon="layout">
       <div class="container">
         <!-- Toast Notification -->
         @if (toastMessage()) {
@@ -49,31 +49,31 @@ type ToastType = 'success' | 'error';
         @if (!hasNoPresets() || viewMode() !== 'list') {
         <div class="tool-header">
           @if (viewMode() === 'list') {
-          <ngt-input
+          <ndt-input
             [value]="searchQuery()"
             (valueChange)="onSearchChange($event)"
             placeholder="Search presets..."
             [ariaLabel]="'Search presets'"
           />
-          <ngt-button
+          <ndt-button
             (click)="onSwitchToImportMode()"
             [ariaLabel]="'Import preset'"
           >
             Import
-          </ngt-button>
-          <ngt-button
+          </ndt-button>
+          <ndt-button
             (click)="onSwitchToCreateMode()"
             [ariaLabel]="'Create new preset'"
           >
             New
-          </ngt-button>
+          </ndt-button>
           } @else {
-          <ngt-button
+          <ndt-button
             (click)="onSwitchToListMode()"
             [ariaLabel]="'Back to list'"
           >
             ← Back
-          </ngt-button>
+          </ndt-button>
           }
         </div>
         }
@@ -84,7 +84,7 @@ type ToastType = 'success' | 'error';
           <h3 class="form-title">Create Preset</h3>
           <p class="form-hint">This will save the current forced values from other tools. Only items you've explicitly set will be included.</p>
           <div class="form-field">
-            <ngt-input
+            <ndt-input
               label="Preset Name *"
               [value]="presetName()"
               (valueChange)="onPresetNameChange($event)"
@@ -95,7 +95,7 @@ type ToastType = 'success' | 'error';
             <span class="field-error">{{ nameError() }}</span>
             }
           </div>
-          <ngt-input
+          <ndt-input
             label="Description (optional)"
             [value]="presetDescription()"
             (valueChange)="presetDescription.set($event)"
@@ -222,8 +222,8 @@ type ToastType = 'success' | 'error';
           </div>
 
           <div class="form-actions">
-            <ngt-button type="button" (click)="onSwitchToListMode()">Cancel</ngt-button>
-            <ngt-button type="submit">Save Preset</ngt-button>
+            <ndt-button type="button" (click)="onSwitchToListMode()">Cancel</ndt-button>
+            <ndt-button type="submit">Save Preset</ndt-button>
           </div>
         </form>
         }
@@ -233,7 +233,7 @@ type ToastType = 'success' | 'error';
         <form (submit)="onSaveEdit($event)" class="preset-form">
           <h3 class="form-title">Edit Preset</h3>
           <div class="form-field">
-            <ngt-input
+            <ndt-input
               label="Preset Name *"
               [value]="editName()"
               (valueChange)="onEditNameChange($event)"
@@ -244,7 +244,7 @@ type ToastType = 'success' | 'error';
             <span class="field-error">{{ nameError() }}</span>
             }
           </div>
-          <ngt-input
+          <ndt-input
             label="Description (optional)"
             [value]="editDescription()"
             (valueChange)="editDescription.set($event)"
@@ -308,8 +308,8 @@ type ToastType = 'success' | 'error';
           }
 
           <div class="form-actions">
-            <ngt-button type="button" (click)="onSwitchToListMode()">Cancel</ngt-button>
-            <ngt-button type="submit">Save Changes</ngt-button>
+            <ndt-button type="button" (click)="onSwitchToListMode()">Cancel</ndt-button>
+            <ndt-button type="submit">Save Changes</ndt-button>
           </div>
         </form>
         }
@@ -361,8 +361,8 @@ type ToastType = 'success' | 'error';
           }
 
           <div class="form-actions">
-            <ngt-button type="button" (click)="onSwitchToListMode()">Cancel</ngt-button>
-            <ngt-button (click)="onImportPreset()">Import Preset</ngt-button>
+            <ndt-button type="button" (click)="onSwitchToListMode()">Cancel</ndt-button>
+            <ndt-button (click)="onImportPreset()">Import Preset</ndt-button>
           </div>
         </div>
         }
@@ -497,8 +497,8 @@ type ToastType = 'success' | 'error';
           }
 
           <div class="form-actions">
-            <ngt-button type="button" (click)="onSwitchToListMode()">Cancel</ngt-button>
-            <ngt-button (click)="onConfirmPartialApply()">Apply Selected</ngt-button>
+            <ndt-button type="button" (click)="onSwitchToListMode()">Cancel</ndt-button>
+            <ndt-button (click)="onConfirmPartialApply()">Apply Selected</ndt-button>
           </div>
         </div>
         }
@@ -515,7 +515,7 @@ type ToastType = 'success' | 'error';
             </p>
           </div>
           <div class="form-actions">
-            <ngt-button type="button" (click)="onSwitchToListMode()">← Back</ngt-button>
+            <ndt-button type="button" (click)="onSwitchToListMode()">← Back</ndt-button>
             <button class="delete-button" (click)="onConfirmDelete()">Delete Preset</button>
           </div>
         </div>
@@ -528,9 +528,9 @@ type ToastType = 'success' | 'error';
           <p class="hint">
             Save the current toolbar configuration as a preset for quick access
           </p>
-          <ngt-button (click)="onSwitchToCreateMode()">
+          <ndt-button (click)="onSwitchToCreateMode()">
             Create Your First Preset
-          </ngt-button>
+          </ndt-button>
         </div>
         } @else if (viewMode() === 'list' && hasNoFilteredPresets()) {
         <div class="empty">
@@ -552,14 +552,14 @@ type ToastType = 'success' | 'error';
               @if (preset.isSystem) {<span class="system-badge">SYS</span>}
               <span class="preset-card__spacer"></span>
               <div class="preset-card__actions">
-                <button class="icon-button" (click)="onStartApply(preset.id)"><ngt-icon name="refresh" /></button>
+                <button class="icon-button" (click)="onStartApply(preset.id)"><ndt-icon name="refresh" /></button>
                 @if (!preset.isSystem) {
-                <button class="icon-button" (click)="onStartEdit(preset.id)"><ngt-icon name="edit" /></button>
-                <button class="icon-button" (click)="onUpdatePreset(preset.id)"><ngt-icon name="gear" /></button>
+                <button class="icon-button" (click)="onStartEdit(preset.id)"><ndt-icon name="edit" /></button>
+                <button class="icon-button" (click)="onUpdatePreset(preset.id)"><ndt-icon name="gear" /></button>
                 }
-                <button class="icon-button" (click)="onExportPreset(preset.id)"><ngt-icon name="export" /></button>
+                <button class="icon-button" (click)="onExportPreset(preset.id)"><ndt-icon name="export" /></button>
                 @if (!preset.isSystem) {
-                <button class="icon-button" (click)="onDeletePreset(preset.id)"><ngt-icon name="trash" /></button>
+                <button class="icon-button" (click)="onDeletePreset(preset.id)"><ndt-icon name="trash" /></button>
                 }
               </div>
             </div>
@@ -588,7 +588,7 @@ type ToastType = 'success' | 'error';
         </div>
         }
       </div>
-    </ngt-toolbar-tool>
+    </ndt-toolbar-tool>
   `,
   styles: [
     `
@@ -603,16 +603,16 @@ type ToastType = 'success' | 'error';
       /* Toast Notification */
       .toast {
         position: absolute;
-        bottom: var(--ngt-spacing-md);
-        left: var(--ngt-spacing-md);
-        right: var(--ngt-spacing-md);
+        bottom: var(--ndt-spacing-md);
+        left: var(--ndt-spacing-md);
+        right: var(--ndt-spacing-md);
         z-index: 10;
         display: flex;
         align-items: center;
-        gap: var(--ngt-spacing-sm);
-        padding: var(--ngt-spacing-sm) var(--ngt-spacing-md);
-        border-radius: var(--ngt-border-radius-small);
-        font-size: var(--ngt-font-size-sm);
+        gap: var(--ndt-spacing-sm);
+        padding: var(--ndt-spacing-sm) var(--ndt-spacing-md);
+        border-radius: var(--ndt-border-radius-small);
+        font-size: var(--ndt-font-size-sm);
         animation: slideUp 150ms ease-out;
       }
 
@@ -647,29 +647,29 @@ type ToastType = 'success' | 'error';
         display: flex;
         flex-direction: column;
         justify-content: center;
-        padding: var(--ngt-spacing-md);
+        padding: var(--ndt-spacing-md);
       }
 
       .delete-view__content {
         text-align: center;
-        padding: var(--ngt-spacing-lg) var(--ngt-spacing-md);
+        padding: var(--ndt-spacing-lg) var(--ndt-spacing-md);
       }
 
       .delete-view__icon {
         font-size: 48px;
-        margin-bottom: var(--ngt-spacing-md);
+        margin-bottom: var(--ndt-spacing-md);
       }
 
       .delete-view__title {
-        margin: 0 0 var(--ngt-spacing-sm);
-        font-size: var(--ngt-font-size-md);
-        color: var(--ngt-text-primary);
+        margin: 0 0 var(--ndt-spacing-sm);
+        font-size: var(--ndt-font-size-md);
+        color: var(--ndt-text-primary);
       }
 
       .delete-view__description {
         margin: 0;
-        font-size: var(--ngt-font-size-sm);
-        color: var(--ngt-text-secondary);
+        font-size: var(--ndt-font-size-sm);
+        color: var(--ndt-text-secondary);
         line-height: 1.5;
       }
 
@@ -677,10 +677,10 @@ type ToastType = 'success' | 'error';
         background: #ef4444;
         color: white;
         border: none;
-        padding: var(--ngt-spacing-sm) var(--ngt-spacing-md);
-        border-radius: var(--ngt-border-radius-small);
+        padding: var(--ndt-spacing-sm) var(--ndt-spacing-md);
+        border-radius: var(--ndt-border-radius-small);
         cursor: pointer;
-        font-size: var(--ngt-font-size-sm);
+        font-size: var(--ndt-font-size-sm);
         font-weight: 500;
         transition: background 200ms ease-out;
 
@@ -693,14 +693,14 @@ type ToastType = 'success' | 'error';
         position: relative;
         flex-shrink: 0;
         display: flex;
-        gap: var(--ngt-spacing-sm);
-        margin-bottom: var(--ngt-spacing-md);
+        gap: var(--ndt-spacing-sm);
+        margin-bottom: var(--ndt-spacing-md);
 
-        ngt-input {
+        ndt-input {
           flex: 1;
         }
 
-        ngt-button {
+        ndt-button {
           flex-shrink: 0;
         }
       }
@@ -708,16 +708,16 @@ type ToastType = 'success' | 'error';
       .empty {
         display: flex;
         flex-direction: column;
-        gap: var(--ngt-spacing-md);
+        gap: var(--ndt-spacing-md);
         flex: 1;
         min-height: 0;
         justify-content: center;
         align-items: center;
-        border: 1px solid var(--ngt-border-subtle);
-        border-radius: var(--ngt-border-radius-medium);
-        padding: var(--ngt-spacing-md);
+        border: 1px solid var(--ndt-border-subtle);
+        border-radius: var(--ndt-border-radius-medium);
+        padding: var(--ndt-spacing-md);
         background: transparent;
-        color: var(--ngt-text-muted);
+        color: var(--ndt-text-muted);
         text-align: center;
 
         p {
@@ -725,46 +725,46 @@ type ToastType = 'success' | 'error';
         }
 
         .hint {
-          font-size: var(--ngt-font-size-xs);
+          font-size: var(--ndt-font-size-xs);
         }
       }
 
       .preset-list {
         display: flex;
         flex-direction: column;
-        gap: var(--ngt-spacing-xs);
+        gap: var(--ndt-spacing-xs);
         flex: 1;
         min-height: 0;
         overflow-y: auto;
-        padding-right: var(--ngt-spacing-xs);
+        padding-right: var(--ndt-spacing-xs);
 
         &::-webkit-scrollbar {
           width: 8px;
         }
 
         &::-webkit-scrollbar-track {
-          background: var(--ngt-background-secondary);
+          background: var(--ndt-background-secondary);
           border-radius: 4px;
         }
 
         &::-webkit-scrollbar-thumb {
-          background: var(--ngt-border-primary);
+          background: var(--ndt-border-primary);
           border-radius: 4px;
 
           &:hover {
-            background: var(--ngt-hover-bg);
+            background: var(--ndt-hover-bg);
           }
         }
 
         scrollbar-width: thin;
-        scrollbar-color: var(--ngt-border-primary)
-          var(--ngt-background-secondary);
+        scrollbar-color: var(--ndt-border-primary)
+          var(--ndt-background-secondary);
       }
 
       .preset-card {
-        background: var(--ngt-background-secondary);
-        padding: 6px var(--ngt-spacing-sm);
-        border-radius: var(--ngt-border-radius-medium);
+        background: var(--ndt-background-secondary);
+        padding: 6px var(--ndt-spacing-sm);
+        border-radius: var(--ndt-border-radius-medium);
         display: flex;
         flex-direction: column;
         gap: 2px;
@@ -794,9 +794,9 @@ type ToastType = 'success' | 'error';
       }
 
       .preset-card__name {
-        font-size: var(--ngt-font-size-sm);
+        font-size: var(--ndt-font-size-sm);
         font-weight: 600;
-        color: var(--ngt-text-primary);
+        color: var(--ndt-text-primary);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -814,8 +814,8 @@ type ToastType = 'success' | 'error';
         letter-spacing: 0.3px;
         padding: 1px 4px;
         border-radius: 3px;
-        background: var(--ngt-border-primary);
-        color: var(--ngt-text-muted);
+        background: var(--ndt-border-primary);
+        color: var(--ndt-text-muted);
         flex-shrink: 0;
       }
 
@@ -824,7 +824,7 @@ type ToastType = 'success' | 'error';
         border: none;
         cursor: pointer;
         font-size: 12px;
-        color: var(--ngt-text-muted);
+        color: var(--ndt-text-muted);
         padding: 0;
         line-height: 1;
         transition: color 150ms ease-out;
@@ -853,7 +853,7 @@ type ToastType = 'success' | 'error';
         margin: 0;
         padding: 4px;
         border-radius: 4px;
-        color: var(--ngt-text-muted);
+        color: var(--ndt-text-muted);
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -862,13 +862,13 @@ type ToastType = 'success' | 'error';
         line-height: 0;
 
         &:hover {
-          background: var(--ngt-hover-bg);
-          color: var(--ngt-text-primary);
+          background: var(--ndt-hover-bg);
+          color: var(--ndt-text-primary);
           opacity: 1;
         }
 
-        ngt-icon,
-        ngt-icon > *,
+        ndt-icon,
+        ndt-icon > *,
         svg {
           display: block;
           width: 12px !important;
@@ -878,7 +878,7 @@ type ToastType = 'success' | 'error';
 
       .preset-card__description {
         font-size: 11px;
-        color: var(--ngt-text-secondary);
+        color: var(--ndt-text-secondary);
         flex: 1;
         white-space: nowrap;
         overflow: hidden;
@@ -887,7 +887,7 @@ type ToastType = 'success' | 'error';
 
       .preset-card__date {
         font-size: 10px;
-        color: var(--ngt-text-muted);
+        color: var(--ndt-text-muted);
         margin-left: auto;
         flex-shrink: 0;
       }
@@ -915,25 +915,25 @@ type ToastType = 'success' | 'error';
         overflow-y: auto;
         display: flex;
         flex-direction: column;
-        gap: var(--ngt-spacing-sm);
-        padding: var(--ngt-spacing-sm);
+        gap: var(--ndt-spacing-sm);
+        padding: var(--ndt-spacing-sm);
 
-        ngt-input {
+        ndt-input {
           width: 100%;
         }
       }
 
       .form-title {
         margin: 0;
-        font-size: var(--ngt-font-size-sm);
+        font-size: var(--ndt-font-size-sm);
         font-weight: 600;
-        color: var(--ngt-text-primary);
+        color: var(--ndt-text-primary);
       }
 
       .form-hint {
         margin: 0;
         font-size: 11px;
-        color: var(--ngt-text-muted);
+        color: var(--ndt-text-muted);
         line-height: 1.3;
       }
 
@@ -949,18 +949,18 @@ type ToastType = 'success' | 'error';
       }
 
       .preset-summary {
-        background: var(--ngt-background-secondary);
-        padding: var(--ngt-spacing-sm);
-        border-radius: var(--ngt-border-radius-medium);
+        background: var(--ndt-background-secondary);
+        padding: var(--ndt-spacing-sm);
+        border-radius: var(--ndt-border-radius-medium);
         display: flex;
         flex-direction: column;
-        gap: var(--ngt-spacing-xs);
+        gap: var(--ndt-spacing-xs);
 
         h4 {
           margin: 0;
           font-size: 11px;
           font-weight: 500;
-          color: var(--ngt-text-secondary);
+          color: var(--ndt-text-secondary);
         }
       }
 
@@ -973,10 +973,10 @@ type ToastType = 'success' | 'error';
       .checkbox-option {
         display: flex;
         align-items: center;
-        gap: var(--ngt-spacing-xs);
+        gap: var(--ndt-spacing-xs);
         cursor: pointer;
-        color: var(--ngt-text-primary);
-        font-size: var(--ngt-font-size-sm);
+        color: var(--ndt-text-primary);
+        font-size: var(--ndt-font-size-sm);
         padding: 2px 0;
 
         input[type='checkbox'] {
@@ -1037,7 +1037,7 @@ type ToastType = 'success' | 'error';
         }
 
         .item-name {
-          color: var(--ngt-text-primary);
+          color: var(--ndt-text-primary);
           flex: 1;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -1068,25 +1068,25 @@ type ToastType = 'success' | 'error';
       .form-actions {
         display: flex;
         justify-content: flex-end;
-        gap: var(--ngt-spacing-sm);
+        gap: var(--ndt-spacing-sm);
         margin-top: auto;
-        padding-top: var(--ngt-spacing-sm);
+        padding-top: var(--ndt-spacing-sm);
       }
 
       /* Config Preview (Edit Mode) */
       .config-preview {
-        background: var(--ngt-background-secondary);
-        padding: var(--ngt-spacing-sm);
-        border-radius: var(--ngt-border-radius-medium);
+        background: var(--ndt-background-secondary);
+        padding: var(--ndt-spacing-sm);
+        border-radius: var(--ndt-border-radius-medium);
         display: flex;
         flex-direction: column;
-        gap: var(--ngt-spacing-xs);
+        gap: var(--ndt-spacing-xs);
 
         h4 {
           margin: 0;
           font-size: 11px;
           font-weight: 500;
-          color: var(--ngt-text-secondary);
+          color: var(--ndt-text-secondary);
         }
       }
 
@@ -1098,7 +1098,7 @@ type ToastType = 'success' | 'error';
 
       .config-category__title {
         font-size: 10px;
-        color: var(--ngt-text-muted);
+        color: var(--ndt-text-muted);
         font-weight: 500;
       }
 
@@ -1112,8 +1112,8 @@ type ToastType = 'success' | 'error';
         font-size: 10px;
         padding: 1px 6px;
         border-radius: 3px;
-        background: var(--ngt-background-primary);
-        color: var(--ngt-text-secondary);
+        background: var(--ndt-background-primary);
+        color: var(--ndt-text-secondary);
       }
 
       .config-item--on {
@@ -1128,16 +1128,16 @@ type ToastType = 'success' | 'error';
 
       .replace-config-button {
         background: transparent;
-        border: 1px dashed var(--ngt-border-primary);
-        padding: 6px var(--ngt-spacing-sm);
-        border-radius: var(--ngt-border-radius-small);
-        color: var(--ngt-text-secondary);
+        border: 1px dashed var(--ndt-border-primary);
+        padding: 6px var(--ndt-spacing-sm);
+        border-radius: var(--ndt-border-radius-small);
+        color: var(--ndt-text-secondary);
         cursor: pointer;
         font-size: 11px;
         transition: all 150ms ease-out;
 
         &:hover {
-          background: var(--ngt-hover-bg);
+          background: var(--ndt-hover-bg);
           border-color: rgb(99, 102, 241);
           color: rgb(99, 102, 241);
         }
@@ -1150,9 +1150,9 @@ type ToastType = 'success' | 'error';
         align-items: center;
         justify-content: center;
         gap: 4px;
-        padding: var(--ngt-spacing-md);
-        border: 2px dashed var(--ngt-border-primary);
-        border-radius: var(--ngt-border-radius-medium);
+        padding: var(--ndt-spacing-md);
+        border: 2px dashed var(--ndt-border-primary);
+        border-radius: var(--ndt-border-radius-medium);
         cursor: pointer;
         transition: all 150ms ease-out;
       }
@@ -1168,20 +1168,20 @@ type ToastType = 'success' | 'error';
       }
 
       .drop-zone__text {
-        font-size: var(--ngt-font-size-sm);
-        color: var(--ngt-text-primary);
+        font-size: var(--ndt-font-size-sm);
+        color: var(--ndt-text-primary);
       }
 
       .drop-zone__hint {
         font-size: 11px;
-        color: var(--ngt-text-muted);
+        color: var(--ndt-text-muted);
       }
 
       .divider {
         display: flex;
         align-items: center;
-        gap: var(--ngt-spacing-sm);
-        color: var(--ngt-text-muted);
+        gap: var(--ndt-spacing-sm);
+        color: var(--ndt-text-muted);
         font-size: 10px;
 
         &::before,
@@ -1189,18 +1189,18 @@ type ToastType = 'success' | 'error';
           content: '';
           flex: 1;
           height: 1px;
-          background: var(--ngt-border-primary);
+          background: var(--ndt-border-primary);
         }
       }
 
       .json-textarea {
         width: 100%;
         min-height: 80px;
-        padding: var(--ngt-spacing-xs);
-        border: 1px solid var(--ngt-border-primary);
-        border-radius: var(--ngt-border-radius-small);
-        background: var(--ngt-background-secondary);
-        color: var(--ngt-text-primary);
+        padding: var(--ndt-spacing-xs);
+        border: 1px solid var(--ndt-border-primary);
+        border-radius: var(--ndt-border-radius-small);
+        background: var(--ndt-background-secondary);
+        color: var(--ndt-text-primary);
         font-family: monospace;
         font-size: 11px;
         resize: vertical;
@@ -1211,7 +1211,7 @@ type ToastType = 'success' | 'error';
         }
 
         &::placeholder {
-          color: var(--ngt-text-muted);
+          color: var(--ndt-text-muted);
         }
       }
 
@@ -1219,18 +1219,18 @@ type ToastType = 'success' | 'error';
       .apply-description {
         margin: 0;
         font-size: 11px;
-        color: var(--ngt-text-secondary);
+        color: var(--ndt-text-secondary);
       }
 
       .apply-categories {
         display: flex;
         flex-direction: column;
-        gap: var(--ngt-spacing-xs);
+        gap: var(--ndt-spacing-xs);
       }
 
       .apply-category {
-        background: var(--ngt-background-secondary);
-        border-radius: var(--ngt-border-radius-small);
+        background: var(--ndt-background-secondary);
+        border-radius: var(--ndt-border-radius-small);
         overflow: hidden;
         transition: opacity 150ms ease-out;
       }
@@ -1242,11 +1242,11 @@ type ToastType = 'success' | 'error';
       .apply-category__header {
         display: flex;
         align-items: center;
-        gap: var(--ngt-spacing-xs);
-        padding: 6px var(--ngt-spacing-sm);
+        gap: var(--ndt-spacing-xs);
+        padding: 6px var(--ndt-spacing-sm);
         cursor: pointer;
-        font-size: var(--ngt-font-size-sm);
-        color: var(--ngt-text-primary);
+        font-size: var(--ndt-font-size-sm);
+        color: var(--ndt-text-primary);
         font-weight: 500;
 
         input[type='checkbox'] {
@@ -1258,7 +1258,7 @@ type ToastType = 'success' | 'error';
       }
 
       .apply-diff {
-        padding: 0 var(--ngt-spacing-sm) 6px;
+        padding: 0 var(--ndt-spacing-sm) 6px;
         display: flex;
         flex-direction: column;
         gap: 2px;
@@ -1270,20 +1270,20 @@ type ToastType = 'success' | 'error';
         gap: 6px;
         font-size: 11px;
         padding: 3px 6px;
-        background: var(--ngt-background-primary);
+        background: var(--ndt-background-primary);
         border-radius: 3px;
       }
 
       .diff-item__name {
         flex: 1;
-        color: var(--ngt-text-primary);
+        color: var(--ndt-text-primary);
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
       }
 
       .diff-item__arrow {
-        color: var(--ngt-text-muted);
+        color: var(--ndt-text-muted);
         font-size: 10px;
       }
 
@@ -1462,7 +1462,7 @@ export class ToolbarPresetsToolComponent {
     description: 'Save and load toolbar configurations',
     isClosable: true,
     size: 'tall',
-    id: 'ngt-presets',
+    id: 'ndt-presets',
     isBeta: true,
   };
 

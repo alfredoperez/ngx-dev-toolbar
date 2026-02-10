@@ -25,7 +25,7 @@ module.exports = [
         'error',
         {
           type: 'attribute',
-          prefix: 'ngt',
+          prefix: 'ndt',
           style: 'camelCase',
         },
       ],
@@ -33,7 +33,7 @@ module.exports = [
         'error',
         {
           type: 'element',
-          prefix: 'ngt',
+          prefix: 'ndt',
           style: 'kebab-case',
         },
       ],

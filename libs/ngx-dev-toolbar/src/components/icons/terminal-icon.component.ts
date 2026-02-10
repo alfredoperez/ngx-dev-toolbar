@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
-  selector: 'ngt-terminal-icon',
+  selector: 'ndt-terminal-icon',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

@@ -139,8 +139,8 @@ Reusable components are in `src/components/`:
 
 The library uses a **hybrid CSS architecture** combining component-scoped styles with global overlay styles:
 
-- **Class Naming**: Use `ngt-` prefix ONLY for global/overlay classes (outside Shadow DOM). Component-scoped classes don't need prefixes.
-- **Design Tokens**: All theme values use CSS custom properties (`--ngt-*` prefix)
+- **Class Naming**: Use `ndt-` prefix ONLY for global/overlay classes (outside Shadow DOM). Component-scoped classes don't need prefixes.
+- **Design Tokens**: All theme values use CSS custom properties (`--ndt-*` prefix)
 - **Theme Support**: Light/dark themes via `[attr.data-theme]="theme()"`
 - **Defensive CSS**: Explicit spacing patterns to resist external CSS resets
 
@@ -157,11 +157,11 @@ The library uses a **hybrid CSS architecture** combining component-scoped styles
 .container {
   display: flex;
   flex-direction: column;
-  margin-top: var(--ngt-spacing-sm); // Defensive spacing against CSS resets
-  gap: var(--ngt-spacing-md);
+  margin-top: var(--ndt-spacing-sm); // Defensive spacing against CSS resets
+  gap: var(--ndt-spacing-md);
 }
 
-.ngt-window {
+.ndt-window {
   contain: layout style; // Isolates window from external CSS interference
 }
 
@@ -169,7 +169,7 @@ The library uses a **hybrid CSS architecture** combining component-scoped styles
   flex: 1;
   overflow: auto;
   min-height: 0;
-  padding-top: var(--ngt-spacing-md); // Prevents overlap with header
+  padding-top: var(--ndt-spacing-md); // Prevents overlap with header
 }
 ```
 
@@ -195,7 +195,7 @@ import { ToolbarComponent } from 'ngx-dev-toolbar';
 
 @Component({
   imports: [ToolbarComponent],
-  template: `<ngt-toolbar [config]="toolbarConfig"></ngt-toolbar>`
+  template: `<ndt-toolbar [config]="toolbarConfig"></ndt-toolbar>`
 })
 export class AppComponent {
   toolbarConfig = {
@@ -263,29 +263,29 @@ All tool services follow the `ToolbarService<T>` interface:
 
 ```scss
 // Colors
---ngt-background-primary
---ngt-background-secondary
---ngt-text-primary
---ngt-text-secondary
---ngt-text-muted
---ngt-border-primary
+--ndt-background-primary
+--ndt-background-secondary
+--ndt-text-primary
+--ndt-text-secondary
+--ndt-text-muted
+--ndt-border-primary
 
 // Spacing
---ngt-spacing-xs
---ngt-spacing-sm
---ngt-spacing-md
---ngt-spacing-lg
+--ndt-spacing-xs
+--ndt-spacing-sm
+--ndt-spacing-md
+--ndt-spacing-lg
 
 // Border Radius
---ngt-border-radius-small
---ngt-border-radius-medium
---ngt-border-radius-large
+--ndt-border-radius-small
+--ndt-border-radius-medium
+--ndt-border-radius-large
 
 // Font Sizes
---ngt-font-size-xs
---ngt-font-size-sm
---ngt-font-size-md
---ngt-font-size-lg
+--ndt-font-size-xs
+--ndt-font-size-sm
+--ndt-font-size-md
+--ndt-font-size-lg
 ```
 
 ## Active Technologies

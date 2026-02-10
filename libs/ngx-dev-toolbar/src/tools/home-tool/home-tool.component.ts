@@ -17,7 +17,7 @@ import { SettingsService } from './settings.service';
 type ThemeType = 'light' | 'dark';
 
 @Component({
-  selector: 'ngt-home-tool',
+  selector: 'ndt-home-tool',
   standalone: true,
   imports: [
     ToolbarToolComponent,
@@ -27,7 +27,7 @@ type ThemeType = 'light' | 'dark';
     ToolbarLinkButtonComponent,
   ],
   template: `
-    <ngt-toolbar-tool [options]="options" title="Home" icon="angular">
+    <ndt-toolbar-tool [options]="options" title="Home" icon="angular">
       <section class="settings">
         <div class="settings-container">
           <div class="instruction">
@@ -39,7 +39,7 @@ type ThemeType = 'light' | 'dark';
             </div>
             <div class="instruction__control">
               <div class="instruction__control-button">
-                <ngt-button
+                <ndt-button
                   variant="icon"
                   icon="trash"
                   ariaLabel="Reset all settings"
@@ -49,13 +49,13 @@ type ThemeType = 'light' | 'dark';
             </div>
           </div>
           <div class="settings-actions">
-            <ngt-clickable-card
+            <ndt-clickable-card
               icon="export"
               title="Export Settings"
               subtitle="Export the current settings to share with other devs or use in your tests"
               (click)="onExportSettings()"
             />
-            <ngt-clickable-card
+            <ndt-clickable-card
               icon="import"
               title="Import Settings"
               subtitle="Import settings to reproduce a scenario"
@@ -66,13 +66,13 @@ type ThemeType = 'light' | 'dark';
 
         <div class="footer-links">
           @for (link of links; track link.url) {
-          <ngt-link-button [icon]="link.icon" [url]="link.url">
+          <ndt-link-button [icon]="link.icon" [url]="link.url">
             {{ link.label }}
-          </ngt-link-button>
+          </ndt-link-button>
           }
         </div>
       </section>
-    </ngt-toolbar-tool>
+    </ndt-toolbar-tool>
   `,
   styleUrls: ['./home-tool.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -87,7 +87,7 @@ export class ToolbarHomeToolComponent {
   readonly options: ToolbarWindowOptions = {
     title: this.title,
     isClosable: true,
-    id: 'ngt-home',
+    id: 'ndt-home',
     size: 'medium',
     description: '',
     isBeta: true,

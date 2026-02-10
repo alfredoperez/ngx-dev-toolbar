@@ -7,10 +7,10 @@
 .list-item {
   display: flex;
   flex-direction: row;
-  gap: var(--ngt-spacing-sm);
-  background: var(--ngt-background-secondary);
-  padding: var(--ngt-spacing-md);
-  border-radius: var(--ngt-border-radius-medium);
+  gap: var(--ndt-spacing-sm);
+  background: var(--ndt-background-secondary);
+  padding: var(--ndt-spacing-md);
+  border-radius: var(--ndt-border-radius-medium);
   transition: background-color 0.2s ease;
   position: relative;
   z-index: 1;
@@ -27,8 +27,8 @@
 
 .list-item .info h3 {
   margin: 0;
-  font-size: var(--ngt-font-size-md);
-  color: var(--ngt-text-primary);
+  font-size: var(--ndt-font-size-md);
+  color: var(--ndt-text-primary);
 }
 
 .list-item .info .description-wrapper {
@@ -60,8 +60,8 @@
 
 .list-item .info p {
   margin: 0;
-  font-size: var(--ngt-font-size-xs);
-  color: var(--ngt-text-muted);
+  font-size: var(--ndt-font-size-xs);
+  color: var(--ndt-text-muted);
   flex: 1;
 }
 

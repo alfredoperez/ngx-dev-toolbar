@@ -174,83 +174,83 @@ $z-indices: (
 
 // Create a mixin for the CSS variables that can be used by components
 @mixin devtools-theme {
-  --ngt-border-radius-small: #{map.get(
+  --ndt-border-radius-small: #{map.get(
       map.get($dimensions, border-radius),
       small
     )};
-  --ngt-border-radius-medium: #{map.get(
+  --ndt-border-radius-medium: #{map.get(
       map.get($dimensions, border-radius),
       medium
     )};
-  --ngt-border-radius-large: #{map.get(
+  --ndt-border-radius-large: #{map.get(
       map.get($dimensions, border-radius),
       large
     )};
 
-  --ngt-transition-default: #{map.get($transitions, default)};
-  --ngt-transition-smooth: #{map.get($transitions, smooth)};
+  --ndt-transition-default: #{map.get($transitions, default)};
+  --ndt-transition-smooth: #{map.get($transitions, smooth)};
 
-  --ngt-bg-primary: #{map.get(map.get($colors, light), background, primary)};
-  --ngt-bg-gradient: #{map.get(map.get($colors, light), background, gradient)};
-  --ngt-text-primary: #{map.get(map.get($colors, light), text, primary)};
-  --ngt-text-secondary: #{map.get(map.get($colors, light), text, secondary)};
-  --ngt-text-muted: #{map.get(map.get($colors, light), text, muted)};
-  --ngt-border-primary: #{map.get(map.get($colors, light), border, primary)};
-  --ngt-border-subtle: #{map.get(map.get($colors, light), border, subtle)};
-  --ngt-hover-bg: #{map.get(map.get($colors, light), hover, background)};
-  --ngt-hover-danger: #{map.get(map.get($colors, light), hover, danger)};
-  --ngt-shadow-toolbar: #{map.get(map.get($shadow-themes, light), toolbar)};
-  --ngt-shadow-tooltip: #{map.get(map.get($shadow-themes, light), tooltip)};
-  --ngt-shadow-window: #{map.get(map.get($shadow-themes, light), window)};
+  --ndt-bg-primary: #{map.get(map.get($colors, light), background, primary)};
+  --ndt-bg-gradient: #{map.get(map.get($colors, light), background, gradient)};
+  --ndt-text-primary: #{map.get(map.get($colors, light), text, primary)};
+  --ndt-text-secondary: #{map.get(map.get($colors, light), text, secondary)};
+  --ndt-text-muted: #{map.get(map.get($colors, light), text, muted)};
+  --ndt-border-primary: #{map.get(map.get($colors, light), border, primary)};
+  --ndt-border-subtle: #{map.get(map.get($colors, light), border, subtle)};
+  --ndt-hover-bg: #{map.get(map.get($colors, light), hover, background)};
+  --ndt-hover-danger: #{map.get(map.get($colors, light), hover, danger)};
+  --ndt-shadow-toolbar: #{map.get(map.get($shadow-themes, light), toolbar)};
+  --ndt-shadow-tooltip: #{map.get(map.get($shadow-themes, light), tooltip)};
+  --ndt-shadow-window: #{map.get(map.get($shadow-themes, light), window)};
 
-  --ngt-spacing-xs: 4px;
-  --ngt-spacing-sm: 6px;
-  --ngt-spacing-md: 12px;
-  --ngt-spacing-lg: 16px;
-  --ngt-window-padding: 16px;
+  --ndt-spacing-xs: 4px;
+  --ndt-spacing-sm: 6px;
+  --ndt-spacing-md: 12px;
+  --ndt-spacing-lg: 16px;
+  --ndt-window-padding: 16px;
 
-  --ngt-font-size-xxs: #{map.get($font-sizes, xxs)};
-  --ngt-font-size-xs: #{map.get($font-sizes, xs)};
-  --ngt-font-size-sm: #{map.get($font-sizes, sm)};
-  --ngt-font-size-md: #{map.get($font-sizes, md)};
-  --ngt-font-size-lg: #{map.get($font-sizes, lg)};
-  --ngt-font-size-xl: #{map.get($font-sizes, xl)};
+  --ndt-font-size-xxs: #{map.get($font-sizes, xxs)};
+  --ndt-font-size-xs: #{map.get($font-sizes, xs)};
+  --ndt-font-size-sm: #{map.get($font-sizes, sm)};
+  --ndt-font-size-md: #{map.get($font-sizes, md)};
+  --ndt-font-size-lg: #{map.get($font-sizes, lg)};
+  --ndt-font-size-xl: #{map.get($font-sizes, xl)};
 
-  --ngt-background-secondary: var(--ngt-bg-primary);
-  --ngt-background-hover: var(--ngt-hover-bg);
+  --ndt-background-secondary: var(--ndt-bg-primary);
+  --ndt-background-hover: var(--ndt-hover-bg);
 
-  --ngt-primary: #df30d4;
-  --ngt-primary-rgb: 223, 48, 212;
-  --ngt-text-on-primary: #{$color-white};
+  --ndt-primary: #df30d4;
+  --ndt-primary-rgb: 223, 48, 212;
+  --ndt-text-on-primary: #{$color-white};
 
-  --ngt-border-color: var(--ngt-border-primary);
+  --ndt-border-color: var(--ndt-border-primary);
 
-  --ngt-note-background: #{map.get(
+  --ndt-note-background: #{map.get(
       map.get(map.get($colors, light), annotation),
       note,
       background
     )};
-  --ngt-note-border: #{map.get(
+  --ndt-note-border: #{map.get(
       map.get(map.get($colors, light), annotation),
       note,
       border
     )};
-  --ngt-warning-background: #{map.get(
+  --ndt-warning-background: #{map.get(
       map.get(map.get($colors, light), annotation),
       warning,
       background
     )};
-  --ngt-warning-border: #{map.get(
+  --ndt-warning-border: #{map.get(
       map.get(map.get($colors, light), annotation),
       warning,
       border
     )};
-  --ngt-error-background: #{map.get(
+  --ndt-error-background: #{map.get(
       map.get(map.get($colors, light), annotation),
       error,
       background
     )};
-  --ngt-error-border: #{map.get(
+  --ndt-error-border: #{map.get(
       map.get(map.get($colors, light), annotation),
       error,
       border

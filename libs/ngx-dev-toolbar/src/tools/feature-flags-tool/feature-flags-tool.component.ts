@@ -19,7 +19,7 @@ import { ToolbarStorageService } from '../../utils/storage.service';
 import { ToolbarInternalFeatureFlagService } from './feature-flags-internal.service';
 import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
 @Component({
-  selector: 'ngt-feature-flags-tool',
+  selector: 'ndt-feature-flags-tool',
   standalone: true,
   imports: [
     FormsModule,
@@ -31,7 +31,7 @@ import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
     ToolbarListItemComponent,
   ],
   template: `
-    <ngt-toolbar-tool
+    <ndt-toolbar-tool
       [options]="options"
       title="Feature Flags"
       icon="toggle-left"
@@ -39,14 +39,14 @@ import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
     >
       <div class="container">
         <div class="tool-header">
-          <ngt-input
+          <ndt-input
             [value]="searchQuery()"
             (valueChange)="onSearchChange($event)"
             placeholder="Search..."
           />
           <div class="filter-wrapper">
-            <ngt-icon name="filter" class="filter-icon" />
-            <ngt-select
+            <ndt-icon name="filter" class="filter-icon" />
+            <ndt-select
               [value]="activeFilter()"
               [options]="filterOptions"
               [size]="'medium'"
@@ -55,21 +55,21 @@ import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
           </div>
         </div>
 
-        <ngt-list
+        <ndt-list
           [hasItems]="!hasNoFlags()"
           [hasResults]="!hasNoFilteredFlags()"
           emptyMessage="No flags found"
           noResultsMessage="No flags found matching your filter"
         >
           @for (flag of filteredFlags(); track flag.id) {
-          <ngt-list-item
+          <ndt-list-item
             [title]="flag.name"
             [description]="flag.description"
             [isForced]="flag.isForced"
             [currentValue]="flag.isEnabled"
             [originalValue]="flag.originalValue"
           >
-            <ngt-select
+            <ndt-select
               [value]="getFlagValue(flag)"
               [options]="flagValueOptions"
               [placeholder]="getFlagPlaceholder(flag)"
@@ -77,11 +77,11 @@ import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
               (valueChange)="onFlagChange(flag.id, $event ?? '')"
               size="small"
             />
-          </ngt-list-item>
+          </ndt-list-item>
           }
-        </ngt-list>
+        </ndt-list>
       </div>
-    </ngt-toolbar-tool>
+    </ndt-toolbar-tool>
   `,
   styles: [
     `
@@ -97,10 +97,10 @@ import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
         position: relative;
         flex-shrink: 0;
         display: flex;
-        gap: var(--ngt-spacing-sm);
-        margin-bottom: var(--ngt-spacing-sm);
+        gap: var(--ndt-spacing-sm);
+        margin-bottom: var(--ndt-spacing-sm);
 
-        ngt-input {
+        ndt-input {
           flex: 1;
         }
 
@@ -108,7 +108,7 @@ import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
           flex: 0 0 auto;
           display: flex;
           align-items: center;
-          gap: var(--ngt-spacing-md);
+          gap: var(--ndt-spacing-md);
 
           .filter-icon {
             width: 18px;
@@ -117,7 +117,7 @@ import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
             opacity: 0.6;
           }
 
-          ngt-select {
+          ndt-select {
             flex: 0 0 auto;
             min-width: 180px;
           }
@@ -211,7 +211,7 @@ export class ToolbarFeatureFlagsToolComponent {
     description: 'Manage the feature flags for your current session',
     isClosable: true,
     size: 'tall',
-    id: 'ngt-feature-flags',
+    id: 'ndt-feature-flags',
     isBeta: true,
   } as ToolbarWindowOptions;
 

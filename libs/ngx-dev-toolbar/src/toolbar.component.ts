@@ -31,7 +31,7 @@ import { ToolbarPresetsToolComponent } from './tools/presets-tool/presets-tool.c
 
 @Component({
   standalone: true,
-  selector: 'ngt-toolbar',
+  selector: 'ndt-toolbar',
   styleUrls: ['./toolbar.component.scss'],
   encapsulation: ViewEncapsulation.ShadowDom,
   imports: [
@@ -47,28 +47,28 @@ import { ToolbarPresetsToolComponent } from './tools/presets-tool/presets-tool.c
       <div
         aria-label="Developer tools"
         role="toolbar"
-        class="ngt-toolbar"
+        class="ndt-toolbar"
         [@toolbarState]="state.isVisible() ? 'visible' : 'hidden'"
         [attr.data-theme]="state.theme()"
-        [class.ngt-toolbar--active]="state.isVisible()"
+        [class.ndt-toolbar--active]="state.isVisible()"
         (mouseenter)="onMouseEnter()"
       >
-        <ngt-home-tool />
+        <ndt-home-tool />
         <ng-content />
         @if (config().showLanguageTool ?? false) {
-          <ngt-language-tool />
+          <ndt-language-tool />
         }
         @if (config().showPresetsTool ?? false) {
-          <ngt-presets-tool />
+          <ndt-presets-tool />
         }
         @if (config().showAppFeaturesTool ?? false) {
-          <ngt-app-features-tool />
+          <ndt-app-features-tool />
         }
         @if (config().showPermissionsTool ?? false) {
-          <ngt-permissions-tool />
+          <ndt-permissions-tool />
         }
         @if (config().showFeatureFlagsTool ?? false) {
-          <ngt-feature-flags-tool />
+          <ndt-feature-flags-tool />
         }
       </div>
     }
@@ -149,68 +149,68 @@ export class ToolbarComponent implements OnInit, OnDestroy {
    */
   private injectGlobalStyles(): void {
     // Check if styles are already injected (e.g., by another toolbar instance)
-    if (this.document.getElementById('ngt-global-theme')) {
+    if (this.document.getElementById('ndt-global-theme')) {
       return;
     }
 
     this.globalStyleElement = this.document.createElement('style');
-    this.globalStyleElement.id = 'ngt-global-theme';
+    this.globalStyleElement.id = 'ndt-global-theme';
     this.globalStyleElement.textContent = `
       /* Global Light Theme for ngx-dev-toolbar overlays */
-      :where(ngt-toolbar),
-      .ngt-overlay-panel,
+      :where(ndt-toolbar),
+      .ndt-overlay-panel,
       .cdk-overlay-container {
-        --ngt-border-radius-small: 4px;
-        --ngt-border-radius-medium: 8px;
-        --ngt-border-radius-large: 12px;
-        --ngt-transition-default: all 0.2s ease-out;
-        --ngt-transition-smooth: all 0.2s ease-in-out;
-        --ngt-spacing-xs: 4px;
-        --ngt-spacing-sm: 6px;
-        --ngt-spacing-md: 12px;
-        --ngt-spacing-lg: 16px;
-        --ngt-window-padding: 16px;
-        --ngt-font-size-xxs: 0.65rem;
-        --ngt-font-size-xs: 0.75rem;
-        --ngt-font-size-sm: 0.875rem;
-        --ngt-font-size-md: 1rem;
-        --ngt-font-size-lg: 1.25rem;
-        --ngt-font-size-xl: 2rem;
-        --ngt-primary: #df30d4;
-        --ngt-primary-rgb: 223, 48, 212;
-        --ngt-text-on-primary: rgb(255, 255, 255);
-        --ngt-bg-primary: rgb(255, 255, 255);
-        --ngt-bg-gradient: linear-gradient(180deg, rgb(243, 244, 246) 0%, rgba(243, 244, 246, 0.88) 100%);
-        --ngt-text-primary: rgb(17, 24, 39);
-        --ngt-text-secondary: rgb(55, 65, 81);
-        --ngt-text-muted: rgb(107, 114, 128);
-        --ngt-border-primary: #e5e7eb;
-        --ngt-border-subtle: rgba(17, 24, 39, 0.1);
-        --ngt-hover-bg: rgba(17, 24, 39, 0.05);
-        --ngt-hover-danger: rgb(239, 68, 68);
-        --ngt-shadow-toolbar: 0 2px 8px rgba(156, 163, 175, 0.2);
-        --ngt-shadow-tooltip: 0 0 0 1px rgba(17, 24, 39, 0.05), 0 4px 8px rgba(107, 114, 128, 0.15), 0 2px 4px rgba(107, 114, 128, 0.1);
-        --ngt-shadow-window: 0px 0px 0px 0px rgba(156, 163, 175, 0.1), 0px 1px 2px 0px rgba(156, 163, 175, 0.12), 0px 4px 4px 0px rgba(156, 163, 175, 0.1), 0px 10px 6px 0px rgba(156, 163, 175, 0.08), 0px 17px 7px 0px rgba(156, 163, 175, 0.05), 0px 26px 7px 0px rgba(156, 163, 175, 0.02);
-        --ngt-background-secondary: var(--ngt-bg-primary);
-        --ngt-background-hover: var(--ngt-hover-bg);
-        --ngt-border-color: var(--ngt-border-primary);
-        --ngt-note-background: rgb(219, 234, 254);
-        --ngt-note-border: rgba(37, 99, 235, 0.2);
-        --ngt-warning-background: rgb(254, 249, 195);
-        --ngt-warning-border: rgba(202, 138, 4, 0.2);
-        --ngt-error-background: rgb(254, 226, 226);
-        --ngt-error-border: rgba(220, 38, 38, 0.2);
+        --ndt-border-radius-small: 4px;
+        --ndt-border-radius-medium: 8px;
+        --ndt-border-radius-large: 12px;
+        --ndt-transition-default: all 0.2s ease-out;
+        --ndt-transition-smooth: all 0.2s ease-in-out;
+        --ndt-spacing-xs: 4px;
+        --ndt-spacing-sm: 6px;
+        --ndt-spacing-md: 12px;
+        --ndt-spacing-lg: 16px;
+        --ndt-window-padding: 16px;
+        --ndt-font-size-xxs: 0.65rem;
+        --ndt-font-size-xs: 0.75rem;
+        --ndt-font-size-sm: 0.875rem;
+        --ndt-font-size-md: 1rem;
+        --ndt-font-size-lg: 1.25rem;
+        --ndt-font-size-xl: 2rem;
+        --ndt-primary: #df30d4;
+        --ndt-primary-rgb: 223, 48, 212;
+        --ndt-text-on-primary: rgb(255, 255, 255);
+        --ndt-bg-primary: rgb(255, 255, 255);
+        --ndt-bg-gradient: linear-gradient(180deg, rgb(243, 244, 246) 0%, rgba(243, 244, 246, 0.88) 100%);
+        --ndt-text-primary: rgb(17, 24, 39);
+        --ndt-text-secondary: rgb(55, 65, 81);
+        --ndt-text-muted: rgb(107, 114, 128);
+        --ndt-border-primary: #e5e7eb;
+        --ndt-border-subtle: rgba(17, 24, 39, 0.1);
+        --ndt-hover-bg: rgba(17, 24, 39, 0.05);
+        --ndt-hover-danger: rgb(239, 68, 68);
+        --ndt-shadow-toolbar: 0 2px 8px rgba(156, 163, 175, 0.2);
+        --ndt-shadow-tooltip: 0 0 0 1px rgba(17, 24, 39, 0.05), 0 4px 8px rgba(107, 114, 128, 0.15), 0 2px 4px rgba(107, 114, 128, 0.1);
+        --ndt-shadow-window: 0px 0px 0px 0px rgba(156, 163, 175, 0.1), 0px 1px 2px 0px rgba(156, 163, 175, 0.12), 0px 4px 4px 0px rgba(156, 163, 175, 0.1), 0px 10px 6px 0px rgba(156, 163, 175, 0.08), 0px 17px 7px 0px rgba(156, 163, 175, 0.05), 0px 26px 7px 0px rgba(156, 163, 175, 0.02);
+        --ndt-background-secondary: var(--ndt-bg-primary);
+        --ndt-background-hover: var(--ndt-hover-bg);
+        --ndt-border-color: var(--ndt-border-primary);
+        --ndt-note-background: rgb(219, 234, 254);
+        --ndt-note-border: rgba(37, 99, 235, 0.2);
+        --ndt-warning-background: rgb(254, 249, 195);
+        --ndt-warning-border: rgba(202, 138, 4, 0.2);
+        --ndt-error-background: rgb(254, 226, 226);
+        --ndt-error-border: rgba(220, 38, 38, 0.2);
       }
-      .ngt-overlay-panel {
+      .ndt-overlay-panel {
         font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
         box-sizing: border-box;
         isolation: isolate;
         z-index: 999999999;
       }
-      .ngt-overlay-panel *, .ngt-overlay-panel *::before, .ngt-overlay-panel *::after {
+      .ndt-overlay-panel *, .ndt-overlay-panel *::before, .ndt-overlay-panel *::after {
         box-sizing: border-box;
       }
-      .cdk-overlay-backdrop.ngt-overlay-backdrop {
+      .cdk-overlay-backdrop.ndt-overlay-backdrop {
         background: transparent;
       }
     `;

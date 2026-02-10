@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
-  selector: 'ngt-network-icon',
+  selector: 'ndt-network-icon',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

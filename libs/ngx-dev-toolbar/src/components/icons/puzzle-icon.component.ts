@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
-  selector: 'ngt-puzzle-icon',
+  selector: 'ndt-puzzle-icon',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

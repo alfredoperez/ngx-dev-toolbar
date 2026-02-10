@@ -7,19 +7,19 @@ import { CommonModule } from '@angular/common';
  *
  * @example
  * ```html
- * <ngt-list-item
+ * <ndt-list-item
  *   title="Analytics Dashboard"
  *   description="Advanced reporting tools"
  *   [isForced]="false"
  *   [currentValue]="true"
  *   [originalValue]="undefined"
  * >
- *   <ngt-select ... />
- * </ngt-list-item>
+ *   <ndt-select ... />
+ * </ndt-list-item>
  * ```
  */
 @Component({
-  selector: 'ngt-list-item',
+  selector: 'ndt-list-item',
   standalone: true,
   imports: [CommonModule],
   template: `
