@@ -32,22 +32,25 @@
 npm install ngx-dev-toolbar
 ```
 
-### 2. Initialize in main.ts
+### 2. Add to app.config.ts
 
 ```typescript
-import { bootstrapApplication } from '@angular/platform-browser';
-import { isDevMode } from '@angular/core';
+import { ApplicationConfig, isDevMode } from '@angular/core';
+import { provideToolbar } from 'ngx-dev-toolbar';
 
-async function bootstrap() {
-  const appRef = await bootstrapApplication(AppComponent, appConfig);
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideRouter(appRoutes),
+    provideToolbar({
+      enabled: isDevMode(),
+    }),
+  ],
+};
+```
 
-  if (isDevMode()) {
-    const { initToolbar } = await import('ngx-dev-toolbar');
-    initToolbar(appRef);
-  }
-}
-
-bootstrap();
+```typescript
+// main.ts
+bootstrapApplication(AppComponent, appConfig);
 ```
 
 That's it! No template changes needed. The toolbar automatically attaches to the DOM.
@@ -154,15 +157,14 @@ export class AppComponent {
 Customize which tools are visible:
 
 ```typescript
-initToolbar(appRef, {
-  config: {
-    showFeatureFlagsTool: true,
-    showPermissionsTool: true,
-    showLanguageTool: true,
-    showAppFeaturesTool: true,
-    showPresetsTool: true,
-  }
-});
+provideToolbar({
+  enabled: isDevMode(),
+  showFeatureFlagsTool: true,
+  showPermissionsTool: true,
+  showLanguageTool: true,
+  showAppFeaturesTool: true,
+  showPresetsTool: true,
+})
 ```
 
 ### Keyboard Shortcuts
