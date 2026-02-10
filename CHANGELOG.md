@@ -1,3 +1,17 @@
+# 4.0.0 (2026-02-10)
+
+### Refactor
+
+- ⚠️  rename ngt- prefix to ndt- across entire codebase ([c9da435](https://github.com/alfredoperez/ngx-dev-toolbar/commit/c9da435))
+
+### ⚠️  Breaking Changes
+
+- All component selectors, CSS custom properties,
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 ## 3.2.0 (2026-02-10)
 
 ### Refactor
