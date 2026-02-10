@@ -1,3 +1,13 @@
+## 3.2.0 (2026-02-10)
+
+### Refactor
+
+- unify toolbar setup into single provideToolbar(config) call ([#26](https://github.com/alfredoperez/ngx-dev-toolbar/pull/26))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 ## 3.1.1 (2026-02-09)
 
 ### Bug Fixes
