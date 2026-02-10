@@ -44,7 +44,6 @@
         },
         "demo": {
           "baseHref": "/ngx-dev-toolbar/demo/",
-          "browser": "apps/ngx-dev-toolbar-demo/src/main.demo.ts",
           "budgets": [
             {
               "type": "initial",

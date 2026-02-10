@@ -29,24 +29,31 @@ npm install ngx-dev-toolbar
 
 ## Quick Start
 
-Initialize the toolbar in your `main.ts` for zero production bundle impact:
+Add the toolbar to your `app.config.ts` alongside your other providers:
 
 ```typescript
+// app.config.ts
+import { ApplicationConfig, isDevMode } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { provideToolbar } from 'ngx-dev-toolbar';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideRouter(appRoutes),
+    provideToolbar({
+      enabled: isDevMode(),
+    }),
+  ],
+};
+```
+
+```typescript
+// main.ts
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
-import { isDevMode } from '@angular/core';
+import { appConfig } from './app/app.config';
 
-async function bootstrap() {
-  const appRef = await bootstrapApplication(AppComponent, appConfig);
-
-  // Initialize toolbar only in development
-  if (isDevMode()) {
-    const { initToolbar } = await import('ngx-dev-toolbar');
-    initToolbar(appRef);
-  }
-}
-
-bootstrap();
+bootstrapApplication(AppComponent, appConfig);
 ```
 
 That's it! No template changes needed. The toolbar automatically attaches to the DOM.
@@ -289,16 +296,14 @@ For a complete guide, see: [Create a Custom Tool](https://alfredoperez.github.io
 Configure which tools are visible:
 
 ```typescript
-initToolbar(appRef, {
-  config: {
-    enabled: true,
-    showLanguageTool: true,
-    showFeatureFlagsTool: true,
-    showAppFeaturesTool: true,
-    showPermissionsTool: true,
-    showPresetsTool: true,
-  }
-});
+provideToolbar({
+  enabled: isDevMode(),
+  showLanguageTool: true,
+  showFeatureFlagsTool: true,
+  showAppFeaturesTool: true,
+  showPermissionsTool: true,
+  showPresetsTool: true,
+})
 ```
 
 ## Keyboard Shortcuts

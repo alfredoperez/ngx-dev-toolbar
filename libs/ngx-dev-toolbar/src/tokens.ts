@@ -1,9 +1,20 @@
 import { InjectionToken } from '@angular/core';
+import { ToolbarConfig } from './models/toolbar-config.interface';
 import { ToolbarService } from './models/toolbar.interface';
 import { ToolbarAppFeature } from './tools/app-features-tool/app-features.models';
 import { ToolbarFlag } from './tools/feature-flags-tool/feature-flags.models';
 import { Language } from './tools/language-tool/language.models';
 import { ToolbarPermission } from './tools/permissions-tool/permissions.models';
+
+/**
+ * InjectionToken for the Toolbar configuration.
+ *
+ * Provided automatically by `provideToolbar(config)`.
+ * Can be injected to access the toolbar configuration at runtime.
+ */
+export const TOOLBAR_CONFIG = new InjectionToken<ToolbarConfig>(
+  'TOOLBAR_CONFIG'
+);
 
 /**
  * InjectionToken for the Feature Flags service.

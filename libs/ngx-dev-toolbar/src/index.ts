@@ -1,5 +1,6 @@
 // Tree-shakeable tokens for dependency injection
 export {
+  TOOLBAR_CONFIG,
   TOOLBAR_FEATURE_FLAGS,
   TOOLBAR_PERMISSIONS,
   TOOLBAR_LANGUAGE,
@@ -8,13 +9,6 @@ export {
 
 // Provider function for tree-shakeable setup
 export { provideToolbar } from './provide-toolbar';
-
-// Dynamic initialization (no template changes needed)
-export {
-  initToolbar,
-  type InitToolbarOptions,
-  type InitToolbarResult,
-} from './init-toolbar';
 
 // Components
 export * from './components/icons/icon.component';
