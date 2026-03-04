@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   inject,
@@ -16,7 +15,6 @@ import { ToolbarNetworkMockerService } from './network-mocker.service';
 
 @Component({
   selector: 'ndt-network-mocker-tool',
-  standalone: true,
   imports: [
     FormsModule,
     ToolbarToolComponent,
@@ -275,7 +273,6 @@ import { ToolbarNetworkMockerService } from './network-mocker.service';
       }
     `,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarNetworkMockerToolComponent {
   // Injects

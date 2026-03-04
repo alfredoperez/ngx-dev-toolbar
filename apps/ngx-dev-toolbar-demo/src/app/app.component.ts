@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterOutlet } from '@angular/router';
 import { TranslocoService } from '@jsverse/transloco';
-
 import {
   ToolbarAppFeaturesService,
   ToolbarLanguageService,
@@ -15,7 +14,6 @@ import { FeatureFlagsService } from './services/feature-flags.service';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   imports: [
     RouterOutlet,
     SidebarComponent,

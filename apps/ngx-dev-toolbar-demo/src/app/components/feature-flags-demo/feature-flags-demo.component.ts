@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FeatureFlagsService } from '../../services/feature-flags.service';
 
 /**
@@ -9,7 +9,6 @@ import { FeatureFlagsService } from '../../services/feature-flags.service';
  */
 @Component({
   selector: 'app-feature-flags-demo',
-  standalone: true,
   template: `
     <section class="feature-flags-demo">
       <div class="demo-header">
@@ -282,8 +281,7 @@ import { FeatureFlagsService } from '../../services/feature-flags.service';
         grid-template-columns: 1fr;
       }
     }
-  `],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  `]
 })
 export class FeatureFlagsDemoComponent {
   private readonly featureFlagsService = inject(FeatureFlagsService);

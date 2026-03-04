@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { AppFeaturesConfigService } from '../../services/app-features-config.service';
 
 /**
@@ -9,7 +9,6 @@ import { AppFeaturesConfigService } from '../../services/app-features-config.ser
  */
 @Component({
   selector: 'app-features-demo',
-  standalone: true,
   template: `
     <section class="app-features-demo">
       <div class="demo-header">
@@ -459,8 +458,7 @@ import { AppFeaturesConfigService } from '../../services/app-features-config.ser
         grid-template-columns: 1fr;
       }
     }
-  `],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  `]
 })
 export class AppFeaturesDemoComponent {
   protected readonly config = inject(AppFeaturesConfigService);

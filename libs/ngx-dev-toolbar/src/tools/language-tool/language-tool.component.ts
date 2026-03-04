@@ -9,7 +9,6 @@ import { Language } from './language.models';
 
 @Component({
   selector: 'ndt-language-tool',
-  standalone: true,
   imports: [ToolbarToolComponent, ToolbarSelectComponent],
   styleUrls: ['./language-tool.component.scss'],
   template: `

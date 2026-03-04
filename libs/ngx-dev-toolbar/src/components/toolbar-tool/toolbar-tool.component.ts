@@ -1,7 +1,5 @@
-import { animate, style, transition, trigger } from '@angular/animations';
 import { CdkConnectedOverlay, OverlayModule } from '@angular/cdk/overlay';
 import {
-  ChangeDetectionStrategy,
   Component,
   ElementRef,
   computed,
@@ -19,7 +17,6 @@ import { ToolbarWindowOptions } from './toolbar-tool.models';
 
 @Component({
   selector: 'ndt-toolbar-tool',
-  standalone: true,
   imports: [
     CdkConnectedOverlay,
     OverlayModule,
@@ -58,7 +55,7 @@ import { ToolbarWindowOptions } from './toolbar-tool.models';
         [cdkConnectedOverlayPanelClass]="['ndt-overlay-panel', 'ndt-tool-overlay']"
         cdkConnectedOverlay
       >
-        <ndt-window [@slideAnimation] [config]="options()" (closed)="onClose()">
+        <ndt-window [config]="options()" (closed)="onClose()">
           <ng-content />
         </ndt-window>
       </ng-template>
@@ -66,37 +63,6 @@ import { ToolbarWindowOptions } from './toolbar-tool.models';
     </div>
   `,
   styleUrl: './toolbar-tool.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [
-    trigger('slideAnimation', [
-      transition(':enter', [
-        style({
-          transform: 'translateY(20px)',
-          opacity: 0,
-        }),
-        animate(
-          '400ms cubic-bezier(0.4, 0, 0.2, 1)',
-          style({
-            transform: 'translateY(0)',
-            opacity: 1,
-          })
-        ),
-      ]),
-      transition(':leave', [
-        style({
-          transform: 'translateY(0)',
-          opacity: 1,
-        }),
-        animate(
-          '400ms cubic-bezier(0.4, 0, 0.2, 1)',
-          style({
-            transform: 'translateY(20px)',
-            opacity: 0,
-          })
-        ),
-      ]),
-    ]),
-  ],
 })
 export class ToolbarToolComponent {
   state = inject(ToolbarStateService);

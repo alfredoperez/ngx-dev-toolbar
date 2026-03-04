@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 @Component({
   selector: 'ndt-card',
-  standalone: true,
   template: `
     <div
       class="card"
@@ -19,7 +18,6 @@ import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
     </div>
   `,
   styleUrls: ['./card.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarCardComponent {
   readonly click = signal<void>(undefined);

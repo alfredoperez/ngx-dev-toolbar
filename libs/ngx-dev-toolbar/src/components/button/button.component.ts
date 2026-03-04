@@ -1,10 +1,9 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { ToolbarIconComponent } from '../icons/icon.component';
 import { IconName } from '../icons/icon.models';
 
 @Component({
   selector: 'ndt-button',
-  standalone: true,
   imports: [ToolbarIconComponent],
   template: `
     <button
@@ -24,7 +23,6 @@ import { IconName } from '../icons/icon.models';
     </button>
   `,
   styleUrls: ['./button.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarButtonComponent {
   readonly type = input<'button' | 'submit' | 'reset'>('button');

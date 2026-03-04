@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   effect,
@@ -24,7 +23,6 @@ import {
 
 @Component({
   selector: 'ndt-permissions-tool',
-  standalone: true,
   imports: [
     FormsModule,
     ToolbarToolComponent,
@@ -131,7 +129,6 @@ import {
       }
     `,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarPermissionsToolComponent {
   // Injects

@@ -24,8 +24,6 @@ Add badge counts to Feature Flags, Permissions, and App Features tool buttons sh
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
 ### I. Angular Modern Patterns ✅
-- [x] Components will use `standalone: true` explicitly
-- [x] Components will use `OnPush` change detection strategy
 - [x] State will use Angular signals (`signal()`, `computed()`)
 - [x] Inputs/outputs will use function-based `input()` and `output()`
 - [x] No forms involved in this feature
@@ -117,7 +115,6 @@ N/A - This feature adds minimal complexity:
 - `badge` input uses function-based `input<string>()` syntax
 - Badge count uses `computed()` signal for derived state
 - View state uses `signal()` for reactive updates
-- All changes maintain `OnPush` change detection
 
 ### II. Defensive CSS Architecture ✅
 - Badge CSS already exists in `.tool-button__badge` with proper positioning

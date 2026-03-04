@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, input } from '@angular/core';
 
 /**
  * Container component for displaying lists of items with consistent scrolling,
@@ -21,8 +20,6 @@ import { CommonModule } from '@angular/common';
  */
 @Component({
   selector: 'ndt-list',
-  standalone: true,
-  imports: [CommonModule],
   template: `
     @if (!hasItems()) {
       <div class="empty-state">
@@ -42,7 +39,6 @@ import { CommonModule } from '@angular/common';
     }
   `,
   styleUrls: ['./list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarListComponent {
   /**

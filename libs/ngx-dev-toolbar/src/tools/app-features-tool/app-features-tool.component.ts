@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   effect,
@@ -35,7 +34,6 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
  */
 @Component({
   selector: 'ndt-app-features-tool',
-  standalone: true,
   imports: [
     FormsModule,
     ToolbarToolComponent,
@@ -140,7 +138,6 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
       }
     `,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarAppFeaturesToolComponent {
   // Injects
