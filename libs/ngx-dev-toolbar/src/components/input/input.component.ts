@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   input,
   model,
@@ -8,7 +7,6 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'ndt-input',
-  standalone: true,
   imports: [FormsModule],
   template: `
     <input
@@ -21,7 +19,6 @@ import { FormsModule } from '@angular/forms';
     />
   `,
   styleUrls: ['./input.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarInputComponent {
   value = model.required<string>();

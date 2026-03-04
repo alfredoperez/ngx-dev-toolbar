@@ -35,8 +35,6 @@ nx affected -t lint,test,build,e2e
 Use the Task tool with subagent_type="general-purpose" to review Angular code for modern patterns:
 
 **Check for:**
-- ✅ Components use `standalone: true` (implicit, not explicitly set)
-- ✅ Components use `OnPush` change detection strategy
 - ✅ Use of `input()` and `output()` functions instead of `@Input()` and `@Output()` decorators
 - ✅ State management uses signals (`signal()`, `computed()`, `effect()`)
 - ✅ No deprecated Angular APIs (e.g., `@ViewChild` with `{ static: true }` unnecessarily)

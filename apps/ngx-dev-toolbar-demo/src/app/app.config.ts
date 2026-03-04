@@ -1,6 +1,5 @@
 import { provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, isDevMode } from '@angular/core';
-import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import { provideTransloco } from '@jsverse/transloco';
 import { provideToolbar } from 'ngx-dev-toolbar';
@@ -10,7 +9,6 @@ import { TranslocoHttpLoader } from './services/transloco-http-loader';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(appRoutes),
-    provideAnimations(),
     provideHttpClient(),
     provideTransloco({
       config: {

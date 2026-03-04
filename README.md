@@ -156,7 +156,7 @@ export class AppComponent {
 Build your own toolbar tools using the exported UI components. Here's a complete Notes tool:
 
 ```typescript
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Injectable } from '@angular/core';
 import {
   ToolbarToolComponent,
@@ -197,7 +197,6 @@ class NotesService {
 // 3. Build the component
 @Component({
   selector: 'app-notes-tool',
-  standalone: true,
   imports: [
     ToolbarToolComponent,
     ToolbarButtonComponent,
@@ -245,8 +244,7 @@ class NotesService {
         </ng-template>
       </ndt-step-view>
     </ndt-toolbar-tool>
-  `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  `
 })
 export class NotesToolComponent {
   protected readonly notesService = inject(NotesService);

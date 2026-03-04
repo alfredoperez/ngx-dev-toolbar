@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
@@ -16,7 +16,6 @@ interface NavItem {
 
 @Component({
   selector: 'app-sidebar',
-  standalone: true,
   imports: [RouterLink, RouterLinkActive],
   template: `
     <aside class="sidebar">
@@ -236,8 +235,7 @@ interface NavItem {
         display: none;
       }
     }
-  `],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  `]
 })
 export class SidebarComponent {
   private readonly flagsService = inject(ToolbarFeatureFlagService);

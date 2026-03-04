@@ -1,10 +1,9 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
+import { Component, computed, inject, input, output } from '@angular/core';
 import { ToolbarStateService } from '../../toolbar-state.service';
 import { ToolbarWindowOptions } from '../toolbar-tool/toolbar-tool.models';
 
 @Component({
   selector: 'ndt-window',
-  standalone: true,
   template: `
     <div class="ndt-window" [attr.data-theme]="theme()">
       <div class="ndt-header">
@@ -47,7 +46,6 @@ import { ToolbarWindowOptions } from '../toolbar-tool/toolbar-tool.models';
     </div>
   `,
   styleUrls: ['./window.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarWindowComponent {
   readonly devToolbarStateService = inject(ToolbarStateService);

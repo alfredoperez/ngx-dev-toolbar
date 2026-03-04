@@ -10,7 +10,6 @@ import { DevToolbarComponent, DevToolbarPresetsService, InitialPreset } from 'ng
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   imports: [DevToolbarComponent],
   template: `
     <ndt-toolbar [config]="toolbarConfig" />

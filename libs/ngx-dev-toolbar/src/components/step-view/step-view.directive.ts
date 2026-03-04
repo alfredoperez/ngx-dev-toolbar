@@ -1,8 +1,7 @@
 import { Directive, TemplateRef, inject, input } from '@angular/core';
 
 @Directive({
-  selector: '[ndtStep]',
-  standalone: true,
+  selector: '[ndtStep]'
 })
 export class ToolbarStepDirective {
   readonly ndtStep = input.required<string>();

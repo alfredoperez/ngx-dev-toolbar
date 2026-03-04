@@ -21,7 +21,6 @@ All tools share these common characteristics:
 
 - **Signal-based state management** - Using Angular signals for reactive state
 - **localStorage persistence** - Settings persist across page reloads
-- **OnPush change detection** - Optimized performance
 - **DevToolsService interface** - Consistent API across all tools
 
 ## Tool Architecture
@@ -80,8 +79,6 @@ All tool components follow this structure:
 ```typescript
 @Component({
   selector: 'ndt-tool-name',
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ndt-toolbar-tool [options]="options" title="Tool Name" icon="icon-name">
       <!-- Tool content -->
@@ -744,13 +741,11 @@ export class MyToolService implements DevToolsService<MyToolOption> {
 
 ```typescript
 // my-tool.component.ts
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { DevToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
 
 @Component({
   selector: 'ndt-my-tool',
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DevToolbarToolComponent],
   template: `
     <ndt-toolbar-tool
@@ -811,8 +806,7 @@ export * from './tools/my-tool/my-tool.component';
 3. **Persist to localStorage** - Users expect settings to survive page refreshes
 4. **Add comprehensive JSDoc** - Document all public APIs
 5. **Write unit tests** - Aim for >80% coverage
-6. **Follow OnPush change detection** - Optimize performance
-7. **Use descriptive names** - Make the UI self-explanatory
-8. **Handle edge cases** - Invalid data, quota exceeded, etc.
-9. **Provide examples** - Help users understand how to integrate
-10. **Keep it simple** - Tools should be easy to use and understand
+6. **Use descriptive names** - Make the UI self-explanatory
+7. **Handle edge cases** - Invalid data, quota exceeded, etc.
+8. **Provide examples** - Help users understand how to integrate
+9.  **Keep it simple** - Tools should be easy to use and understand

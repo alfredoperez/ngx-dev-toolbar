@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   effect,
@@ -25,7 +24,6 @@ type ToastType = 'success' | 'error';
 
 @Component({
   selector: 'ndt-presets-tool',
-  standalone: true,
   imports: [
     FormsModule,
     ToolbarToolComponent,
@@ -1307,7 +1305,6 @@ type ToastType = 'success' | 'error';
       }
     `,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarPresetsToolComponent {
   // Injects

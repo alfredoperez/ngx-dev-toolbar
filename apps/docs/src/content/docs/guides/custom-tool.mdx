@@ -79,7 +79,7 @@ Wrap your tool's content in `ToolbarToolComponent`. This provides the window
 management, overlay positioning, and animations automatically:
 
 ```typescript title="notes-tool.component.ts"
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   ToolbarToolComponent,
   ToolbarWindowOptions,
@@ -92,7 +92,6 @@ import { NotesInternalService } from './notes-internal.service';
 
 @Component({
   selector: 'app-notes-tool',
-  standalone: true,
   imports: [
     ToolbarToolComponent,
     ToolbarButtonComponent,
@@ -115,8 +114,7 @@ import { NotesInternalService } from './notes-internal.service';
         }
       </ndt-list>
     </ndt-toolbar-tool>
-  `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  `
 })
 export class NotesToolComponent {
   protected readonly notesService = inject(NotesInternalService);
@@ -177,7 +175,7 @@ For tools that need multiple views (e.g., list/create/edit), use the
 It handles back navigation and step switching automatically:
 
 ```typescript title="multi-step-tool.component.ts"
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import {
   ToolbarToolComponent,
   ToolbarWindowOptions,
@@ -188,7 +186,6 @@ import {
 
 @Component({
   selector: 'app-multi-step-tool',
-  standalone: true,
   imports: [
     ToolbarToolComponent,
     ToolbarStepViewComponent,
@@ -219,7 +216,6 @@ import {
       </ndt-step-view>
     </ndt-toolbar-tool>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MultiStepToolComponent {
   viewMode = signal<'list' | 'create' | 'edit'>('list');
@@ -307,11 +303,9 @@ works correctly in any host application:
 
 ## Best Practices
 
-- Use **OnPush change detection** for all components
 - Use **Angular signals** for state management (`signal()`, `computed()`)
 - Keep state transformations **pure and immutable** (spread operators, `.filter()`, `.map()`)
 - Follow the **component property order**: injects, inputs, outputs, signals, computed, methods
-- Use **standalone: true** for all components
 - Add **aria-label** attributes to interactive elements for accessibility
 - Use the `ToolbarStorageService` if you need to persist state across page reloads
 
@@ -321,7 +315,7 @@ Here's a full Notes Tool that combines a model, service, and component with
 multi-step navigation:
 
 ```typescript title="notes-tool-complete.component.ts"
-import { ChangeDetectionStrategy, Component, inject, signal, computed } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { Injectable } from '@angular/core';
 import {
   ToolbarToolComponent,
@@ -362,7 +356,6 @@ class NotesService {
 // --- Component ---
 @Component({
   selector: 'app-notes-tool',
-  standalone: true,
   imports: [
     ToolbarToolComponent,
     ToolbarButtonComponent,
@@ -426,8 +419,7 @@ class NotesService {
       gap: var(--ndt-spacing-sm);
       padding-top: var(--ndt-spacing-sm);
     }
-  `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  `
 })
 export class NotesToolComponent {
   protected readonly notesService = inject(NotesService);

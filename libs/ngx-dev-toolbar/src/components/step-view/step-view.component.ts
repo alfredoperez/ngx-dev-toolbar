@@ -1,6 +1,5 @@
 import { NgTemplateOutlet } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   contentChildren,
@@ -12,7 +11,6 @@ import { ToolbarStepDirective } from './step-view.directive';
 
 @Component({
   selector: 'ndt-step-view',
-  standalone: true,
   imports: [NgTemplateOutlet, ToolbarButtonComponent],
   template: `
     @if (!isDefaultStep()) {
@@ -48,8 +46,7 @@ import { ToolbarStepDirective } from './step-view.directive';
       font-weight: 600;
       color: var(--ndt-text-primary);
     }
-  `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  `
 })
 export class ToolbarStepViewComponent {
   readonly currentStep = input.required<string>();
