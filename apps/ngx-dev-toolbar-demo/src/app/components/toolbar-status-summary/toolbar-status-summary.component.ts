@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AppFeaturesConfigService } from '../../services/app-features-config.service';
 import { DevToolbarPermissionsService, DevToolbarFeatureFlagService, DevToolbarAppFeaturesService } from 'ngx-dev-toolbar';
@@ -9,7 +9,6 @@ import { DevToolbarPermissionsService, DevToolbarFeatureFlagService, DevToolbarA
  */
 @Component({
   selector: 'app-toolbar-status-summary',
-  standalone: true,
   template: `
     <section class="status-summary">
       <h2>Dev Toolbar Status</h2>
@@ -342,8 +341,7 @@ import { DevToolbarPermissionsService, DevToolbarFeatureFlagService, DevToolbarA
         font-size: 1rem;
       }
     }
-  `],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  `]
 })
 export class ToolbarStatusSummaryComponent {
   private readonly permissionsService = inject(DevToolbarPermissionsService);

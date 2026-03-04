@@ -61,7 +61,6 @@ $dimensions: devtools.$dimensions;
   position: absolute;
   bottom: calc(100% + 1.2rem);
   left: 50%;
-  transform: translateX(-50%);
   background: var(--ndt-bg-primary);
   color: var(--ndt-text-primary);
   padding: 0.5rem 0.75rem;
@@ -71,4 +70,15 @@ $dimensions: devtools.$dimensions;
   pointer-events: none;
   z-index: 1000;
   box-shadow: var(--ndt-shadow-tooltip);
+  transition: opacity 200ms ease-out, transform 200ms ease-out;
+
+  &--hidden {
+    opacity: 0;
+    transform: translateX(-50%) translateY(1rem);
+  }
+
+  &--visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }

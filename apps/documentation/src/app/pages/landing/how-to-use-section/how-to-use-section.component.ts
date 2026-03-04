@@ -1,7 +1,4 @@
-import { animate, style, transition, trigger } from '@angular/animations';
-import { CommonModule } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   inject,
@@ -19,36 +16,9 @@ interface Step {
 
 @Component({
   selector: 'app-how-to-use-section',
-  standalone: true,
-  imports: [CommonModule, Highlight],
+  imports: [Highlight],
   templateUrl: './how-to-use-section.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [
-    trigger('slideInFromLeft', [
-      transition(':enter', [
-        style({ transform: 'translateX(-100%)', opacity: 0 }),
-        animate(
-          '600ms ease-out',
-          style({ transform: 'translateX(0)', opacity: 1 })
-        ),
-      ]),
-    ]),
-    trigger('fadeIn', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('400ms ease-out', style({ opacity: 1 })),
-      ]),
-    ]),
-    trigger('codeSlideIn', [
-      transition(':enter', [
-        style({ transform: 'translateX(-20px)', opacity: 0 }),
-        animate(
-          '300ms ease-out',
-          style({ transform: 'translateX(0)', opacity: 1 })
-        ),
-      ]),
-    ]),
-  ],
+  styleUrl: './how-to-use-section.component.scss',
 })
 export class HowToUseSectionComponent {
   private readonly analytics = inject(AnalyticsService);

@@ -13,7 +13,6 @@ interface Feature {
 
 @Component({
   selector: 'app-features-section',
-  standalone: true,
   imports: [DevToolbarIconComponent],
   templateUrl: './features-section.component.html',
   styleUrl: './features-section.component.scss',

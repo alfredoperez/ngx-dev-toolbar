@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   inject,
@@ -38,7 +37,6 @@ import { UsersIconComponent } from './users-icon.component';
 
 @Component({
   selector: 'ndt-icon',
-  standalone: true,
   imports: [
     AngularIconComponent,
     BoltIconComponent,
@@ -69,7 +67,6 @@ import { UsersIconComponent } from './users-icon.component';
     TranslateIconComponent,
     TrashIconComponent,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @switch (name()) { @case ('angular') {
     <ndt-angular-icon />

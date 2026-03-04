@@ -1,0 +1,45 @@
+// Fade in animation - replaces Angular fadeIn trigger
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 400ms ease-out;
+}
+
+// Slide in from left animation - replaces Angular slideInFromLeft trigger
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.slide-in-from-left {
+  animation: slideInFromLeft 600ms ease-out;
+}
+
+// Code slide in animation - replaces Angular codeSlideIn trigger
+@keyframes codeSlideIn {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.code-slide-in {
+  animation: codeSlideIn 300ms ease-out;
+}

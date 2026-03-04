@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   inject,
   input,
@@ -18,7 +17,6 @@ type ThemeType = 'light' | 'dark';
 
 @Component({
   selector: 'ndt-home-tool',
-  standalone: true,
   imports: [
     DevToolbarToolComponent,
     FormsModule,
@@ -75,7 +73,6 @@ type ThemeType = 'light' | 'dark';
     </ndt-toolbar-tool>
   `,
   styleUrls: ['./home-tool.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DevToolbarHomeToolComponent {
   protected readonly state = inject(DevToolbarStateService);

@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'ndt-code-icon',
-  standalone: true,
   template: `
     <svg
       [attr.fill]="fill()"
@@ -17,7 +16,6 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       ></path>
     </svg>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CodeIconComponent {
   fill = input<string>('#FFFF');

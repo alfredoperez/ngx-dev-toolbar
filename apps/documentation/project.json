@@ -13,7 +13,6 @@
         "outputPath": "dist/apps/documentation",
         "index": "apps/documentation/src/index.html",
         "browser": "apps/documentation/src/main.ts",
-        "polyfills": ["zone.js"],
         "tsConfig": "apps/documentation/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
@@ -34,7 +33,10 @@
         "ssr": {
           "entry": "apps/documentation/src/server.ts"
         },
-        "prerender": true
+        "prerender": true,
+        "allowedCommonJsDependencies": [
+          "prismjs"
+        ]
       },
       "configurations": {
         "production": {
@@ -71,7 +73,8 @@
           "buildTarget": "documentation:build:development"
         }
       },
-      "defaultConfiguration": "development"
+      "defaultConfiguration": "development",
+      "continuous": true
     },
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
@@ -86,7 +89,8 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/ngx-dev-toolbar/jest.config.ts"
+        "jestConfig": "libs/ngx-dev-toolbar/jest.config.ts",
+        "tsConfig": "apps/documentation/tsconfig.spec.json"
       }
     },
     "serve-static": {

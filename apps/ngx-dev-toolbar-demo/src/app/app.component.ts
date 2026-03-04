@@ -1,9 +1,7 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { RouterOutlet } from '@angular/router';
 import { TranslocoService } from '@jsverse/transloco';
-
 import {
   DevToolbarAppFeaturesService,
   DevToolbarComponent,
@@ -26,9 +24,7 @@ import { FeatureFlagsService } from './services/feature-flags.service';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   imports: [
-    CommonModule,
     RouterOutlet,
     NavBarComponent,
     ToolbarStatusSummaryComponent,
@@ -36,8 +32,8 @@ import { FeatureFlagsService } from './services/feature-flags.service';
     FeatureFlagsDemoComponent,
     AppFeaturesDemoComponent,
     DevToolbarComponent,
-    DevToolbarToolComponent,
-  ],
+    DevToolbarToolComponent
+],
   template: `
     @if (useNewLayout() ) {
     <!-- New Modern Layout -->

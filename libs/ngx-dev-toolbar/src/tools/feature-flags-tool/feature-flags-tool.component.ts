@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   effect,
@@ -20,7 +19,6 @@ import { DevToolbarInternalFeatureFlagService } from './feature-flags-internal.s
 import { DevToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
 @Component({
   selector: 'ndt-feature-flags-tool',
-  standalone: true,
   imports: [
     FormsModule,
     DevToolbarToolComponent,
@@ -124,7 +122,6 @@ import { DevToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
       }
     `,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DevToolbarFeatureFlagsToolComponent {
   // Injects

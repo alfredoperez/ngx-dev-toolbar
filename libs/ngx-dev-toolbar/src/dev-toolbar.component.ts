@@ -1,10 +1,3 @@
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
 import { DOCUMENT } from '@angular/common';
 import {
   Component,
@@ -30,7 +23,6 @@ import { DevToolbarPermissionsToolComponent } from './tools/permissions-tool/per
 import { DevToolbarPresetsToolComponent } from './tools/presets-tool/presets-tool.component';
 
 @Component({
-  standalone: true,
   selector: 'ndt-toolbar',
   styleUrls: ['./dev-toolbar.component.scss'],
   encapsulation: ViewEncapsulation.ShadowDom,
@@ -48,7 +40,8 @@ import { DevToolbarPresetsToolComponent } from './tools/presets-tool/presets-too
         aria-label="Developer tools"
         role="toolbar"
         class="ndt-toolbar"
-        [@toolbarState]="state.isVisible() ? 'visible' : 'hidden'"
+        [class.ndt-toolbar--visible]="state.isVisible()"
+        [class.ndt-toolbar--hidden]="!state.isVisible()"
         [attr.data-theme]="state.theme()"
         [class.ndt-toolbar--active]="state.isVisible()"
         (mouseenter)="onMouseEnter()"
@@ -73,25 +66,6 @@ import { DevToolbarPresetsToolComponent } from './tools/presets-tool/presets-too
       </div>
     }
   `,
-  animations: [
-    trigger('toolbarState', [
-      state(
-        'hidden',
-        style({
-          transform: 'translate(-50%, calc(100% + -1.2rem))',
-        })
-      ),
-      state(
-        'visible',
-        style({
-          transform: 'translate(-50%, -1rem)',
-        })
-      ),
-      transition('hidden <=> visible', [
-        animate('300ms cubic-bezier(0.4, 0, 0.2, 1)'),
-      ]),
-    ]),
-  ],
 })
 export class DevToolbarComponent implements OnInit, OnDestroy {
   private document = inject(DOCUMENT);

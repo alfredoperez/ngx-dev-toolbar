@@ -1,4 +1,4 @@
-import { Directive, ElementRef, input, afterNextRender, Injector } from '@angular/core';
+import { Directive, ElementRef, input, afterNextRender, Injector, inject } from '@angular/core';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-typescript';
 import 'prismjs/components/prism-javascript';
@@ -9,15 +9,14 @@ import 'prismjs/components/prism-bash';
 
 @Directive({
   selector: '[appPrismHighlight]',
-  standalone: true
 })
 export class PrismHighlightDirective {
+  private readonly el = inject(ElementRef);
+  private readonly injector = inject(Injector);
+
   language = input<string>('typescript');
 
-  constructor(
-    private el: ElementRef,
-    private injector: Injector
-  ) {
+  constructor() {
     afterNextRender(() => this.highlight(), { injector: this.injector });
   }
 

@@ -1,11 +1,10 @@
-import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
+import { Component, input, signal } from '@angular/core';
 import { DevToolbarCardComponent } from '../card/card.component';
 import { DevToolbarIconComponent } from '../icons/icon.component';
 import { IconName } from '../icons/icon.models';
 
 @Component({
   selector: 'ndt-clickable-card',
-  standalone: true,
   imports: [DevToolbarCardComponent, DevToolbarIconComponent],
   template: `
     <ndt-card (clicked)="onClick()">
@@ -21,7 +20,6 @@ import { IconName } from '../icons/icon.models';
     </ndt-card>
   `,
   styleUrls: ['./clickable-card.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DevToolbarClickableCardComponent {
   readonly icon = input.required<IconName>();

@@ -5,7 +5,6 @@ import { FeatureFlagsService } from '../../services/feature-flags.service';
 
 @Component({
   selector: 'app-feature-flags',
-  standalone: true,
   imports: [TranslocoDirective],
   template: `
     <div class="feature-flags-container" *transloco="let t">

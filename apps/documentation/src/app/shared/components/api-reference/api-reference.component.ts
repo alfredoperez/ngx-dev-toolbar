@@ -1,15 +1,12 @@
-import { Component, ChangeDetectionStrategy, input, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, input, signal } from '@angular/core';
 import { CodeExampleComponent } from '../code-example/code-example.component';
 import { ApiMethod, ApiInterface } from '../../models/documentation.models';
 
 @Component({
   selector: 'app-api-reference',
-  standalone: true,
-  imports: [CommonModule, CodeExampleComponent],
+  imports: [CodeExampleComponent],
   templateUrl: './api-reference.component.html',
-  styleUrls: ['./api-reference.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./api-reference.component.scss']
 })
 export class ApiReferenceComponent {
   serviceName = input<string>('');

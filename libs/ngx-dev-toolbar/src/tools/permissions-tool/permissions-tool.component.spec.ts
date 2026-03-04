@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { DevToolsStorageService } from '../../utils/storage.service';
 import { DevToolbarPermissionsToolComponent } from './permissions-tool.component';
 import { DevToolbarInternalPermissionsService } from './permissions-internal.service';
@@ -50,7 +49,7 @@ describe('DevToolbarPermissionsToolComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [DevToolbarPermissionsToolComponent, NoopAnimationsModule],
+      imports: [DevToolbarPermissionsToolComponent],
       providers: [
         {
           provide: DevToolbarInternalPermissionsService,
@@ -303,7 +302,7 @@ describe('DevToolbarPermissionsToolComponent', () => {
 
       TestBed.resetTestingModule();
       await TestBed.configureTestingModule({
-        imports: [DevToolbarPermissionsToolComponent, NoopAnimationsModule],
+        imports: [DevToolbarPermissionsToolComponent],
         providers: [
           {
             provide: DevToolbarInternalPermissionsService,

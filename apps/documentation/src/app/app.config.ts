@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig } from '@angular/core';
 import {
   provideClientHydration,
   withEventReplay,
@@ -9,7 +9,6 @@ import { routes } from './app.routes';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideClientHydration(withEventReplay()),
-    provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHighlightOptions({
       lineNumbersLoader: () => import('ngx-highlightjs/line-numbers'),

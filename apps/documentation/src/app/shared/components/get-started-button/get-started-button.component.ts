@@ -1,11 +1,8 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { AnalyticsService } from '../../services/analytics.service';
 
 @Component({
   selector: 'app-get-started-button',
-  standalone: true,
-  imports: [CommonModule],
   template: `
     <a
       [href]="href()"

@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+
+import { Component, signal } from '@angular/core';
 import { GetStartedButtonComponent } from '../../../shared/components/get-started-button/get-started-button.component';
 
 interface Feature {
@@ -9,8 +9,7 @@ interface Feature {
 
 @Component({
   selector: 'app-additional-features-section',
-  standalone: true,
-  imports: [CommonModule, GetStartedButtonComponent],
+  imports: [GetStartedButtonComponent],
   template: `
     <!-- Additional Features Section -->
     <div class="relative bg-gray-900">
@@ -105,8 +104,7 @@ interface Feature {
         }
       }
     `,
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  ]
 })
 export class AdditionalFeaturesSectionComponent {
   readonly features = signal<Feature[]>([

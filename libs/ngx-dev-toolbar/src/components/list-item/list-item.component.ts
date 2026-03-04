@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, computed, input } from '@angular/core';
 
 /**
  * List item component with consistent layout, dot badge indicator,
@@ -20,8 +19,6 @@ import { CommonModule } from '@angular/common';
  */
 @Component({
   selector: 'ndt-list-item',
-  standalone: true,
-  imports: [CommonModule],
   template: `
     <div class="list-item" [class.list-item--forced]="isForced()">
       <div class="info">
@@ -44,7 +41,6 @@ import { CommonModule } from '@angular/common';
     </div>
   `,
   styleUrls: ['./list-item.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DevToolbarListItemComponent {
   /**

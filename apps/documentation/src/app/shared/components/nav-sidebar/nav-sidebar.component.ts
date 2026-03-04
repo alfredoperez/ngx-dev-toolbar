@@ -1,5 +1,4 @@
-import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { DevToolbarIconComponent, IconName } from 'ngx-dev-toolbar';
 
@@ -16,11 +15,9 @@ interface DocNavSection {
 
 @Component({
   selector: 'app-nav-sidebar',
-  standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive, DevToolbarIconComponent],
+  imports: [RouterLink, RouterLinkActive, DevToolbarIconComponent],
   templateUrl: './nav-sidebar.component.html',
-  styleUrls: ['./nav-sidebar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./nav-sidebar.component.scss']
 })
 export class NavSidebarComponent {
   mobileMenuOpen = signal(false);

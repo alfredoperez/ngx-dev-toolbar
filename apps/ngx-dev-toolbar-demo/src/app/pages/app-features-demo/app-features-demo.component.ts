@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { AppFeaturesConfigService, ProductTier } from '../../services/app-features-config.service';
 
@@ -10,8 +9,6 @@ import { AppFeaturesConfigService, ProductTier } from '../../services/app-featur
  */
 @Component({
   selector: 'app-features-demo',
-  standalone: true,
-  imports: [CommonModule],
   template: `
     <div class="demo-container">
       <h1>App Features Demo</h1>

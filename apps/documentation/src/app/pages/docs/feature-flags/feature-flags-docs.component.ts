@@ -1,15 +1,12 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { CodeExampleComponent } from '../../../shared/components/code-example/code-example.component';
 import { ApiReferenceComponent } from '../../../shared/components/api-reference/api-reference.component';
 import { CodeExample, ApiMethod, ApiInterface } from '../../../shared/models/documentation.models';
 
 @Component({
   selector: 'app-feature-flags-docs',
-  standalone: true,
-  imports: [CommonModule, CodeExampleComponent, ApiReferenceComponent],
-  templateUrl: './feature-flags-docs.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  imports: [CodeExampleComponent, ApiReferenceComponent],
+  templateUrl: './feature-flags-docs.component.html'
 })
 export class FeatureFlagsDocsComponent {
 

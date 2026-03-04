@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   inject,
@@ -20,7 +19,6 @@ import { DevToolbarStateService } from '../../dev-toolbar-state.service';
 
 @Component({
   selector: 'ndt-presets-tool',
-  standalone: true,
   imports: [
     FormsModule,
     DevToolbarToolComponent,
@@ -598,7 +596,6 @@ import { DevToolbarStateService } from '../../dev-toolbar-state.service';
       }
     `,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DevToolbarPresetsToolComponent {
   // Injects

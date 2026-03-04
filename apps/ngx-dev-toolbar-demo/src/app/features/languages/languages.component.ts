@@ -3,7 +3,6 @@ import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-languages',
-  standalone: true,
   imports: [TranslocoDirective],
   styleUrls: ['./languages.component.scss'],
   template: `

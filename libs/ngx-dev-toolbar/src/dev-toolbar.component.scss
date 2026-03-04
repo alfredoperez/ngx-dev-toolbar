@@ -13,7 +13,6 @@
   bottom: 0;
   left: 50%;
   z-index: map.get(devtools.$z-indices, toolbar);
-  transform: translateX(-50%);
   display: flex;
   pointer-events: auto;
   background: var(--ndt-bg-primary);
@@ -22,6 +21,15 @@
   box-shadow: var(--ndt-shadow-toolbar);
   height: map.get(devtools.$dimensions, toolbar-height);
   overflow: visible;
+  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &--hidden {
+    transform: translate(-50%, calc(100% + -1.2rem));
+  }
+
+  &--visible {
+    transform: translate(-50%, -1rem);
+  }
 
   &--active {
     opacity: 1;

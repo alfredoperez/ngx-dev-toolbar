@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { DemoPermissionsService } from '../../services/demo-permissions.service';
 
 @Component({
   selector: 'app-permission-demo',
-  standalone: true,
   template: `
     <section class="permission-demo">
       <h2>Permissions Demo</h2>
@@ -315,8 +314,7 @@ import { DemoPermissionsService } from '../../services/demo-permissions.service'
         grid-column: span 1;
       }
     }
-  `],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  `]
 })
 export class PermissionDemoComponent {
   private readonly demoPermService = inject(DemoPermissionsService);

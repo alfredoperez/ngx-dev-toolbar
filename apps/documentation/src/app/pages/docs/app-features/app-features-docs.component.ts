@@ -1,5 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CodeExampleComponent } from '../../../shared/components/code-example/code-example.component';
 import { ApiReferenceComponent } from '../../../shared/components/api-reference/api-reference.component';
@@ -7,10 +6,8 @@ import { CodeExample, ApiMethod } from '../../../shared/models/documentation.mod
 
 @Component({
   selector: 'app-app-features-docs',
-  standalone: true,
-  imports: [CommonModule, RouterLink, CodeExampleComponent, ApiReferenceComponent],
-  templateUrl: './app-features-docs.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  imports: [RouterLink, CodeExampleComponent, ApiReferenceComponent],
+  templateUrl: './app-features-docs.component.html'
 })
 export class AppFeaturesDocsComponent {
   basicExample: CodeExample = {

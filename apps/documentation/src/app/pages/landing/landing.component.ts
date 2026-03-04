@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { SeoService } from '../../shared/services/seo.service';
 import { AdditionalFeaturesSectionComponent } from './additional-features-section/additional-features-section.component';
 import { FeaturesSectionComponent } from './features-section/features-section.component';
@@ -7,7 +7,6 @@ import { HowToUseSectionComponent } from './how-to-use-section/how-to-use-sectio
 
 @Component({
   selector: 'app-landing',
-  standalone: true,
   imports: [
     HeroSectionComponent,
     FeaturesSectionComponent,
@@ -22,7 +21,7 @@ import { HowToUseSectionComponent } from './how-to-use-section/how-to-use-sectio
   `,
 })
 export class LandingComponent implements OnInit {
-  constructor(private seo: SeoService) {}
+  private readonly seo = inject(SeoService);
 
   ngOnInit() {
     this.seo.setData({

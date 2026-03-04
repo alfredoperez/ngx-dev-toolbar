@@ -1,3 +1,5 @@
+@reference "tailwindcss";
+
 .demo-image {
   @apply w-full rounded-lg bg-white/5 shadow-2xl ring-1 ring-white/10;
   opacity: 0;

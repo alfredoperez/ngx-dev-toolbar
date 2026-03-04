@@ -1,8 +1,6 @@
 import { CdkMenuModule } from '@angular/cdk/menu';
 import { ConnectedPosition, OverlayModule } from '@angular/cdk/overlay';
-import { CommonModule } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   inject,
@@ -20,8 +18,7 @@ export interface SelectOption {
 
 @Component({
   selector: 'ndt-select',
-  standalone: true,
-  imports: [CommonModule, FormsModule, OverlayModule, CdkMenuModule],
+  imports: [FormsModule, OverlayModule, CdkMenuModule],
   template: `
     <div
       class="ndt-select"
@@ -74,7 +71,6 @@ export interface SelectOption {
     </ng-template>
   `,
   styleUrls: ['./select.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DevToolbarSelectComponent {
   readonly devToolbarStateService = inject(DevToolbarStateService);
