@@ -1,21 +1,21 @@
 <!--
   Sync Impact Report
   ===================
-  Version change: 1.0.0 → 2.0.0 (MAJOR - complete principle redefinition)
+  Version change: 2.0.0 → 3.0.0 (MAJOR - two new principles added, naming fixes)
 
   Modified principles:
-  - I. Angular Modern Patterns → I. Signals-First State Management (refocused)
-  - II. Defensive CSS Architecture → REMOVED (merged into Development Standards)
-  - III. Testing Standards → REMOVED (moved to Quality Gates)
-  - IV. Component Architecture → II. Standalone Components Only (refocused)
-  - V. Simplicity First → V. Minimal Configuration with Sensible Defaults (refocused)
+  - IV. Type-Safe APIs: Fixed DevToolsService<T> → ToolbarService<T>
 
   Added sections:
-  - III. Zero Production Bundle Impact
-  - IV. Type-Safe APIs with Strict TypeScript
+  - VI. Accessible by Default
+  - VII. Developer Experience First
 
   Removed sections:
-  - Development Standards > Technology Stack (redundant with CLAUDE.md)
+  - None
+
+  Development Standards changes:
+  - Tool Architecture Pattern: Fixed DevToolbarToolComponent → ToolbarToolComponent
+  - Tool Architecture Pattern: Fixed DevToolsService<T> → ToolbarService<T>
 
   Templates requiring updates:
   - .specify/templates/plan-template.md: ✅ No changes needed (Constitution Check is generic)
@@ -76,7 +76,7 @@ Tree-shaking ensures unused code is eliminated, and conditional imports keep pro
 All public APIs MUST provide complete type safety with strict TypeScript:
 
 - All exports MUST have explicit type annotations (no implicit `any`)
-- Generic interfaces MUST be used for tool services (`DevToolsService<T>`)
+- Generic interfaces MUST be used for tool services (`ToolbarService<T>`)
 - Union types and discriminated unions MUST be preferred over `any` or `unknown`
 - Configuration objects MUST use interfaces with optional properties (not `Partial<T>`)
 - Public API changes MUST maintain backward compatibility or follow semver MAJOR bumps
@@ -91,13 +91,43 @@ The library MUST work out-of-the-box with zero configuration:
 
 - Default behavior MUST be functional without any configuration
 - All configuration options MUST be optional with documented defaults
-- The simplest use case MUST require only importing and rendering the component
+- The simplest use case MUST require only `provideToolbar()` in application providers
 - Progressive disclosure: advanced features available but not required
 - Configuration MUST NOT require understanding library internals
 - Error messages MUST guide users toward correct configuration
 
 **Rationale**: Developer experience is paramount. A toolbar should enhance productivity immediately,
 not require extensive setup. Sensible defaults reduce cognitive load and onboarding friction.
+
+### VI. Accessible by Default
+
+All toolbar components MUST be accessible without additional configuration:
+
+- Interactive elements MUST have appropriate ARIA attributes (`aria-label`, `aria-expanded`, `role`)
+- All functionality MUST be operable via keyboard (Tab navigation, Enter/Space activation, Escape dismissal)
+- Custom controls MUST use semantic roles (`combobox`, `listbox`, `toolbar`) per WAI-ARIA patterns
+- Decorative elements MUST use `aria-hidden="true"` to prevent screen reader noise
+- Focus management MUST be handled for overlays and modal-like windows
+- Keyboard shortcut (Ctrl+Shift+D) MUST be documented and discoverable
+
+**Rationale**: Even as a development tool, accessibility ensures all developers can use the toolbar
+regardless of ability. Accessible patterns also improve keyboard-driven developer workflows, which
+are common in professional environments.
+
+### VII. Developer Experience First
+
+The library MUST prioritize frictionless integration and intuitive usage:
+
+- Setup MUST use Angular's `provideToolbar()` pattern consistent with `provideRouter()` and `provideHttpClient()`
+- Tool services MUST support optional injection (`{ optional: true }`) so host apps work without the toolbar
+- State MUST persist across page reloads via localStorage (prefix: `AngularToolbar.`)
+- The toolbar MUST auto-attach to the DOM via `ENVIRONMENT_INITIALIZER` (no template changes required)
+- Public API surface MUST be minimal: one provider function, injection tokens, and service interfaces
+- All public APIs MUST have JSDoc documentation with usage examples
+
+**Rationale**: The toolbar exists to accelerate development. If setup or usage creates friction, it
+defeats its purpose. Consistent Angular patterns reduce learning curve, and auto-attachment means
+developers add one line to providers and start using it immediately.
 
 ## Development Standards
 
@@ -114,9 +144,9 @@ All styling MUST be resilient to external CSS interference:
 
 All tools MUST follow the established component pattern:
 
-- Tool Component (`*-tool.component.ts`): UI wrapped in `DevToolbarToolComponent`
+- Tool Component (`*-tool.component.ts`): UI wrapped in `ToolbarToolComponent`
 - Internal Service (`*-internal.service.ts`): Tool-specific state using signals
-- Public Service (`*.service.ts`): Public API implementing `DevToolsService<T>` interface
+- Public Service (`*.service.ts`): Public API implementing `ToolbarService<T>` interface
 - Models (`*.models.ts`): Type definitions for the tool's data structures
 
 Component property order MUST be: Injects → Inputs → Outputs → Signals → Computed → Other →
@@ -144,6 +174,7 @@ Public methods → Protected methods → Private methods.
 - [ ] New components follow standalone + signals patterns
 - [ ] No production bundle impact introduced
 - [ ] Public APIs are fully typed
+- [ ] Interactive elements have ARIA attributes and keyboard support
 
 ### Release Checklist
 
@@ -164,4 +195,4 @@ All pull requests and code reviews MUST verify compliance with these principles.
 
 For detailed implementation patterns and examples, refer to `CLAUDE.md`.
 
-**Version**: 2.0.0 | **Ratified**: 2025-12-29 | **Last Amended**: 2026-01-02
+**Version**: 3.0.0 | **Ratified**: 2025-12-29 | **Last Amended**: 2026-03-06
