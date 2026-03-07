@@ -36,9 +36,9 @@ import { ToolbarWindowOptions } from './toolbar-tool.models';
         (keydown.space)="onOpen()"
         tabindex="0"
       >
-        <div #buttonContainer [attr.data-tooltip]="title()">
+        <div #buttonContainer>
           @if (icon()) {
-          <ndt-tool-button [title]="title()" [toolId]="options().id" [badge]="badge()">
+          <ndt-tool-button [toolLabel]="title()" [toolId]="options().id" [badge]="badge()" [position]="state.position()">
             <ndt-icon [name]="icon()" />
           </ndt-tool-button>
           } @else {

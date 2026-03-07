@@ -19,6 +19,7 @@ $dimensions: devtools.$dimensions;
   cursor: pointer;
   opacity: 0.5;
   position: relative;
+  border-radius: var(--ndt-border-radius-medium);
 
   &--active {
     background: var(--ndt-hover-bg);
@@ -57,18 +58,81 @@ $dimensions: devtools.$dimensions;
   }
 }
 
+$arrow-size: 5px;
+
 .tooltip {
   position: absolute;
-  bottom: calc(100% + 1.2rem);
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--ndt-bg-primary);
-  color: var(--ndt-text-primary);
-  padding: 0.5rem 0.75rem;
+  background: var(--ndt-tooltip-bg);
+  color: var(--ndt-tooltip-text);
+  padding: 0.375rem 0.625rem;
   border-radius: var(--ndt-border-radius-medium);
   font-size: 0.75rem;
+  font-weight: 500;
   white-space: nowrap;
   pointer-events: none;
   z-index: 1000;
   box-shadow: var(--ndt-shadow-tooltip);
+
+  // Arrow
+  &::after {
+    content: '';
+    position: absolute;
+    border: $arrow-size solid transparent;
+  }
+}
+
+// Bottom toolbar: tooltip above, arrow points down
+:host(.tooltip-position-bottom) .tooltip {
+  bottom: calc(100% + #{$arrow-size} + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+
+  &::after {
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-top-color: var(--ndt-tooltip-bg);
+  }
+}
+
+// Top toolbar: tooltip below, arrow points up
+:host(.tooltip-position-top) .tooltip {
+  top: calc(100% + #{$arrow-size} + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+
+  &::after {
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-bottom-color: var(--ndt-tooltip-bg);
+  }
+}
+
+// Left toolbar: tooltip to the right, arrow points left
+:host(.tooltip-position-left) .tooltip {
+  left: calc(100% + #{$arrow-size} + 4px);
+  top: 50%;
+  transform: translateY(-50%);
+
+  &::after {
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    border-right-color: var(--ndt-tooltip-bg);
+  }
+}
+
+// Right toolbar: tooltip to the left, arrow points right
+:host(.tooltip-position-right) .tooltip {
+  right: calc(100% + #{$arrow-size} + 4px);
+  top: 50%;
+  transform: translateY(-50%);
+
+  &::after {
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    border-left-color: var(--ndt-tooltip-bg);
+  }
 }

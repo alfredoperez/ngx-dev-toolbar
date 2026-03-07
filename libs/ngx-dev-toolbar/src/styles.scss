@@ -225,6 +225,10 @@ $z-indices: (
 
   --ndt-border-color: var(--ndt-border-primary);
 
+  // Tooltip: inverted colors for high contrast (light theme → dark tooltip)
+  --ndt-tooltip-bg: #{$color-black-900};
+  --ndt-tooltip-text: #{$color-white};
+
   --ndt-note-background: #{map.get(
       map.get(map.get($colors, light), annotation),
       note,
