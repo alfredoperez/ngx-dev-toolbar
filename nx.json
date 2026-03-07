@@ -14,7 +14,7 @@
     ],
     "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
   },
-  "nxCloudId": "67674bbbab077340d99e5325",
+  "nxCloudId": "69acb7b13c8982e19cb3c128",
   "targetDefaults": {
     "@angular-devkit/build-angular:application": {
       "cache": true,
@@ -30,9 +30,7 @@
         "{workspaceRoot}/eslint.config.cjs"
       ]
     },
-    "e2e-ci--**/*": {
-      "dependsOn": ["^build"]
-    },
+    "e2e-ci--**/*": { "dependsOn": ["^build"] },
     "@nx/angular:package": {
       "cache": true,
       "dependsOn": ["^build"],
@@ -41,30 +39,13 @@
     "@nx/jest:jest": {
       "cache": true,
       "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
-      "options": {
-        "passWithNoTests": true
-      },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
-        }
-      }
+      "options": { "passWithNoTests": true },
+      "configurations": { "ci": { "ci": true, "codeCoverage": true } }
     }
   },
   "plugins": [
-    {
-      "plugin": "@nx/playwright/plugin",
-      "options": {
-        "targetName": "e2e"
-      }
-    },
-    {
-      "plugin": "@nx/eslint/plugin",
-      "options": {
-        "targetName": "lint"
-      }
-    }
+    { "plugin": "@nx/playwright/plugin", "options": { "targetName": "e2e" } },
+    { "plugin": "@nx/eslint/plugin", "options": { "targetName": "lint" } }
   ],
   "generators": {
     "@nx/angular:application": {
@@ -73,58 +54,33 @@
       "style": "scss",
       "unitTestRunner": "jest"
     },
-    "@nx/angular:library": {
-      "linter": "eslint",
-      "unitTestRunner": "jest"
-    },
-    "@nx/angular:component": {
-      "style": "scss"
-    }
+    "@nx/angular:library": { "linter": "eslint", "unitTestRunner": "jest" },
+    "@nx/angular:component": { "style": "scss" }
   },
   "release": {
     "projects": ["ngx-dev-toolbar"],
     "version": {
       "preVersionCommand": "npm run package",
-      "git": {
-        "commitMessage": "chore: release {version}"
-      }
+      "git": { "commitMessage": "chore: release {version}" }
     },
     "changelog": {
-      "workspaceChangelog": {
-        "createRelease": "github"
-      },
-      "git": {
-        "commitMessage": "chore: update changelog for {version}"
-      }
+      "workspaceChangelog": { "createRelease": "github" },
+      "git": { "commitMessage": "chore: update changelog for {version}" }
     },
     "conventionalCommits": {
       "types": {
-        "feat": {
-          "changelog": {
-            "title": "Features"
-          }
-        },
-        "fix": {
-          "changelog": {
-            "title": "Bug Fixes"
-          }
-        },
+        "feat": { "changelog": { "title": "Features" } },
+        "fix": { "changelog": { "title": "Bug Fixes" } },
         "cleanup": {
-          "changelog": {
-            "title": "Cleanup"
-          },
+          "changelog": { "title": "Cleanup" },
           "semverBump": "patch"
         },
         "docs": {
-          "changelog": {
-            "title": "Documentation"
-          },
+          "changelog": { "title": "Documentation" },
           "semverBump": "none"
         },
         "refactor": {
-          "changelog": {
-            "title": "Refactor"
-          },
+          "changelog": { "title": "Refactor" },
           "semverBump": "patch"
         }
       }
