@@ -1,5 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   OnDestroy,
@@ -26,6 +27,7 @@ import { ToolbarPresetsToolComponent } from './tools/presets-tool/presets-tool.c
   standalone: true,
   selector: 'ndt-toolbar',
   styleUrls: ['./toolbar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.ShadowDom,
   imports: [
     ToolbarHomeToolComponent,
