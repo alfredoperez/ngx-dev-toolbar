@@ -43,13 +43,21 @@ describe('SettingsService', () => {
       const result = service.getSettings();
 
       expect(storageServiceMock.get).toHaveBeenCalledWith('settings');
-      expect(result).toEqual({ isDarkMode: false });
+      expect(result).toEqual({
+        isDarkMode: false,
+        position: 'bottom',
+        isCompletelyHidden: false,
+      });
     });
   });
 
   describe('setSettings', () => {
     it('should save settings to storage', () => {
-      const settings = { isDarkMode: true };
+      const settings = {
+        isDarkMode: true,
+        position: 'bottom' as const,
+        isCompletelyHidden: false,
+      };
 
       service.setSettings(settings);
 

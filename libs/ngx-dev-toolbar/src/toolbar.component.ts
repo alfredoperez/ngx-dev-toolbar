@@ -1,10 +1,3 @@
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
 import { DOCUMENT } from '@angular/common';
 import {
   Component,
@@ -43,14 +36,17 @@ import { ToolbarPresetsToolComponent } from './tools/presets-tool/presets-tool.c
     ToolbarPresetsToolComponent,
   ],
   template: `
-    @if (config().enabled ?? true) {
+    @if ((config().enabled ?? true) && !state.isCompletelyHidden()) {
       <div
         aria-label="Developer tools"
         role="toolbar"
         class="ndt-toolbar"
-        [@toolbarState]="state.isVisible() ? 'visible' : 'hidden'"
+        [class.ndt-toolbar--top]="state.position() === 'top'"
+        [class.ndt-toolbar--right]="state.position() === 'right'"
+        [class.ndt-toolbar--bottom]="state.position() === 'bottom'"
+        [class.ndt-toolbar--left]="state.position() === 'left'"
+        [class.ndt-toolbar--visible]="state.isVisible()"
         [attr.data-theme]="state.theme()"
-        [class.ndt-toolbar--active]="state.isVisible()"
         (mouseenter)="onMouseEnter()"
       >
         <ndt-home-tool />
@@ -73,25 +69,6 @@ import { ToolbarPresetsToolComponent } from './tools/presets-tool/presets-tool.c
       </div>
     }
   `,
-  animations: [
-    trigger('toolbarState', [
-      state(
-        'hidden',
-        style({
-          transform: 'translate(-50%, calc(100% + -1.2rem))',
-        })
-      ),
-      state(
-        'visible',
-        style({
-          transform: 'translate(-50%, -1rem)',
-        })
-      ),
-      transition('hidden <=> visible', [
-        animate('300ms cubic-bezier(0.4, 0, 0.2, 1)'),
-      ]),
-    ]),
-  ],
 })
 export class ToolbarComponent implements OnInit, OnDestroy {
   private document = inject(DOCUMENT);
@@ -108,6 +85,21 @@ export class ToolbarComponent implements OnInit, OnDestroy {
       takeUntilDestroyed(this.destroyRef)
     )
     .subscribe(() => this.toggleDevTools());
+
+  private hideShortcut = fromEvent<KeyboardEvent>(window, 'keydown')
+    .pipe(
+      filter(
+        (event) =>
+          (event.metaKey || event.ctrlKey) &&
+          !event.shiftKey &&
+          event.key === '.'
+      ),
+      takeUntilDestroyed(this.destroyRef)
+    )
+    .subscribe((event) => {
+      event.preventDefault();
+      this.state.toggleCompletelyHidden();
+    });
 
   private mouseLeave = fromEvent<MouseEvent>(document, 'mouseleave')
     .pipe(throttleTime(3000), takeUntilDestroyed(this.destroyRef))

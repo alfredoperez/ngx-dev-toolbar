@@ -1,5 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { CdkConnectedOverlay, OverlayModule } from '@angular/cdk/overlay';
+import { CdkConnectedOverlay, ConnectedPosition, OverlayModule } from '@angular/cdk/overlay';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -58,7 +58,7 @@ import { ToolbarWindowOptions } from './toolbar-tool.models';
         [cdkConnectedOverlayPanelClass]="['ndt-overlay-panel', 'ndt-tool-overlay']"
         cdkConnectedOverlay
       >
-        <ndt-window [@slideAnimation] [config]="options()" (closed)="onClose()">
+        <ndt-window [@slideAnimation]="slideDirection()" [config]="options()" (closed)="onClose()">
           <ng-content />
         </ndt-window>
       </ng-template>
@@ -69,31 +69,45 @@ import { ToolbarWindowOptions } from './toolbar-tool.models';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger('slideAnimation', [
-      transition(':enter', [
-        style({
-          transform: 'translateY(20px)',
-          opacity: 0,
-        }),
-        animate(
-          '400ms cubic-bezier(0.4, 0, 0.2, 1)',
-          style({
-            transform: 'translateY(0)',
-            opacity: 1,
-          })
-        ),
+      // Bottom toolbar: slide up from below
+      transition('void => up', [
+        style({ transform: 'translateY(20px)', opacity: 0 }),
+        animate('400ms cubic-bezier(0.4, 0, 0.2, 1)',
+          style({ transform: 'translateY(0)', opacity: 1 })),
       ]),
-      transition(':leave', [
-        style({
-          transform: 'translateY(0)',
-          opacity: 1,
-        }),
-        animate(
-          '400ms cubic-bezier(0.4, 0, 0.2, 1)',
-          style({
-            transform: 'translateY(20px)',
-            opacity: 0,
-          })
-        ),
+      transition('up => void', [
+        animate('400ms cubic-bezier(0.4, 0, 0.2, 1)',
+          style({ transform: 'translateY(20px)', opacity: 0 })),
+      ]),
+      // Top toolbar: slide down from above
+      transition('void => down', [
+        style({ transform: 'translateY(-20px)', opacity: 0 }),
+        animate('400ms cubic-bezier(0.4, 0, 0.2, 1)',
+          style({ transform: 'translateY(0)', opacity: 1 })),
+      ]),
+      transition('down => void', [
+        animate('400ms cubic-bezier(0.4, 0, 0.2, 1)',
+          style({ transform: 'translateY(-20px)', opacity: 0 })),
+      ]),
+      // Left toolbar: slide in from left
+      transition('void => right', [
+        style({ transform: 'translateX(-20px)', opacity: 0 }),
+        animate('400ms cubic-bezier(0.4, 0, 0.2, 1)',
+          style({ transform: 'translateX(0)', opacity: 1 })),
+      ]),
+      transition('right => void', [
+        animate('400ms cubic-bezier(0.4, 0, 0.2, 1)',
+          style({ transform: 'translateX(-20px)', opacity: 0 })),
+      ]),
+      // Right toolbar: slide in from right
+      transition('void => left', [
+        style({ transform: 'translateX(20px)', opacity: 0 }),
+        animate('400ms cubic-bezier(0.4, 0, 0.2, 1)',
+          style({ transform: 'translateX(0)', opacity: 1 })),
+      ]),
+      transition('left => void', [
+        animate('400ms cubic-bezier(0.4, 0, 0.2, 1)',
+          style({ transform: 'translateX(20px)', opacity: 0 })),
       ]),
     ]),
   ],
@@ -108,6 +122,16 @@ export class ToolbarToolComponent {
   title = input.required<string>();
   badge = input<string>();
   isActive = computed(() => this.state.activeToolId() === this.options().id);
+
+  slideDirection = computed(() => {
+    switch (this.state.position()) {
+      case 'bottom': return 'up';
+      case 'top': return 'down';
+      case 'left': return 'right';
+      case 'right': return 'left';
+    }
+  });
+
   height = computed(() => {
     switch (this.options().size) {
       case 'small':
@@ -137,20 +161,65 @@ export class ToolbarToolComponent {
         return 400;
     }
   });
-  positions = computed(() => {
-    const triggerXPosition = this.getButtonContainerXPosition();
-    const windowCenter = window.innerWidth / 2;
-    const offsetX = windowCenter - triggerXPosition - 22;
-    return [
-      {
-        originX: 'center' as const,
-        originY: 'center' as const,
-        overlayX: 'center' as const,
-        overlayY: 'center' as const,
-        offsetY: -(Math.ceil(this.height() / 2) + 36),
-        offsetX,
-      },
-    ];
+
+  positions = computed((): ConnectedPosition[] => {
+    const position = this.state.position();
+    const triggerRect = this.getButtonContainerRect();
+
+    switch (position) {
+      case 'bottom': {
+        // Original logic: overlay centered above toolbar
+        const windowCenter = window.innerWidth / 2;
+        const offsetX = windowCenter - (triggerRect?.left ?? 0) - 22;
+        return [{
+          originX: 'center',
+          originY: 'center',
+          overlayX: 'center',
+          overlayY: 'center',
+          offsetY: -(Math.ceil(this.height() / 2) + 36),
+          offsetX,
+        }];
+      }
+      case 'top': {
+        // Overlay centered below toolbar
+        const windowCenter = window.innerWidth / 2;
+        const offsetX = windowCenter - (triggerRect?.left ?? 0) - 22;
+        return [{
+          originX: 'center',
+          originY: 'center',
+          overlayX: 'center',
+          overlayY: 'center',
+          offsetY: Math.ceil(this.height() / 2) + 36,
+          offsetX,
+        }];
+      }
+      case 'left': {
+        // Overlay centered to the right of toolbar
+        const windowMiddle = window.innerHeight / 2;
+        const offsetY = windowMiddle - (triggerRect?.top ?? 0) - 22;
+        return [{
+          originX: 'center',
+          originY: 'center',
+          overlayX: 'center',
+          overlayY: 'center',
+          offsetX: Math.ceil(this.width() / 2) + 36,
+          offsetY,
+        }];
+      }
+      case 'right': {
+        // Overlay centered to the left of toolbar
+        const windowMiddle = window.innerHeight / 2;
+        const offsetY = windowMiddle - (triggerRect?.top ?? 0) - 22;
+        return [{
+          originX: 'center',
+          originY: 'center',
+          overlayX: 'center',
+          overlayY: 'center',
+          offsetX: -(Math.ceil(this.width() / 2) + 36),
+          offsetY,
+        }];
+      }
+    }
   });
 
   onOpen(): void {
@@ -161,9 +230,7 @@ export class ToolbarToolComponent {
     this.state.setActiveTool(null);
   }
 
-  getButtonContainerXPosition(): number {
-    const buttonContainerRect =
-      this.buttonContainer()?.nativeElement?.getBoundingClientRect();
-    return buttonContainerRect?.left ?? 0;
+  private getButtonContainerRect(): DOMRect | undefined {
+    return this.buttonContainer()?.nativeElement?.getBoundingClientRect();
   }
 }

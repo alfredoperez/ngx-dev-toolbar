@@ -1,8 +1,12 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { ToolbarConfig } from './models/toolbar-config.interface';
+import { ToolbarPosition } from './models/toolbar-position.model';
+import { ToolbarStorageService } from './utils/storage.service';
 
 interface ToolbarState {
   isHidden: boolean;
+  isCompletelyHidden: boolean;
+  position: ToolbarPosition;
   activeToolId: string | null;
   error: string | null;
   theme: 'light' | 'dark';
@@ -10,13 +14,19 @@ interface ToolbarState {
   config: ToolbarConfig;
 }
 
+const SETTINGS_KEY = 'settings';
+
 @Injectable({
   providedIn: 'root',
 })
 export class ToolbarStateService {
+  private storageService = inject(ToolbarStorageService);
+
   // Initial state
   private state = signal<ToolbarState>({
     isHidden: true,
+    isCompletelyHidden: false,
+    position: 'bottom',
     activeToolId: null,
     delay: 3000,
     error: null,
@@ -33,17 +43,17 @@ export class ToolbarStateService {
   readonly hasActiveTool = computed(() => this.state().activeToolId !== null);
   readonly error = computed(() => this.state().error);
   readonly theme = computed(() => this.state().theme);
-  /**
-   * The delay to hide the toolbar
-   */
   readonly delay = computed(() => this.state().delay);
   readonly config = computed(() => this.state().config);
-  /**
-   * Indicates if the toolbar is enabled based on config.
-   * When disabled, toolbar UI won't render and services won't return forced values.
-   * @default true
-   */
   readonly isEnabled = computed(() => this.state().config.enabled ?? true);
+  readonly position = computed(() => this.state().position);
+  readonly isCompletelyHidden = computed(
+    () => this.state().isCompletelyHidden
+  );
+
+  constructor() {
+    this.loadPersistedState();
+  }
 
   // State updates
   setVisibility(isVisible: boolean): void {
@@ -102,5 +112,54 @@ export class ToolbarStateService {
       ...state,
       config,
     }));
+    // If config specifies a position, it takes priority
+    if (config.position) {
+      this.setPosition(config.position);
+    }
+  }
+
+  setPosition(position: ToolbarPosition): void {
+    // Close any active tool so its overlay doesn't stay in the old position
+    this.setActiveTool(null);
+    this.state.update((state) => ({
+      ...state,
+      position,
+    }));
+    this.persistState();
+  }
+
+  toggleCompletelyHidden(): void {
+    this.state.update((state) => ({
+      ...state,
+      isCompletelyHidden: !state.isCompletelyHidden,
+    }));
+    this.persistState();
+  }
+
+  private loadPersistedState(): void {
+    try {
+      const stored = this.storageService.get<{
+        position?: ToolbarPosition;
+        isCompletelyHidden?: boolean;
+      }>(SETTINGS_KEY);
+      if (stored) {
+        this.state.update((state) => ({
+          ...state,
+          position: stored.position ?? state.position,
+          isCompletelyHidden: stored.isCompletelyHidden ?? state.isCompletelyHidden,
+        }));
+      }
+    } catch {
+      // Corrupted localStorage data — use defaults
+    }
+  }
+
+  private persistState(): void {
+    const current = this.storageService.get<Record<string, unknown>>(SETTINGS_KEY) ?? {};
+    this.storageService.set(SETTINGS_KEY, {
+      ...current,
+      position: this.state().position,
+      isCompletelyHidden: this.state().isCompletelyHidden,
+    });
   }
 }

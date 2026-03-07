@@ -10,11 +10,13 @@ import { ToolbarClickableCardComponent } from '../../components/clickable-card/c
 import { ToolbarLinkButtonComponent } from '../../components/link-button/link-button.component';
 import { ToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
 import { ToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
+import {
+  ToolbarPosition,
+  TOOLBAR_POSITIONS,
+} from '../../models/toolbar-position.model';
 import { ToolbarStateService } from '../../toolbar-state.service';
 import { ToolbarStorageService } from '../../utils/storage.service';
 import { SettingsService } from './settings.service';
-
-type ThemeType = 'light' | 'dark';
 
 @Component({
   selector: 'ndt-home-tool',
@@ -30,6 +32,27 @@ type ThemeType = 'light' | 'dark';
     <ndt-toolbar-tool [options]="options" title="Home" icon="angular">
       <section class="settings">
         <div class="settings-container">
+          <div class="instruction">
+            <div class="instruction__label">
+              <span class="instruction__label-text">Toolbar Position</span>
+              <span class="instruction__label-description">
+                Choose where the toolbar appears on screen
+              </span>
+            </div>
+          </div>
+          <div class="position-selector">
+            @for (pos of positions; track pos) {
+              <button
+                class="position-option"
+                [class.position-option--active]="state.position() === pos"
+                [attr.aria-pressed]="state.position() === pos"
+                (click)="onPositionChange(pos)"
+              >
+                {{ pos }}
+              </button>
+            }
+          </div>
+
           <div class="instruction">
             <div class="instruction__label">
               <span class="instruction__label-text">Reset Settings</span>
@@ -84,6 +107,7 @@ export class ToolbarHomeToolComponent {
 
   readonly badge = input<string | number>();
   readonly title = `Angular Toolbar`;
+  readonly positions = TOOLBAR_POSITIONS;
   readonly options: ToolbarWindowOptions = {
     title: this.title,
     isClosable: true,
@@ -120,6 +144,10 @@ export class ToolbarHomeToolComponent {
       label: 'Community',
     },
   ] as const;
+
+  onPositionChange(position: ToolbarPosition): void {
+    this.state.setPosition(position);
+  }
 
   onExportSettings(): void {
     const settings = this.storageService.getAllSettings();
