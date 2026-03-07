@@ -291,6 +291,8 @@ All tool services follow the `ToolbarService<T>` interface:
 ## Active Technologies
 - TypeScript 5.5, Angular 19.0 + Angular 19.0, Angular CDK 19.0, RxJS 7.8 (005-badges-each-tools)
 - localStorage via `ToolbarStorageService` (prefix: `AngularToolbar.`) (005-badges-each-tools)
+- TypeScript 5.5, Angular 19.0 + Angular CDK 19.0 (overlay positioning), RxJS 7.8 (010-toolbar-positioning)
+- N/A (no data persistence changes) (011-fix-toolbar-tooltips)
 
 ## Recent Changes
 - 005-badges-each-tools: Added TypeScript 5.5, Angular 19.0 + Angular 19.0, Angular CDK 19.0, RxJS 7.8

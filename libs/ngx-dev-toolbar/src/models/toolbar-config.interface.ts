@@ -1,8 +1,15 @@
+import { ToolbarPosition } from './toolbar-position.model';
+
 /**
  * Configuration options for the Angular Toolbar component.
  * All tool flags are optional and default to true if not specified.
  */
 export interface ToolbarConfig {
+  /**
+   * Position of the toolbar on the viewport edge.
+   * @default 'bottom'
+   */
+  position?: ToolbarPosition;
   /**
    * Master switch to enable/disable the entire toolbar.
    * When disabled:

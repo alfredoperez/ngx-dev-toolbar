@@ -8,18 +8,21 @@ import {
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   computed,
   inject,
   input,
   output,
   signal,
 } from '@angular/core';
+import { ToolbarPosition } from '../../models/toolbar-position.model';
 import { ToolbarStateService } from '../../toolbar-state.service';
 
 @Component({
   selector: 'ndt-tool-button',
   standalone: true,
+  host: {
+    '[class]': '"tooltip-position-" + position()',
+  },
   template: `
     <button
       class="tool-button"
@@ -52,18 +55,16 @@ import { ToolbarStateService } from '../../toolbar-state.service';
         'hidden',
         style({
           opacity: 0,
-          transform: 'translateX(-50%) translateY(1rem)',
         })
       ),
       state(
         'visible',
         style({
           opacity: 1,
-          transform: 'translateX(-50%) translateY(0)',
         })
       ),
-      transition('hidden => visible', [animate('200ms ease-out')]),
-      transition('visible => hidden', [animate('150ms ease-in')]),
+      transition('hidden => visible', [animate('150ms ease-out')]),
+      transition('visible => hidden', [animate('100ms ease-in')]),
     ]),
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -71,12 +72,12 @@ import { ToolbarStateService } from '../../toolbar-state.service';
 export class ToolbarToolButtonComponent {
   // Injects
   private readonly state = inject(ToolbarStateService);
-  private readonly elementRef = inject(ElementRef);
 
   // Inputs
-  readonly title = input.required<string>();
+  readonly toolLabel = input.required<string>();
   readonly toolId = input.required<string>();
   readonly badge = input<string>();
+  readonly position = input<ToolbarPosition>('bottom');
 
   // Outputs
   readonly open = output<void>();
@@ -88,14 +89,9 @@ export class ToolbarToolButtonComponent {
   readonly isToolbarVisible = this.state.isVisible;
 
   readonly isFocused = signal(false);
-  readonly tooltip = computed(
-    () =>
-      this.elementRef.nativeElement.parentElement?.getAttribute(
-        'data-tooltip'
-      ) ?? ''
-  );
+  readonly tooltip = computed(() => this.toolLabel());
   readonly isTooltipVisible = computed(
-    () => this.tooltip() && !this.isActive()
+    () => this.tooltip() && !this.isActive() && this.isToolbarVisible()
   );
 
   // Properties

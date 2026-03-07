@@ -31,6 +31,7 @@ export * from './components/step-view/step-view.directive';
 export * from './toolbar.component';
 export * from './models/toolbar.interface';
 export * from './models/toolbar-config.interface';
+export * from './models/toolbar-position.model';
 export * from './models/tool-view-state.models';
 export * from './tools/feature-flags-tool/feature-flags.models';
 export * from './tools/feature-flags-tool/feature-flags.service';

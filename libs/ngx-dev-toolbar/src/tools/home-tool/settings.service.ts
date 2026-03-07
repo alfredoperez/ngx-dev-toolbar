@@ -11,6 +11,8 @@ export class SettingsService {
     return (
       this.storageService.get<Settings>(this.STORAGE_KEY) || {
         isDarkMode: false,
+        position: 'bottom',
+        isCompletelyHidden: false,
       }
     );
   }

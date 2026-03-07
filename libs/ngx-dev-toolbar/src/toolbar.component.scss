@@ -10,21 +10,69 @@
   @include devtools.devtools-theme;
 
   position: fixed;
-  bottom: 0;
-  left: 50%;
   z-index: map.get(devtools.$z-indices, toolbar);
-  transform: translateX(-50%);
   display: flex;
   pointer-events: auto;
   background: var(--ndt-bg-primary);
   border: 1px solid var(--ndt-border-primary);
   border-radius: map.get(map.get(devtools.$dimensions, border-radius), full);
   box-shadow: var(--ndt-shadow-toolbar);
-  height: map.get(devtools.$dimensions, toolbar-height);
   overflow: visible;
+  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
 
-  &--active {
-    opacity: 1;
+  // How much of the toolbar peeks out when hidden (matches original ~1.2rem behavior)
+  $peek-amount: 1.2rem;
+
+  // Bottom position (default)
+  &--bottom {
+    bottom: 0;
+    left: 50%;
+    flex-direction: row;
+    height: map.get(devtools.$dimensions, toolbar-height);
+    transform: translateX(-50%) translateY(calc(100% - #{$peek-amount}));
+
+    &.ndt-toolbar--visible {
+      transform: translateX(-50%) translateY(-12px);
+    }
+  }
+
+  // Top position
+  &--top {
+    top: 0;
+    left: 50%;
+    flex-direction: row;
+    height: map.get(devtools.$dimensions, toolbar-height);
+    transform: translateX(-50%) translateY(calc(-100% + #{$peek-amount}));
+
+    &.ndt-toolbar--visible {
+      transform: translateX(-50%) translateY(12px);
+    }
+  }
+
+  // Left position
+  &--left {
+    left: 0;
+    top: 50%;
+    flex-direction: column;
+    width: map.get(devtools.$dimensions, toolbar-height);
+    transform: translateY(-50%) translateX(calc(-100% + #{$peek-amount}));
+
+    &.ndt-toolbar--visible {
+      transform: translateY(-50%) translateX(12px);
+    }
+  }
+
+  // Right position
+  &--right {
+    right: 0;
+    top: 50%;
+    flex-direction: column;
+    width: map.get(devtools.$dimensions, toolbar-height);
+    transform: translateY(-50%) translateX(calc(100% - #{$peek-amount}));
+
+    &.ndt-toolbar--visible {
+      transform: translateY(-50%) translateX(-12px);
+    }
   }
 }
 
