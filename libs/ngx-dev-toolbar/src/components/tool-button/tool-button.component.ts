@@ -1,11 +1,4 @@
 import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
-import {
   ChangeDetectionStrategy,
   Component,
   computed,
@@ -37,7 +30,7 @@ import { ToolbarStateService } from '../../toolbar-state.service';
       @if (isTooltipVisible()) {
       <span
         class="tooltip"
-        [@tooltipAnimation]="tooltipState ? 'visible' : 'hidden'"
+        [class.tooltip--visible]="tooltipState"
       >
         {{ tooltip() }}
       </span>
@@ -49,24 +42,6 @@ import { ToolbarStateService } from '../../toolbar-state.service';
     </button>
   `,
   styleUrls: ['./tool-button.component.scss'],
-  animations: [
-    trigger('tooltipAnimation', [
-      state(
-        'hidden',
-        style({
-          opacity: 0,
-        })
-      ),
-      state(
-        'visible',
-        style({
-          opacity: 1,
-        })
-      ),
-      transition('hidden => visible', [animate('150ms ease-out')]),
-      transition('visible => hidden', [animate('100ms ease-in')]),
-    ]),
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarToolButtonComponent {

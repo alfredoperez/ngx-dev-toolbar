@@ -72,6 +72,12 @@ $arrow-size: 5px;
   pointer-events: none;
   z-index: 1000;
   box-shadow: var(--ndt-shadow-tooltip);
+  opacity: 0;
+  transition: opacity 150ms ease-out;
+
+  &--visible {
+    opacity: 1;
+  }
 
   // Arrow
   &::after {
