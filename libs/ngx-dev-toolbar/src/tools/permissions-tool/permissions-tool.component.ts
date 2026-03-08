@@ -37,7 +37,7 @@ import {
   template: `
     <ndt-toolbar-tool
       [options]="options"
-      title="Permissions"
+      toolTitle="Permissions"
       icon="lock"
       [badge]="badgeCount()"
     >

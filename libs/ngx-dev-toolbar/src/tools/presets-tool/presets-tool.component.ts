@@ -34,7 +34,7 @@ type ToastType = 'success' | 'error';
     ToolbarIconComponent,
   ],
   template: `
-    <ndt-toolbar-tool [options]="options" title="Presets" icon="layout">
+    <ndt-toolbar-tool [options]="options" toolTitle="Presets" icon="layout">
       <div class="container">
         <!-- Toast Notification -->
         @if (toastMessage()) {
