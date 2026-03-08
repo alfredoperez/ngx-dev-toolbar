@@ -1,0 +1,194 @@
+:host {
+  display: block;
+}
+
+.i18n-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ndt-spacing-xs);
+  padding-top: 0;
+}
+
+// Section headers — small uppercase labels with a subtle left accent
+.i18n-section-header {
+  font-size: var(--ndt-font-size-xxs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ndt-text-muted);
+  margin-top: var(--ndt-spacing-md);
+  padding: var(--ndt-spacing-xs) 0 var(--ndt-spacing-xs) var(--ndt-spacing-sm);
+  border-left: 2px solid rgba(var(--ndt-primary-rgb), 0.4);
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+// 2-column grid for the 4 selects
+.i18n-select-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--ndt-spacing-sm) var(--ndt-spacing-sm);
+  margin-top: var(--ndt-spacing-xs);
+}
+
+.i18n-select-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  label {
+    font-size: var(--ndt-font-size-xs);
+    color: var(--ndt-text-secondary);
+    font-weight: 600;
+  }
+}
+
+// Standalone select below the grid (e.g. First Day of Week)
+.i18n-standalone-select {
+  margin-top: var(--ndt-spacing-sm);
+}
+
+// Formatting preview — single-column compact list
+.i18n-preview {
+  background: var(--ndt-hover-bg);
+  border-radius: var(--ndt-border-radius-medium);
+  border-left: 2px solid var(--ndt-border-primary);
+  padding: var(--ndt-spacing-xs) var(--ndt-spacing-sm);
+  margin-top: var(--ndt-spacing-xs);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.i18n-preview-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--ndt-font-size-xxs);
+  gap: var(--ndt-spacing-xs);
+  padding: 2px 0;
+
+  .preview-label {
+    color: var(--ndt-text-muted);
+    flex-shrink: 0;
+  }
+
+  .preview-value {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: var(--ndt-font-size-xxs);
+    color: var(--ndt-text-primary);
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+// Toggle section
+.i18n-toggle-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: var(--ndt-spacing-xs);
+}
+
+.i18n-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--ndt-spacing-xs) var(--ndt-spacing-sm);
+  gap: var(--ndt-spacing-sm);
+  border-radius: var(--ndt-border-radius-small);
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: var(--ndt-hover-bg);
+  }
+
+  .toggle-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+  }
+
+  .toggle-label {
+    font-size: var(--ndt-font-size-xs);
+    color: var(--ndt-text-secondary);
+    font-weight: 500;
+  }
+
+  .toggle-hint {
+    font-size: var(--ndt-font-size-xxs);
+    color: var(--ndt-text-muted);
+    line-height: 1.3;
+  }
+}
+
+// Pill toggle switch
+.toggle-switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 34px;
+  height: 18px;
+  flex-shrink: 0;
+  cursor: pointer;
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+
+    &:focus-visible + .toggle-track {
+      outline: 2px solid rgba(var(--ndt-primary-rgb), 0.5);
+      outline-offset: 2px;
+    }
+  }
+
+  .toggle-track {
+    position: absolute;
+    inset: 0;
+    background: var(--ndt-border-primary);
+    border-radius: 9px;
+    transition: background 0.2s ease;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 14px;
+      height: 14px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+    }
+  }
+
+  input:checked + .toggle-track {
+    background: var(--ndt-primary);
+
+    &::after {
+      transform: translateX(16px);
+    }
+  }
+}
+
+// Pseudo-localization preview output
+.i18n-pseudo-preview {
+  background: var(--ndt-hover-bg);
+  border-radius: var(--ndt-border-radius-small);
+  border-left: 2px solid rgba(var(--ndt-primary-rgb), 0.3);
+  padding: var(--ndt-spacing-sm) var(--ndt-spacing-md);
+  margin: 0 var(--ndt-spacing-sm);
+  font-size: var(--ndt-font-size-xs);
+  color: var(--ndt-text-muted);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  word-break: break-word;
+  line-height: 1.5;
+}

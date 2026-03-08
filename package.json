@@ -25,6 +25,8 @@
     "@fontsource/jetbrains-mono": "^5.2.8",
     "@fontsource/plus-jakarta-sans": "^5.2.8",
     "@jsverse/transloco": "^7.5.1",
+    "@ngx-translate/core": "^17.0.0",
+    "@ngx-translate/http-loader": "^17.0.0",
     "rxjs": "~7.8.0",
     "starlight-links-validator": "^0.19.2",
     "zone.js": "~0.15.0"

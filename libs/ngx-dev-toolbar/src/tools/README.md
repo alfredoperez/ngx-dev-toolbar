@@ -8,7 +8,6 @@ This document provides comprehensive documentation for all available tools in th
 - [Tool Architecture](#tool-architecture)
 - [Available Tools](#available-tools)
   - [Feature Flags Tool](#feature-flags-tool)
-  - [Language Tool](#language-tool)
   - [Permissions Tool](#permissions-tool)
   - [Network Mocker Tool](#network-mocker-tool)
 - [Creating Custom Tools](#creating-custom-tools)
@@ -70,8 +69,6 @@ tool-name/
 - Direct mapping between API and internal state
 - No complex validation or transformation logic
 - Single source of truth
-
-**Example:** Language Tool
 
 ### Component Structure
 
@@ -218,80 +215,6 @@ export class FeatureComponent implements OnInit {
       const darkMode = forcedFlags.find(f => f.id === 'dark-mode');
       this.isDarkModeEnabled.set(darkMode?.isEnabled ?? false);
     });
-  }
-}
-```
-
-### Language Tool
-
-Switch application language instantly.
-
-#### API Reference
-
-**Service:** `DevToolbarLanguageService`
-
-**Methods:**
-
-```typescript
-class DevToolbarLanguageService implements DevToolsService<DevToolbarLanguage> {
-  /**
-   * Sets the available languages
-   * @param languages - Array of languages to display
-   */
-  setAvailableOptions(languages: DevToolbarLanguage[]): void;
-
-  /**
-   * Returns observable of forced language selection
-   * @returns Observable emitting array with single selected language
-   */
-  getForcedValues(): Observable<DevToolbarLanguage[]>;
-}
-```
-
-**Data Model:**
-
-```typescript
-interface DevToolbarLanguage {
-  code: string;         // Language code (e.g., 'en', 'es', 'fr')
-  name: string;         // Display name (e.g., 'English', 'Spanish')
-  isSelected: boolean;  // Whether this language is currently selected
-  isForced: boolean;    // Whether language is forced via toolbar
-}
-```
-
-#### Usage Example
-
-```typescript
-import { DevToolbarLanguageService } from 'ngx-dev-toolbar';
-import { Component, inject, OnInit } from '@angular/core';
-
-@Component({
-  selector: 'app-i18n'
-})
-export class I18nComponent implements OnInit {
-  private languageService = inject(DevToolbarLanguageService);
-
-  currentLanguage = signal('en');
-
-  ngOnInit() {
-    // Configure available languages
-    this.languageService.setAvailableOptions([
-      { code: 'en', name: 'English', isSelected: true, isForced: false },
-      { code: 'es', name: 'Español', isSelected: false, isForced: false },
-      { code: 'fr', name: 'Français', isSelected: false, isForced: false }
-    ]);
-
-    // Subscribe to language changes
-    this.languageService.getForcedValues().subscribe(([selectedLang]) => {
-      if (selectedLang) {
-        this.currentLanguage.set(selectedLang.code);
-        this.loadTranslations(selectedLang.code);
-      }
-    });
-  }
-
-  private loadTranslations(langCode: string) {
-    // Load translations for the selected language
   }
 }
 ```

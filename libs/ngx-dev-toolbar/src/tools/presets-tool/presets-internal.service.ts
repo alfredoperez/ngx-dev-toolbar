@@ -3,9 +3,9 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ToolbarStorageService } from '../../utils/storage.service';
 import { ToolbarInternalFeatureFlagService } from '../feature-flags-tool/feature-flags-internal.service';
-import { ToolbarInternalLanguageService } from '../language-tool/language-internal.service';
 import { ToolbarInternalPermissionsService } from '../permissions-tool/permissions-internal.service';
 import { ToolbarInternalAppFeaturesService } from '../app-features-tool/app-features-internal.service';
+import { ToolbarInternalI18nService } from '../i18n-tool/i18n-internal.service';
 import {
   ToolbarPreset,
   ToolbarPresetConfig,
@@ -24,9 +24,9 @@ export class ToolbarInternalPresetsService {
 
   // Inject all other tool internal services (for reading/writing state)
   private featureFlagsService = inject(ToolbarInternalFeatureFlagService);
-  private languageService = inject(ToolbarInternalLanguageService);
   private permissionsService = inject(ToolbarInternalPermissionsService);
   private appFeaturesService = inject(ToolbarInternalAppFeaturesService);
+  private i18nService = inject(ToolbarInternalI18nService);
 
   private presetsSubject = new BehaviorSubject<ToolbarPreset[]>([]);
   public presets$: Observable<ToolbarPreset[]> =
@@ -70,9 +70,11 @@ export class ToolbarInternalPresetsService {
 
     // Apply to each tool's internal service
     this.featureFlagsService.applyPresetFlags(preset.config.featureFlags);
-    await this.languageService.applyPresetLanguage(preset.config.language);
     this.permissionsService.applyPresetPermissions(preset.config.permissions);
     this.appFeaturesService.applyForcedState(preset.config.appFeatures);
+    if (preset.config.i18n) {
+      this.i18nService.applyPresetI18n(preset.config.i18n);
+    }
   }
 
   /**
@@ -155,14 +157,14 @@ export class ToolbarInternalPresetsService {
     if (options.applyFeatureFlags) {
       this.featureFlagsService.applyPresetFlags(preset.config.featureFlags);
     }
-    if (options.applyLanguage) {
-      await this.languageService.applyPresetLanguage(preset.config.language);
-    }
     if (options.applyPermissions) {
       this.permissionsService.applyPresetPermissions(preset.config.permissions);
     }
     if (options.applyAppFeatures) {
       this.appFeaturesService.applyForcedState(preset.config.appFeatures);
+    }
+    if (options.applyI18n && preset.config.i18n) {
+      this.i18nService.applyPresetI18n(preset.config.i18n);
     }
   }
 
@@ -201,7 +203,7 @@ export class ToolbarInternalPresetsService {
       includeFeatureFlags: categoryOptions?.includeFeatureFlags ?? true,
       includePermissions: categoryOptions?.includePermissions ?? true,
       includeAppFeatures: categoryOptions?.includeAppFeatures ?? true,
-      includeLanguage: categoryOptions?.includeLanguage ?? true,
+      includeI18n: categoryOptions?.includeI18n ?? true,
     };
 
     // Get current forced states
@@ -226,9 +228,6 @@ export class ToolbarInternalPresetsService {
             ),
           }
         : { enabled: [], disabled: [] },
-      language: options.includeLanguage
-        ? this.languageService.getCurrentForcedLanguage()
-        : null,
       permissions: options.includePermissions
         ? {
             granted: filterById(
@@ -253,6 +252,19 @@ export class ToolbarInternalPresetsService {
             ),
           }
         : { enabled: [], disabled: [] },
+      i18n: options.includeI18n
+        ? (() => {
+            const i18nState = this.i18nService.getCurrentI18nState();
+            return {
+              locale: i18nState.locale?.id ?? null,
+              timezone: i18nState.timezone?.id ?? null,
+              currency: i18nState.currency?.code ?? null,
+              unitSystem: i18nState.unitSystem ?? null,
+              pseudoLocEnabled: i18nState.pseudoLocEnabled,
+              rtlEnabled: i18nState.rtlEnabled,
+            };
+          })()
+        : undefined,
     };
   }
 

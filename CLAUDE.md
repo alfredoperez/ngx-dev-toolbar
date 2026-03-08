@@ -200,7 +200,7 @@ import { ToolbarComponent } from 'ngx-dev-toolbar';
 export class AppComponent {
   toolbarConfig = {
     enabled: true, // Master switch to enable/disable entire toolbar
-    showLanguageTool: true,
+    showI18nTool: true,
     showFeatureFlagsTool: true,
     showAppFeaturesTool: true,
     showPermissionsTool: true,
@@ -216,7 +216,7 @@ The toolbar accepts a `ToolbarConfig` object to control its behavior:
 ```typescript
 interface ToolbarConfig {
   enabled?: boolean;              // Master switch (default: true)
-  showLanguageTool?: boolean;     // Show/hide individual tools (default: true)
+  showI18nTool?: boolean;         // Show/hide i18n tool (default: true)
   showFeatureFlagsTool?: boolean;
   showAppFeaturesTool?: boolean;
   showPermissionsTool?: boolean;

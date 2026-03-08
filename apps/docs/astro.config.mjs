@@ -28,7 +28,7 @@ export default defineConfig({
           label: 'Tools',
           items: [
             { label: 'Feature Flags', slug: 'feature-flags' },
-            { label: 'Language', slug: 'language' },
+            { label: 'i18n', slug: 'i18n' },
             { label: 'Permissions', slug: 'permissions' },
             { label: 'App Features', slug: 'app-features' },
             { label: 'Presets', slug: 'presets' },

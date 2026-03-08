@@ -1,0 +1,169 @@
+---
+title: i18n Tool
+description: Advanced internationalization simulation with locale, timezone, currency, pseudo-localization, and RTL support
+---
+
+## Overview
+
+The i18n Tool lets you simulate complete regional and linguistic environments at runtime. Change locale, timezone, currency, and unit system independently — then see live formatting previews right in the toolbar. Toggle pseudo-localization to detect hardcoded strings, or flip RTL mirroring to verify Arabic/Hebrew layout — all without rebuilding the application.
+
+## Use Cases
+
+- **Locale testing** — Switch between `en-US`, `ja-JP`, `de-DE` etc. and watch your app re-render with correct translations
+- **Timezone simulation** — Test date/time formatting for `Asia/Tokyo` while sitting in `Europe/London`
+- **Currency validation** — Decouple currency from locale to test cross-border user profiles (e.g., German locale + USD)
+- **Pseudo-localization** — Detect hardcoded strings by transforming all translatable text into accented characters
+- **RTL layout verification** — Toggle right-to-left mode to test Arabic/Hebrew layout mirroring
+
+## Quick Start
+
+```typescript title="app.component.ts"
+import { Component, inject } from '@angular/core';
+import { ToolbarI18nService } from 'ngx-dev-toolbar';
+
+@Component({
+  selector: 'app-root',
+  template: '<router-outlet />'
+})
+export class AppComponent {
+  private i18nService = inject(ToolbarI18nService);
+
+  constructor() {
+    // Define available locales
+    this.i18nService.setAvailableOptions([
+      { id: 'en-US', name: 'English (US)', code: 'en-US' },
+      { id: 'ja-JP', name: 'Japanese', code: 'ja-JP' },
+      { id: 'de-DE', name: 'German', code: 'de-DE' },
+      { id: 'fr-FR', name: 'French', code: 'fr-FR' },
+      { id: 'ar-SA', name: 'Arabic', code: 'ar-SA' },
+    ]);
+
+    // React to locale changes
+    this.i18nService.getForcedValues().subscribe(locales => {
+      const locale = locales[0];
+      if (locale) {
+        console.log('Locale changed to:', locale.code);
+      }
+    });
+  }
+}
+```
+
+## Advanced Usage
+
+### Transloco Integration
+
+```typescript title="i18n-integration.service.ts"
+import { Injectable, inject } from '@angular/core';
+import { ToolbarI18nService } from 'ngx-dev-toolbar';
+import { TranslocoService } from '@ngneat/transloco';
+
+@Injectable({ providedIn: 'root' })
+export class I18nIntegrationService {
+  private i18nService = inject(ToolbarI18nService);
+  private transloco = inject(TranslocoService);
+
+  initialize() {
+    this.i18nService.getForcedValues().subscribe(locales => {
+      if (locales.length > 0) {
+        this.transloco.setActiveLang(locales[0].code);
+      }
+    });
+  }
+}
+```
+
+### Timezone & Currency Overrides
+
+```typescript
+// Listen to timezone changes
+this.i18nService.getForcedTimezone().subscribe(timezone => {
+  if (timezone) {
+    console.log('Timezone:', timezone.id); // e.g., "Asia/Tokyo"
+  }
+});
+
+// Listen to currency changes
+this.i18nService.getForcedCurrency().subscribe(currency => {
+  if (currency) {
+    console.log('Currency:', currency.code); // e.g., "EUR"
+  }
+});
+
+// Listen to unit system changes
+this.i18nService.getUnitSystem().subscribe(unitSystem => {
+  if (unitSystem) {
+    console.log('Units:', unitSystem); // "metric" or "imperial"
+  }
+});
+```
+
+### Pseudo-Localization & RTL
+
+```typescript
+// Detect when pseudo-localization is toggled
+this.i18nService.isPseudoLocalizationEnabled().subscribe(enabled => {
+  if (enabled) {
+    // App can apply pseudo-localization transforms to detect hardcoded strings
+  }
+});
+
+// RTL mode automatically sets document.documentElement.dir = "rtl"
+this.i18nService.isRtlEnabled().subscribe(enabled => {
+  console.log('RTL mode:', enabled);
+});
+```
+
+## API Reference
+
+### `ToolbarI18nService`
+
+#### Methods
+
+| Method | Signature | Description |
+|--------|-----------|-------------|
+| `setAvailableOptions` | `(locales: I18nLocale[]): void` | Set available locales for the dropdown |
+| `getForcedValues` | `(): Observable<I18nLocale[]>` | Get the forced locale (array of 0 or 1) |
+| `getValues` | `(): Observable<I18nLocale[]>` | Same as `getForcedValues` |
+| `setAvailableTimezones` | `(timezones: I18nTimezone[]): void` | Override default timezone list |
+| `setAvailableCurrencies` | `(currencies: I18nCurrency[]): void` | Override default currency list |
+| `getForcedTimezone` | `(): Observable<I18nTimezone \| null>` | Get forced timezone |
+| `getForcedCurrency` | `(): Observable<I18nCurrency \| null>` | Get forced currency |
+| `getUnitSystem` | `(): Observable<I18nUnitSystem \| null>` | Get forced unit system |
+| `isPseudoLocalizationEnabled` | `(): Observable<boolean>` | Whether pseudo-loc is on |
+| `isRtlEnabled` | `(): Observable<boolean>` | Whether RTL mirroring is on |
+
+#### Interfaces
+
+```typescript
+interface I18nLocale {
+  id: string;
+  name: string;
+  code: string;
+}
+
+interface I18nTimezone {
+  id: string;    // IANA timezone (e.g., "Asia/Tokyo")
+  name: string;
+  offset: string; // e.g., "+09:00"
+}
+
+interface I18nCurrency {
+  code: string;  // ISO 4217 (e.g., "USD")
+  name: string;
+  symbol: string;
+}
+
+type I18nUnitSystem = 'metric' | 'imperial';
+```
+
+## Best Practices
+
+- Set available locales early (e.g., in `AppComponent` constructor) so the toolbar populates immediately
+- The tool provides override **signals** — your app is responsible for applying them (e.g., calling `transloco.setActiveLang()`)
+- Built-in timezone and currency lists cover common cases; use `setAvailableTimezones()` / `setAvailableCurrencies()` to customize
+- Use pseudo-localization in CI to catch hardcoded strings before they reach production
+
+## Related Tools
+
+- [Presets Tool](/ngx-dev-toolbar/presets/) — Save i18n configurations alongside feature flags and permissions

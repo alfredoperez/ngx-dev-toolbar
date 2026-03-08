@@ -16,7 +16,6 @@ import { ToolbarInternalPresetsService } from './presets-internal.service';
 import { ToolbarInternalFeatureFlagService } from '../feature-flags-tool/feature-flags-internal.service';
 import { ToolbarInternalPermissionsService } from '../permissions-tool/permissions-internal.service';
 import { ToolbarInternalAppFeaturesService } from '../app-features-tool/app-features-internal.service';
-import { ToolbarInternalLanguageService } from '../language-tool/language-internal.service';
 import { ToolbarStateService } from '../../toolbar-state.service';
 import { ToolbarPreset } from './presets.models';
 
@@ -206,19 +205,6 @@ type ToastType = 'success' | 'error';
             </div>
             }
 
-            @if (isLanguageEnabled()) {
-            <div class="category-section">
-              <label class="checkbox-option">
-                <input
-                  type="checkbox"
-                  [checked]="includeLanguage()"
-                  (change)="includeLanguage.set(!includeLanguage())"
-                  [disabled]="!getCurrentLanguage() || getCurrentLanguage() === 'Not Forced'"
-                />
-                <span>Language ({{ getCurrentLanguage() }})</span>
-              </label>
-            </div>
-            }
           </div>
 
           <div class="form-actions">
@@ -293,12 +279,6 @@ type ToastType = 'success' | 'error';
                 <span class="config-item config-item--off">{{ id }}: OFF</span>
                 }
               </div>
-            </div>
-            }
-            @if (editingPreset()!.config.language) {
-            <div class="config-category">
-              <span class="config-category__title">Language</span>
-              <span class="config-item">{{ editingPreset()!.config.language }}</span>
             </div>
             }
             <button type="button" class="replace-config-button" (click)="onReplaceConfig()">
@@ -471,28 +451,6 @@ type ToastType = 'success' | 'error';
             </div>
             }
 
-            <!-- Language -->
-            @if (applyingPreset()!.config.language) {
-            <div class="apply-category" [class.apply-category--disabled]="!applyLanguage()">
-              <label class="apply-category__header">
-                <input
-                  type="checkbox"
-                  [checked]="applyLanguage()"
-                  (change)="applyLanguage.set(!applyLanguage())"
-                />
-                <span>Language</span>
-              </label>
-              @if (applyLanguage()) {
-              <div class="apply-diff">
-                <div class="diff-item">
-                  <span class="diff-item__name">Language</span>
-                  <span class="diff-item__arrow">→</span>
-                  <span class="diff-item__value">{{ applyingPreset()!.config.language }}</span>
-                </div>
-              </div>
-              }
-            </div>
-            }
           </div>
           }
 
@@ -577,9 +535,6 @@ type ToastType = 'success' | 'error';
               }
               @if (preset.config.appFeatures.enabled.length > 0 || preset.config.appFeatures.disabled.length > 0) {
               <span class="badge">{{ preset.config.appFeatures.enabled.length + preset.config.appFeatures.disabled.length }} features</span>
-              }
-              @if (preset.config.language) {
-              <span class="badge badge--lang">{{ preset.config.language }}</span>
               }
               <span class="preset-card__date">{{ formatDate(preset.updatedAt) }}</span>
             </div>
@@ -1321,7 +1276,6 @@ export class ToolbarPresetsToolComponent {
   private readonly appFeaturesService = inject(
     ToolbarInternalAppFeaturesService
   );
-  private readonly languageService = inject(ToolbarInternalLanguageService);
   protected readonly state = inject(ToolbarStateService);
 
   // View state signals
@@ -1334,7 +1288,6 @@ export class ToolbarPresetsToolComponent {
   protected readonly includeFeatureFlags = signal<boolean>(true);
   protected readonly includePermissions = signal<boolean>(true);
   protected readonly includeAppFeatures = signal<boolean>(true);
-  protected readonly includeLanguage = signal<boolean>(true);
   protected readonly selectedFlagIds = signal<Set<string>>(new Set());
   protected readonly selectedPermissionIds = signal<Set<string>>(new Set());
   protected readonly selectedFeatureIds = signal<Set<string>>(new Set());
@@ -1354,8 +1307,6 @@ export class ToolbarPresetsToolComponent {
   protected readonly applyFeatureFlags = signal<boolean>(true);
   protected readonly applyPermissions = signal<boolean>(true);
   protected readonly applyAppFeatures = signal<boolean>(true);
-  protected readonly applyLanguage = signal<boolean>(true);
-
   // Delete confirmation signals
   protected readonly deletePresetId = signal<string | null>(null);
 
@@ -1441,10 +1392,6 @@ export class ToolbarPresetsToolComponent {
   protected readonly isAppFeaturesEnabled = computed(
     () => this.state.config().showAppFeaturesTool ?? true
   );
-  protected readonly isLanguageEnabled = computed(
-    () => this.state.config().showLanguageTool ?? true
-  );
-
   // Forced items details
   protected readonly forcedFlags = computed(() => {
     return this.featureFlagsService.flags().filter((flag) => flag.isForced);
@@ -1493,8 +1440,6 @@ export class ToolbarPresetsToolComponent {
     this.includeFeatureFlags.set(this.getCurrentFlagsCount() > 0);
     this.includePermissions.set(this.getCurrentPermissionsCount() > 0);
     this.includeAppFeatures.set(this.getCurrentAppFeaturesCount() > 0);
-    const currentLang = this.getCurrentLanguage();
-    this.includeLanguage.set(!!currentLang && currentLang !== 'Not Forced');
 
     // Initialize selected items - select all by default
     this.selectedFlagIds.set(new Set(this.forcedFlags().map((f) => f.id)));
@@ -1546,7 +1491,6 @@ export class ToolbarPresetsToolComponent {
         includeFeatureFlags: this.includeFeatureFlags(),
         includePermissions: this.includePermissions(),
         includeAppFeatures: this.includeAppFeatures(),
-        includeLanguage: this.includeLanguage(),
         selectedFlagIds: Array.from(this.selectedFlagIds()),
         selectedPermissionIds: Array.from(this.selectedPermissionIds()),
         selectedFeatureIds: Array.from(this.selectedFeatureIds()),
@@ -1705,7 +1649,6 @@ export class ToolbarPresetsToolComponent {
     this.applyFeatureFlags.set(true);
     this.applyPermissions.set(true);
     this.applyAppFeatures.set(true);
-    this.applyLanguage.set(true);
     this.viewMode.set('apply');
   }
 
@@ -1717,7 +1660,6 @@ export class ToolbarPresetsToolComponent {
       applyFeatureFlags: this.applyFeatureFlags(),
       applyPermissions: this.applyPermissions(),
       applyAppFeatures: this.applyAppFeatures(),
-      applyLanguage: this.applyLanguage(),
     });
 
     this.showToast('Preset applied successfully');
@@ -1784,10 +1726,6 @@ export class ToolbarPresetsToolComponent {
     return state.enabled.length + state.disabled.length;
   }
 
-  protected getCurrentLanguage(): string {
-    return this.languageService.getCurrentForcedLanguage() || 'Not Forced';
-  }
-
   protected formatDate(isoString: string): string {
     return new Date(isoString).toLocaleDateString();
   }
@@ -1822,12 +1760,6 @@ export class ToolbarPresetsToolComponent {
       lines.push('App Features:');
       featuresEnabled.forEach(id => lines.push(`  ✓ ${id}: ON`));
       featuresDisabled.forEach(id => lines.push(`  ✗ ${id}: OFF`));
-    }
-
-    // Language
-    if (preset.config.language) {
-      if (lines.length > 0) lines.push('');
-      lines.push(`Language: ${preset.config.language}`);
     }
 
     return lines.length > 0 ? lines.join('\n') : 'No configuration';

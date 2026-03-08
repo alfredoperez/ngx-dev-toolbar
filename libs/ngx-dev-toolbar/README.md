@@ -133,17 +133,17 @@ export class AppComponent {
 }
 ```
 
-### Language
+### i18n
 
 ```typescript
-import { ToolbarLanguageService } from 'ngx-dev-toolbar';
+import { ToolbarI18nService } from 'ngx-dev-toolbar';
 
 @Component({...})
 export class AppComponent {
-  private language = inject(ToolbarLanguageService);
+  private i18nService = inject(ToolbarI18nService);
 
   constructor() {
-    this.language.setAvailableOptions([
+    this.i18nService.setAvailableOptions([
       { code: 'en', name: 'English' },
       { code: 'es', name: 'Spanish' },
       { code: 'fr', name: 'French' },
@@ -161,7 +161,7 @@ provideToolbar({
   enabled: isDevMode(),
   showFeatureFlagsTool: true,
   showPermissionsTool: true,
-  showLanguageTool: true,
+  showI18nTool: true,
   showAppFeaturesTool: true,
   showPresetsTool: true,
 })

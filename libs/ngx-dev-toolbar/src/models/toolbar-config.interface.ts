@@ -21,10 +21,10 @@ export interface ToolbarConfig {
   enabled?: boolean;
 
   /**
-   * Show/hide the Language tool
+   * Show/hide the i18n tool (locale, timezone, currency, pseudo-localization, RTL)
    * @default true
    */
-  showLanguageTool?: boolean;
+  showI18nTool?: boolean;
 
   /**
    * Show/hide the Feature Flags tool

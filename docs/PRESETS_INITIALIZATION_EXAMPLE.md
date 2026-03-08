@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
     showFeatureFlagsTool: true,
     showPermissionsTool: true,
     showAppFeaturesTool: true,
-    showLanguageTool: true,
+    showI18nTool: true,
     showPresetsTool: true,
   };
 
@@ -51,7 +51,7 @@ export class AppComponent implements OnInit {
             enabled: ['analytics', 'reporting', 'export-data', 'advanced-filters'],
             disabled: []
           },
-          language: 'en'
+          i18n: { locale: 'en' }
         }
       },
       {
@@ -70,7 +70,7 @@ export class AppComponent implements OnInit {
             enabled: ['rich-text-editor', 'media-upload'],
             disabled: ['analytics', 'user-management']
           },
-          language: 'en'
+          i18n: { locale: 'en' }
         }
       },
       {
@@ -89,7 +89,7 @@ export class AppComponent implements OnInit {
             enabled: [],
             disabled: ['analytics', 'reporting', 'export-data']
           },
-          language: null
+          i18n: { locale: null }
         }
       },
       {
@@ -108,7 +108,7 @@ export class AppComponent implements OnInit {
             enabled: ['feature-toggles', 'ab-testing', 'error-tracking'],
             disabled: []
           },
-          language: 'en'
+          i18n: { locale: 'en' }
         }
       },
       {
@@ -127,7 +127,7 @@ export class AppComponent implements OnInit {
             enabled: [],
             disabled: []
           },
-          language: 'es'
+          i18n: { locale: 'es' }
         }
       }
     ];
@@ -230,7 +230,7 @@ export class AppComponent implements OnInit {
         "enabled": ["analytics", "reporting"],
         "disabled": []
       },
-      "language": "en"
+      "i18n": { "locale": "en" }
     }
   }
 ]
@@ -264,7 +264,7 @@ Create presets that reproduce specific bug scenarios with exact feature flag and
 Create presets for testing new features with specific configurations enabled/disabled
 
 ### Localization Testing
-Create presets for different language configurations to test internationalization
+Create presets for different i18n configurations to test internationalization
 
 ### Performance Testing
 Create presets with debug and monitoring features enabled for performance analysis

@@ -13,6 +13,7 @@ export type IconName =
   | 'gauge'
   | 'gear'
   | 'git-branch'
+  | 'globe'
   | 'import'
   | 'layout'
   | 'lighting'
