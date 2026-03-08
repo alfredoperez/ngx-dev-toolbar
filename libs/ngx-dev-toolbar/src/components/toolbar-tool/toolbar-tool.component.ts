@@ -37,7 +37,7 @@ import { ToolbarWindowOptions } from './toolbar-tool.models';
       >
         <div #buttonContainer>
           @if (icon()) {
-          <ndt-tool-button [toolLabel]="title()" [toolId]="options().id" [badge]="badge()" [position]="state.position()">
+          <ndt-tool-button [toolLabel]="toolTitle()" [toolId]="options().id" [badge]="badge()" [position]="state.position()">
             <ndt-icon [name]="icon()" />
           </ndt-tool-button>
           } @else {
@@ -74,7 +74,7 @@ export class ToolbarToolComponent {
 
   options = input.required<ToolbarWindowOptions>();
   icon = input.required<IconName>();
-  title = input.required<string>();
+  toolTitle = input.required<string>();
   badge = input<string>();
   isActive = computed(() => this.state.activeToolId() === this.options().id);
 

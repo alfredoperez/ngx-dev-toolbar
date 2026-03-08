@@ -1,6 +1,7 @@
 @use '../../styles' as devtools;
 
 :host {
+  display: flex;
   @include devtools.devtools-theme;
 }
 

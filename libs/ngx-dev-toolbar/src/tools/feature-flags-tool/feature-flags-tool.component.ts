@@ -33,7 +33,7 @@ import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
   template: `
     <ndt-toolbar-tool
       [options]="options"
-      title="Feature Flags"
+      toolTitle="Feature Flags"
       icon="toggle-left"
       [badge]="badgeCount()"
     >

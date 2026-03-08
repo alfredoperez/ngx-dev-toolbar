@@ -25,7 +25,7 @@ import { ToolbarNetworkMockerService } from './network-mocker.service';
     ToolbarSelectComponent,
   ],
   template: `
-    <ndt-toolbar-tool [options]="options" title="Network Mocker" icon="network">
+    <ndt-toolbar-tool [options]="options" toolTitle="Network Mocker" icon="network">
       <div class="container">
         <div class="tool-header">
           <h3>Mock Network Requests</h3>

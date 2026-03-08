@@ -48,7 +48,7 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
   template: `
     <ndt-toolbar-tool
       [options]="options"
-      title="App Features"
+      toolTitle="App Features"
       icon="puzzle"
       [badge]="badgeCount()"
     >

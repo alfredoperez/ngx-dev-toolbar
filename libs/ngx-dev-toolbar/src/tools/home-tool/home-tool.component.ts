@@ -29,7 +29,7 @@ import { SettingsService } from './settings.service';
     ToolbarLinkButtonComponent,
   ],
   template: `
-    <ndt-toolbar-tool [options]="options" title="Home" icon="angular">
+    <ndt-toolbar-tool [options]="options" toolTitle="Home" icon="angular">
       <section class="settings">
         <div class="settings-container">
           <div class="instruction">

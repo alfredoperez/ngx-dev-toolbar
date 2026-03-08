@@ -14,7 +14,7 @@ import { Language } from './language.models';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./language-tool.component.scss'],
   template: `
-    <ndt-toolbar-tool title="Languages" icon="translate" [options]="options">
+    <ndt-toolbar-tool toolTitle="Languages" icon="translate" [options]="options">
       <div class="language-select">
         <label for="language-select">Language</label>
         <ndt-select

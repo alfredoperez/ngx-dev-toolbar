@@ -17,7 +17,7 @@
   border: 1px solid var(--ndt-border-primary);
   border-radius: map.get(map.get(devtools.$dimensions, border-radius), full);
   box-shadow: var(--ndt-shadow-toolbar);
-  overflow: visible;
+  overflow: clip;
   transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
 
   // How much of the toolbar peeks out when hidden (matches original ~1.2rem behavior)
