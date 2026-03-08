@@ -1,3 +1,21 @@
+## 4.1.0 (2026-03-08)
+
+### Features
+
+- **toolbar:** add i18n tool and remove language switcher ([#36](https://github.com/alfredoperez/ngx-dev-toolbar/pull/36))
+
+### Bug Fixes
+
+- add missing isDevMode import in demo app config ([1bbacda](https://github.com/alfredoperez/ngx-dev-toolbar/commit/1bbacda))
+- resolve toolbar tooltip issues ([#31](https://github.com/alfredoperez/ngx-dev-toolbar/pull/31))
+- remove @angular/animations peer dep ([#28](https://github.com/alfredoperez/ngx-dev-toolbar/pull/28), [#32](https://github.com/alfredoperez/ngx-dev-toolbar/pull/32))
+- resolve toSignal type inference for presets service ([2fed3d9](https://github.com/alfredoperez/ngx-dev-toolbar/commit/2fed3d9))
+- resolve hover overflow and double tooltip issues ([#35](https://github.com/alfredoperez/ngx-dev-toolbar/pull/35))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 # 4.0.0 (2026-02-10)
 
 ### Refactor
