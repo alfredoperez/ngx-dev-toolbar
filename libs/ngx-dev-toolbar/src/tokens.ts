@@ -3,7 +3,6 @@ import { ToolbarConfig } from './models/toolbar-config.interface';
 import { ToolbarService } from './models/toolbar.interface';
 import { ToolbarAppFeature } from './tools/app-features-tool/app-features.models';
 import { ToolbarFlag } from './tools/feature-flags-tool/feature-flags.models';
-import { Language } from './tools/language-tool/language.models';
 import { ToolbarPermission } from './tools/permissions-tool/permissions.models';
 
 /**
@@ -55,26 +54,6 @@ export const TOOLBAR_FEATURE_FLAGS = new InjectionToken<
 export const TOOLBAR_PERMISSIONS = new InjectionToken<
   ToolbarService<ToolbarPermission>
 >('TOOLBAR_PERMISSIONS');
-
-/**
- * InjectionToken for the Language service.
- *
- * Use this token for tree-shakeable injection of the language service.
- * When using dynamic imports, this token enables complete tree-shaking of
- * the toolbar in production builds.
- *
- * @example
- * ```typescript
- * // In your service
- * private devToolbar = inject(TOOLBAR_LANGUAGE, { optional: true });
- *
- * // Safe to call - no-op if toolbar is not provided
- * this.devToolbar?.setAvailableOptions(languages);
- * ```
- */
-export const TOOLBAR_LANGUAGE = new InjectionToken<
-  ToolbarService<Language>
->('TOOLBAR_LANGUAGE');
 
 /**
  * InjectionToken for the App Features service.

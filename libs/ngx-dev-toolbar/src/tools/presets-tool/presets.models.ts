@@ -15,7 +15,6 @@ export interface ToolbarPresetConfig {
     enabled: string[];
     disabled: string[];
   };
-  language: string | null;
   permissions: {
     granted: string[];
     denied: string[];
@@ -23,6 +22,14 @@ export interface ToolbarPresetConfig {
   appFeatures: {
     enabled: string[];
     disabled: string[];
+  };
+  i18n?: {
+    locale?: string | null;
+    timezone?: string | null;
+    currency?: string | null;
+    unitSystem?: string | null;
+    pseudoLocEnabled?: boolean;
+    rtlEnabled?: boolean;
   };
 }
 
@@ -32,7 +39,7 @@ export interface PresetCategoryOptions {
   includeFeatureFlags?: boolean;
   includePermissions?: boolean;
   includeAppFeatures?: boolean;
-  includeLanguage?: boolean;
+  includeI18n?: boolean;
   selectedFlagIds?: string[];
   selectedPermissionIds?: string[];
   selectedFeatureIds?: string[];
@@ -45,5 +52,5 @@ export interface PartialApplyOptions {
   applyFeatureFlags?: boolean;
   applyPermissions?: boolean;
   applyAppFeatures?: boolean;
-  applyLanguage?: boolean;
+  applyI18n?: boolean;
 }

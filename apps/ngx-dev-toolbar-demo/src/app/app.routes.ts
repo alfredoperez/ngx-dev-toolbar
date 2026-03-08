@@ -27,4 +27,11 @@ export const appRoutes: Route[] = [
         (m) => m.AppFeaturesDemoComponent
       ),
   },
+  {
+    path: 'i18n',
+    loadComponent: () =>
+      import('./components/i18n-demo/i18n-demo.component').then(
+        (m) => m.I18nDemoComponent
+      ),
+  },
 ];

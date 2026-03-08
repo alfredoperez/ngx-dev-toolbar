@@ -3,7 +3,6 @@ export {
   TOOLBAR_CONFIG,
   TOOLBAR_FEATURE_FLAGS,
   TOOLBAR_PERMISSIONS,
-  TOOLBAR_LANGUAGE,
   TOOLBAR_APP_FEATURES,
 } from './tokens';
 
@@ -35,8 +34,11 @@ export * from './models/toolbar-position.model';
 export * from './models/tool-view-state.models';
 export * from './tools/feature-flags-tool/feature-flags.models';
 export * from './tools/feature-flags-tool/feature-flags.service';
-export * from './tools/language-tool/language.models';
-export * from './tools/language-tool/language.service';
+// i18n Tool
+export * from './tools/i18n-tool/i18n.models';
+export * from './tools/i18n-tool/i18n.service';
+export * from './tools/i18n-tool/i18n-formatting.utils';
+export * from './tools/i18n-tool/i18n-tool.component';
 export * from './tools/app-features-tool/app-features.models';
 export * from './tools/app-features-tool/app-features.service';
 export * from './tools/app-features-tool/app-features-tool.component';

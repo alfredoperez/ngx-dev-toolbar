@@ -19,7 +19,7 @@ import { ToolbarAppFeaturesToolComponent } from './tools/app-features-tool/app-f
 import { ToolbarFeatureFlagsToolComponent } from './tools/feature-flags-tool/feature-flags-tool.component';
 import { ToolbarHomeToolComponent } from './tools/home-tool/home-tool.component';
 import { SettingsService } from './tools/home-tool/settings.service';
-import { ToolbarLanguageToolComponent } from './tools/language-tool/language-tool.component';
+import { ToolbarI18nToolComponent } from './tools/i18n-tool/i18n-tool.component';
 import { ToolbarPermissionsToolComponent } from './tools/permissions-tool/permissions-tool.component';
 import { ToolbarPresetsToolComponent } from './tools/presets-tool/presets-tool.component';
 
@@ -31,7 +31,7 @@ import { ToolbarPresetsToolComponent } from './tools/presets-tool/presets-tool.c
   encapsulation: ViewEncapsulation.ShadowDom,
   imports: [
     ToolbarHomeToolComponent,
-    ToolbarLanguageToolComponent,
+    ToolbarI18nToolComponent,
     ToolbarFeatureFlagsToolComponent,
     ToolbarAppFeaturesToolComponent,
     ToolbarPermissionsToolComponent,
@@ -53,8 +53,8 @@ import { ToolbarPresetsToolComponent } from './tools/presets-tool/presets-tool.c
       >
         <ndt-home-tool />
         <ng-content />
-        @if (config().showLanguageTool ?? false) {
-          <ndt-language-tool />
+        @if (config().showI18nTool ?? false) {
+          <ndt-i18n-tool />
         }
         @if (config().showPresetsTool ?? false) {
           <ndt-presets-tool />

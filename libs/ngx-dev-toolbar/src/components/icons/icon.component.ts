@@ -19,6 +19,7 @@ import { FilterIconComponent } from './filter-icon.component';
 import { GaugeIconComponent } from './gauge-icon.component';
 import { GearIconComponent } from './gear-icon.component';
 import { GitBranchIconComponent } from './git-branch-icon.component';
+import { GlobeIconComponent } from './globe-icon.component';
 import { IconName } from './icon.models';
 import { ImportIconComponent } from './import-icon.component';
 import { LayoutIconComponent } from './layout-icon.component';
@@ -54,6 +55,7 @@ import { UsersIconComponent } from './users-icon.component';
     GaugeIconComponent,
     GearIconComponent,
     GitBranchIconComponent,
+    GlobeIconComponent,
     ImportIconComponent,
     LayoutIconComponent,
     LightbulbIconComponent,
@@ -97,6 +99,8 @@ import { UsersIconComponent } from './users-icon.component';
     <ndt-gear-icon [fill]="fill()" />
     } @case ('git-branch') {
     <ndt-git-branch-icon [fill]="fill()" />
+    } @case ('globe') {
+    <ndt-globe-icon [fill]="fill()" />
     } @case ('import') {
     <ndt-import-icon [fill]="fill()" />
     } @case ('layout') {

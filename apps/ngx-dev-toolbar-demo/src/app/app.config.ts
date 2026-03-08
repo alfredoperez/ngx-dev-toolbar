@@ -2,6 +2,8 @@ import { provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, isDevMode } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideTransloco } from '@jsverse/transloco';
+import { provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { provideToolbar } from 'ngx-dev-toolbar';
 import { appRoutes } from './app.routes';
 import { TranslocoHttpLoader } from './services/transloco-http-loader';
@@ -14,14 +16,21 @@ export const appConfig: ApplicationConfig = {
       config: {
         availableLangs: ['en', 'es'],
         defaultLang: 'en',
-        // Remove this option if your application doesn't support changing language in runtime.
+        fallbackLang: 'en',
         reRenderOnLangChange: true,
         prodMode: !isDevMode(),
+        missingHandler: { allowEmpty: true },
       },
       loader: TranslocoHttpLoader,
     }),
+    provideTranslateService({
+      fallbackLang: 'en',
+    }),
+    provideTranslateHttpLoader({
+      prefix: './assets/i18n-ngx-translate/',
+    }),
     provideToolbar({
-      showLanguageTool: true,
+      showI18nTool: true,
       showFeatureFlagsTool: true,
       showAppFeaturesTool: true,
       showPermissionsTool: true,

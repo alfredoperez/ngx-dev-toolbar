@@ -12,7 +12,7 @@ A development toolbar for Angular 19+ applications that helps developers interac
 ## Why ngx-dev-toolbar?
 
 - Toggle feature flags without backend changes
-- Switch languages instantly
+- Simulate complete i18n environments (locale, timezone, currency, RTL)
 - Test product features and subscription tiers
 - Switch themes on the fly
 - Change user sessions effortlessly
@@ -65,7 +65,7 @@ That's it! No template changes needed. The toolbar automatically attaches to the
 | Feature Flags | Toggle feature flags on/off during development |
 | Permissions | Test permission-based UI without backend changes |
 | App Features | Test product features and subscription tiers |
-| Language Switcher | Switch between available languages |
+| i18n | Advanced i18n simulation — locale, timezone, currency, pseudo-localization, RTL |
 | Presets | Save and restore tool configurations |
 | Network Mocker | Mock HTTP requests in real-time |
 
@@ -133,23 +133,38 @@ export class AppComponent {
 }
 ```
 
-## Language Switcher
+## i18n
+
+Simulate complete internationalization environments — locale, timezone, currency, unit system, pseudo-localization, and RTL:
 
 ```typescript
-import { ToolbarLanguageService } from 'ngx-dev-toolbar';
+import { ToolbarI18nService } from 'ngx-dev-toolbar';
 
 @Component({...})
 export class AppComponent {
-  private languageService = inject(ToolbarLanguageService);
+  private i18nService = inject(ToolbarI18nService);
 
   constructor() {
-    this.languageService.setAvailableOptions([
+    // Set available locales
+    this.i18nService.setAvailableOptions([
       { code: 'en', name: 'English' },
       { code: 'es', name: 'Spanish' },
+      { code: 'ar', name: 'Arabic' },
     ]);
+
+    // React to locale changes
+    this.i18nService.getForcedValues().subscribe((locales) => {
+      // Apply forced locale
+    });
+
+    // React to timezone, currency, and other i18n settings
+    this.i18nService.getForcedTimezone().subscribe((tz) => { /* e.g. 'Asia/Tokyo' */ });
+    this.i18nService.getForcedCurrency().subscribe((cur) => { /* e.g. 'JPY' */ });
   }
 }
 ```
+
+The i18n tool also supports pseudo-localization for spotting hardcoded strings and RTL simulation for layout testing. See the [full docs](https://alfredoperez.github.io/ngx-dev-toolbar/ngx-dev-toolbar/i18n) for the complete API reference.
 
 ## Creating Custom Tools
 
@@ -298,7 +313,7 @@ Configure which tools are visible:
 ```typescript
 provideToolbar({
   enabled: isDevMode(),
-  showLanguageTool: true,
+  showI18nTool: true,
   showFeatureFlagsTool: true,
   showAppFeaturesTool: true,
   showPermissionsTool: true,

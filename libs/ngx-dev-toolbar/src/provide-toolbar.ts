@@ -13,12 +13,10 @@ import {
   TOOLBAR_APP_FEATURES,
   TOOLBAR_CONFIG,
   TOOLBAR_FEATURE_FLAGS,
-  TOOLBAR_LANGUAGE,
   TOOLBAR_PERMISSIONS,
 } from './tokens';
 import { ToolbarFeatureFlagService } from './tools/feature-flags-tool/feature-flags.service';
 import { ToolbarPermissionsService } from './tools/permissions-tool/permissions.service';
-import { ToolbarLanguageService } from './tools/language-tool/language.service';
 import { ToolbarAppFeaturesService } from './tools/app-features-tool/app-features.service';
 
 /**
@@ -85,7 +83,6 @@ export function provideToolbar(config?: ToolbarConfig): EnvironmentProviders {
   return makeEnvironmentProviders([
     { provide: TOOLBAR_FEATURE_FLAGS, useClass: ToolbarFeatureFlagService },
     { provide: TOOLBAR_PERMISSIONS, useClass: ToolbarPermissionsService },
-    { provide: TOOLBAR_LANGUAGE, useClass: ToolbarLanguageService },
     { provide: TOOLBAR_APP_FEATURES, useClass: ToolbarAppFeaturesService },
     { provide: TOOLBAR_CONFIG, useValue: config ?? {} },
     {
