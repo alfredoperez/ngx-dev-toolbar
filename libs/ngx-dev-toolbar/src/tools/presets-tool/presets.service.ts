@@ -176,7 +176,7 @@ export class ToolbarPresetsService {
    * ```
    */
   initializePresets(presets: InitialPreset[]): ToolbarPreset[] {
-    const existingPresets = this.internalService.presets();
+    const existingPresets: ToolbarPreset[] = this.internalService.presets();
     const existingNames = new Set(
       existingPresets.map((p) => p.name.toLowerCase())
     );
@@ -203,7 +203,7 @@ export class ToolbarPresetsService {
    */
   setInitialPresets(presets: InitialPreset[]): ToolbarPreset[] {
     // Clear existing presets
-    const currentPresets = this.internalService.presets();
+    const currentPresets: ToolbarPreset[] = this.internalService.presets();
     currentPresets.forEach((preset) => {
       this.internalService.deletePreset(preset.id);
     });

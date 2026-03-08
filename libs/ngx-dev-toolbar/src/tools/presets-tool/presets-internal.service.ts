@@ -31,7 +31,7 @@ export class ToolbarInternalPresetsService {
   private presetsSubject = new BehaviorSubject<ToolbarPreset[]>([]);
   public presets$: Observable<ToolbarPreset[]> =
     this.presetsSubject.asObservable();
-  public presets = toSignal(this.presets$, { initialValue: [] });
+  public presets = toSignal(this.presets$, { initialValue: [] as ToolbarPreset[] });
 
   constructor() {
     this.loadPresets();

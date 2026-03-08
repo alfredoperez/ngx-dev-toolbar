@@ -1,5 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   OnDestroy,
@@ -26,6 +27,7 @@ import { ToolbarPresetsToolComponent } from './tools/presets-tool/presets-tool.c
   standalone: true,
   selector: 'ndt-toolbar',
   styleUrls: ['./toolbar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.ShadowDom,
   imports: [
     ToolbarHomeToolComponent,
@@ -186,6 +188,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         --ndt-background-secondary: var(--ndt-bg-primary);
         --ndt-background-hover: var(--ndt-hover-bg);
         --ndt-border-color: var(--ndt-border-primary);
+        --ndt-tooltip-bg: rgb(17, 24, 39);
+        --ndt-tooltip-text: rgb(255, 255, 255);
         --ndt-note-background: rgb(219, 234, 254);
         --ndt-note-border: rgba(37, 99, 235, 0.2);
         --ndt-warning-background: rgb(254, 249, 195);

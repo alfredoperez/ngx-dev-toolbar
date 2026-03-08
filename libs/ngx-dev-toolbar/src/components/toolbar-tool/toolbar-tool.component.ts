@@ -1,4 +1,3 @@
-import { animate, style, transition, trigger } from '@angular/animations';
 import { CdkConnectedOverlay, ConnectedPosition, OverlayModule } from '@angular/cdk/overlay';
 import {
   ChangeDetectionStrategy,
@@ -36,9 +35,9 @@ import { ToolbarWindowOptions } from './toolbar-tool.models';
         (keydown.space)="onOpen()"
         tabindex="0"
       >
-        <div #buttonContainer [attr.data-tooltip]="title()">
+        <div #buttonContainer>
           @if (icon()) {
-          <ndt-tool-button [title]="title()" [toolId]="options().id" [badge]="badge()">
+          <ndt-tool-button [toolLabel]="title()" [toolId]="options().id" [badge]="badge()" [position]="state.position()">
             <ndt-icon [name]="icon()" />
           </ndt-tool-button>
           } @else {
@@ -58,7 +57,7 @@ import { ToolbarWindowOptions } from './toolbar-tool.models';
         [cdkConnectedOverlayPanelClass]="['ndt-overlay-panel', 'ndt-tool-overlay']"
         cdkConnectedOverlay
       >
-        <ndt-window [@slideAnimation]="slideDirection()" [config]="options()" (closed)="onClose()">
+        <ndt-window [class]="'ndt-slide-' + slideDirection()" [config]="options()" (closed)="onClose()">
           <ng-content />
         </ndt-window>
       </ng-template>
@@ -67,50 +66,6 @@ import { ToolbarWindowOptions } from './toolbar-tool.models';
   `,
   styleUrl: './toolbar-tool.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [
-    trigger('slideAnimation', [
-      // Bottom toolbar: slide up from below
-      transition('void => up', [
-        style({ transform: 'translateY(20px)', opacity: 0 }),
-        animate('400ms cubic-bezier(0.4, 0, 0.2, 1)',
-          style({ transform: 'translateY(0)', opacity: 1 })),
-      ]),
-      transition('up => void', [
-        animate('400ms cubic-bezier(0.4, 0, 0.2, 1)',
-          style({ transform: 'translateY(20px)', opacity: 0 })),
-      ]),
-      // Top toolbar: slide down from above
-      transition('void => down', [
-        style({ transform: 'translateY(-20px)', opacity: 0 }),
-        animate('400ms cubic-bezier(0.4, 0, 0.2, 1)',
-          style({ transform: 'translateY(0)', opacity: 1 })),
-      ]),
-      transition('down => void', [
-        animate('400ms cubic-bezier(0.4, 0, 0.2, 1)',
-          style({ transform: 'translateY(-20px)', opacity: 0 })),
-      ]),
-      // Left toolbar: slide in from left
-      transition('void => right', [
-        style({ transform: 'translateX(-20px)', opacity: 0 }),
-        animate('400ms cubic-bezier(0.4, 0, 0.2, 1)',
-          style({ transform: 'translateX(0)', opacity: 1 })),
-      ]),
-      transition('right => void', [
-        animate('400ms cubic-bezier(0.4, 0, 0.2, 1)',
-          style({ transform: 'translateX(-20px)', opacity: 0 })),
-      ]),
-      // Right toolbar: slide in from right
-      transition('void => left', [
-        style({ transform: 'translateX(20px)', opacity: 0 }),
-        animate('400ms cubic-bezier(0.4, 0, 0.2, 1)',
-          style({ transform: 'translateX(0)', opacity: 1 })),
-      ]),
-      transition('left => void', [
-        animate('400ms cubic-bezier(0.4, 0, 0.2, 1)',
-          style({ transform: 'translateX(20px)', opacity: 0 })),
-      ]),
-    ]),
-  ],
 })
 export class ToolbarToolComponent {
   state = inject(ToolbarStateService);

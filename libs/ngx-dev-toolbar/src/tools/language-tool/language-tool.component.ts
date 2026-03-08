@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { firstValueFrom, map } from 'rxjs';
 import { ToolbarSelectComponent } from '../../components/select/select.component';
@@ -11,6 +11,7 @@ import { Language } from './language.models';
   selector: 'ndt-language-tool',
   standalone: true,
   imports: [ToolbarToolComponent, ToolbarSelectComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./language-tool.component.scss'],
   template: `
     <ndt-toolbar-tool title="Languages" icon="translate" [options]="options">
