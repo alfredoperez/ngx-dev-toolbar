@@ -8,15 +8,15 @@
 
 .input {
   width: 100%;
-  padding: var(--ndt-spacing-sm) var(--ndt-spacing-md);
+  padding: var(--ndt-spacing-xs) var(--ndt-spacing-sm);
   border: 1px solid var(--ndt-border-primary);
   border-radius: var(--ndt-border-radius-small);
   background-color: var(--ndt-bg-primary);
   color: var(--ndt-text-primary);
-  font-size: var(--ndt-font-size-sm);
+  font-size: var(--ndt-font-size-xs);
   transition: var(--ndt-transition-default);
   box-sizing: border-box;
-  min-height: 36px;
+  min-height: 28px;
 
   &::placeholder {
     color: var(--ndt-text-muted);

@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   effect,
+  HostListener,
   inject,
   signal,
 } from '@angular/core';
@@ -498,8 +499,13 @@ type ToastType = 'success' | 'error';
         <!-- Preset List -->
         <div class="preset-list">
           @for (preset of sortedPresets(); track preset.id) {
-          <div class="preset-card" [title]="getPresetTooltip(preset)">
+          <div class="preset-card">
             <div class="preset-card__header">
+              <button
+                class="expand-toggle"
+                (click)="onToggleExpand(preset.id); $event.stopPropagation()"
+                [attr.aria-label]="expandedPresetId() === preset.id ? 'Collapse details' : 'Expand details'"
+              >{{ expandedPresetId() === preset.id ? '▾' : '▸' }}</button>
               <button
                 class="favorite-button"
                 [class.favorite-button--active]="preset.isFavorite"
@@ -510,16 +516,40 @@ type ToastType = 'success' | 'error';
               @if (preset.isSystem) {<span class="system-badge">SYS</span>}
               <span class="preset-card__spacer"></span>
               <div class="preset-card__actions">
-                <button class="icon-button" (click)="onStartApply(preset.id)"><ndt-icon name="refresh" /></button>
+                <button
+                  class="more-button"
+                  (click)="onToggleMenu(preset.id); $event.stopPropagation()"
+                  aria-label="Actions"
+                >⋯</button>
+              </div>
+              @if (openMenuId() === preset.id) {
+              <div class="action-menu" role="menu" tabindex="-1" (click)="$event.stopPropagation()" (keydown.escape)="openMenuId.set(null)">
+                <button class="action-menu__item" (click)="onStartApply(preset.id); openMenuId.set(null)">
+                  <ndt-icon name="refresh" />
+                  <span>Apply preset</span>
+                </button>
                 @if (!preset.isSystem) {
-                <button class="icon-button" (click)="onStartEdit(preset.id)"><ndt-icon name="edit" /></button>
-                <button class="icon-button" (click)="onUpdatePreset(preset.id)"><ndt-icon name="gear" /></button>
+                <button class="action-menu__item" (click)="onStartEdit(preset.id); openMenuId.set(null)">
+                  <ndt-icon name="edit" />
+                  <span>Edit</span>
+                </button>
+                <button class="action-menu__item" (click)="onUpdatePreset(preset.id); openMenuId.set(null)">
+                  <ndt-icon name="gear" />
+                  <span>Update with current values</span>
+                </button>
                 }
-                <button class="icon-button" (click)="onExportPreset(preset.id)"><ndt-icon name="export" /></button>
+                <button class="action-menu__item" (click)="onExportPreset(preset.id); openMenuId.set(null)">
+                  <ndt-icon name="export" />
+                  <span>Export as JSON</span>
+                </button>
                 @if (!preset.isSystem) {
-                <button class="icon-button" (click)="onDeletePreset(preset.id)"><ndt-icon name="trash" /></button>
+                <button class="action-menu__item action-menu__item--danger" (click)="onDeletePreset(preset.id); openMenuId.set(null)">
+                  <ndt-icon name="trash" />
+                  <span>Delete</span>
+                </button>
                 }
               </div>
+              }
             </div>
             @if (preset.description) {
             <div class="preset-card__row preset-card__row--meta">
@@ -538,6 +568,49 @@ type ToastType = 'success' | 'error';
               }
               <span class="preset-card__date">{{ formatDate(preset.updatedAt) }}</span>
             </div>
+            @if (expandedPresetId() === preset.id) {
+            <div class="preset-card__details">
+              @if (preset.config.featureFlags.enabled.length > 0 || preset.config.featureFlags.disabled.length > 0) {
+              <div class="details-section">
+                <span class="details-section__title">Feature Flags</span>
+                <div class="details-section__items">
+                  @for (id of preset.config.featureFlags.enabled; track id) {
+                  <span class="detail-badge detail-badge--on">{{ id }}: ON</span>
+                  }
+                  @for (id of preset.config.featureFlags.disabled; track id) {
+                  <span class="detail-badge detail-badge--off">{{ id }}: OFF</span>
+                  }
+                </div>
+              </div>
+              }
+              @if (preset.config.permissions.granted.length > 0 || preset.config.permissions.denied.length > 0) {
+              <div class="details-section">
+                <span class="details-section__title">Permissions</span>
+                <div class="details-section__items">
+                  @for (id of preset.config.permissions.granted; track id) {
+                  <span class="detail-badge detail-badge--on">{{ id }}: GRANTED</span>
+                  }
+                  @for (id of preset.config.permissions.denied; track id) {
+                  <span class="detail-badge detail-badge--off">{{ id }}: DENIED</span>
+                  }
+                </div>
+              </div>
+              }
+              @if (preset.config.appFeatures.enabled.length > 0 || preset.config.appFeatures.disabled.length > 0) {
+              <div class="details-section">
+                <span class="details-section__title">App Features</span>
+                <div class="details-section__items">
+                  @for (id of preset.config.appFeatures.enabled; track id) {
+                  <span class="detail-badge detail-badge--on">{{ id }}: ON</span>
+                  }
+                  @for (id of preset.config.appFeatures.disabled; track id) {
+                  <span class="detail-badge detail-badge--off">{{ id }}: OFF</span>
+                  }
+                </div>
+              </div>
+              }
+            </div>
+            }
           </div>
           }
         </div>
@@ -723,6 +796,7 @@ type ToastType = 'success' | 'error';
         display: flex;
         flex-direction: column;
         gap: 2px;
+        position: relative;
       }
 
       .preset-card__header {
@@ -740,11 +814,11 @@ type ToastType = 'success' | 'error';
       }
 
       .preset-card__row--meta {
-        padding-left: 18px;
+        padding-left: 36px;
       }
 
       .preset-card__row--badges {
-        padding-left: 18px;
+        padding-left: 36px;
         gap: 4px;
       }
 
@@ -796,39 +870,152 @@ type ToastType = 'success' | 'error';
 
       .preset-card__actions {
         display: flex;
-        gap: 0;
+        gap: 2px;
         flex-shrink: 0;
       }
 
-      .icon-button {
+      .more-button {
         appearance: none;
         background: none;
         border: none;
         cursor: pointer;
         margin: 0;
         padding: 4px;
-        border-radius: 4px;
+        border-radius: var(--ndt-border-radius-small);
         color: var(--ndt-text-muted);
-        display: inline-flex;
+        display: flex;
         align-items: center;
         justify-content: center;
+        width: 22px;
+        height: 22px;
         opacity: 0.5;
-        transition: opacity 150ms ease-out, color 150ms ease-out;
-        line-height: 0;
+        transition: opacity 150ms ease-out, color 150ms ease-out, background 150ms ease-out;
+        line-height: 1;
+        font-size: 14px;
+        font-weight: bold;
+        position: relative;
 
         &:hover {
           background: var(--ndt-hover-bg);
           color: var(--ndt-text-primary);
           opacity: 1;
         }
+      }
 
-        ndt-icon,
-        ndt-icon > *,
-        svg {
-          display: block;
-          width: 12px !important;
-          height: 12px !important;
+      .action-menu {
+        position: absolute;
+        top: 28px;
+        right: var(--ndt-spacing-sm);
+        background: var(--ndt-bg-primary);
+        border: 1px solid var(--ndt-border-primary);
+        border-radius: var(--ndt-border-radius-medium);
+        box-shadow: var(--ndt-shadow-tooltip);
+        z-index: 20;
+        min-width: 180px;
+        padding: 4px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .action-menu__item {
+        appearance: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 10px;
+        border-radius: var(--ndt-border-radius-small);
+        color: var(--ndt-text-primary);
+        font-size: var(--ndt-font-size-xs);
+        transition: background 150ms ease-out;
+        white-space: nowrap;
+
+        &:hover {
+          background: var(--ndt-hover-bg);
         }
+
+        ndt-icon {
+          display: block;
+          width: 14px;
+          height: 14px;
+          flex-shrink: 0;
+          color: var(--ndt-text-muted);
+        }
+      }
+
+      .action-menu__item--danger {
+        color: #ef4444;
+
+        ndt-icon {
+          color: #ef4444;
+        }
+
+        &:hover {
+          background: rgba(239, 68, 68, 0.1);
+        }
+      }
+
+      .expand-toggle {
+        appearance: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0 4px;
+        margin-right: 2px;
+        font-size: 10px;
+        color: var(--ndt-text-muted);
+        line-height: 1;
+        opacity: 0.6;
+        transition: opacity 150ms ease-out;
+        flex-shrink: 0;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
+
+      .preset-card__details {
+        padding: var(--ndt-spacing-sm) var(--ndt-spacing-sm) var(--ndt-spacing-xs);
+        margin-top: 2px;
+        border-top: 1px solid var(--ndt-border-primary);
+        display: flex;
+        flex-direction: column;
+        gap: var(--ndt-spacing-xs);
+      }
+
+      .details-section__title {
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--ndt-text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .details-section__items {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        margin-top: 2px;
+      }
+
+      .detail-badge {
+        font-size: 10px;
+        padding: 1px 6px;
+        border-radius: var(--ndt-border-radius-small);
+        white-space: nowrap;
+      }
+
+      .detail-badge--on {
+        background: rgba(34, 197, 94, 0.1);
+        color: rgb(34, 197, 94);
+      }
+
+      .detail-badge--off {
+        background: rgba(239, 68, 68, 0.1);
+        color: rgb(239, 68, 68);
       }
 
       .preset-card__description {
@@ -1265,6 +1452,11 @@ type ToastType = 'success' | 'error';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarPresetsToolComponent {
+  @HostListener('document:click')
+  onDocumentClick(): void {
+    this.openMenuId.set(null);
+  }
+
   // Injects
   private readonly presetsService = inject(ToolbarInternalPresetsService);
   private readonly featureFlagsService = inject(
@@ -1281,6 +1473,8 @@ export class ToolbarPresetsToolComponent {
   // View state signals
   protected readonly viewMode = signal<ViewMode>('list');
   protected readonly searchQuery = signal<string>('');
+  protected readonly expandedPresetId = signal<string | null>(null);
+  protected readonly openMenuId = signal<string | null>(null);
 
   // Create form signals
   protected readonly presetName = signal<string>('');
@@ -1410,7 +1604,6 @@ export class ToolbarPresetsToolComponent {
     isClosable: true,
     size: 'tall',
     id: 'ndt-presets',
-    isBeta: true,
   };
 
   // Toast helper
@@ -1422,6 +1615,18 @@ export class ToolbarPresetsToolComponent {
   // View mode switching
   onSearchChange(query: string): void {
     this.searchQuery.set(query);
+  }
+
+  onToggleExpand(presetId: string): void {
+    this.expandedPresetId.update((current) =>
+      current === presetId ? null : presetId
+    );
+  }
+
+  onToggleMenu(presetId: string): void {
+    this.openMenuId.update((current) =>
+      current === presetId ? null : presetId
+    );
   }
 
   onSwitchToListMode(): void {

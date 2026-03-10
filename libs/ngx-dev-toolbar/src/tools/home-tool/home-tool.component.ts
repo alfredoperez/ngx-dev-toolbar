@@ -114,7 +114,6 @@ export class ToolbarHomeToolComponent {
     id: 'ndt-home',
     size: 'medium',
     description: '',
-    isBeta: true,
   };
 
   readonly links = [

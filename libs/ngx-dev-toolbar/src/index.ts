@@ -19,6 +19,7 @@ export * from './components/toolbar-tool/toolbar-tool.models';
 
 // UI Components (for building custom tools)
 export * from './components/button/button.component';
+export * from './components/icon-button/icon-button.component';
 export * from './components/input/input.component';
 export * from './components/select/select.component';
 export * from './components/card/card.component';

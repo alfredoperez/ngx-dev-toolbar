@@ -7,7 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ToolbarIconComponent } from '../../components/icons/icon.component';
+import { ToolbarStateService } from '../../toolbar-state.service';
 import { ToolbarInputComponent } from '../../components/input/input.component';
 import { ToolbarListComponent } from '../../components/list/list.component';
 import { ToolbarListItemComponent } from '../../components/list-item/list-item.component';
@@ -41,7 +41,6 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
     ToolbarToolComponent,
     ToolbarInputComponent,
     ToolbarSelectComponent,
-    ToolbarIconComponent,
     ToolbarListComponent,
     ToolbarListItemComponent,
   ],
@@ -60,7 +59,6 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
             placeholder="Search features..."
           />
           <div class="filter-wrapper">
-            <ndt-icon name="filter" class="filter-icon" />
             <ndt-select
               [value]="activeFilter()"
               [options]="filterOptions"
@@ -84,6 +82,9 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
               [isForced]="feature.isForced"
               [currentValue]="feature.isEnabled"
               [originalValue]="feature.originalValue"
+              [showApply]="hasApplyCallback()"
+              [applyState]="getApplyState(feature.id)"
+              (applyToSource)="onApplyToSource(feature.id, feature.isEnabled)"
             >
               <ndt-select
                 [value]="getFeatureValue(feature)"
@@ -123,18 +124,12 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
           flex: 0 0 auto;
           display: flex;
           align-items: center;
-          gap: var(--ndt-spacing-md);
-
-          .filter-icon {
-            width: 18px;
-            height: 18px;
-            flex-shrink: 0;
-            opacity: 0.6;
-          }
+          border-left: 1px solid var(--ndt-border-primary);
+          padding-left: var(--ndt-spacing-sm);
 
           ndt-select {
             flex: 0 0 auto;
-            min-width: 180px;
+            min-width: 140px;
           }
         }
       }
@@ -146,6 +141,7 @@ export class ToolbarAppFeaturesToolComponent {
   // Injects
   private readonly appFeaturesService = inject(ToolbarInternalAppFeaturesService);
   private readonly storageService = inject(ToolbarStorageService);
+  private readonly toolbarState = inject(ToolbarStateService);
 
   // Constants
   private readonly VIEW_STATE_KEY = 'app-features-view';
@@ -241,6 +237,46 @@ export class ToolbarAppFeaturesToolComponent {
     { value: 'off', label: 'Disabled' },
     { value: 'on', label: 'Enabled' },
   ];
+
+  // Apply to source
+  protected readonly hasApplyCallback = computed(
+    () => !!this.toolbarState.config().onApplyAppFeature
+  );
+  protected readonly applyStates = signal<
+    Record<string, 'idle' | 'loading' | 'success' | 'error'>
+  >({});
+
+  protected getApplyState(
+    featureId: string
+  ): 'idle' | 'loading' | 'success' | 'error' {
+    return this.applyStates()[featureId] ?? 'idle';
+  }
+
+  protected async onApplyToSource(
+    featureId: string,
+    value: boolean
+  ): Promise<void> {
+    const callback = this.toolbarState.config().onApplyAppFeature;
+    if (!callback) return;
+
+    this.applyStates.update((s) => ({ ...s, [featureId]: 'loading' }));
+    try {
+      await callback(featureId, value);
+      this.applyStates.update((s) => ({ ...s, [featureId]: 'success' }));
+      setTimeout(
+        () =>
+          this.applyStates.update((s) => ({ ...s, [featureId]: 'idle' })),
+        1500
+      );
+    } catch {
+      this.applyStates.update((s) => ({ ...s, [featureId]: 'error' }));
+      setTimeout(
+        () =>
+          this.applyStates.update((s) => ({ ...s, [featureId]: 'idle' })),
+        1500
+      );
+    }
+  }
 
   // Public methods
   /**

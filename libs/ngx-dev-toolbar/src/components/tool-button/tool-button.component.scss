@@ -11,7 +11,7 @@ $dimensions: devtools.$dimensions;
   justify-content: center;
   align-items: center;
   width: map.get($dimensions, toolbar-button-width);
-  height: map.get($dimensions, toolbar-height);
+  height: map.get($dimensions, toolbar-button-width);
   border: 0;
   background: transparent;
   color: var(--ndt-text-primary);
@@ -32,22 +32,22 @@ $dimensions: devtools.$dimensions;
   }
 
   ::ng-deep svg {
-    width: 24px;
-    height: 24px;
+    width: 16px;
+    height: 16px;
     display: block;
     margin: auto;
   }
 
   &__badge {
     position: absolute;
-    top: 0.125rem;
-    right: -0.0625rem;
+    top: 0.1875rem;
+    right: 0.125rem;
     background: linear-gradient(135deg, #fca5a5 0%, #ef4444 100%);
     color: #fff;
     border-radius: 50%;
-    width: 0.875rem;
-    height: 0.875rem;
-    font-size: 0.5rem;
+    width: 0.6875rem;
+    height: 0.6875rem;
+    font-size: 0.4375rem;
     font-weight: 600;
     display: flex;
     align-items: center;

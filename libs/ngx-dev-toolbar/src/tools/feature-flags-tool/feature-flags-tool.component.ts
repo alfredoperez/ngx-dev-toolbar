@@ -6,8 +6,8 @@ import {
   inject,
   signal,
 } from '@angular/core';
+import { ToolbarStateService } from '../../toolbar-state.service';
 import { FormsModule } from '@angular/forms';
-import { ToolbarIconComponent } from '../../components/icons/icon.component';
 import { ToolbarInputComponent } from '../../components/input/input.component';
 import { ToolbarListComponent } from '../../components/list/list.component';
 import { ToolbarListItemComponent } from '../../components/list-item/list-item.component';
@@ -26,7 +26,6 @@ import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
     ToolbarToolComponent,
     ToolbarInputComponent,
     ToolbarSelectComponent,
-    ToolbarIconComponent,
     ToolbarListComponent,
     ToolbarListItemComponent,
   ],
@@ -45,7 +44,6 @@ import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
             placeholder="Search..."
           />
           <div class="filter-wrapper">
-            <ndt-icon name="filter" class="filter-icon" />
             <ndt-select
               [value]="activeFilter()"
               [options]="filterOptions"
@@ -68,6 +66,9 @@ import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
             [isForced]="flag.isForced"
             [currentValue]="flag.isEnabled"
             [originalValue]="flag.originalValue"
+            [showApply]="hasApplyCallback()"
+            [applyState]="getApplyState(flag.id)"
+            (applyToSource)="onApplyToSource(flag.id, flag.isEnabled)"
           >
             <ndt-select
               [value]="getFlagValue(flag)"
@@ -108,18 +109,12 @@ import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
           flex: 0 0 auto;
           display: flex;
           align-items: center;
-          gap: var(--ndt-spacing-md);
-
-          .filter-icon {
-            width: 18px;
-            height: 18px;
-            flex-shrink: 0;
-            opacity: 0.6;
-          }
+          border-left: 1px solid var(--ndt-border-primary);
+          padding-left: var(--ndt-spacing-sm);
 
           ndt-select {
             flex: 0 0 auto;
-            min-width: 180px;
+            min-width: 140px;
           }
         }
       }
@@ -131,6 +126,7 @@ export class ToolbarFeatureFlagsToolComponent {
   // Injects
   private readonly featureFlags = inject(ToolbarInternalFeatureFlagService);
   private readonly storageService = inject(ToolbarStorageService);
+  private readonly toolbarState = inject(ToolbarStateService);
 
   // Constants
   private readonly VIEW_STATE_KEY = 'feature-flags-view';
@@ -212,7 +208,6 @@ export class ToolbarFeatureFlagsToolComponent {
     isClosable: true,
     size: 'tall',
     id: 'ndt-feature-flags',
-    isBeta: true,
   } as ToolbarWindowOptions;
 
   protected readonly filterOptions = [
@@ -227,6 +222,44 @@ export class ToolbarFeatureFlagsToolComponent {
     { value: 'off', label: 'Forced Off' },
     { value: 'on', label: 'Forced On' },
   ];
+
+  // Apply to source
+  protected readonly hasApplyCallback = computed(
+    () => !!this.toolbarState.config().onApplyFeatureFlag
+  );
+  protected readonly applyStates = signal<
+    Record<string, 'idle' | 'loading' | 'success' | 'error'>
+  >({});
+
+  protected getApplyState(
+    flagId: string
+  ): 'idle' | 'loading' | 'success' | 'error' {
+    return this.applyStates()[flagId] ?? 'idle';
+  }
+
+  protected async onApplyToSource(
+    flagId: string,
+    value: boolean
+  ): Promise<void> {
+    const callback = this.toolbarState.config().onApplyFeatureFlag;
+    if (!callback) return;
+
+    this.applyStates.update((s) => ({ ...s, [flagId]: 'loading' }));
+    try {
+      await callback(flagId, value);
+      this.applyStates.update((s) => ({ ...s, [flagId]: 'success' }));
+      setTimeout(
+        () => this.applyStates.update((s) => ({ ...s, [flagId]: 'idle' })),
+        1500
+      );
+    } catch {
+      this.applyStates.update((s) => ({ ...s, [flagId]: 'error' }));
+      setTimeout(
+        () => this.applyStates.update((s) => ({ ...s, [flagId]: 'idle' })),
+        1500
+      );
+    }
+  }
 
   // Public methods
   onFilterChange(value: string | undefined): void {

@@ -16,17 +16,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--ndt-spacing-sm) var(--ndt-spacing-md);
+  padding: var(--ndt-spacing-xs) var(--ndt-spacing-sm);
   border: 1px solid var(--ndt-border-primary);
   border-radius: var(--ndt-border-radius-small);
   background-color: var(--ndt-bg-primary);
   color: var(--ndt-text-primary);
-  font-size: var(--ndt-font-size-sm);
+  font-size: var(--ndt-font-size-xs);
   cursor: pointer;
   user-select: none;
   transition: var(--ndt-transition-default);
   outline: none;
-  min-height: 36px;
+  min-height: 28px;
   box-sizing: border-box;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 
@@ -45,8 +45,8 @@
 
   &.small {
     padding: var(--ndt-spacing-xs) var(--ndt-spacing-sm);
-    font-size: var(--ndt-font-size-sm);
-    height: 24px;
+    font-size: var(--ndt-font-size-xs);
+    height: 22px;
   }
 
   &.open {
@@ -69,15 +69,15 @@
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 1.4;
-    margin-right: var(--ndt-spacing-sm);
+    margin-right: 4px;
     min-width: 0;
     display: flex;
     align-items: center;
   }
 
   &__arrow {
-    width: 16px;
-    height: 16px;
+    width: 12px;
+    height: 12px;
     flex-shrink: 0;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
     background-repeat: no-repeat;
@@ -91,11 +91,11 @@
 .ndt-select-menu {
   display: inline-flex;
   flex-direction: column;
-  min-width: 180px;
+  min-width: 120px;
   background-color: var(--ndt-bg-primary);
-  padding: var(--ndt-spacing-sm) 0;
-  border: 2px solid var(--ndt-border-primary);
-  border-radius: var(--ndt-border-radius-large);
+  padding: var(--ndt-spacing-xs) 0;
+  border: 1px solid var(--ndt-border-primary);
+  border-radius: var(--ndt-border-radius-medium);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
   color: var(--ndt-text-primary);
   max-height: min(400px, 70vh);
@@ -114,8 +114,8 @@
   color: var(--ndt-text-primary);
   user-select: none;
   min-width: 64px;
-  padding: var(--ndt-spacing-sm) var(--ndt-spacing-md) var(--ndt-spacing-sm)
-    var(--ndt-spacing-lg);
+  padding: var(--ndt-spacing-xs) var(--ndt-spacing-sm) var(--ndt-spacing-xs)
+    var(--ndt-spacing-md);
   display: flex;
   align-items: center;
   flex-direction: row;
@@ -127,7 +127,7 @@
   text-overflow: ellipsis;
   overflow: hidden;
   font-weight: 400;
-  line-height: 1.5;
+  line-height: 1.3;
   transition: background-color 0.15s ease;
 
   &:hover {
@@ -151,9 +151,9 @@
       content: '';
       position: absolute;
       left: 0;
-      top: 8px;
+      top: 4px;
       width: 3px;
-      height: calc(100% - 16px);
+      height: calc(100% - 8px);
       background-color: var(--ndt-primary);
       border-radius: 2px;
     }
@@ -165,11 +165,11 @@
   }
 
   &:first-child {
-    margin-top: var(--ndt-spacing-xs);
+    margin-top: 0;
   }
 
   &:last-child {
-    margin-bottom: var(--ndt-spacing-xs);
+    margin-bottom: 0;
   }
 }
 

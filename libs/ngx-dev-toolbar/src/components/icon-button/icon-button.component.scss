@@ -1,0 +1,95 @@
+@use '../../styles' as devtools;
+
+:host {
+  @include devtools.devtools-theme;
+  display: inline-flex;
+}
+
+.icon-button {
+  appearance: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  border-radius: var(--ndt-border-radius-small);
+  color: var(--ndt-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.6;
+  transition: opacity 150ms ease-out, color 150ms ease-out,
+    background 150ms ease-out, border-color 150ms ease-out;
+  line-height: 0;
+  flex-shrink: 0;
+  position: relative;
+
+  &--sm {
+    width: 22px;
+    height: 22px;
+
+    ::ng-deep svg {
+      width: 12px;
+      height: 12px;
+      display: block;
+    }
+  }
+
+  &--md {
+    width: 28px;
+    height: 28px;
+
+    ::ng-deep svg {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+  }
+
+  &--outlined {
+    border: 1px solid var(--ndt-border-primary);
+  }
+
+  &:hover {
+    background: var(--ndt-hover-bg);
+    color: var(--ndt-text-primary);
+    opacity: 1;
+  }
+}
+
+$arrow-size: 4px;
+
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + #{$arrow-size} + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ndt-tooltip-bg);
+  color: var(--ndt-tooltip-text);
+  padding: 3px 8px;
+  border-radius: var(--ndt-border-radius-small);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: normal;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 150ms ease-out;
+  z-index: 9999;
+  box-shadow: var(--ndt-shadow-tooltip);
+
+  &--visible {
+    opacity: 1;
+  }
+
+  // Arrow pointing down
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: $arrow-size solid transparent;
+    border-top-color: var(--ndt-tooltip-bg);
+  }
+}

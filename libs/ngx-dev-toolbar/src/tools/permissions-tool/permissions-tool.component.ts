@@ -7,7 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ToolbarIconComponent } from '../../components/icons/icon.component';
+import { ToolbarStateService } from '../../toolbar-state.service';
 import { ToolbarInputComponent } from '../../components/input/input.component';
 import { ToolbarListComponent } from '../../components/list/list.component';
 import { ToolbarListItemComponent } from '../../components/list-item/list-item.component';
@@ -30,7 +30,6 @@ import {
     ToolbarToolComponent,
     ToolbarInputComponent,
     ToolbarSelectComponent,
-    ToolbarIconComponent,
     ToolbarListComponent,
     ToolbarListItemComponent,
   ],
@@ -50,7 +49,6 @@ import {
             [ariaLabel]="'Search permissions'"
           />
           <div class="filter-wrapper">
-            <ndt-icon name="filter" class="filter-icon" />
             <ndt-select
               [value]="activeFilter()"
               [options]="filterOptions"
@@ -75,6 +73,9 @@ import {
               [isForced]="permission.isForced"
               [currentValue]="permission.isGranted"
               [originalValue]="permission.originalValue"
+              [showApply]="hasApplyCallback()"
+              [applyState]="getApplyState(permission.id)"
+              (applyToSource)="onApplyToSource(permission.id, permission.isGranted)"
             >
               <ndt-select
                 [value]="getPermissionValue(permission)"
@@ -114,18 +115,12 @@ import {
           flex: 0 0 auto;
           display: flex;
           align-items: center;
-          gap: var(--ndt-spacing-md);
-
-          .filter-icon {
-            width: 18px;
-            height: 18px;
-            flex-shrink: 0;
-            opacity: 0.6;
-          }
+          border-left: 1px solid var(--ndt-border-primary);
+          padding-left: var(--ndt-spacing-sm);
 
           ndt-select {
             flex: 0 0 auto;
-            min-width: 180px;
+            min-width: 140px;
           }
         }
       }
@@ -139,6 +134,7 @@ export class ToolbarPermissionsToolComponent {
     ToolbarInternalPermissionsService
   );
   private readonly storageService = inject(ToolbarStorageService);
+  private readonly toolbarState = inject(ToolbarStateService);
 
   // Constants
   private readonly VIEW_STATE_KEY = 'permissions-view';
@@ -222,7 +218,6 @@ export class ToolbarPermissionsToolComponent {
     isClosable: true,
     size: 'tall',
     id: 'ndt-permissions',
-    isBeta: true,
   } as ToolbarWindowOptions;
 
   protected readonly filterOptions = [
@@ -237,6 +232,46 @@ export class ToolbarPermissionsToolComponent {
     { value: 'denied', label: 'Forced Denied' },
     { value: 'granted', label: 'Forced Granted' },
   ];
+
+  // Apply to source
+  protected readonly hasApplyCallback = computed(
+    () => !!this.toolbarState.config().onApplyPermission
+  );
+  protected readonly applyStates = signal<
+    Record<string, 'idle' | 'loading' | 'success' | 'error'>
+  >({});
+
+  protected getApplyState(
+    permissionId: string
+  ): 'idle' | 'loading' | 'success' | 'error' {
+    return this.applyStates()[permissionId] ?? 'idle';
+  }
+
+  protected async onApplyToSource(
+    permissionId: string,
+    value: boolean
+  ): Promise<void> {
+    const callback = this.toolbarState.config().onApplyPermission;
+    if (!callback) return;
+
+    this.applyStates.update((s) => ({ ...s, [permissionId]: 'loading' }));
+    try {
+      await callback(permissionId, value);
+      this.applyStates.update((s) => ({ ...s, [permissionId]: 'success' }));
+      setTimeout(
+        () =>
+          this.applyStates.update((s) => ({ ...s, [permissionId]: 'idle' })),
+        1500
+      );
+    } catch {
+      this.applyStates.update((s) => ({ ...s, [permissionId]: 'error' }));
+      setTimeout(
+        () =>
+          this.applyStates.update((s) => ({ ...s, [permissionId]: 'idle' })),
+        1500
+      );
+    }
+  }
 
   // Public methods
   onFilterChange(value: string | undefined): void {

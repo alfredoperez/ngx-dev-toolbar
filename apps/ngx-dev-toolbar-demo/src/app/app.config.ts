@@ -35,6 +35,11 @@ export const appConfig: ApplicationConfig = {
       showAppFeaturesTool: true,
       showPermissionsTool: true,
       showPresetsTool: true,
+      onApplyFeatureFlag: async (flagId: string, value: boolean) => {
+        console.log(`[Demo] Applying flag "${flagId}" = ${value}...`);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        console.log(`[Demo] Flag "${flagId}" applied.`);
+      },
     }),
   ],
 };

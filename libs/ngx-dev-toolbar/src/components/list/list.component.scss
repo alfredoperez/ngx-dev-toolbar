@@ -18,10 +18,10 @@
   min-height: 0;
   justify-content: center;
   align-items: center;
-  border: 1px solid var(--ndt-warning-border);
+  border: 1px dashed var(--ndt-border-primary);
   border-radius: var(--ndt-border-radius-medium);
   padding: var(--ndt-spacing-md);
-  background: var(--ndt-warning-background);
+  background: var(--ndt-background-secondary);
   color: var(--ndt-text-muted);
 
   p {
