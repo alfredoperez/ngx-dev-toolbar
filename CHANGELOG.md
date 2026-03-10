@@ -1,3 +1,20 @@
+## 4.2.0 (2026-03-09)
+
+### Features
+
+- **toolbar:** add service-based `setApplyToSource()` API for persisting forced values back to the data source. Call it alongside `setAvailableOptions()` on any tool service (`ToolbarFeatureFlagService`, `ToolbarPermissionsService`, `ToolbarAppFeaturesService`).
+- **toolbar:** add `ApplyToSourceState` type export (`'idle' | 'loading' | 'success' | 'error'`)
+- **toolbar:** add `ndt-icon-button` reusable component
+- **presets-tool:** add expandable cards, action menu, and import/export functionality
+
+### Deprecations
+
+- **toolbar:** `onApplyFeatureFlag`, `onApplyPermission`, `onApplyAppFeature` config callbacks are deprecated. Use `service.setApplyToSource()` instead. Config callbacks still work via a backward-compat bridge and will be removed in v5.
+
+### Bug Fixes
+
+- apply defensive CSS fixes for overlay and list-item components
+
 ## 4.1.0 (2026-03-08)
 
 ### Features

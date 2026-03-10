@@ -7,7 +7,6 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ToolbarStateService } from '../../toolbar-state.service';
 import { ToolbarInputComponent } from '../../components/input/input.component';
 import { ToolbarListComponent } from '../../components/list/list.component';
 import { ToolbarListItemComponent } from '../../components/list-item/list-item.component';
@@ -134,7 +133,6 @@ export class ToolbarPermissionsToolComponent {
     ToolbarInternalPermissionsService
   );
   private readonly storageService = inject(ToolbarStorageService);
-  private readonly toolbarState = inject(ToolbarStateService);
 
   // Constants
   private readonly VIEW_STATE_KEY = 'permissions-view';
@@ -233,44 +231,17 @@ export class ToolbarPermissionsToolComponent {
     { value: 'granted', label: 'Forced Granted' },
   ];
 
-  // Apply to source
-  protected readonly hasApplyCallback = computed(
-    () => !!this.toolbarState.config().onApplyPermission
-  );
-  protected readonly applyStates = signal<
-    Record<string, 'idle' | 'loading' | 'success' | 'error'>
-  >({});
+  // Apply to source (delegated to internal service)
+  protected readonly hasApplyCallback = this.permissionsService.hasApplyCallback;
 
   protected getApplyState(
     permissionId: string
   ): 'idle' | 'loading' | 'success' | 'error' {
-    return this.applyStates()[permissionId] ?? 'idle';
+    return this.permissionsService.applyStates()[permissionId] ?? 'idle';
   }
 
-  protected async onApplyToSource(
-    permissionId: string,
-    value: boolean
-  ): Promise<void> {
-    const callback = this.toolbarState.config().onApplyPermission;
-    if (!callback) return;
-
-    this.applyStates.update((s) => ({ ...s, [permissionId]: 'loading' }));
-    try {
-      await callback(permissionId, value);
-      this.applyStates.update((s) => ({ ...s, [permissionId]: 'success' }));
-      setTimeout(
-        () =>
-          this.applyStates.update((s) => ({ ...s, [permissionId]: 'idle' })),
-        1500
-      );
-    } catch {
-      this.applyStates.update((s) => ({ ...s, [permissionId]: 'error' }));
-      setTimeout(
-        () =>
-          this.applyStates.update((s) => ({ ...s, [permissionId]: 'idle' })),
-        1500
-      );
-    }
+  protected onApplyToSource(permissionId: string, value: boolean): void {
+    this.permissionsService.applyToSource(permissionId, value);
   }
 
   // Public methods

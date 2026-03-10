@@ -68,6 +68,36 @@ export class AppComponent {
 }
 ```
 
+## Apply to Source
+
+You can persist forced permission values back to your actual data source.
+When configured, each permission item shows an "apply" button.
+
+Call `setApplyToSource()` on the service — right alongside `setAvailableOptions()`:
+
+```typescript title="permissions.service.ts"
+import { Injectable, inject } from '@angular/core';
+import { ToolbarPermissionsService } from 'ngx-dev-toolbar';
+
+@Injectable({ providedIn: 'root' })
+export class PermissionsService {
+  private toolbarService = inject(ToolbarPermissionsService);
+
+  constructor() {
+    this.toolbarService.setAvailableOptions([...]); // [!code highlight]
+
+    this.toolbarService.setApplyToSource(async (permissionId, value) => { // [!code highlight]
+      await fetch(`/api/permissions/${permissionId}`, { // [!code highlight]
+        method: 'PUT', // [!code highlight]
+        body: JSON.stringify({ granted: value }), // [!code highlight]
+      }); // [!code highlight]
+    }); // [!code highlight]
+  }
+}
+```
+
+The toolbar automatically manages loading, success, and error states for each item.
+
 ## Related Tools
 
 - [Feature Flags Tool](/ngx-dev-toolbar/feature-flags/) — Test feature toggles

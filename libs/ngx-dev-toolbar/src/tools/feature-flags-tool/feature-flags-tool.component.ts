@@ -6,7 +6,6 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { ToolbarStateService } from '../../toolbar-state.service';
 import { FormsModule } from '@angular/forms';
 import { ToolbarInputComponent } from '../../components/input/input.component';
 import { ToolbarListComponent } from '../../components/list/list.component';
@@ -126,7 +125,6 @@ export class ToolbarFeatureFlagsToolComponent {
   // Injects
   private readonly featureFlags = inject(ToolbarInternalFeatureFlagService);
   private readonly storageService = inject(ToolbarStorageService);
-  private readonly toolbarState = inject(ToolbarStateService);
 
   // Constants
   private readonly VIEW_STATE_KEY = 'feature-flags-view';
@@ -223,42 +221,17 @@ export class ToolbarFeatureFlagsToolComponent {
     { value: 'on', label: 'Forced On' },
   ];
 
-  // Apply to source
-  protected readonly hasApplyCallback = computed(
-    () => !!this.toolbarState.config().onApplyFeatureFlag
-  );
-  protected readonly applyStates = signal<
-    Record<string, 'idle' | 'loading' | 'success' | 'error'>
-  >({});
+  // Apply to source (delegated to internal service)
+  protected readonly hasApplyCallback = this.featureFlags.hasApplyCallback;
 
   protected getApplyState(
     flagId: string
   ): 'idle' | 'loading' | 'success' | 'error' {
-    return this.applyStates()[flagId] ?? 'idle';
+    return this.featureFlags.applyStates()[flagId] ?? 'idle';
   }
 
-  protected async onApplyToSource(
-    flagId: string,
-    value: boolean
-  ): Promise<void> {
-    const callback = this.toolbarState.config().onApplyFeatureFlag;
-    if (!callback) return;
-
-    this.applyStates.update((s) => ({ ...s, [flagId]: 'loading' }));
-    try {
-      await callback(flagId, value);
-      this.applyStates.update((s) => ({ ...s, [flagId]: 'success' }));
-      setTimeout(
-        () => this.applyStates.update((s) => ({ ...s, [flagId]: 'idle' })),
-        1500
-      );
-    } catch {
-      this.applyStates.update((s) => ({ ...s, [flagId]: 'error' }));
-      setTimeout(
-        () => this.applyStates.update((s) => ({ ...s, [flagId]: 'idle' })),
-        1500
-      );
-    }
+  protected onApplyToSource(flagId: string, value: boolean): void {
+    this.featureFlags.applyToSource(flagId, value);
   }
 
   // Public methods

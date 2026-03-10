@@ -126,4 +126,14 @@ export class ToolbarPermissionsService
   getCurrentState(): ForcedPermissionsState {
     return this.internalService.getCurrentForcedState();
   }
+
+  /**
+   * Registers a callback to persist a forced permission value back to the actual data source.
+   * When set, an "apply to source" button appears on each forced permission in the toolbar UI.
+   *
+   * @param callback - Async function that receives the permission ID and its forced boolean value
+   */
+  setApplyToSource(callback: (id: string, value: boolean) => Promise<void>): void {
+    this.internalService.setApplyToSource(callback);
+  }
 }

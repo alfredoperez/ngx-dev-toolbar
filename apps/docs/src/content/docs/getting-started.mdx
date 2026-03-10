@@ -53,7 +53,29 @@ provideToolbar({
 })
 ```
 
-### 3. Start Using the Tools
+### 3. Apply to Source (Optional)
+
+You can persist toolbar overrides back to your actual data source by calling `setApplyToSource()` on the service:
+
+```typescript title="feature-flags.service.ts"
+import { ToolbarFeatureFlagService } from 'ngx-dev-toolbar';
+
+@Injectable({ providedIn: 'root' })
+export class FeatureFlagService {
+  private toolbarService = inject(ToolbarFeatureFlagService);
+
+  constructor() {
+    this.toolbarService.setAvailableOptions([...]);
+    this.toolbarService.setApplyToSource(async (flagId, value) => { // [!code highlight]
+      await this.api.updateFlag(flagId, value); // [!code highlight]
+    }); // [!code highlight]
+  }
+}
+```
+
+When configured, each tool item shows an "apply" button to push changes to the source.
+
+### 4. Start Using the Tools
 
 Once installed, press `Ctrl+Shift+D` to toggle the toolbar. From there, you can access all available
 tools and start configuring your development environment.

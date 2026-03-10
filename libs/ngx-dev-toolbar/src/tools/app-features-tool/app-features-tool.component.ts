@@ -7,7 +7,6 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ToolbarStateService } from '../../toolbar-state.service';
 import { ToolbarInputComponent } from '../../components/input/input.component';
 import { ToolbarListComponent } from '../../components/list/list.component';
 import { ToolbarListItemComponent } from '../../components/list-item/list-item.component';
@@ -141,7 +140,6 @@ export class ToolbarAppFeaturesToolComponent {
   // Injects
   private readonly appFeaturesService = inject(ToolbarInternalAppFeaturesService);
   private readonly storageService = inject(ToolbarStorageService);
-  private readonly toolbarState = inject(ToolbarStateService);
 
   // Constants
   private readonly VIEW_STATE_KEY = 'app-features-view';
@@ -238,44 +236,17 @@ export class ToolbarAppFeaturesToolComponent {
     { value: 'on', label: 'Enabled' },
   ];
 
-  // Apply to source
-  protected readonly hasApplyCallback = computed(
-    () => !!this.toolbarState.config().onApplyAppFeature
-  );
-  protected readonly applyStates = signal<
-    Record<string, 'idle' | 'loading' | 'success' | 'error'>
-  >({});
+  // Apply to source (delegated to internal service)
+  protected readonly hasApplyCallback = this.appFeaturesService.hasApplyCallback;
 
   protected getApplyState(
     featureId: string
   ): 'idle' | 'loading' | 'success' | 'error' {
-    return this.applyStates()[featureId] ?? 'idle';
+    return this.appFeaturesService.applyStates()[featureId] ?? 'idle';
   }
 
-  protected async onApplyToSource(
-    featureId: string,
-    value: boolean
-  ): Promise<void> {
-    const callback = this.toolbarState.config().onApplyAppFeature;
-    if (!callback) return;
-
-    this.applyStates.update((s) => ({ ...s, [featureId]: 'loading' }));
-    try {
-      await callback(featureId, value);
-      this.applyStates.update((s) => ({ ...s, [featureId]: 'success' }));
-      setTimeout(
-        () =>
-          this.applyStates.update((s) => ({ ...s, [featureId]: 'idle' })),
-        1500
-      );
-    } catch {
-      this.applyStates.update((s) => ({ ...s, [featureId]: 'error' }));
-      setTimeout(
-        () =>
-          this.applyStates.update((s) => ({ ...s, [featureId]: 'idle' })),
-        1500
-      );
-    }
+  protected onApplyToSource(featureId: string, value: boolean): void {
+    this.appFeaturesService.applyToSource(featureId, value);
   }
 
   // Public methods

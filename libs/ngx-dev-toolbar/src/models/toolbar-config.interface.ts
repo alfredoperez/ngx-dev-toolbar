@@ -55,6 +55,7 @@ export interface ToolbarConfig {
    * When provided, an "Apply to source" button appears on each forced flag.
    * @param flagId - The ID of the feature flag
    * @param value - The current forced boolean value
+   * @deprecated Use `ToolbarFeatureFlagService.setApplyToSource()` instead. Config callbacks will be removed in v5.
    */
   onApplyFeatureFlag?: (flagId: string, value: boolean) => Promise<void>;
 
@@ -63,6 +64,7 @@ export interface ToolbarConfig {
    * When provided, an "Apply to source" button appears on each forced permission.
    * @param permissionId - The ID of the permission
    * @param value - The current forced boolean value (granted = true, denied = false)
+   * @deprecated Use `ToolbarPermissionsService.setApplyToSource()` instead. Config callbacks will be removed in v5.
    */
   onApplyPermission?: (permissionId: string, value: boolean) => Promise<void>;
 
@@ -71,6 +73,7 @@ export interface ToolbarConfig {
    * When provided, an "Apply to source" button appears on each forced feature.
    * @param featureId - The ID of the app feature
    * @param value - The current forced boolean value
+   * @deprecated Use `ToolbarAppFeaturesService.setApplyToSource()` instead. Config callbacks will be removed in v5.
    */
   onApplyAppFeature?: (featureId: string, value: boolean) => Promise<void>;
 }

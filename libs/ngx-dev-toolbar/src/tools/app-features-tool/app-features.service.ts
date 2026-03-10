@@ -188,4 +188,14 @@ export class ToolbarAppFeaturesService implements ToolbarService<ToolbarAppFeatu
   getCurrentForcedState(): ForcedAppFeaturesState {
     return this.internalService.getCurrentForcedState();
   }
+
+  /**
+   * Registers a callback to persist a forced app feature value back to the actual data source.
+   * When set, an "apply to source" button appears on each forced feature in the toolbar UI.
+   *
+   * @param callback - Async function that receives the feature ID and its forced boolean value
+   */
+  setApplyToSource(callback: (id: string, value: boolean) => Promise<void>): void {
+    this.internalService.setApplyToSource(callback);
+  }
 }

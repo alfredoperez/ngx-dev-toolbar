@@ -12,6 +12,7 @@ import {
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { AnalyticsService } from './services/analytics.service';
 import { AppFeaturesConfigService } from './services/app-features-config.service';
+import { DemoPermissionsService } from './services/demo-permissions.service';
 import { FeatureFlagsService } from './services/feature-flags.service';
 
 @Component({
@@ -61,6 +62,7 @@ export class AppComponent {
   private readonly translocoService = inject(TranslocoService);
   private readonly translateService = inject(TranslateService);
   private readonly featureFlagsService = inject(FeatureFlagsService);
+  private readonly demoPermissionsService = inject(DemoPermissionsService);
   private readonly toolbarAppFeaturesService = inject(ToolbarAppFeaturesService);
   private readonly presetsService = inject(ToolbarPresetsService);
   public readonly appFeaturesConfig = inject(AppFeaturesConfigService);
@@ -118,6 +120,13 @@ export class AppComponent {
     // Get all features across all tiers for the toolbar
     const features = this.appFeaturesConfig.getAllFeatures();
     this.toolbarAppFeaturesService.setAvailableOptions(features);
+
+    // Register apply-to-source callback for persisting app feature changes
+    this.toolbarAppFeaturesService.setApplyToSource(async (featureId: string, value: boolean) => {
+      console.log(`[Demo] Applying app feature "${featureId}" = ${value}...`);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      console.log(`[Demo] App feature "${featureId}" applied.`);
+    });
 
     // Subscribe to forced feature overrides from the toolbar
     this.toolbarAppFeaturesService

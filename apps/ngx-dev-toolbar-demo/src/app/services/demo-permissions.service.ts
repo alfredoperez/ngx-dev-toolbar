@@ -42,6 +42,13 @@ export class DemoPermissionsService {
         );
       }
     });
+
+    // Register apply-to-source callback for persisting permission changes
+    this.toolbarService.setApplyToSource(async (permissionId: string, value: boolean) => {
+      console.log(`[Demo] Applying permission "${permissionId}" = ${value}...`);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      console.log(`[Demo] Permission "${permissionId}" applied.`);
+    });
   }
 
   /**
