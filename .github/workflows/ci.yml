@@ -23,7 +23,7 @@ jobs:
 
       # Add Nx Cloud distributed task execution
       - name: Start Nx Cloud CI Run
-        run: npx nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after=build
+        run: npx nx-cloud start-ci-run --distribute-on="3 linux-medium-js"
 
       - name: Setup Node
         uses: actions/setup-node@v4
