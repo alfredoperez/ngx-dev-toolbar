@@ -7,7 +7,6 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ToolbarIconComponent } from '../../components/icons/icon.component';
 import { ToolbarInputComponent } from '../../components/input/input.component';
 import { ToolbarListComponent } from '../../components/list/list.component';
 import { ToolbarListItemComponent } from '../../components/list-item/list-item.component';
@@ -26,7 +25,6 @@ import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
     ToolbarToolComponent,
     ToolbarInputComponent,
     ToolbarSelectComponent,
-    ToolbarIconComponent,
     ToolbarListComponent,
     ToolbarListItemComponent,
   ],
@@ -45,7 +43,6 @@ import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
             placeholder="Search..."
           />
           <div class="filter-wrapper">
-            <ndt-icon name="filter" class="filter-icon" />
             <ndt-select
               [value]="activeFilter()"
               [options]="filterOptions"
@@ -68,6 +65,9 @@ import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
             [isForced]="flag.isForced"
             [currentValue]="flag.isEnabled"
             [originalValue]="flag.originalValue"
+            [showApply]="hasApplyCallback()"
+            [applyState]="getApplyState(flag.id)"
+            (applyToSource)="onApplyToSource(flag.id, flag.isEnabled)"
           >
             <ndt-select
               [value]="getFlagValue(flag)"
@@ -108,18 +108,12 @@ import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
           flex: 0 0 auto;
           display: flex;
           align-items: center;
-          gap: var(--ndt-spacing-md);
-
-          .filter-icon {
-            width: 18px;
-            height: 18px;
-            flex-shrink: 0;
-            opacity: 0.6;
-          }
+          border-left: 1px solid var(--ndt-border-primary);
+          padding-left: var(--ndt-spacing-sm);
 
           ndt-select {
             flex: 0 0 auto;
-            min-width: 180px;
+            min-width: 140px;
           }
         }
       }
@@ -212,7 +206,6 @@ export class ToolbarFeatureFlagsToolComponent {
     isClosable: true,
     size: 'tall',
     id: 'ndt-feature-flags',
-    isBeta: true,
   } as ToolbarWindowOptions;
 
   protected readonly filterOptions = [
@@ -227,6 +220,19 @@ export class ToolbarFeatureFlagsToolComponent {
     { value: 'off', label: 'Forced Off' },
     { value: 'on', label: 'Forced On' },
   ];
+
+  // Apply to source (delegated to internal service)
+  protected readonly hasApplyCallback = this.featureFlags.hasApplyCallback;
+
+  protected getApplyState(
+    flagId: string
+  ): 'idle' | 'loading' | 'success' | 'error' {
+    return this.featureFlags.applyStates()[flagId] ?? 'idle';
+  }
+
+  protected onApplyToSource(flagId: string, value: boolean): void {
+    this.featureFlags.applyToSource(flagId, value);
+  }
 
   // Public methods
   onFilterChange(value: string | undefined): void {

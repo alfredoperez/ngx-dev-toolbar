@@ -49,4 +49,31 @@ export interface ToolbarConfig {
    * @default true
    */
   showPresetsTool?: boolean;
+
+  /**
+   * Callback to persist a forced feature flag value to the actual source.
+   * When provided, an "Apply to source" button appears on each forced flag.
+   * @param flagId - The ID of the feature flag
+   * @param value - The current forced boolean value
+   * @deprecated Use `ToolbarFeatureFlagService.setApplyToSource()` instead. Config callbacks will be removed in v5.
+   */
+  onApplyFeatureFlag?: (flagId: string, value: boolean) => Promise<void>;
+
+  /**
+   * Callback to persist a forced permission value to the actual source.
+   * When provided, an "Apply to source" button appears on each forced permission.
+   * @param permissionId - The ID of the permission
+   * @param value - The current forced boolean value (granted = true, denied = false)
+   * @deprecated Use `ToolbarPermissionsService.setApplyToSource()` instead. Config callbacks will be removed in v5.
+   */
+  onApplyPermission?: (permissionId: string, value: boolean) => Promise<void>;
+
+  /**
+   * Callback to persist a forced app feature value to the actual source.
+   * When provided, an "Apply to source" button appears on each forced feature.
+   * @param featureId - The ID of the app feature
+   * @param value - The current forced boolean value
+   * @deprecated Use `ToolbarAppFeaturesService.setApplyToSource()` instead. Config callbacks will be removed in v5.
+   */
+  onApplyAppFeature?: (featureId: string, value: boolean) => Promise<void>;
 }

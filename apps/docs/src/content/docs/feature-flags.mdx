@@ -112,6 +112,37 @@ export class FeatureFlagService {
 - Subscribe to forced values to get toolbar overrides
 - Persist flag state across page reloads (handled automatically by the toolbar)
 
+## Apply to Source
+
+The toolbar can persist forced flag values back to your actual data source (e.g., a backend API or config file).
+When configured, each flag item shows an "apply" button that triggers your callback.
+
+Call `setApplyToSource()` on the service — right alongside `setAvailableOptions()`:
+
+```typescript title="feature-flag.service.ts"
+import { Injectable, inject } from '@angular/core';
+import { ToolbarFeatureFlagService } from 'ngx-dev-toolbar';
+
+@Injectable({ providedIn: 'root' })
+export class FeatureFlagService {
+  private toolbarService = inject(ToolbarFeatureFlagService);
+
+  constructor() {
+    this.toolbarService.setAvailableOptions([...]); // [!code highlight]
+
+    this.toolbarService.setApplyToSource(async (flagId, value) => { // [!code highlight]
+      await fetch(`/api/feature-flags/${flagId}`, { // [!code highlight]
+        method: 'PUT', // [!code highlight]
+        body: JSON.stringify({ enabled: value }), // [!code highlight]
+      }); // [!code highlight]
+    }); // [!code highlight]
+  }
+}
+```
+
+The toolbar automatically manages loading, success, and error states for each item.
+If the callback throws, the item shows an error indicator.
+
 ## Integration with State Management
 
 The Feature Flags tool integrates seamlessly with Angular's reactive state management using signals and observables.

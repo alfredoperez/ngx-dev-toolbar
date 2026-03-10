@@ -68,6 +68,36 @@ export class AppComponent {
 }
 ```
 
+## Apply to Source
+
+You can persist forced app feature values back to your actual data source.
+When configured, each feature item shows an "apply" button.
+
+Call `setApplyToSource()` on the service — right alongside `setAvailableOptions()`:
+
+```typescript title="app-features.service.ts"
+import { Injectable, inject } from '@angular/core';
+import { ToolbarAppFeaturesService } from 'ngx-dev-toolbar';
+
+@Injectable({ providedIn: 'root' })
+export class AppFeaturesService {
+  private toolbarService = inject(ToolbarAppFeaturesService);
+
+  constructor() {
+    this.toolbarService.setAvailableOptions([...]); // [!code highlight]
+
+    this.toolbarService.setApplyToSource(async (featureId, value) => { // [!code highlight]
+      await fetch(`/api/app-features/${featureId}`, { // [!code highlight]
+        method: 'PUT', // [!code highlight]
+        body: JSON.stringify({ enabled: value }), // [!code highlight]
+      }); // [!code highlight]
+    }); // [!code highlight]
+  }
+}
+```
+
+The toolbar automatically manages loading, success, and error states for each item.
+
 ## Related Tools
 
 - [Feature Flags Tool](/ngx-dev-toolbar/feature-flags/) — Test development feature toggles

@@ -7,7 +7,6 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ToolbarIconComponent } from '../../components/icons/icon.component';
 import { ToolbarInputComponent } from '../../components/input/input.component';
 import { ToolbarListComponent } from '../../components/list/list.component';
 import { ToolbarListItemComponent } from '../../components/list-item/list-item.component';
@@ -41,7 +40,6 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
     ToolbarToolComponent,
     ToolbarInputComponent,
     ToolbarSelectComponent,
-    ToolbarIconComponent,
     ToolbarListComponent,
     ToolbarListItemComponent,
   ],
@@ -60,7 +58,6 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
             placeholder="Search features..."
           />
           <div class="filter-wrapper">
-            <ndt-icon name="filter" class="filter-icon" />
             <ndt-select
               [value]="activeFilter()"
               [options]="filterOptions"
@@ -84,6 +81,9 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
               [isForced]="feature.isForced"
               [currentValue]="feature.isEnabled"
               [originalValue]="feature.originalValue"
+              [showApply]="hasApplyCallback()"
+              [applyState]="getApplyState(feature.id)"
+              (applyToSource)="onApplyToSource(feature.id, feature.isEnabled)"
             >
               <ndt-select
                 [value]="getFeatureValue(feature)"
@@ -123,18 +123,12 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
           flex: 0 0 auto;
           display: flex;
           align-items: center;
-          gap: var(--ndt-spacing-md);
-
-          .filter-icon {
-            width: 18px;
-            height: 18px;
-            flex-shrink: 0;
-            opacity: 0.6;
-          }
+          border-left: 1px solid var(--ndt-border-primary);
+          padding-left: var(--ndt-spacing-sm);
 
           ndt-select {
             flex: 0 0 auto;
-            min-width: 180px;
+            min-width: 140px;
           }
         }
       }
@@ -241,6 +235,19 @@ export class ToolbarAppFeaturesToolComponent {
     { value: 'off', label: 'Disabled' },
     { value: 'on', label: 'Enabled' },
   ];
+
+  // Apply to source (delegated to internal service)
+  protected readonly hasApplyCallback = this.appFeaturesService.hasApplyCallback;
+
+  protected getApplyState(
+    featureId: string
+  ): 'idle' | 'loading' | 'success' | 'error' {
+    return this.appFeaturesService.applyStates()[featureId] ?? 'idle';
+  }
+
+  protected onApplyToSource(featureId: string, value: boolean): void {
+    this.appFeaturesService.applyToSource(featureId, value);
+  }
 
   // Public methods
   /**

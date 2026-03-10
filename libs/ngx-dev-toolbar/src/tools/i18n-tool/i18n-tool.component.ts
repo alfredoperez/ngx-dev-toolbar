@@ -211,7 +211,6 @@ export class ToolbarI18nToolComponent {
     description: 'Simulate regional & linguistic environments',
     size: 'tall',
     id: 'ndt-i18n',
-    isBeta: true,
     isClosable: true,
   } as ToolbarWindowOptions;
 

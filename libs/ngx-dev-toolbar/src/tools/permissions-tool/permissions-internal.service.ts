@@ -1,6 +1,7 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable, combineLatest, map } from 'rxjs';
+import { ApplyToSourceState } from '../../models/toolbar.interface';
 import { ToolbarStateService } from '../../toolbar-state.service';
 import { ToolbarStorageService } from '../../utils/storage.service';
 import {
@@ -147,6 +148,36 @@ export class ToolbarInternalPermissionsService {
       Array.isArray(candidate['granted']) &&
       Array.isArray(candidate['denied'])
     );
+  }
+
+  // Apply to source
+  readonly applyCallback = signal<((id: string, value: boolean) => Promise<void>) | null>(null);
+  readonly applyStates = signal<Record<string, ApplyToSourceState>>({});
+  readonly hasApplyCallback = computed(() => this.applyCallback() !== null);
+
+  setApplyToSource(callback: (id: string, value: boolean) => Promise<void>): void {
+    this.applyCallback.set(callback);
+  }
+
+  async applyToSource(id: string, value: boolean): Promise<void> {
+    const callback = this.applyCallback();
+    if (!callback) return;
+
+    this.applyStates.update((s) => ({ ...s, [id]: 'loading' }));
+    try {
+      await callback(id, value);
+      this.applyStates.update((s) => ({ ...s, [id]: 'success' }));
+      setTimeout(
+        () => this.applyStates.update((s) => ({ ...s, [id]: 'idle' })),
+        1500
+      );
+    } catch {
+      this.applyStates.update((s) => ({ ...s, [id]: 'error' }));
+      setTimeout(
+        () => this.applyStates.update((s) => ({ ...s, [id]: 'idle' })),
+        1500
+      );
+    }
   }
 
   private validateAndCleanForcedState(permissions: ToolbarPermission[]): void {

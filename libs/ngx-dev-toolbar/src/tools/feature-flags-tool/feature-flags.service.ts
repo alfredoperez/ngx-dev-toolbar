@@ -52,4 +52,14 @@ export class ToolbarFeatureFlagService
   getValues(): Observable<ToolbarFlag[]> {
     return this.internalService.flags$;
   }
+
+  /**
+   * Registers a callback to persist a forced flag value back to the actual data source.
+   * When set, an "apply to source" button appears on each forced flag in the toolbar UI.
+   *
+   * @param callback - Async function that receives the flag ID and its forced boolean value
+   */
+  setApplyToSource(callback: (id: string, value: boolean) => Promise<void>): void {
+    this.internalService.setApplyToSource(callback);
+  }
 }

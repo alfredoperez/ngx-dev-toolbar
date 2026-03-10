@@ -17,11 +17,10 @@
   border: 1px solid var(--ndt-border-primary);
   border-radius: map.get(map.get(devtools.$dimensions, border-radius), full);
   box-shadow: var(--ndt-shadow-toolbar);
-  overflow: clip;
   transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
 
-  // How much of the toolbar peeks out when hidden (matches original ~1.2rem behavior)
-  $peek-amount: 1.2rem;
+  // How much of the toolbar peeks out when hidden
+  $peek-amount: 0.5rem;
 
   // Bottom position (default)
   &--bottom {
@@ -29,10 +28,11 @@
     left: 50%;
     flex-direction: row;
     height: map.get(devtools.$dimensions, toolbar-height);
+    padding: 0 2px;
     transform: translateX(-50%) translateY(calc(100% - #{$peek-amount}));
 
     &.ndt-toolbar--visible {
-      transform: translateX(-50%) translateY(-12px);
+      transform: translateX(-50%) translateY(-10px);
     }
   }
 
@@ -42,10 +42,11 @@
     left: 50%;
     flex-direction: row;
     height: map.get(devtools.$dimensions, toolbar-height);
+    padding: 0 2px;
     transform: translateX(-50%) translateY(calc(-100% + #{$peek-amount}));
 
     &.ndt-toolbar--visible {
-      transform: translateX(-50%) translateY(12px);
+      transform: translateX(-50%) translateY(10px);
     }
   }
 
@@ -55,10 +56,11 @@
     top: 50%;
     flex-direction: column;
     width: map.get(devtools.$dimensions, toolbar-height);
+    padding: 2px 0;
     transform: translateY(-50%) translateX(calc(-100% + #{$peek-amount}));
 
     &.ndt-toolbar--visible {
-      transform: translateY(-50%) translateX(12px);
+      transform: translateY(-50%) translateX(10px);
     }
   }
 
@@ -68,10 +70,11 @@
     top: 50%;
     flex-direction: column;
     width: map.get(devtools.$dimensions, toolbar-height);
+    padding: 2px 0;
     transform: translateY(-50%) translateX(calc(100% - #{$peek-amount}));
 
     &.ndt-toolbar--visible {
-      transform: translateY(-50%) translateX(-12px);
+      transform: translateY(-50%) translateX(-10px);
     }
   }
 }

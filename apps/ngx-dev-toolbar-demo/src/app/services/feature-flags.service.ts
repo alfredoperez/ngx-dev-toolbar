@@ -48,6 +48,13 @@ export class FeatureFlagsService {
         );
       }
     });
+
+    // Register apply-to-source callback for persisting flag changes
+    this.toolbarService.setApplyToSource(async (flagId: string, value: boolean) => {
+      console.log(`[Demo] Applying flag "${flagId}" = ${value}...`);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      console.log(`[Demo] Flag "${flagId}" applied.`);
+    });
   }
 
   /**

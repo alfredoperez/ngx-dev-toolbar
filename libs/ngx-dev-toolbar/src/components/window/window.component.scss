@@ -19,7 +19,7 @@
   background: var(--ndt-bg-primary);
   border: 1px solid var(--ndt-border-primary);
   border-radius: var(--ndt-border-radius-large);
-  padding: var(--ndt-window-padding) var(--ndt-window-padding) var(--ndt-spacing-xs);
+  padding: var(--ndt-spacing-md) var(--ndt-spacing-md) var(--ndt-spacing-xs);
   font-family: $font-family;
   color: var(--ndt-text-secondary);
   z-index: #{map.get($z-indices, window)};
@@ -37,7 +37,7 @@
   flex-shrink: 0;
 
   h1 {
-    font-size: var(--ndt-font-size-lg);
+    font-size: var(--ndt-font-size-md);
     line-height: 1.2;
     margin: 0;
     color: var(--ndt-text-primary);
@@ -64,7 +64,7 @@
     }
   }
   &__description {
-    font-size: var(--ndt-font-size-sm);
+    font-size: var(--ndt-font-size-xs);
     color: var(--ndt-text-muted);
     word-wrap: break-word;
     overflow-wrap: break-word;
@@ -99,8 +99,8 @@
 .divider {
   height: 1px;
   background-color: var(--ndt-border-primary);
-  margin-bottom: var(--ndt-spacing-md);
-  margin-top: var(--ndt-spacing-md);
+  margin-bottom: var(--ndt-spacing-sm);
+  margin-top: var(--ndt-spacing-sm);
   flex-shrink: 0;
   position: relative;
   z-index: 5;

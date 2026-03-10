@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { signal } from '@angular/core';
+import { computed, signal } from '@angular/core';
 import { ToolbarStorageService } from '../../utils/storage.service';
+import { ApplyToSourceState } from '../../models/toolbar.interface';
 import { ToolbarPermissionsToolComponent } from './permissions-tool.component';
 import { ToolbarInternalPermissionsService } from './permissions-internal.service';
 import { ToolbarPermission } from './permissions.models';
@@ -37,10 +38,16 @@ describe('ToolbarPermissionsToolComponent', () => {
   beforeEach(async () => {
     const permissionsSignal = signal<ToolbarPermission[]>(mockPermissions);
 
+    const applyCallbackSignal = signal<((id: string, value: boolean) => Promise<void>) | null>(null);
+    const applyStatesSignal = signal<Record<string, ApplyToSourceState>>({});
+
     const internalServiceMock = {
       permissions: permissionsSignal,
       setPermission: jest.fn(),
       removePermissionOverride: jest.fn(),
+      hasApplyCallback: computed(() => applyCallbackSignal() !== null),
+      applyStates: applyStatesSignal,
+      applyToSource: jest.fn(),
     };
 
     const storageServiceMock = {
@@ -289,10 +296,15 @@ describe('ToolbarPermissionsToolComponent', () => {
     it('should detect when permissions array is empty', async () => {
       // Create a new test setup with empty permissions
       const emptyPermissionsSignal = signal<ToolbarPermission[]>([]);
+      const emptyApplyCallback = signal<((id: string, value: boolean) => Promise<void>) | null>(null);
+      const emptyApplyStates = signal<Record<string, ApplyToSourceState>>({});
       const emptyServiceMock = {
         permissions: emptyPermissionsSignal,
         setPermission: jest.fn(),
         removePermissionOverride: jest.fn(),
+        hasApplyCallback: computed(() => emptyApplyCallback() !== null),
+        applyStates: emptyApplyStates,
+        applyToSource: jest.fn(),
       };
 
       const storageServiceMock = {

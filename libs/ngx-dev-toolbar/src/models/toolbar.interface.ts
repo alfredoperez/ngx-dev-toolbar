@@ -1,6 +1,11 @@
 import { Observable } from 'rxjs';
 
 /**
+ * State of an apply-to-source operation for a single item.
+ */
+export type ApplyToSourceState = 'idle' | 'loading' | 'success' | 'error';
+
+/**
  * Interface that should be implemented by any tool service that is used in the dev toolbar
  */
 export interface ToolbarService<OptionType> {
@@ -39,4 +44,20 @@ export interface ToolbarService<OptionType> {
    * ```
    */
   getValues(): Observable<OptionType[]>;
+
+  /**
+   * Registers a callback to persist a forced value back to the actual data source.
+   * When set, an "apply to source" button appears on each forced item in the toolbar UI.
+   *
+   * @param callback - Async function that receives the item ID and its forced boolean value.
+   *                   Should persist the value (e.g., via API call) and throw on failure.
+   *
+   * @example
+   * ```typescript
+   * this.toolbarService.setApplyToSource(async (id, value) => {
+   *   await this.api.updateFlag(id, value);
+   * });
+   * ```
+   */
+  setApplyToSource?(callback: (id: string, value: boolean) => Promise<void>): void;
 }

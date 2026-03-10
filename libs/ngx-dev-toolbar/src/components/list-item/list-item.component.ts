@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ToolbarIconComponent } from '../icons/icon.component';
+import { ToolbarIconButtonComponent } from '../icon-button/icon-button.component';
 
 /**
  * List item component with consistent layout, dot badge indicator,
@@ -21,7 +23,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'ndt-list-item',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ToolbarIconComponent, ToolbarIconButtonComponent],
   template: `
     <div class="list-item" [class.list-item--forced]="isForced()">
       <div class="info">
@@ -39,6 +41,30 @@ import { CommonModule } from '@angular/common';
         }
       </div>
       <div class="actions">
+        @if (showApply() && isForced()) {
+          <ndt-icon-button
+            [icon]="applyState() === 'idle' ? 'export' : undefined"
+            tooltip="Apply to source"
+            variant="outlined"
+            class="apply-button"
+            [class.apply-button--loading]="applyState() === 'loading'"
+            [class.apply-button--success]="applyState() === 'success'"
+            [class.apply-button--error]="applyState() === 'error'"
+            (click)="applyToSource.emit()"
+          >
+            @switch (applyState()) {
+              @case ('loading') {
+                <span class="apply-spinner"></span>
+              }
+              @case ('success') {
+                <span class="apply-icon">✓</span>
+              }
+              @case ('error') {
+                <span class="apply-icon">✕</span>
+              }
+            }
+          </ndt-icon-button>
+        }
         <ng-content />
       </div>
     </div>
@@ -73,6 +99,21 @@ export class ToolbarListItemComponent {
    * Original value before forcing (only present when isForced is true)
    */
   originalValue = input<boolean | undefined>(undefined);
+
+  /**
+   * Whether to show the "Apply to source" button
+   */
+  showApply = input<boolean>(false);
+
+  /**
+   * Current state of the apply operation
+   */
+  applyState = input<'idle' | 'loading' | 'success' | 'error'>('idle');
+
+  /**
+   * Emits when the user clicks "Apply to source"
+   */
+  applyToSource = output<void>();
 
   /**
    * Value to display in the dot indicator.

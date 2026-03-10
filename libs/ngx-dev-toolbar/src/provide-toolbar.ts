@@ -18,6 +18,9 @@ import {
 import { ToolbarFeatureFlagService } from './tools/feature-flags-tool/feature-flags.service';
 import { ToolbarPermissionsService } from './tools/permissions-tool/permissions.service';
 import { ToolbarAppFeaturesService } from './tools/app-features-tool/app-features.service';
+import { ToolbarInternalFeatureFlagService } from './tools/feature-flags-tool/feature-flags-internal.service';
+import { ToolbarInternalPermissionsService } from './tools/permissions-tool/permissions-internal.service';
+import { ToolbarInternalAppFeaturesService } from './tools/app-features-tool/app-features-internal.service';
 
 /**
  * Provides all ngx-dev-toolbar services and automatically attaches the toolbar to the DOM.
@@ -92,6 +95,26 @@ export function provideToolbar(config?: ToolbarConfig): EnvironmentProviders {
         const appRef = inject(ApplicationRef);
         const injector = inject(EnvironmentInjector);
         const toolbarConfig = inject(TOOLBAR_CONFIG);
+
+        // Bridge deprecated config callbacks to service-based setApplyToSource
+        if (toolbarConfig.onApplyFeatureFlag) {
+          console.warn(
+            '[ngx-dev-toolbar] onApplyFeatureFlag in config is deprecated. Use ToolbarFeatureFlagService.setApplyToSource() instead.'
+          );
+          inject(ToolbarInternalFeatureFlagService).setApplyToSource(toolbarConfig.onApplyFeatureFlag);
+        }
+        if (toolbarConfig.onApplyPermission) {
+          console.warn(
+            '[ngx-dev-toolbar] onApplyPermission in config is deprecated. Use ToolbarPermissionsService.setApplyToSource() instead.'
+          );
+          inject(ToolbarInternalPermissionsService).setApplyToSource(toolbarConfig.onApplyPermission);
+        }
+        if (toolbarConfig.onApplyAppFeature) {
+          console.warn(
+            '[ngx-dev-toolbar] onApplyAppFeature in config is deprecated. Use ToolbarAppFeaturesService.setApplyToSource() instead.'
+          );
+          inject(ToolbarInternalAppFeaturesService).setApplyToSource(toolbarConfig.onApplyAppFeature);
+        }
 
         const componentRef = createComponent(ToolbarComponent, {
           environmentInjector: injector,
