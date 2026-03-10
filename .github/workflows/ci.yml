@@ -21,10 +21,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Add Nx Cloud distributed task execution
-      - name: Start Nx Cloud CI Run
-        run: npx nx-cloud start-ci-run --distribute-on="3 linux-medium-js"
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
