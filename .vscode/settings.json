@@ -1,3 +1,50 @@
 {
-  "angular.enable-strict-mode-prompt": false
+  "angular.enable-strict-mode-prompt": false,
+
+  "chat.promptFilesRecommendations": {
+    "speckit.constitution": true,
+    "speckit.specify": true,
+    "speckit.plan": true,
+    "speckit.tasks": true,
+    "speckit.implement": true
+  },
+  "chat.tools.terminal.autoApprove": {
+    ".specify/scripts/bash/": true,
+    ".specify/scripts/powershell/": true
+  },
+  "speckit.defaultWorkflow": "sdd",
+
+  "speckit.customWorkflows": [
+    {
+      "name": "sdd",
+      "displayName": "SDD",
+      "description": "Streamlined Spec-Driven Development Workflow",
+      "steps": [
+        {
+          "name": "specify",
+          "label": "Specify",
+          "command": "sdd.specify",
+          "file": "spec.md"
+        },
+        {
+          "name": "plan",
+          "label": "Plan",
+          "command": "sdd.plan",
+          "file": "plan.md"
+        },
+        {
+          "name": "tasks",
+          "label": "Tasks",
+          "command": "sdd.tasks",
+          "file": "tasks.md"
+        },
+        {
+          "name": "implement",
+          "label": "Implement",
+          "command": "sdd.implement",
+          "actionOnly": true
+        }
+      ]
+    }
+  ]
 }
