@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, input, output } from '@an
 import { CommonModule } from '@angular/common';
 import { ToolbarIconComponent } from '../icons/icon.component';
 import { ToolbarIconButtonComponent } from '../icon-button/icon-button.component';
+import { IconName } from '../icons/icon.models';
 
 /**
  * List item component with consistent layout, dot badge indicator,
@@ -26,6 +27,14 @@ import { ToolbarIconButtonComponent } from '../icon-button/icon-button.component
   imports: [CommonModule, ToolbarIconComponent, ToolbarIconButtonComponent],
   template: `
     <div class="list-item" [class.list-item--forced]="isForced()">
+      <ndt-icon-button
+        [icon]="pinIcon()"
+        [ariaLabel]="pinAriaLabel()"
+        variant="ghost"
+        class="pin-button"
+        [class.pin-button--pinned]="isPinned()"
+        (click)="pinToggle.emit(); $event.stopPropagation()"
+      />
       <div class="info">
         <h3>{{ title() }}</h3>
         @if (description()) {
@@ -111,9 +120,25 @@ export class ToolbarListItemComponent {
   applyState = input<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   /**
+   * Whether this item is pinned to the top of the list
+   */
+  isPinned = input<boolean>(false);
+
+  /**
+   * Emits when the user clicks the pin/unpin button
+   */
+  pinToggle = output<void>();
+
+  /**
    * Emits when the user clicks "Apply to source"
    */
   applyToSource = output<void>();
+
+  protected pinIcon = computed<IconName>(() => 'pin');
+
+  protected pinAriaLabel = computed(() =>
+    this.isPinned() ? 'Unpin item' : 'Pin item'
+  );
 
   /**
    * Value to display in the dot indicator.
