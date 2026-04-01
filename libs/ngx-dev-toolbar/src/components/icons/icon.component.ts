@@ -28,6 +28,7 @@ import { LightingIconComponent } from './lighting-icon.component';
 import { LockIconComponent } from './lock-icon.component';
 import { MoonIconComponent } from './moon-icon.component';
 import { NetworkIconComponent } from './network-icon.component';
+import { PinIconComponent } from './pin-icon.component';
 import { PuzzleIconComponent } from './puzzle-icon.component';
 import { RefreshIconComponent } from './refresh-icon.component';
 import { StarIconComponent } from './star-icon.component';
@@ -62,6 +63,7 @@ import { UsersIconComponent } from './users-icon.component';
     LightingIconComponent,
     LockIconComponent,
     NetworkIconComponent,
+    PinIconComponent,
     PuzzleIconComponent,
     RefreshIconComponent,
     StarIconComponent,
@@ -113,6 +115,8 @@ import { UsersIconComponent } from './users-icon.component';
     <ndt-lock-icon [fill]="fill()" />
     } @case ('network') {
     <ndt-network-icon [fill]="fill()" />
+    } @case ('pin') {
+    <ndt-pin-icon [fill]="fill()" />
     } @case ('puzzle') {
     <ndt-puzzle-icon [fill]="fill()" />
     } @case ('refresh') {

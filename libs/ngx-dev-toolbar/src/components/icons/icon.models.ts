@@ -21,6 +21,7 @@ export type IconName =
   | 'lock'
   | 'moon'
   | 'network'
+  | 'pin'
   | 'puzzle'
   | 'refresh'
   | 'star'

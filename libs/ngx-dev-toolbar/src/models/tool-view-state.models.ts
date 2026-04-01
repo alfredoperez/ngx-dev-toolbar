@@ -11,4 +11,7 @@ export interface ToolViewState {
 
   /** Sort order for list items (currently only 'asc' supported, reserved for future use) */
   sortOrder: 'asc' | 'desc';
+
+  /** IDs of pinned items that should appear at the top of the list */
+  pinnedIds?: string[];
 }

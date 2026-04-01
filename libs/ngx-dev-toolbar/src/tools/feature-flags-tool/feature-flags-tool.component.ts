@@ -65,6 +65,8 @@ import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
             [isForced]="flag.isForced"
             [currentValue]="flag.isEnabled"
             [originalValue]="flag.originalValue"
+            [isPinned]="pinnedIds().has(flag.id)"
+            (pinToggle)="togglePin(flag.id)"
             [showApply]="hasApplyCallback()"
             [applyState]="getApplyState(flag.id)"
             (applyToSource)="onApplyToSource(flag.id, flag.isEnabled)"
@@ -132,6 +134,7 @@ export class ToolbarFeatureFlagsToolComponent {
   // Signals
   protected readonly activeFilter = signal<FeatureFlagFilter>('all');
   protected readonly searchQuery = signal<string>('');
+  protected readonly pinnedIds = signal<Set<string>>(new Set());
 
   constructor() {
     this.loadViewState();
@@ -142,6 +145,7 @@ export class ToolbarFeatureFlagsToolComponent {
         searchQuery: this.searchQuery(),
         filter: this.activeFilter(),
         sortOrder: 'asc',
+        pinnedIds: [...this.pinnedIds()],
       };
       this.storageService.set(this.VIEW_STATE_KEY, state);
     });
@@ -155,6 +159,9 @@ export class ToolbarFeatureFlagsToolComponent {
         const filter = saved.filter as FeatureFlagFilter;
         if (['all', 'forced', 'enabled', 'disabled'].includes(filter)) {
           this.activeFilter.set(filter);
+        }
+        if (saved.pinnedIds?.length) {
+          this.pinnedIds.set(new Set(saved.pinnedIds));
         }
       }
     } catch {
@@ -192,8 +199,14 @@ export class ToolbarFeatureFlagsToolComponent {
       return matchesSearch && matchesFilter;
     });
 
-    // Sort alphabetically by name
-    return filtered.sort((a, b) => a.name.localeCompare(b.name));
+    const pinned = this.pinnedIds();
+    // Sort pinned first, then alphabetically within each group
+    return filtered.sort((a, b) => {
+      const aPinned = pinned.has(a.id);
+      const bPinned = pinned.has(b.id);
+      if (aPinned !== bPinned) return aPinned ? -1 : 1;
+      return a.name.localeCompare(b.name);
+    });
   });
   protected readonly hasNoFilteredFlags = computed(
     () => this.filteredFlags().length === 0
@@ -258,6 +271,18 @@ export class ToolbarFeatureFlagsToolComponent {
 
   onSearchChange(query: string): void {
     this.searchQuery.set(query);
+  }
+
+  togglePin(flagId: string): void {
+    this.pinnedIds.update((ids) => {
+      const next = new Set(ids);
+      if (next.has(flagId)) {
+        next.delete(flagId);
+      } else {
+        next.add(flagId);
+      }
+      return next;
+    });
   }
 
   // Protected methods

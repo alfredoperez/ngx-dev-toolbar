@@ -77,6 +77,30 @@
   overflow: visible;
 }
 
+.pin-button {
+  flex-shrink: 0;
+  align-self: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.list-item:hover .pin-button {
+  opacity: 0.4;
+}
+
+.list-item:hover .pin-button:hover {
+  opacity: 0.7;
+}
+
+.pin-button--pinned {
+  opacity: 1;
+}
+
+.pin-button--pinned ::ng-deep .icon-button {
+  opacity: 1;
+  color: var(--ndt-text-primary);
+}
+
 .apply-button--loading ::ng-deep .icon-button {
   opacity: 1;
   animation: apply-pulse 1s ease-in-out infinite;

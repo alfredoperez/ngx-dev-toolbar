@@ -72,6 +72,8 @@ import {
               [isForced]="permission.isForced"
               [currentValue]="permission.isGranted"
               [originalValue]="permission.originalValue"
+              [isPinned]="pinnedIds().has(permission.id)"
+              (pinToggle)="togglePin(permission.id)"
               [showApply]="hasApplyCallback()"
               [applyState]="getApplyState(permission.id)"
               (applyToSource)="onApplyToSource(permission.id, permission.isGranted)"
@@ -140,6 +142,7 @@ export class ToolbarPermissionsToolComponent {
   // Signals
   protected readonly activeFilter = signal<PermissionFilter>('all');
   protected readonly searchQuery = signal<string>('');
+  protected readonly pinnedIds = signal<Set<string>>(new Set());
 
   constructor() {
     this.loadViewState();
@@ -150,6 +153,7 @@ export class ToolbarPermissionsToolComponent {
         searchQuery: this.searchQuery(),
         filter: this.activeFilter(),
         sortOrder: 'asc',
+        pinnedIds: [...this.pinnedIds()],
       };
       this.storageService.set(this.VIEW_STATE_KEY, state);
     });
@@ -163,6 +167,9 @@ export class ToolbarPermissionsToolComponent {
         const filter = saved.filter as PermissionFilter;
         if (['all', 'forced', 'granted', 'denied'].includes(filter)) {
           this.activeFilter.set(filter);
+        }
+        if (saved.pinnedIds?.length) {
+          this.pinnedIds.set(new Set(saved.pinnedIds));
         }
       }
     } catch {
@@ -202,8 +209,14 @@ export class ToolbarPermissionsToolComponent {
       return matchesSearch && matchesFilter;
     });
 
-    // Sort alphabetically by name
-    return filtered.sort((a, b) => a.name.localeCompare(b.name));
+    const pinned = this.pinnedIds();
+    // Sort pinned first, then alphabetically within each group
+    return filtered.sort((a, b) => {
+      const aPinned = pinned.has(a.id);
+      const bPinned = pinned.has(b.id);
+      if (aPinned !== bPinned) return aPinned ? -1 : 1;
+      return a.name.localeCompare(b.name);
+    });
   });
   protected readonly hasNoFilteredPermissions = computed(
     () => this.filteredPermissions().length === 0
@@ -268,6 +281,18 @@ export class ToolbarPermissionsToolComponent {
 
   onSearchChange(query: string): void {
     this.searchQuery.set(query);
+  }
+
+  togglePin(permissionId: string): void {
+    this.pinnedIds.update((ids) => {
+      const next = new Set(ids);
+      if (next.has(permissionId)) {
+        next.delete(permissionId);
+      } else {
+        next.add(permissionId);
+      }
+      return next;
+    });
   }
 
   // Protected methods

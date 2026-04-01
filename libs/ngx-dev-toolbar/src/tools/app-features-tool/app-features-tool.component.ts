@@ -81,6 +81,8 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
               [isForced]="feature.isForced"
               [currentValue]="feature.isEnabled"
               [originalValue]="feature.originalValue"
+              [isPinned]="pinnedIds().has(feature.id)"
+              (pinToggle)="togglePin(feature.id)"
               [showApply]="hasApplyCallback()"
               [applyState]="getApplyState(feature.id)"
               (applyToSource)="onApplyToSource(feature.id, feature.isEnabled)"
@@ -147,6 +149,7 @@ export class ToolbarAppFeaturesToolComponent {
   // Signals
   protected readonly activeFilter = signal<AppFeatureFilter>('all');
   protected readonly searchQuery = signal<string>('');
+  protected readonly pinnedIds = signal<Set<string>>(new Set());
 
   constructor() {
     this.loadViewState();
@@ -157,6 +160,7 @@ export class ToolbarAppFeaturesToolComponent {
         searchQuery: this.searchQuery(),
         filter: this.activeFilter(),
         sortOrder: 'asc',
+        pinnedIds: [...this.pinnedIds()],
       };
       this.storageService.set(this.VIEW_STATE_KEY, state);
     });
@@ -170,6 +174,9 @@ export class ToolbarAppFeaturesToolComponent {
         const filter = saved.filter as AppFeatureFilter;
         if (['all', 'forced', 'enabled', 'disabled'].includes(filter)) {
           this.activeFilter.set(filter);
+        }
+        if (saved.pinnedIds?.length) {
+          this.pinnedIds.set(new Set(saved.pinnedIds));
         }
       }
     } catch {
@@ -207,8 +214,14 @@ export class ToolbarAppFeaturesToolComponent {
       return matchesSearch && matchesFilter;
     });
 
-    // Sort alphabetically by name
-    return filtered.sort((a, b) => a.name.localeCompare(b.name));
+    const pinned = this.pinnedIds();
+    // Sort pinned first, then alphabetically within each group
+    return filtered.sort((a, b) => {
+      const aPinned = pinned.has(a.id);
+      const bPinned = pinned.has(b.id);
+      if (aPinned !== bPinned) return aPinned ? -1 : 1;
+      return a.name.localeCompare(b.name);
+    });
   });
   protected readonly hasNoFilteredFeatures = computed(
     () => this.filteredFeatures().length === 0
@@ -287,6 +300,18 @@ export class ToolbarAppFeaturesToolComponent {
    */
   onSearchChange(query: string): void {
     this.searchQuery.set(query);
+  }
+
+  togglePin(featureId: string): void {
+    this.pinnedIds.update((ids) => {
+      const next = new Set(ids);
+      if (next.has(featureId)) {
+        next.delete(featureId);
+      } else {
+        next.add(featureId);
+      }
+      return next;
+    });
   }
 
   // Protected methods
