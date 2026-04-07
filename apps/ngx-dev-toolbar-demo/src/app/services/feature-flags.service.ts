@@ -21,7 +21,8 @@ export class FeatureFlagsService {
   // Descriptions for toolbar display (LaunchDarkly doesn't provide these)
   private readonly descriptions: Record<string, string> = {
     'dark-mode': 'Enable dark theme throughout the application',
-    'new-dashboard': 'Enable the redesigned dashboard experience',
+    'new-dashboard':
+      'Enable the completely redesigned dashboard experience with updated widgets, drag-and-drop layout customization, real-time data streaming, and improved accessibility. This flag also activates the new onboarding wizard for first-time users and the interactive tutorial overlay.',
     'beta-features': 'Enable experimental beta features',
     'new-notifications': 'Enable the new notifications system',
   };

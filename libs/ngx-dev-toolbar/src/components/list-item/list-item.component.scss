@@ -36,7 +36,7 @@
 
 .list-item .info .description-wrapper {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 4px;
   margin-top: 1px;
 }
@@ -49,6 +49,7 @@
   flex-shrink: 0;
   cursor: help;
   transition: all 0.2s ease;
+  margin-top: 5px;
 }
 
 .list-item .info .dot-indicator.dot-indicator--on {
@@ -66,6 +67,10 @@
   font-size: var(--ndt-font-size-xxs);
   color: var(--ndt-text-muted);
   flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .list-item .actions {
@@ -79,7 +84,7 @@
 
 .pin-button {
   flex-shrink: 0;
-  align-self: center;
+  align-self: flex-start;
   opacity: 0;
   transition: opacity 0.2s ease;
 }
