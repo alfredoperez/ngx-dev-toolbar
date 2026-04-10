@@ -1,3 +1,13 @@
+## 4.2.1 (2026-04-10)
+
+### Bug Fixes
+
+- **toolbar:** improve list item title size and pin button layout ([b755ba3](https://github.com/alfredoperez/ngx-dev-toolbar/commit/b755ba3))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 ## 4.2.0 (2026-03-09)
 
 ### Features
