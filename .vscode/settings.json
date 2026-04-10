@@ -1,6 +1,5 @@
 {
   "angular.enable-strict-mode-prompt": false,
-
   "chat.promptFilesRecommendations": {
     "sdd.specify": true,
     "sdd.plan": true,
@@ -13,9 +12,8 @@
   "chat.tools.terminal.autoApprove": {
     "specs/": true
   },
-  "sdd.defaultWorkflow": "sdd",
-
-  "sdd.customWorkflows": [
+  "speckit.defaultWorkflow": "sdd",
+  "speckit.customWorkflows": [
     {
       "name": "sdd",
       "displayName": "SDD",
@@ -23,7 +21,7 @@
       "steps": [
         {
           "name": "specify",
-          "label": "Specify",
+          "label": "Specification",
           "command": "sdd:specify",
           "file": "spec.md"
         },
