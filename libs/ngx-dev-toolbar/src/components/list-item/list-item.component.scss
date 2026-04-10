@@ -29,7 +29,7 @@
 
 .list-item .info h3 {
   margin: 0;
-  font-size: var(--ndt-font-size-xs);
+  font-size: var(--ndt-font-size-sm);
   font-weight: 500;
   color: var(--ndt-text-primary);
 }
@@ -83,10 +83,12 @@
 }
 
 .pin-button {
-  flex-shrink: 0;
-  align-self: flex-start;
+  position: absolute;
+  left: calc(-1 * var(--ndt-spacing-sm) - 2px);
+  top: var(--ndt-spacing-xs);
   opacity: 0;
   transition: opacity 0.2s ease;
+  z-index: 2;
 }
 
 .list-item:hover .pin-button {
