@@ -27,6 +27,8 @@ export * from './components/clickable-card/clickable-card.component';
 export * from './components/link-button/link-button.component';
 export * from './components/step-view/step-view.component';
 export * from './components/step-view/step-view.directive';
+export * from './components/tabs/tab.component';
+export * from './components/tabs/tabs.component';
 
 export * from './toolbar.component';
 export * from './models/toolbar.interface';
@@ -53,3 +55,4 @@ export * from './tools/permissions-tool/permissions-tool.component';
 export * from './tools/presets-tool/presets.models';
 export * from './tools/presets-tool/presets.service';
 export * from './tools/presets-tool/presets-tool.component';
+

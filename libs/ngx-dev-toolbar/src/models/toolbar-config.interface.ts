@@ -1,3 +1,4 @@
+import { Type } from '@angular/core';
 import { ToolbarPosition } from './toolbar-position.model';
 
 /**
@@ -49,6 +50,21 @@ export interface ToolbarConfig {
    * @default true
    */
   showPresetsTool?: boolean;
+
+  /**
+   * Custom tool components to render inside the toolbar.
+   *
+   * Each component should use `ToolbarToolComponent` as its wrapper
+   * and will appear as an icon in the toolbar strip alongside built-in tools.
+   *
+   * @example
+   * ```typescript
+   * provideToolbar({
+   *   customTools: [MyFinderTool, MyDebugTool],
+   * })
+   * ```
+   */
+  customTools?: Type<unknown>[];
 
   /**
    * Callback to persist a forced feature flag value to the actual source.

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   computed,
   inject,
   input,
@@ -49,6 +50,7 @@ export interface SelectOption {
       [cdkConnectedOverlayOrigin]="trigger"
       [cdkConnectedOverlayOpen]="isOpen()"
       [cdkConnectedOverlayPositions]="positions"
+      [cdkConnectedOverlayMinWidth]="triggerWidth()"
       [cdkConnectedOverlayPanelClass]="['ndt-overlay-panel', 'ndt-select-overlay']"
       (overlayOutsideClick)="close()"
     >
@@ -78,6 +80,7 @@ export interface SelectOption {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarSelectComponent {
+  private readonly elementRef = inject(ElementRef);
   readonly devToolbarStateService = inject(ToolbarStateService);
 
   value = model<string>();
@@ -92,6 +95,7 @@ export class ToolbarSelectComponent {
     .toString(36)
     .slice(2, 11)}`;
   isOpen = signal(false);
+  triggerWidth = signal(0);
 
   isPlaceholder = computed(() => {
     const options = this.options();
@@ -121,6 +125,8 @@ export class ToolbarSelectComponent {
   ];
 
   toggle() {
+    const selectEl = this.elementRef.nativeElement.querySelector('.ndt-select');
+    this.triggerWidth.set(selectEl?.offsetWidth ?? 0);
     this.isOpen.update((v) => !v);
   }
 

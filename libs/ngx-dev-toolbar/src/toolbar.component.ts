@@ -5,16 +5,19 @@ import {
   DestroyRef,
   OnDestroy,
   OnInit,
+  ViewContainerRef,
   ViewEncapsulation,
   effect,
   inject,
   input,
+  viewChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { fromEvent } from 'rxjs';
 import { filter, throttleTime } from 'rxjs/operators';
 import { ToolbarStateService } from './toolbar-state.service';
 import { ToolbarConfig } from './models/toolbar-config.interface';
+import { TOOLBAR_CUSTOM_TOOLS } from './tokens';
 import { ToolbarAppFeaturesToolComponent } from './tools/app-features-tool/app-features-tool.component';
 import { ToolbarFeatureFlagsToolComponent } from './tools/feature-flags-tool/feature-flags-tool.component';
 import { ToolbarHomeToolComponent } from './tools/home-tool/home-tool.component';
@@ -53,6 +56,7 @@ import { ToolbarPresetsToolComponent } from './tools/presets-tool/presets-tool.c
       >
         <ndt-home-tool />
         <ng-content />
+        <ng-container #customTools />
         @if (config().showI18nTool ?? false) {
           <ndt-i18n-tool />
         }
@@ -77,6 +81,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   state = inject(ToolbarStateService);
   destroyRef = inject(DestroyRef);
   settingsService = inject(SettingsService);
+  private customToolTypes = inject(TOOLBAR_CUSTOM_TOOLS, { optional: true }) ?? [];
+  private customToolsContainer = viewChild('customTools', { read: ViewContainerRef });
 
   config = input<ToolbarConfig>({});
   private globalStyleElement?: HTMLStyleElement;
@@ -111,6 +117,16 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     // Update state service when config changes
     effect(() => {
       this.state.setConfig(this.config());
+    });
+
+    // Dynamically render registered custom tool components
+    effect(() => {
+      const container = this.customToolsContainer();
+      if (container && container.length === 0 && this.customToolTypes.length > 0) {
+        for (const toolType of this.customToolTypes) {
+          container.createComponent(toolType);
+        }
+      }
     });
   }
 
