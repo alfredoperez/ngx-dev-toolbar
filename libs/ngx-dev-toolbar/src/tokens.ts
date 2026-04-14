@@ -1,4 +1,4 @@
-import { InjectionToken } from '@angular/core';
+import { InjectionToken, Type } from '@angular/core';
 import { ToolbarConfig } from './models/toolbar-config.interface';
 import { ToolbarService } from './models/toolbar.interface';
 import { ToolbarAppFeature } from './tools/app-features-tool/app-features.models';
@@ -74,3 +74,29 @@ export const TOOLBAR_PERMISSIONS = new InjectionToken<
 export const TOOLBAR_APP_FEATURES = new InjectionToken<
   ToolbarService<ToolbarAppFeature>
 >('TOOLBAR_APP_FEATURES');
+
+/**
+ * InjectionToken for registering custom tool components with the toolbar.
+ *
+ * Custom tools are Angular components that extend the toolbar with app-specific
+ * functionality. They are dynamically rendered inside the toolbar at runtime.
+ *
+ * Use `provideToolbarCustomTools()` to register custom tool components.
+ *
+ * @example
+ * ```typescript
+ * // app.config.ts
+ * import { provideToolbar, provideToolbarCustomTools } from 'ngx-dev-toolbar';
+ * import { MyCustomToolComponent } from './my-custom-tool.component';
+ *
+ * export const appConfig: ApplicationConfig = {
+ *   providers: [
+ *     provideToolbar({ ... }),
+ *     provideToolbarCustomTools(MyCustomToolComponent),
+ *   ],
+ * };
+ * ```
+ */
+export const TOOLBAR_CUSTOM_TOOLS = new InjectionToken<Type<unknown>[]>(
+  'TOOLBAR_CUSTOM_TOOLS'
+);

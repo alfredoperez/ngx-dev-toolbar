@@ -12,6 +12,7 @@ import { ToolbarConfig } from './models/toolbar-config.interface';
 import {
   TOOLBAR_APP_FEATURES,
   TOOLBAR_CONFIG,
+  TOOLBAR_CUSTOM_TOOLS,
   TOOLBAR_FEATURE_FLAGS,
   TOOLBAR_PERMISSIONS,
 } from './tokens';
@@ -83,11 +84,14 @@ import { ToolbarInternalAppFeaturesService } from './tools/app-features-tool/app
  * @returns Angular EnvironmentProviders for all toolbar services
  */
 export function provideToolbar(config?: ToolbarConfig): EnvironmentProviders {
+  const { customTools, ...configWithoutTools } = config ?? {};
+
   return makeEnvironmentProviders([
     { provide: TOOLBAR_FEATURE_FLAGS, useClass: ToolbarFeatureFlagService },
     { provide: TOOLBAR_PERMISSIONS, useClass: ToolbarPermissionsService },
     { provide: TOOLBAR_APP_FEATURES, useClass: ToolbarAppFeaturesService },
-    { provide: TOOLBAR_CONFIG, useValue: config ?? {} },
+    { provide: TOOLBAR_CONFIG, useValue: configWithoutTools },
+    { provide: TOOLBAR_CUSTOM_TOOLS, useValue: customTools ?? [] },
     {
       provide: ENVIRONMENT_INITIALIZER,
       multi: true,

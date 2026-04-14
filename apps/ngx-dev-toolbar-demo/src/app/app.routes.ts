@@ -34,4 +34,11 @@ export const appRoutes: Route[] = [
         (m) => m.I18nDemoComponent
       ),
   },
+  {
+    path: 'custom-tool',
+    loadComponent: () =>
+      import('./components/custom-tool-demo/custom-tool-demo.component').then(
+        (m) => m.CustomToolDemoComponent
+      ),
+  },
 ];
