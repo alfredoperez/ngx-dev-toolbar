@@ -4,23 +4,23 @@ import { provideToolbar } from './provide-toolbar';
 import { TOOLBAR_CONFIG, TOOLBAR_CUSTOM_TOOLS } from './tokens';
 
 @Component({ standalone: true, selector: 'ndt-fake-tool', template: '' })
-class FakeToolA {}
+class FakeToolAComponent {}
 
 @Component({ standalone: true, selector: 'ndt-fake-tool-b', template: '' })
-class FakeToolB {}
+class FakeToolBComponent {}
 
 describe('provideToolbar', () => {
   it('should provide TOOLBAR_CUSTOM_TOOLS with registered components', () => {
     TestBed.configureTestingModule({
       providers: [
         provideToolbar({
-          customTools: [FakeToolA, FakeToolB],
+          customTools: [FakeToolAComponent, FakeToolBComponent],
         }),
       ],
     });
 
     const customTools = TestBed.inject(TOOLBAR_CUSTOM_TOOLS);
-    expect(customTools).toEqual([FakeToolA, FakeToolB]);
+    expect(customTools).toEqual([FakeToolAComponent, FakeToolBComponent]);
   });
 
   it('should provide empty array when no custom tools specified', () => {
@@ -46,14 +46,15 @@ describe('provideToolbar', () => {
       providers: [
         provideToolbar({
           showI18nTool: true,
-          customTools: [FakeToolA],
+          customTools: [FakeToolAComponent],
         }),
       ],
     });
 
     const config = TestBed.inject(TOOLBAR_CONFIG);
     expect(config.showI18nTool).toBe(true);
-    expect((config as any).customTools).toBeUndefined();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect((config as Record<string, any>)['customTools']).toBeUndefined();
   });
 
   it('should preserve all config flags when customTools is provided', () => {
@@ -66,7 +67,7 @@ describe('provideToolbar', () => {
           showAppFeaturesTool: true,
           showPermissionsTool: false,
           showPresetsTool: true,
-          customTools: [FakeToolA],
+          customTools: [FakeToolAComponent],
         }),
       ],
     });

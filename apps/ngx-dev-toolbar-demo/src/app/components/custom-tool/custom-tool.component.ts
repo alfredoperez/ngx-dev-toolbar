@@ -44,7 +44,7 @@ interface CreatedEntry {
 }
 
 @Component({
-  selector: 'ndt-custom-tool',
+  selector: 'app-custom-tool',
   standalone: true,
   imports: [
     ToolbarToolComponent,

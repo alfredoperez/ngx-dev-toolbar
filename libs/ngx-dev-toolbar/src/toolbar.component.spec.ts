@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, Type } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { ToolbarComponent } from './toolbar.component';
 import { ToolbarStateService } from './toolbar-state.service';
@@ -58,7 +58,7 @@ function createMockSettingsService() {
 describe('ToolbarComponent — custom tools', () => {
   let fixture: ComponentFixture<ToolbarComponent>;
 
-  function setup(customTools: any[] = []) {
+  function setup(customTools: Type<unknown>[] = []) {
     TestBed.configureTestingModule({
       imports: [ToolbarComponent],
       providers: [
