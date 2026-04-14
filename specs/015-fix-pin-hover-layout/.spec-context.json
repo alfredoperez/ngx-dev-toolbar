@@ -1,0 +1,60 @@
+{
+  "workflow": "sdd",
+  "currentStep": "implement",
+  "currentTask": null,
+  "progress": "code-review",
+  "next": "implement",
+  "updated": "2026-04-14",
+  "selectedAt": "2026-04-14T00:00:00Z",
+  "specName": "Fix Pin Hover Layout",
+  "branch": "main",
+  "createdAt": "2026-04-14T00:00:00Z",
+  "status": "active",
+  "approach": "Constrain .pin-button to 18x18 in gutter, center vertically, and suppress the nested icon-button ghost hover background so hover effects stay within the pin's own bounds.",
+  "last_action": "T003 complete — pin button styling refined and contained in the gutter",
+  "files_modified": [
+    "libs/ngx-dev-toolbar/src/components/list-item/list-item.component.scss"
+  ],
+  "task_summaries": {
+    "T001": {
+      "status": "DONE",
+      "did": "Constrained .pin-button to explicit 18x18 box with centered vertical positioning and nested button padding.",
+      "files": ["libs/ngx-dev-toolbar/src/components/list-item/list-item.component.scss"],
+      "concerns": []
+    },
+    "T002": {
+      "status": "DONE",
+      "did": "Suppressed ndt-icon-button's ghost hover background via ::ng-deep override; hover affordance is now opacity + color only, contained to the icon box. Added pointer-events wrapper isolation.",
+      "files": ["libs/ngx-dev-toolbar/src/components/list-item/list-item.component.scss"],
+      "concerns": []
+    },
+    "T003": {
+      "status": "DONE",
+      "did": "Kept .pin-button--pinned full-opacity primary-color styling; forced transparent background to match the new hover rules.",
+      "files": ["libs/ngx-dev-toolbar/src/components/list-item/list-item.component.scss"],
+      "concerns": []
+    }
+  },
+  "decisions": [
+    "Used pointer-events: none on outer wrapper + auto on inner button so the click target is just the icon box (not the whole gutter area).",
+    "Moved left offset from `-spacing-sm - 2px` to `-spacing-md` to ensure the 18px button sits fully in the gutter without overlapping title."
+  ],
+  "concerns": [],
+  "step_summaries": {
+    "specify": {
+      "complexity": "minimal",
+      "requirements": 4,
+      "scenarios": 3,
+      "key_finding": "pin-button is absolutely positioned in the gutter; its hover bleeds because the underlying ndt-icon-button ghost variant applies a background that extends beyond the icon."
+    }
+  },
+  "transitions": [
+    { "step": "specify", "substep": "parsing", "from": null, "by": "sdd", "at": "2026-04-14T00:00:00Z" },
+    { "step": "specify", "substep": "exploring", "from": { "step": "specify", "substep": "parsing" }, "by": "sdd", "at": "2026-04-14T00:00:01Z" },
+    { "step": "specify", "substep": "detecting", "from": { "step": "specify", "substep": "exploring" }, "by": "sdd", "at": "2026-04-14T00:00:02Z" },
+    { "step": "specify", "substep": "writing-spec", "from": { "step": "specify", "substep": "detecting" }, "by": "sdd", "at": "2026-04-14T00:00:03Z" },
+    { "step": "tasks", "substep": null, "from": { "step": "specify", "substep": "writing-spec" }, "by": "sdd", "at": "2026-04-14T00:00:04Z" },
+    { "step": "implement", "substep": "phase1", "from": { "step": "tasks", "substep": null }, "by": "sdd", "at": "2026-04-14T00:00:05Z" },
+    { "step": "implement", "substep": "code-review", "from": { "step": "implement", "substep": "phase1" }, "by": "sdd", "at": "2026-04-14T00:00:06Z" }
+  ]
+}

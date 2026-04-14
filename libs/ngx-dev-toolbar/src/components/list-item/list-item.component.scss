@@ -25,7 +25,6 @@
 .list-item .info {
   flex: 1 1 auto;
   min-width: 0;
-  padding-left: var(--ndt-spacing-xs);
 }
 
 .list-item .info h3 {
@@ -84,20 +83,39 @@
 }
 
 .pin-button {
-  position: absolute;
-  left: calc(-1 * var(--ndt-spacing-sm) - 2px);
-  top: var(--ndt-spacing-xs);
+  flex: 0 0 auto;
+  align-self: flex-start;
+  margin-top: 5px;
+  margin-right: calc(-1 * var(--ndt-spacing-sm) + 4px);
   opacity: 0;
   transition: opacity 0.2s ease;
-  z-index: 2;
+}
+
+.pin-button ::ng-deep .icon-button {
+  width: 14px;
+  height: 14px;
+  padding: 0;
+  box-sizing: border-box;
+  background: transparent;
+}
+
+.pin-button ::ng-deep .icon-button ::ng-deep svg {
+  width: 12px;
+  height: 12px;
+}
+
+.pin-button ::ng-deep .icon-button:hover {
+  background: transparent;
+  color: var(--ndt-text-primary);
+  opacity: 1;
 }
 
 .list-item:hover .pin-button {
-  opacity: 0.4;
+  opacity: 0.5;
 }
 
 .list-item:hover .pin-button:hover {
-  opacity: 0.7;
+  opacity: 1;
 }
 
 .pin-button--pinned {
@@ -107,6 +125,7 @@
 .pin-button--pinned ::ng-deep .icon-button {
   opacity: 1;
   color: var(--ndt-text-primary);
+  background: transparent;
 }
 
 .apply-button--loading ::ng-deep .icon-button {
