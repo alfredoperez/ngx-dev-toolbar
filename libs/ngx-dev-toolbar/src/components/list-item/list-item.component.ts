@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ToolbarIconComponent } from '../icons/icon.component';
 import { ToolbarIconButtonComponent } from '../icon-button/icon-button.component';
 import { IconName } from '../icons/icon.models';
 
@@ -24,7 +23,7 @@ import { IconName } from '../icons/icon.models';
 @Component({
   selector: 'ndt-list-item',
   standalone: true,
-  imports: [CommonModule, ToolbarIconComponent, ToolbarIconButtonComponent],
+  imports: [CommonModule, ToolbarIconButtonComponent],
   template: `
     <div class="list-item" [class.list-item--forced]="isForced()">
       <ndt-icon-button
