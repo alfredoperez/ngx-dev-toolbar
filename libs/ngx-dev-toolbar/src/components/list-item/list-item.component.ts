@@ -26,26 +26,27 @@ import { IconName } from '../icons/icon.models';
   imports: [CommonModule, ToolbarIconButtonComponent],
   template: `
     <div class="list-item" [class.list-item--forced]="isForced()">
-      <ndt-icon-button
-        [icon]="pinIcon()"
-        [ariaLabel]="pinAriaLabel()"
-        variant="ghost"
-        class="pin-button"
-        [class.pin-button--pinned]="isPinned()"
-        (click)="pinToggle.emit(); $event.stopPropagation()"
-      />
+      <span
+        class="dot-indicator"
+        [class.dot-indicator--on]="currentValue()"
+        [class.dot-indicator--off]="!currentValue()"
+        [class.dot-indicator--forced]="isForced()"
+        [title]="tooltipText()"
+        [attr.aria-label]="statusAriaLabel()"
+        role="img"
+      ></span>
       <div class="info">
-        <h3>{{ title() }}</h3>
-        @if (description()) {
-          <div class="description-wrapper">
+        <div class="title-row">
+          <h3>{{ title() }}</h3>
+          @if (isForced()) {
             <span
-              class="dot-indicator"
-              [class.dot-indicator--on]="displayValue()"
-              [class.dot-indicator--off]="!displayValue()"
-              [title]="tooltipText()"
-            ></span>
-            <p>{{ description() }}</p>
-          </div>
+              class="forced-badge"
+              [title]="forcedBadgeTooltip()"
+            >forced</span>
+          }
+        </div>
+        @if (description()) {
+          <p>{{ description() }}</p>
         }
       </div>
       <div class="actions">
@@ -65,15 +66,23 @@ import { IconName } from '../icons/icon.models';
                 <span class="apply-spinner"></span>
               }
               @case ('success') {
-                <span class="apply-icon">✓</span>
+                <span class="apply-icon" aria-hidden="true">✓</span>
               }
               @case ('error') {
-                <span class="apply-icon">✕</span>
+                <span class="apply-icon" aria-hidden="true">✕</span>
               }
             }
           </ndt-icon-button>
         }
         <ng-content />
+        <ndt-icon-button
+          [icon]="pinIcon()"
+          [ariaLabel]="pinAriaLabel()"
+          variant="ghost"
+          class="pin-button"
+          [class.pin-button--pinned]="isPinned()"
+          (click)="pinToggle.emit(); $event.stopPropagation()"
+        />
       </div>
     </div>
   `,
@@ -140,28 +149,29 @@ export class ToolbarListItemComponent {
   );
 
   /**
-   * Value to display in the dot indicator.
-   * For forced items: shows originalValue
-   * For non-forced items: shows currentValue
-   */
-  protected displayValue = computed(() => {
-    const originalValue = this.originalValue();
-    return this.isForced() && originalValue !== undefined
-      ? originalValue
-      : this.currentValue();
-  });
-
-  /**
-   * Tooltip text explaining the indicator state
+   * Tooltip text explaining the current state, with override context when forced
    */
   protected tooltipText = computed(() => {
-    const value = this.displayValue();
-    const state = value ? 'enabled' : 'disabled';
+    const current = this.currentValue() ? 'enabled' : 'disabled';
 
     if (this.isForced() && this.originalValue() !== undefined) {
-      return `Originally: ${state}`;
+      const original = this.originalValue() ? 'enabled' : 'disabled';
+      return `Currently ${current} (originally ${original})`;
     }
 
-    return `Current state: ${state}`;
+    return `Currently ${current}`;
+  });
+
+  protected statusAriaLabel = computed(() => {
+    const current = this.currentValue() ? 'enabled' : 'disabled';
+    return this.isForced() ? `${current}, forced` : current;
+  });
+
+  protected forcedBadgeTooltip = computed(() => {
+    const original = this.originalValue();
+    if (original === undefined) {
+      return 'Value overridden by toolbar';
+    }
+    return `Originally ${original ? 'enabled' : 'disabled'}`;
   });
 }

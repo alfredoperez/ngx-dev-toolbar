@@ -7,6 +7,7 @@
 .list-item {
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
   gap: var(--ndt-spacing-sm);
   background: var(--ndt-background-secondary);
   padding: var(--ndt-spacing-xs) var(--ndt-spacing-sm);
@@ -19,11 +20,43 @@
 }
 
 .list-item.list-item--forced {
-  background: rgba(59, 130, 246, 0.05);
+  background: rgba(var(--ndt-primary-rgb), 0.06);
+}
+
+.list-item > .dot-indicator {
+  flex: 0 0 auto;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  cursor: help;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  margin-top: 7px;
+  box-sizing: border-box;
+}
+
+// "On" state: filled circle in success color
+.list-item > .dot-indicator.dot-indicator--on {
+  background: var(--ndt-success);
+  box-shadow: 0 0 0 2px rgba(var(--ndt-success-rgb), 0.2);
+}
+
+// "Off" state: outlined ring in danger color (shape + color distinction for color-blind users)
+.list-item > .dot-indicator.dot-indicator--off {
+  background: transparent;
+  border: 1.5px solid var(--ndt-danger);
+  box-shadow: 0 0 0 2px rgba(var(--ndt-danger-rgb), 0.12);
 }
 
 .list-item .info {
   flex: 1 1 auto;
+  min-width: 0;
+}
+
+.list-item .info .title-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--ndt-spacing-xs);
   min-width: 0;
 }
 
@@ -32,41 +65,30 @@
   font-size: var(--ndt-font-size-sm);
   font-weight: 500;
   color: var(--ndt-text-primary);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.list-item .info .description-wrapper {
-  display: flex;
-  align-items: flex-start;
-  gap: 4px;
-  margin-top: 1px;
-}
-
-.list-item .info .dot-indicator {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
+.list-item .info .forced-badge {
+  flex: 0 0 auto;
+  font-size: 0.5625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ndt-primary);
+  background: rgba(var(--ndt-primary-rgb), 0.1);
+  padding: 1px 5px;
+  border-radius: var(--ndt-border-radius-small);
   cursor: help;
-  transition: all 0.2s ease;
-  margin-top: 5px;
-}
-
-.list-item .info .dot-indicator.dot-indicator--on {
-  background: var(--ndt-success);
-  box-shadow: 0 0 0 2px rgba(var(--ndt-success-rgb), 0.2);
-}
-
-.list-item .info .dot-indicator.dot-indicator--off {
-  background: var(--ndt-danger);
-  box-shadow: 0 0 0 2px rgba(var(--ndt-danger-rgb), 0.2);
+  line-height: 1.4;
 }
 
 .list-item .info p {
-  margin: 0;
+  margin: 1px 0 0 0;
   font-size: var(--ndt-font-size-xxs);
   color: var(--ndt-text-muted);
-  flex: 1;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -84,9 +106,6 @@
 
 .pin-button {
   flex: 0 0 auto;
-  align-self: flex-start;
-  margin-top: 5px;
-  margin-right: calc(-1 * var(--ndt-spacing-sm) + 4px);
   opacity: 0;
   transition: opacity 0.2s ease;
 }
@@ -110,11 +129,13 @@
   opacity: 1;
 }
 
-.list-item:hover .pin-button {
+.list-item:hover .pin-button,
+.list-item:focus-within .pin-button {
   opacity: 0.5;
 }
 
-.list-item:hover .pin-button:hover {
+.list-item:hover .pin-button:hover,
+.list-item:focus-within .pin-button:focus-visible {
   opacity: 1;
 }
 
@@ -124,7 +145,7 @@
 
 .pin-button--pinned ::ng-deep .icon-button {
   opacity: 1;
-  color: var(--ndt-text-primary);
+  color: var(--ndt-primary);
   background: transparent;
 }
 
