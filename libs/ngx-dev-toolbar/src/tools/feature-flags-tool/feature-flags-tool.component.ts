@@ -7,11 +7,11 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ToolbarInputComponent } from '../../components/input/input.component';
 import { ToolbarListComponent } from '../../components/list/list.component';
 import { ToolbarListItemComponent } from '../../components/list-item/list-item.component';
 import { ToolbarSelectComponent } from '../../components/select/select.component';
 import { ToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
+import { ToolbarToolHeaderComponent } from '../../components/tool-header/tool-header.component';
 import { ToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
 import { ToolViewState } from '../../models/tool-view-state.models';
 import { ToolbarStorageService } from '../../utils/storage.service';
@@ -23,7 +23,7 @@ import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
   imports: [
     FormsModule,
     ToolbarToolComponent,
-    ToolbarInputComponent,
+    ToolbarToolHeaderComponent,
     ToolbarSelectComponent,
     ToolbarListComponent,
     ToolbarListItemComponent,
@@ -36,21 +36,18 @@ import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
       [badge]="badgeCount()"
     >
       <div class="container">
-        <div class="tool-header">
-          <ndt-input
-            [value]="searchQuery()"
-            (valueChange)="onSearchChange($event)"
-            placeholder="Search..."
-          />
-          <div class="filter-wrapper">
-            <ndt-select
-              [value]="activeFilter()"
-              [options]="filterOptions"
-              [size]="'medium'"
-              (valueChange)="onFilterChange($event)"
-            />
-          </div>
-        </div>
+        <ndt-tool-header
+          [(searchQuery)]="searchQuery"
+          [activeFilter]="activeFilter()"
+          (activeFilterChange)="onFilterChange($event)"
+          searchPlaceholder="Search flags by name or description"
+          searchAriaLabel="Search feature flags"
+          filterAriaLabel="Filter feature flags by state"
+          [filterOptions]="filterOptions"
+          [totalCount]="flags().length"
+          [filteredCount]="filteredFlags().length"
+          itemLabel="flags"
+        />
 
         <ndt-list
           [hasItems]="!hasNoFlags()"
@@ -93,31 +90,6 @@ import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
         flex-direction: column;
         height: 100%;
         padding: 0;
-      }
-
-      .tool-header {
-        position: relative;
-        flex-shrink: 0;
-        display: flex;
-        gap: var(--ndt-spacing-sm);
-        margin-bottom: var(--ndt-spacing-sm);
-
-        ndt-input {
-          flex: 1;
-        }
-
-        .filter-wrapper {
-          flex: 0 0 auto;
-          display: flex;
-          align-items: center;
-          border-left: 1px solid var(--ndt-border-primary);
-          padding-left: var(--ndt-spacing-sm);
-
-          ndt-select {
-            flex: 0 0 auto;
-            min-width: 140px;
-          }
-        }
       }
     `,
   ],
