@@ -4,6 +4,9 @@
   @include devtools.devtools-theme;
 }
 
+// Exponential ease-out — feels deliberate, like an object settling. No bounce.
+$list-item-easing: cubic-bezier(0.22, 1, 0.36, 1);
+
 .list-item {
   display: flex;
   flex-direction: row;
@@ -12,7 +15,7 @@
   background: var(--ndt-background-secondary);
   padding: var(--ndt-spacing-xs) var(--ndt-spacing-sm);
   border-radius: var(--ndt-border-radius-medium);
-  transition: background-color 0.2s ease;
+  transition: background-color 280ms $list-item-easing;
   position: relative;
   z-index: 1;
   flex-shrink: 0;
@@ -30,9 +33,19 @@
   height: 8px;
   border-radius: 50%;
   cursor: help;
-  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  transition:
+    background-color 260ms $list-item-easing,
+    border-color 260ms $list-item-easing,
+    box-shadow 260ms $list-item-easing;
   margin-top: 7px;
   box-sizing: border-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .list-item,
+  .list-item > .dot-indicator {
+    transition: none;
+  }
 }
 
 // "On" state: filled circle in success color
@@ -83,6 +96,25 @@
   border-radius: var(--ndt-border-radius-small);
   cursor: help;
   line-height: 1.4;
+
+  // Entry animation when an override is applied. Opacity+transform only
+  // (composite-layer friendly); @starting-style degrades gracefully.
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity 260ms $list-item-easing,
+    transform 260ms $list-item-easing;
+
+  @starting-style {
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .list-item .info .forced-badge {
+    transition: none;
+  }
 }
 
 .list-item .info p {
