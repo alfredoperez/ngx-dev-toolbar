@@ -30,7 +30,7 @@ import { ToolbarStateService } from '../../toolbar-state.service';
       @if (isTooltipVisible()) {
       <span
         class="tooltip"
-        [class.tooltip--visible]="tooltipState"
+        [class.tooltip--visible]="tooltipState()"
       >
         {{ tooltip() }}
       </span>
@@ -70,7 +70,7 @@ export class ToolbarToolButtonComponent {
   );
 
   // Properties
-  protected tooltipState = false;
+  protected readonly tooltipState = signal(false);
   private readonly hideDelay = 3000;
 
   // Public methods
@@ -80,11 +80,11 @@ export class ToolbarToolButtonComponent {
   }
 
   onMouseEnter(): void {
-    this.tooltipState = true;
+    this.tooltipState.set(true);
   }
 
   onMouseLeave(): void {
-    this.tooltipState = false;
+    this.tooltipState.set(false);
   }
 
   onEscape(): void {

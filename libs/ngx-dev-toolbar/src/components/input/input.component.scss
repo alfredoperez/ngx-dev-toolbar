@@ -22,7 +22,7 @@
     color: var(--ndt-text-muted);
   }
 
-  &:focus {
+  &:focus-visible {
     outline: none;
     border-color: var(--ndt-primary);
     box-shadow: 0 0 0 2px rgba(var(--ndt-primary-rgb), 0.2);
