@@ -1,40 +1,41 @@
 /* Starlight theme customization for Angular Toolbar docs */
 
 /* ── Color palette ───────────────────────────────────── */
+/* Accent aligns to the library's magenta primary (#df30d4) for brand cohesion. */
 :root {
-  --sl-color-accent-low: #1e1b4b;
-  --sl-color-accent: #6366f1;
-  --sl-color-accent-high: #c7d2fe;
+  --sl-color-accent-low: #3b0d3a;
+  --sl-color-accent: #df30d4;
+  --sl-color-accent-high: #f7c2f3;
   --sl-color-white: #ffffff;
-  --sl-color-gray-1: #e5e7eb;
-  --sl-color-gray-2: #9ca3af;
-  --sl-color-gray-3: #6b7280;
+  --sl-color-gray-1: #f0f2f5;
+  --sl-color-gray-2: #c4c9d0;
+  --sl-color-gray-3: #8a909a;
   --sl-color-gray-4: #374151;
   --sl-color-gray-5: #1e2433;
   --sl-color-gray-6: #131825;
   --sl-color-black: #0d1117;
-  --sl-font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --sl-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  /* System-ui stack — matches the library, avoids reflex fonts, zero load cost */
+  --sl-font:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  --sl-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
 /* ── Header ──────────────────────────────────────────── */
+/* Flat surface, 1px divider. No glassmorphism. */
 header.header {
-  background-color: rgba(22, 27, 46, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom-color: rgba(99, 102, 241, 0.08);
+  background-color: var(--sl-color-gray-6);
+  border-bottom: 1px solid var(--sl-color-gray-5);
 }
 
 /* ── Sidebar ─────────────────────────────────────────── */
 
-/* Active page — replace bright block with subtle tint + left accent */
+/* Active page — subtle tint and weight change, no colored stripe */
 nav.sidebar-content a[aria-current='page'],
 nav.sidebar-content a[aria-current='page']:hover,
 nav.sidebar-content a[aria-current='page']:focus {
-  background-color: rgba(99, 102, 241, 0.12);
+  background-color: rgba(223, 48, 212, 0.12);
   color: var(--sl-color-accent-high);
-  border-inline-start: 2px solid var(--sl-color-accent);
-  padding-inline-start: calc(var(--sl-sidebar-item-padding-inline) - 2px);
   font-weight: 600;
 }
 
@@ -44,15 +45,15 @@ nav.sidebar-content a {
 }
 
 nav.sidebar-content a:hover {
-  background-color: rgba(99, 102, 241, 0.06);
+  background-color: rgba(223, 48, 212, 0.06);
 }
 
-/* Group headings — uppercase, smaller, letter-spaced */
+/* Group headings — uppercase, smaller, letter-spaced, WCAG AA contrast */
 .sidebar-content .top-level > li > details > summary span.large {
   text-transform: uppercase;
   font-size: var(--sl-text-xs);
   letter-spacing: 0.06em;
-  color: var(--sl-color-gray-2);
+  color: var(--sl-color-gray-1);
 }
 
 /* ── Card hover effects ──────────────────────────────── */
@@ -61,14 +62,15 @@ nav.sidebar-content a:hover {
 }
 
 .card:hover {
-  border-color: rgba(99, 102, 241, 0.3);
-  box-shadow: 0 2px 12px rgba(99, 102, 241, 0.08);
+  border-color: rgba(223, 48, 212, 0.3);
+  box-shadow: 0 2px 12px rgba(223, 48, 212, 0.08);
 }
 
 /* ── Demo section ────────────────────────────────────── */
 .demo-section {
   margin-block: 2rem;
   text-align: center;
+  padding-inline: clamp(0.5rem, 4vw, 1rem);
 }
 
 .demo-container {
@@ -88,7 +90,7 @@ nav.sidebar-content a:hover {
 
 .demo-caption {
   margin-block-start: 0.75rem;
-  color: var(--sl-color-gray-3);
+  color: var(--sl-color-gray-2);
   font-size: var(--sl-text-sm, 0.875rem);
 }
 
