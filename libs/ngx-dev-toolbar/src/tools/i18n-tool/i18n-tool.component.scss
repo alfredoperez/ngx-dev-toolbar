@@ -5,31 +5,66 @@
 .i18n-section {
   display: flex;
   flex-direction: column;
-  gap: var(--ndt-spacing-xs);
+  gap: var(--ndt-spacing-sm);
   padding-top: 0;
 }
 
-// Section headers — small uppercase labels, typographically distinct without decorative accents
-.i18n-section-header {
-  font-size: var(--ndt-font-size-xxs);
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--ndt-text-muted);
-  margin-top: var(--ndt-spacing-md);
-  padding: var(--ndt-spacing-xs) 0;
-
-  &:first-child {
-    margin-top: 0;
-  }
-}
-
-// 2-column grid for the 4 selects
+// 2-column grid for the selects
 .i18n-select-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--ndt-spacing-sm) var(--ndt-spacing-sm);
-  margin-top: var(--ndt-spacing-xs);
+  gap: var(--ndt-spacing-sm);
+}
+
+// Progressive disclosure for advanced/stress-testing sections
+.i18n-disclosure {
+  margin: 0;
+
+  summary {
+    font-size: var(--ndt-font-size-xs);
+    font-weight: 500;
+    color: var(--ndt-text-secondary);
+    padding: var(--ndt-spacing-xs) 0;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: var(--ndt-spacing-xs);
+    user-select: none;
+    border-radius: var(--ndt-border-radius-small);
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 0;
+      height: 0;
+      border-left: 4px solid var(--ndt-text-muted);
+      border-top: 3px solid transparent;
+      border-bottom: 3px solid transparent;
+      transition: transform 0.15s ease;
+    }
+
+    &:hover {
+      color: var(--ndt-text-primary);
+    }
+
+    &:focus-visible {
+      outline: 2px solid rgba(var(--ndt-primary-rgb), 0.5);
+      outline-offset: 2px;
+    }
+  }
+
+  &[open] summary::before {
+    transform: rotate(90deg);
+  }
+
+  > :not(summary) {
+    margin-top: var(--ndt-spacing-sm);
+  }
 }
 
 .i18n-select-group {
@@ -44,17 +79,11 @@
   }
 }
 
-// Standalone select below the grid (e.g. First Day of Week)
-.i18n-standalone-select {
-  margin-top: var(--ndt-spacing-sm);
-}
-
 // Formatting preview — single-column compact list
 .i18n-preview {
   background: var(--ndt-hover-bg);
   border-radius: var(--ndt-border-radius-medium);
   padding: var(--ndt-spacing-sm) var(--ndt-spacing-md);
-  margin-top: var(--ndt-spacing-xs);
   display: flex;
   flex-direction: column;
   gap: 1px;
@@ -89,7 +118,6 @@
   display: flex;
   flex-direction: column;
   gap: 0;
-  margin-top: var(--ndt-spacing-xs);
 }
 
 .i18n-toggle-row {
