@@ -68,6 +68,7 @@ import {
               [currentValue]="permission.isGranted"
               [originalValue]="permission.originalValue"
               [isPinned]="pinnedIds().has(permission.id)"
+              [copyableId]="permission.id"
               (pinToggle)="togglePin(permission.id)"
               [showApply]="hasApplyCallback()"
               [applyState]="getApplyState(permission.id)"

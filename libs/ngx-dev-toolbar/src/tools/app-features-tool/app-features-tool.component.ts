@@ -79,6 +79,7 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
               [currentValue]="feature.isEnabled"
               [originalValue]="feature.originalValue"
               [isPinned]="pinnedIds().has(feature.id)"
+              [copyableId]="feature.id"
               (pinToggle)="togglePin(feature.id)"
               [showApply]="hasApplyCallback()"
               [applyState]="getApplyState(feature.id)"

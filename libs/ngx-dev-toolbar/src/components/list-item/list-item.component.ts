@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToolbarIconButtonComponent } from '../icon-button/icon-button.component';
 import { IconName } from '../icons/icon.models';
@@ -50,6 +50,22 @@ import { IconName } from '../icons/icon.models';
         }
       </div>
       <div class="actions">
+        @if (copyableId()) {
+          <button
+            type="button"
+            class="copy-button"
+            [class.copy-button--copied]="copyState() === 'copied'"
+            [attr.aria-label]="copyAriaLabel()"
+            [title]="copyState() === 'copied' ? 'Copied!' : 'Copy ID'"
+            (click)="copyId($event)"
+          >
+            @if (copyState() === 'copied') {
+              <span aria-hidden="true">✓</span>
+            } @else {
+              <span aria-hidden="true" class="copy-icon">⧉</span>
+            }
+          </button>
+        }
         @if (showApply() && isForced()) {
           <ndt-icon-button
             [icon]="applyState() === 'idle' ? 'export' : undefined"
@@ -133,6 +149,12 @@ export class ToolbarListItemComponent {
   isPinned = input<boolean>(false);
 
   /**
+   * Optional identifier that can be copied to clipboard (e.g., flag ID).
+   * When provided, renders a copy button in the action row.
+   */
+  copyableId = input<string | undefined>(undefined);
+
+  /**
    * Emits when the user clicks the pin/unpin button
    */
   pinToggle = output<void>();
@@ -174,4 +196,25 @@ export class ToolbarListItemComponent {
     }
     return `Originally ${original ? 'enabled' : 'disabled'}`;
   });
+
+  protected readonly copyState = signal<'idle' | 'copied'>('idle');
+
+  protected copyAriaLabel = computed(() => {
+    const id = this.copyableId();
+    return id ? `Copy ID "${id}" to clipboard` : 'Copy ID';
+  });
+
+  protected async copyId(event: MouseEvent): Promise<void> {
+    event.stopPropagation();
+    const id = this.copyableId();
+    if (!id) return;
+
+    try {
+      await navigator.clipboard.writeText(id);
+      this.copyState.set('copied');
+      setTimeout(() => this.copyState.set('idle'), 1500);
+    } catch {
+      this.copyState.set('idle');
+    }
+  }
 }

@@ -63,6 +63,7 @@ import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
             [currentValue]="flag.isEnabled"
             [originalValue]="flag.originalValue"
             [isPinned]="pinnedIds().has(flag.id)"
+            [copyableId]="flag.id"
             (pinToggle)="togglePin(flag.id)"
             [showApply]="hasApplyCallback()"
             [applyState]="getApplyState(flag.id)"

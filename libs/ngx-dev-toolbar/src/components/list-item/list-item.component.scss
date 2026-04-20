@@ -149,6 +149,54 @@
   background: transparent;
 }
 
+.copy-button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--ndt-text-muted);
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--ndt-border-radius-small);
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+  opacity: 0;
+  transition: opacity 0.2s ease, color 0.15s ease, background-color 0.15s ease;
+
+  &:hover {
+    background: var(--ndt-hover-bg);
+    color: var(--ndt-text-primary);
+  }
+
+  &:focus-visible {
+    opacity: 1;
+    outline: 2px solid rgba(var(--ndt-primary-rgb), 0.5);
+    outline-offset: 1px;
+  }
+
+  .copy-icon {
+    font-family: ui-monospace, monospace;
+  }
+}
+
+.list-item:hover .copy-button,
+.list-item:focus-within .copy-button {
+  opacity: 0.6;
+}
+
+.list-item:hover .copy-button:hover {
+  opacity: 1;
+}
+
+.copy-button--copied {
+  opacity: 1 !important;
+  color: var(--ndt-success);
+}
+
 .apply-button--loading ::ng-deep .icon-button {
   opacity: 1;
   animation: apply-pulse 1s ease-in-out infinite;
