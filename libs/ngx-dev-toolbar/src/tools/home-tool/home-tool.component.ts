@@ -3,10 +3,12 @@ import {
   Component,
   inject,
   input,
+  viewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToolbarButtonComponent } from '../../components/button/button.component';
 import { ToolbarClickableCardComponent } from '../../components/clickable-card/clickable-card.component';
+import { ToolbarConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 import { ToolbarLinkButtonComponent } from '../../components/link-button/link-button.component';
 import { ToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
 import { ToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
@@ -26,6 +28,7 @@ import { SettingsService } from './settings.service';
     FormsModule,
     ToolbarButtonComponent,
     ToolbarClickableCardComponent,
+    ToolbarConfirmDialogComponent,
     ToolbarLinkButtonComponent,
   ],
   template: `
@@ -96,6 +99,16 @@ import { SettingsService } from './settings.service';
         </div>
       </section>
     </ndt-toolbar-tool>
+
+    <ndt-confirm-dialog
+      #resetDialog
+      title="Reset all settings?"
+      message="This will clear all forced values, presets, and stored preferences for this session. The page will reload. This cannot be undone."
+      confirmLabel="Reset settings"
+      cancelLabel="Cancel"
+      [danger]="true"
+      (confirmed)="confirmReset()"
+    />
   `,
   styleUrls: ['./home-tool.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -188,7 +201,13 @@ export class ToolbarHomeToolComponent {
   }
 
   onResetSettings(): void {
+    this.resetDialog()?.show();
+  }
+
+  protected confirmReset(): void {
     this.storageService.clearAllSettings();
     window.location.reload();
   }
+
+  private readonly resetDialog = viewChild<ToolbarConfirmDialogComponent>('resetDialog');
 }

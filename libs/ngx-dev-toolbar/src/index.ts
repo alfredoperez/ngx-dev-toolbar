@@ -30,6 +30,7 @@ export * from './components/step-view/step-view.directive';
 export * from './components/tabs/tab.component';
 export * from './components/tabs/tabs.component';
 export * from './components/tool-header/tool-header.component';
+export * from './components/confirm-dialog/confirm-dialog.component';
 
 export * from './toolbar.component';
 export * from './models/toolbar.interface';
