@@ -38,6 +38,14 @@ body {
   box-sizing: border-box;
 }
 
+/* Visible focus indicator for keyboard navigation — applies to all
+   interactive elements that don't already define their own. */
+:focus-visible {
+  outline: 2px solid var(--demo-primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
 /* Demo Card Utilities */
 .demo-card {
   background: var(--demo-card-bg);

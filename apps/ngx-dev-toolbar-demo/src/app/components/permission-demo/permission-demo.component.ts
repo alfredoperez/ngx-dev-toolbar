@@ -177,7 +177,7 @@ import { DemoPermissionsService } from '../../services/demo-permissions.service'
     }
 
     .demo-card.admin-card {
-      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      background: var(--demo-primary, #6366f1);
       border-color: transparent;
     }
 
@@ -269,7 +269,7 @@ import { DemoPermissionsService } from '../../services/demo-permissions.service'
       width: 28px;
       height: 28px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      background: var(--demo-primary, #6366f1);
       color: white;
       display: flex;
       align-items: center;

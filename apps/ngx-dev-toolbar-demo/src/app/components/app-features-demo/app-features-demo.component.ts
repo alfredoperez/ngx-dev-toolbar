@@ -376,7 +376,7 @@ import { AppFeaturesConfigService } from '../../services/app-features-config.ser
       width: 36px;
       height: 36px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      background: var(--demo-primary, #6366f1);
       color: white;
       display: flex;
       align-items: center;
@@ -416,7 +416,6 @@ import { AppFeaturesConfigService } from '../../services/app-features-config.ser
       border-radius: 4px;
       font-size: 0.8125rem;
       color: var(--demo-text, #1e293b);
-      border-left: 2px solid var(--demo-primary, #6366f1);
     }
 
     /* API Preview */
