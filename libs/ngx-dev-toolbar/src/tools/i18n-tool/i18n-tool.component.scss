@@ -9,7 +9,7 @@
   padding-top: 0;
 }
 
-// Section headers — small uppercase labels with a subtle left accent
+// Section headers — small uppercase labels, typographically distinct without decorative accents
 .i18n-section-header {
   font-size: var(--ndt-font-size-xxs);
   font-weight: 600;
@@ -17,8 +17,7 @@
   text-transform: uppercase;
   color: var(--ndt-text-muted);
   margin-top: var(--ndt-spacing-md);
-  padding: var(--ndt-spacing-xs) 0 var(--ndt-spacing-xs) var(--ndt-spacing-sm);
-  border-left: 2px solid rgba(var(--ndt-primary-rgb), 0.4);
+  padding: var(--ndt-spacing-xs) 0;
 
   &:first-child {
     margin-top: 0;
@@ -54,8 +53,7 @@
 .i18n-preview {
   background: var(--ndt-hover-bg);
   border-radius: var(--ndt-border-radius-medium);
-  border-left: 2px solid var(--ndt-border-primary);
-  padding: var(--ndt-spacing-xs) var(--ndt-spacing-sm);
+  padding: var(--ndt-spacing-sm) var(--ndt-spacing-md);
   margin-top: var(--ndt-spacing-xs);
   display: flex;
   flex-direction: column;
@@ -183,7 +181,6 @@
 .i18n-pseudo-preview {
   background: var(--ndt-hover-bg);
   border-radius: var(--ndt-border-radius-small);
-  border-left: 2px solid rgba(var(--ndt-primary-rgb), 0.3);
   padding: var(--ndt-spacing-sm) var(--ndt-spacing-md);
   margin: 0 var(--ndt-spacing-sm);
   font-size: var(--ndt-font-size-xs);

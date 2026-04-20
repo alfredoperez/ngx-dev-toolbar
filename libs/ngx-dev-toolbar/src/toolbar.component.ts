@@ -212,6 +212,10 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         --ndt-warning-border: rgba(202, 138, 4, 0.2);
         --ndt-error-background: rgb(254, 226, 226);
         --ndt-error-border: rgba(220, 38, 38, 0.2);
+        --ndt-success: rgb(34, 197, 94);
+        --ndt-success-rgb: 34, 197, 94;
+        --ndt-danger: rgb(239, 68, 68);
+        --ndt-danger-rgb: 239, 68, 68;
       }
       .ndt-overlay-panel {
         font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;

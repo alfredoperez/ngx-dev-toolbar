@@ -53,13 +53,13 @@
 }
 
 .list-item .info .dot-indicator.dot-indicator--on {
-  background: rgb(34, 197, 94);
-  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+  background: var(--ndt-success);
+  box-shadow: 0 0 0 2px rgba(var(--ndt-success-rgb), 0.2);
 }
 
 .list-item .info .dot-indicator.dot-indicator--off {
-  background: rgb(239, 68, 68);
-  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+  background: var(--ndt-danger);
+  box-shadow: 0 0 0 2px rgba(var(--ndt-danger-rgb), 0.2);
 }
 
 .list-item .info p {
@@ -135,16 +135,16 @@
 
 .apply-button--success ::ng-deep .icon-button {
   opacity: 1;
-  color: rgb(34, 197, 94);
-  border-color: rgba(34, 197, 94, 0.3);
-  background: rgba(34, 197, 94, 0.05);
+  color: var(--ndt-success);
+  border-color: rgba(var(--ndt-success-rgb), 0.3);
+  background: rgba(var(--ndt-success-rgb), 0.05);
 }
 
 .apply-button--error ::ng-deep .icon-button {
   opacity: 1;
-  color: rgb(239, 68, 68);
-  border-color: rgba(239, 68, 68, 0.3);
-  background: rgba(239, 68, 68, 0.05);
+  color: var(--ndt-danger);
+  border-color: rgba(var(--ndt-danger-rgb), 0.3);
+  background: rgba(var(--ndt-danger-rgb), 0.05);
 }
 
 .apply-icon {

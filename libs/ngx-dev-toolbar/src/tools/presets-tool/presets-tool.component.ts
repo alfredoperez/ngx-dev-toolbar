@@ -645,12 +645,12 @@ type ToastType = 'success' | 'error';
       }
 
       .toast--success {
-        background: rgb(34, 197, 94);
+        background: var(--ndt-success);
         color: white;
       }
 
       .toast--error {
-        background: rgb(239, 68, 68);
+        background: var(--ndt-danger);
         color: white;
       }
 
@@ -702,7 +702,7 @@ type ToastType = 'success' | 'error';
       }
 
       .delete-button {
-        background: #ef4444;
+        background: var(--ndt-danger);
         color: white;
         border: none;
         padding: var(--ndt-spacing-sm) var(--ndt-spacing-md);
@@ -947,14 +947,14 @@ type ToastType = 'success' | 'error';
       }
 
       .action-menu__item--danger {
-        color: #ef4444;
+        color: var(--ndt-danger);
 
         ndt-icon {
-          color: #ef4444;
+          color: var(--ndt-danger);
         }
 
         &:hover {
-          background: rgba(239, 68, 68, 0.1);
+          background: rgba(var(--ndt-danger-rgb), 0.1);
         }
       }
 
@@ -1009,13 +1009,13 @@ type ToastType = 'success' | 'error';
       }
 
       .detail-badge--on {
-        background: rgba(34, 197, 94, 0.1);
-        color: rgb(34, 197, 94);
+        background: rgba(var(--ndt-success-rgb), 0.1);
+        color: var(--ndt-success);
       }
 
       .detail-badge--off {
-        background: rgba(239, 68, 68, 0.1);
-        color: rgb(239, 68, 68);
+        background: rgba(var(--ndt-danger-rgb), 0.1);
+        color: var(--ndt-danger);
       }
 
       .preset-card__description {
@@ -1045,8 +1045,8 @@ type ToastType = 'success' | 'error';
       }
 
       .badge--lang {
-        background: rgba(34, 197, 94, 0.15);
-        color: rgb(34, 197, 94);
+        background: rgba(var(--ndt-success-rgb), 0.15);
+        color: var(--ndt-success);
       }
 
       .preset-form,
@@ -1086,7 +1086,7 @@ type ToastType = 'success' | 'error';
       }
 
       .field-error {
-        color: #ef4444;
+        color: var(--ndt-danger);
         font-size: 11px;
       }
 
@@ -1152,9 +1152,9 @@ type ToastType = 'success' | 'error';
         overflow-y: auto;
 
         li {
-          background: rgba(99, 102, 241, 0.05);
+          background: rgba(var(--ndt-primary-rgb), 0.05);
           border-radius: 3px;
-          border-left: 2px solid rgba(99, 102, 241, 0.3);
+          padding-left: 6px;
         }
 
         .item-checkbox {
@@ -1196,13 +1196,13 @@ type ToastType = 'success' | 'error';
           flex-shrink: 0;
 
           &.enabled {
-            background: rgba(34, 197, 94, 0.15);
-            color: rgb(34, 197, 94);
+            background: rgba(var(--ndt-success-rgb), 0.15);
+            color: var(--ndt-success);
           }
 
           &.disabled {
-            background: rgba(239, 68, 68, 0.15);
-            color: rgb(239, 68, 68);
+            background: rgba(var(--ndt-danger-rgb), 0.15);
+            color: var(--ndt-danger);
           }
         }
       }
@@ -1259,13 +1259,13 @@ type ToastType = 'success' | 'error';
       }
 
       .config-item--on {
-        background: rgba(34, 197, 94, 0.1);
-        color: rgb(34, 197, 94);
+        background: rgba(var(--ndt-success-rgb), 0.1);
+        color: var(--ndt-success);
       }
 
       .config-item--off {
-        background: rgba(239, 68, 68, 0.1);
-        color: rgb(239, 68, 68);
+        background: rgba(var(--ndt-danger-rgb), 0.1);
+        color: var(--ndt-danger);
       }
 
       .replace-config-button {
@@ -1439,13 +1439,13 @@ type ToastType = 'success' | 'error';
       }
 
       .diff-item__value--on {
-        background: rgba(34, 197, 94, 0.15);
-        color: rgb(34, 197, 94);
+        background: rgba(var(--ndt-success-rgb), 0.15);
+        color: var(--ndt-success);
       }
 
       .diff-item__value--off {
-        background: rgba(239, 68, 68, 0.15);
-        color: rgb(239, 68, 68);
+        background: rgba(var(--ndt-danger-rgb), 0.15);
+        color: var(--ndt-danger);
       }
     `,
   ],
