@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToolbarButtonComponent } from '../../components/button/button.component';
-import { ToolbarClickableCardComponent } from '../../components/clickable-card/clickable-card.component';
 import { ToolbarConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 import { ToolbarLinkButtonComponent } from '../../components/link-button/link-button.component';
 import { ToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
@@ -27,7 +26,6 @@ import { SettingsService } from './settings.service';
     ToolbarToolComponent,
     FormsModule,
     ToolbarButtonComponent,
-    ToolbarClickableCardComponent,
     ToolbarConfirmDialogComponent,
     ToolbarLinkButtonComponent,
   ],
@@ -58,35 +56,53 @@ import { SettingsService } from './settings.service';
 
           <div class="instruction">
             <div class="instruction__label">
-              <span class="instruction__label-text">Reset Settings</span>
+              <span class="instruction__label-text">Export Settings</span>
               <span class="instruction__label-description">
-                Reset all settings to their default values
+                Download the current setup to share or reproduce in tests
               </span>
             </div>
             <div class="instruction__control">
-              <div class="instruction__control-button">
-                <ndt-button
-                  variant="icon"
-                  icon="trash"
-                  ariaLabel="Reset all settings"
-                  (click)="onResetSettings()"
-                />
-              </div>
+              <ndt-button
+                variant="icon"
+                icon="export"
+                ariaLabel="Export settings"
+                (click)="onExportSettings()"
+              />
             </div>
           </div>
-          <div class="settings-actions">
-            <ndt-clickable-card
-              icon="export"
-              title="Export Settings"
-              subtitle="Export the current settings to share with other devs or use in your tests"
-              (click)="onExportSettings()"
-            />
-            <ndt-clickable-card
-              icon="import"
-              title="Import Settings"
-              subtitle="Import settings to reproduce a scenario"
-              (click)="onImportSettings()"
-            />
+
+          <div class="instruction">
+            <div class="instruction__label">
+              <span class="instruction__label-text">Import Settings</span>
+              <span class="instruction__label-description">
+                Load a settings file to reproduce a scenario
+              </span>
+            </div>
+            <div class="instruction__control">
+              <ndt-button
+                variant="icon"
+                icon="import"
+                ariaLabel="Import settings"
+                (click)="onImportSettings()"
+              />
+            </div>
+          </div>
+
+          <div class="instruction instruction--danger-zone">
+            <div class="instruction__label">
+              <span class="instruction__label-text">Reset Settings</span>
+              <span class="instruction__label-description">
+                Clear all forced values, presets, and stored preferences
+              </span>
+            </div>
+            <div class="instruction__control">
+              <ndt-button
+                variant="icon"
+                icon="trash"
+                ariaLabel="Reset all settings"
+                (click)="onResetSettings()"
+              />
+            </div>
           </div>
         </div>
 

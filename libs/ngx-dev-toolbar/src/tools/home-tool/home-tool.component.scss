@@ -43,20 +43,20 @@
   gap: var(--ndt-spacing-xs);
   justify-content: flex-end;
 }
+
+// Danger-zone row: separator above (full-width top border, not a side
+// stripe — banned pattern). Keeps label/control styling the same;
+// the trash icon + confirm dialog do the destructive signalling.
+.instruction--danger-zone {
+  margin-top: var(--ndt-spacing-sm);
+  padding-top: var(--ndt-spacing-md);
+  border-top: 1px solid var(--ndt-border-subtle);
+}
+
 .settings-container {
   display: flex;
   flex-direction: column;
   gap: var(--ndt-spacing-md);
-
-  .settings-actions {
-    display: flex;
-    gap: var(--ndt-spacing-md);
-
-    > * {
-      width: 50%;
-      min-width: 0;
-    }
-  }
 }
 
 .position-selector {
@@ -99,12 +99,21 @@
   }
 }
 
+// Resource strip — muted, compact, secondary to the settings above
 .footer-links {
   margin-top: auto;
-  padding-top: var(--ndt-spacing-lg);
+  padding-top: var(--ndt-spacing-md);
   border-top: 1px solid var(--ndt-border-subtle);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  gap: var(--ndt-spacing-lg);
+  align-items: center;
+  gap: var(--ndt-spacing-sm);
+  opacity: 0.75;
+  transition: opacity 0.15s ease;
+
+  &:hover,
+  &:focus-within {
+    opacity: 1;
+  }
 }
