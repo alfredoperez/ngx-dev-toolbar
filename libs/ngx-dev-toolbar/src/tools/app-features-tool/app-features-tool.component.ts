@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,13 +8,15 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ToolbarListComponent } from '../../components/list/list.component';
+import { ToolbarListGroupComponent } from '../../components/list-group/list-group.component';
 import { ToolbarListItemComponent } from '../../components/list-item/list-item.component';
+import { ToolbarListComponent } from '../../components/list/list.component';
 import { ToolbarSelectComponent } from '../../components/select/select.component';
-import { ToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
 import { ToolbarToolHeaderComponent } from '../../components/tool-header/tool-header.component';
+import { ToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
 import { ToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
 import { ToolViewState } from '../../models/tool-view-state.models';
+import { groupItems } from '../../utils/group-items.util';
 import { ToolbarStorageService } from '../../utils/storage.service';
 import { ToolbarInternalAppFeaturesService } from './app-features-internal.service';
 import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
@@ -36,11 +39,13 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
   selector: 'ndt-app-features-tool',
   standalone: true,
   imports: [
+    NgTemplateOutlet,
     FormsModule,
     ToolbarToolComponent,
     ToolbarToolHeaderComponent,
     ToolbarSelectComponent,
     ToolbarListComponent,
+    ToolbarListGroupComponent,
     ToolbarListItemComponent,
   ],
   template: `
@@ -68,30 +73,93 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
           [emptyHint]="'Call setAvailableOptions() to configure features'"
           noResultsMessage="No features match your filter"
         >
-          @for (feature of filteredFeatures(); track feature.id) {
-            <ndt-list-item
-              [title]="feature.name"
-              [description]="feature.description"
-              [isForced]="feature.isForced"
-              [currentValue]="feature.isEnabled"
-              [originalValue]="feature.originalValue"
-              [isPinned]="pinnedIds().has(feature.id)"
-              [copyableId]="feature.id"
-              (pinToggle)="togglePin(feature.id)"
-              [showApply]="hasApplyCallback()"
-              [applyState]="getApplyState(feature.id)"
-              (applyToSource)="onApplyToSource(feature.id, feature.isEnabled)"
-            >
-              <ndt-select
-                [value]="getFeatureValue(feature)"
-                [options]="featureValueOptions"
-                [ariaLabel]="'Set value for ' + feature.name"
-                (valueChange)="onFeatureChange(feature.id, $event ?? '')"
-                size="small"
+          @if (hasAnyGroups()) {
+            @if (groupedFeatures().pinned.length) {
+              <ndt-list-group
+                name="Pinned"
+                [count]="groupedFeatures().pinned.length"
+                [collapsed]="isCollapsed('Pinned')"
+                (collapsedChange)="setCollapsed('Pinned', $event)"
+              >
+                @for (feature of groupedFeatures().pinned; track feature.id) {
+                  <ng-container
+                    *ngTemplateOutlet="
+                      featureItem;
+                      context: { $implicit: feature }
+                    "
+                  />
+                }
+              </ndt-list-group>
+            }
+            @for (group of groupedFeatures().groups; track group.name) {
+              <ndt-list-group
+                [name]="group.name"
+                [count]="group.items.length"
+                [collapsed]="isCollapsed(group.name)"
+                (collapsedChange)="setCollapsed(group.name, $event)"
+              >
+                @for (feature of group.items; track feature.id) {
+                  <ng-container
+                    *ngTemplateOutlet="
+                      featureItem;
+                      context: { $implicit: feature }
+                    "
+                  />
+                }
+              </ndt-list-group>
+            }
+            @if (groupedFeatures().ungrouped.length) {
+              <ndt-list-group
+                name="Other"
+                [count]="groupedFeatures().ungrouped.length"
+                [collapsed]="isCollapsed('Other')"
+                (collapsedChange)="setCollapsed('Other', $event)"
+              >
+                @for (feature of groupedFeatures().ungrouped; track feature.id) {
+                  <ng-container
+                    *ngTemplateOutlet="
+                      featureItem;
+                      context: { $implicit: feature }
+                    "
+                  />
+                }
+              </ndt-list-group>
+            }
+          } @else {
+            @for (feature of flatFeatures(); track feature.id) {
+              <ng-container
+                *ngTemplateOutlet="
+                  featureItem;
+                  context: { $implicit: feature }
+                "
               />
-            </ndt-list-item>
+            }
           }
         </ndt-list>
+
+        <ng-template #featureItem let-feature>
+          <ndt-list-item
+            [title]="feature.name"
+            [description]="feature.description"
+            [isForced]="feature.isForced"
+            [currentValue]="feature.isEnabled"
+            [originalValue]="feature.originalValue"
+            [isPinned]="pinnedIds().has(feature.id)"
+            [copyableId]="feature.id"
+            (pinToggle)="togglePin(feature.id)"
+            [showApply]="hasApplyCallback()"
+            [applyState]="getApplyState(feature.id)"
+            (applyToSource)="onApplyToSource(feature.id, feature.isEnabled)"
+          >
+            <ndt-select
+              [value]="getFeatureValue(feature)"
+              [options]="featureValueOptions"
+              [ariaLabel]="'Set value for ' + feature.name"
+              (valueChange)="onFeatureChange(feature.id, $event ?? '')"
+              size="small"
+            />
+          </ndt-list-item>
+        </ng-template>
       </div>
     </ndt-toolbar-tool>
   `,
@@ -120,6 +188,7 @@ export class ToolbarAppFeaturesToolComponent {
   protected readonly activeFilter = signal<AppFeatureFilter>('all');
   protected readonly searchQuery = signal<string>('');
   protected readonly pinnedIds = signal<Set<string>>(new Set());
+  protected readonly collapsedGroups = signal<Set<string>>(new Set());
 
   constructor() {
     this.loadViewState();
@@ -131,6 +200,7 @@ export class ToolbarAppFeaturesToolComponent {
         filter: this.activeFilter(),
         sortOrder: 'asc',
         pinnedIds: [...this.pinnedIds()],
+        collapsedGroups: [...this.collapsedGroups()],
       };
       this.storageService.set(this.VIEW_STATE_KEY, state);
     });
@@ -148,6 +218,9 @@ export class ToolbarAppFeaturesToolComponent {
         if (saved.pinnedIds?.length) {
           this.pinnedIds.set(new Set(saved.pinnedIds));
         }
+        if (saved.collapsedGroups?.length) {
+          this.collapsedGroups.set(new Set(saved.collapsedGroups));
+        }
       }
     } catch {
       // Use defaults on error
@@ -164,8 +237,9 @@ export class ToolbarAppFeaturesToolComponent {
     return count.toString();
   });
   protected readonly hasNoFeatures = computed(() => this.features().length === 0);
-  protected readonly filteredFeatures = computed(() => {
-    const filtered = this.features().filter((feature) => {
+
+  private readonly filteredFeatures = computed(() => {
+    return this.features().filter((feature) => {
       const searchTerm = this.searchQuery().toLowerCase();
       const featureName = feature.name.toLowerCase();
       const featureDescription = feature.description?.toLowerCase() ?? '';
@@ -183,16 +257,21 @@ export class ToolbarAppFeaturesToolComponent {
 
       return matchesSearch && matchesFilter;
     });
-
-    const pinned = this.pinnedIds();
-    // Sort pinned first, then alphabetically within each group
-    return filtered.sort((a, b) => {
-      const aPinned = pinned.has(a.id);
-      const bPinned = pinned.has(b.id);
-      if (aPinned !== bPinned) return aPinned ? -1 : 1;
-      return a.name.localeCompare(b.name);
-    });
   });
+
+  protected readonly groupedFeatures = computed(() =>
+    groupItems(this.filteredFeatures(), this.pinnedIds())
+  );
+
+  protected readonly flatFeatures = computed(() => {
+    const { pinned, ungrouped } = this.groupedFeatures();
+    return [...pinned, ...ungrouped];
+  });
+
+  protected readonly hasAnyGroups = computed(
+    () => this.groupedFeatures().groups.length > 0
+  );
+
   protected readonly hasNoFilteredFeatures = computed(
     () => this.filteredFeatures().length === 0
   );
@@ -278,6 +357,22 @@ export class ToolbarAppFeaturesToolComponent {
         next.delete(featureId);
       } else {
         next.add(featureId);
+      }
+      return next;
+    });
+  }
+
+  protected isCollapsed(name: string): boolean {
+    return this.collapsedGroups().has(name);
+  }
+
+  protected setCollapsed(name: string, collapsed: boolean): void {
+    this.collapsedGroups.update((set) => {
+      const next = new Set(set);
+      if (collapsed) {
+        next.add(name);
+      } else {
+        next.delete(name);
       }
       return next;
     });

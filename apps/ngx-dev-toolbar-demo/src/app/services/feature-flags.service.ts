@@ -27,6 +27,14 @@ export class FeatureFlagsService {
     'new-notifications': 'Enable the new notifications system',
   };
 
+  // Group assignments — exercises the new tool grouping UX
+  private readonly groups: Record<string, string> = {
+    'dark-mode': 'Appearance',
+    'new-dashboard': 'Dashboard',
+    'beta-features': 'Experimental',
+    'new-notifications': 'Notifications',
+  };
+
   // Get flags from LaunchDarkly
   private ldFlags = toSignal(this.launchDarkly.getFlags(), { initialValue: [] });
 
@@ -45,6 +53,7 @@ export class FeatureFlagsService {
             description: this.descriptions[f.key] ?? '',
             isEnabled: f.value,
             isForced: false,
+            group: this.groups[f.key],
           }))
         );
       }

@@ -98,6 +98,46 @@ export class AppFeaturesService {
 
 The toolbar automatically manages loading, success, and error states for each item.
 
+## Grouping
+
+Organize related features into collapsible sections by adding an optional `group` field to each feature.
+Groups appear as headers in the toolbar UI and can be expanded or collapsed; collapsed state persists across reloads.
+
+```typescript title="app-features.service.ts"
+this.appFeaturesService.setAvailableOptions([
+  {
+    id: 'analytics',
+    name: 'Analytics Dashboard',
+    isEnabled: true,
+    isForced: false,
+    group: 'Reporting', // [!code highlight]
+  },
+  {
+    id: 'bulk-export',
+    name: 'Bulk Export',
+    isEnabled: false,
+    isForced: false,
+    group: 'Reporting', // [!code highlight]
+  },
+  {
+    id: 'white-label',
+    name: 'White Label Branding',
+    isEnabled: false,
+    isForced: false,
+    group: 'Branding', // [!code highlight]
+  },
+]);
+```
+
+**Behavior:**
+
+- Pinned features always appear at the top in a dedicated **Pinned** section, regardless of their group
+- Named groups render alphabetically with each group's features sorted alphabetically inside
+- Features without a `group` field appear under an **Other** section at the bottom
+- Each group header shows the item count and is collapsible
+
+**Backward compatible:** if no feature has a `group` field, the toolbar renders the flat list exactly as before — no headers, no behavioral change.
+
 ## Related Tools
 
 - [Feature Flags Tool](/ngx-dev-toolbar/feature-flags/) — Test development feature toggles
