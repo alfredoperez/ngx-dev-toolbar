@@ -44,13 +44,40 @@
   justify-content: flex-end;
 }
 
+// Ghost-style icon buttons in instruction rows — the row text carries
+// the meaning; the button is an affordance, not chrome. No border at
+// rest, subtle hover.
+.instruction__control ::ng-deep .button {
+  border-color: transparent;
+  background: transparent;
+  width: 32px;
+  height: 32px;
+  min-height: 32px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: var(--ndt-hover-bg);
+    border-color: transparent;
+  }
+}
+
 // Danger-zone row: separator above (full-width top border, not a side
-// stripe — banned pattern). Keeps label/control styling the same;
-// the trash icon + confirm dialog do the destructive signalling.
+// stripe — banned pattern). Keeps label/control styling the same; the
+// trash icon + confirm dialog do most of the destructive signalling.
+// Quiet danger-red tint on hover only, so muscle memory gets the cue
+// without adding chrome at rest.
 .instruction--danger-zone {
   margin-top: var(--ndt-spacing-sm);
   padding-top: var(--ndt-spacing-md);
   border-top: 1px solid var(--ndt-border-subtle);
+
+  .instruction__control ::ng-deep .button:hover {
+    background: rgba(var(--ndt-danger-rgb), 0.1);
+    color: var(--ndt-danger);
+  }
 }
 
 .settings-container {
@@ -99,7 +126,9 @@
   }
 }
 
-// Resource strip — muted, compact, secondary to the settings above
+// Resource strip — muted, compact, secondary to the settings above.
+// Shrinks the link-button chunks so they read as a resource strip
+// rather than five standalone buttons competing with the settings.
 .footer-links {
   margin-top: auto;
   padding-top: var(--ndt-spacing-md);
@@ -109,11 +138,33 @@
   justify-content: space-between;
   align-items: center;
   gap: var(--ndt-spacing-sm);
-  opacity: 0.75;
+  opacity: 0.8;
   transition: opacity 0.15s ease;
 
   &:hover,
   &:focus-within {
     opacity: 1;
+  }
+
+  ::ng-deep .link-button__icon {
+    width: 28px;
+    height: 28px;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  ::ng-deep .link-button__text {
+    font-size: 0.6875rem;
+  }
+
+  // Remove the glow-on-hover on the icon tile — it reads as a
+  // "dark glow" anti-pattern and competes with the quieter strip
+  ::ng-deep .link-button:hover .link-button__icon {
+    outline: none;
+    box-shadow: none;
+    background: var(--ndt-hover-bg);
   }
 }
