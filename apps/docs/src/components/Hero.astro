@@ -1,0 +1,237 @@
+---
+// Custom Hero — asymmetric split layout (text-left / asset-right) with animated demo.
+// Overrides Starlight's default centered splash hero for DESIGN_VARIANCE=8.
+// Keeps Starlight's frontmatter API (`data.hero.title/tagline/image/actions`),
+// plus an optional `eyebrow` frontmatter field for the mono-styled overline.
+import { LinkButton } from '@astrojs/starlight/components';
+
+// Starlight's internal constant; inlined because @astrojs/starlight/constants isn't a public export.
+const PAGE_TITLE_ID = '_top';
+
+type HeroFrontmatter = {
+  title?: string;
+  tagline?: string;
+  eyebrow?: string;
+  image?: Record<string, unknown>;
+  actions?: Array<{
+    attrs?: Record<string, unknown>;
+    icon?: { name?: string; html?: string };
+    link: string;
+    text: string;
+    variant?: 'primary' | 'secondary' | 'minimal';
+  }>;
+};
+
+const { data } = Astro.locals.starlightRoute.entry;
+const hero = (data.hero || {}) as HeroFrontmatter;
+const {
+  title = data.title,
+  tagline,
+  // NOTE: Starlight's HeroSchema strips unknown fields, so `eyebrow` in MDX
+  // frontmatter gets dropped. This default is the effective value; update
+  // here when the version changes.
+  eyebrow = 'ANGULAR TOOLBAR · v4',
+  actions = [],
+} = hero;
+
+// Animated demo asset — served from public/assets/demos/
+const demoSrc = '/ngx-dev-toolbar/assets/demos/toolbar-tool-demo.gif';
+const demoAlt =
+  'Animated demo of the ngx-dev-toolbar showing feature flags, permissions, and presets';
+---
+
+<section class="hero-split">
+  <div class="hero-copy">
+    <span class="eyebrow" aria-hidden="true">{eyebrow}</span>
+    <h1 id={PAGE_TITLE_ID} data-page-title set:html={title} />
+    {tagline && <p class="tagline" set:html={tagline} />}
+
+    {
+      actions.length > 0 && (
+        <div class="actions">
+          {actions.map(
+            ({
+              attrs: { class: className, ...attrs } = {},
+              icon,
+              link: href,
+              text,
+              variant,
+            }) => (
+              <LinkButton
+                href={href}
+                variant={variant}
+                icon={icon?.name}
+                class:list={[className]}
+                {...attrs}
+              >
+                {text}
+                {icon?.html && <Fragment set:html={icon.html} />}
+              </LinkButton>
+            )
+          )}
+        </div>
+      )
+    }
+
+    <div class="install-line" aria-label="Install command">
+      <code>npm install ngx-dev-toolbar</code>
+    </div>
+  </div>
+
+  <figure class="hero-asset">
+    <div class="asset-frame">
+      <img src={demoSrc} alt={demoAlt} loading="eager" decoding="async" />
+    </div>
+  </figure>
+</section>
+
+<style>
+  .hero-split {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+    padding-block: clamp(2rem, 6vw, 5rem);
+  }
+
+  @media (min-width: 60rem) {
+    .hero-split {
+      grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+      gap: 4rem;
+    }
+  }
+
+  .hero-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .eyebrow {
+    font-family: var(--sl-font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sl-color-accent);
+    line-height: 1;
+    padding: 0.35rem 0.7rem;
+    border: 1px solid color-mix(in srgb, var(--sl-color-accent) 30%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--sl-color-accent) 10%, transparent);
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(2.5rem, 5vw, 4.25rem);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.028em;
+    margin: 0;
+    color: var(--sl-color-white);
+  }
+
+  .hero-copy .tagline {
+    font-size: clamp(1.125rem, 1.4vw, 1.375rem);
+    line-height: 1.55;
+    color: var(--sl-color-gray-2);
+    max-width: 52ch;
+    margin: 0;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.875rem 1rem;
+  }
+
+  .install-line {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.25rem;
+    font-family: var(--sl-font-mono);
+    font-size: 0.875rem;
+    line-height: 1;
+    padding: 0.7rem 1rem;
+    border: 1px solid color-mix(in srgb, var(--sl-color-accent) 22%, transparent);
+    border-radius: 0.625rem;
+    /* Accent-tinted surface — renders as soft violet in both light and dark modes
+       because color-mix against transparent keeps the tint proportional to the bg. */
+    background: color-mix(in srgb, var(--sl-color-accent) 7%, transparent);
+    color: var(--sl-color-white);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+
+  .install-line::before {
+    content: '$';
+    color: var(--sl-color-accent);
+    font-weight: 700;
+    opacity: 0.85;
+    flex-shrink: 0;
+  }
+
+  .install-line code {
+    color: inherit;
+    background: transparent;
+    padding: 0;
+    font-family: inherit;
+    font-size: inherit;
+  }
+
+  /* Asset column — animated demo with tinted multi-layer shadow */
+  .hero-asset {
+    margin: 0;
+    position: relative;
+  }
+
+  .asset-frame {
+    position: relative;
+    border-radius: 1rem;
+    overflow: hidden;
+    background: var(--sl-color-gray-6);
+    box-shadow:
+      0 1px 2px rgba(99, 91, 255, 0.08),
+      0 18px 48px rgba(0, 0, 0, 0.5),
+      0 0 0 1px rgba(99, 91, 255, 0.18),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+    transform: translateZ(0);
+  }
+
+  .asset-frame::after {
+    /* Subtle top-left light wash for depth */
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      135deg,
+      rgba(99, 91, 255, 0.08) 0%,
+      transparent 40%
+    );
+  }
+
+  .asset-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Subtle scale on hover — MOTION_INTENSITY=6 sensible dose */
+  @media (prefers-reduced-motion: no-preference) {
+    .asset-frame {
+      transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .hero-asset:hover .asset-frame {
+      transform: translateY(-2px);
+    }
+  }
+
+  /* Light-mode asset frame — lighter shadow stack */
+  :global([data-theme='light']) .asset-frame {
+    box-shadow:
+      0 1px 2px rgba(99, 91, 255, 0.05),
+      0 14px 36px rgba(17, 24, 39, 0.12),
+      0 0 0 1px rgba(99, 91, 255, 0.14);
+  }
+</style>

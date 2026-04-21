@@ -1,65 +1,52 @@
 ---
 title: Angular Toolbar
-description: Dev tools for Angular — toggle feature flags, manage permissions, and save presets without touching code.
+description: Override Angular feature flags, permissions, locales, and app features at runtime — without redeploying or touching the backend.
 template: splash
 hero:
-  title: Angular Toolbar
-  tagline: Dev tools for Angular — toggle feature flags, manage permissions, and save presets without leaving your current page or touching production code.
-  image:
-    file: ../../assets/hero-demo.jpg
+  title: Stop redeploying to flip a feature flag.
+  tagline: An in-app toolbar that overrides Angular feature flags, permissions, locales, and app features at runtime. Save presets. Never touch the backend to test a scenario.
+  eyebrow: ANGULAR TOOLBAR · v4
   actions:
     - text: Get Started
       link: /ngx-dev-toolbar/getting-started/
       icon: right-arrow
       variant: primary
-    - text: Try Demo
+    - text: Try the Demo
       link: /ngx-dev-toolbar/demo/
       icon: rocket
       variant: secondary
-    - text: View on GitHub
-      link: https://github.com/alfredoperez/ngx-dev-toolbar
-      icon: external
-      variant: minimal
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import BentoGrid from '../../components/BentoGrid.astro';
+import BentoCard from '../../components/BentoCard.astro';
 
-## Install
+## Built-in tools
 
-```bash
-npm install ngx-dev-toolbar
-```
+<BentoGrid>
+  <BentoCard title="Feature Flags" icon="setting" size="featured" href="/ngx-dev-toolbar/feature-flags/" accent>
+    Toggle features on or off in real time without backend changes. Group related flags into collapsible sections, pin the ones you use most, and persist overrides across reloads.
+  </BentoCard>
+  <BentoCard title="Permissions" icon="approve-check-circle" size="medium" href="/ngx-dev-toolbar/permissions/">
+    Force-grant or deny permissions to verify authorization logic without switching accounts.
+  </BentoCard>
+  <BentoCard title="App Features" icon="puzzle" size="medium" href="/ngx-dev-toolbar/app-features/">
+    Simulate different subscription tiers and product configurations with a single toggle.
+  </BentoCard>
+  <BentoCard title="i18n" icon="translate" size="medium" href="/ngx-dev-toolbar/i18n/">
+    Switch locale, timezone, currency, and RTL direction from one control surface.
+  </BentoCard>
+  <BentoCard title="Presets" icon="star" size="medium" href="/ngx-dev-toolbar/presets/">
+    Save complete toolbar configurations for QA, demo, and debug scenarios.
+  </BentoCard>
+  <BentoCard title="Custom Tools" icon="pen" size="medium" href="/ngx-dev-toolbar/guides/custom-tool/">
+    Extend the toolbar with your own tools using the built-in component primitives.
+  </BentoCard>
+</BentoGrid>
 
-## See It in Action
+## Why developers pick it
 
-<div className="demo-section">
-  <div className="demo-container">
-    <img src="/ngx-dev-toolbar/assets/demos/toolbar-tool-demo.gif" alt="Angular Toolbar demo showing feature flags, permissions, and preset management" loading="lazy" />
-  </div>
-  <p className="demo-caption">Toggle feature flags, manage permissions, and save presets — all from the toolbar.</p>
-</div>
-
-## Built-in Tools
-
-<CardGrid>
-  <Card title="Feature Flags" icon="setting">
-    Toggle features on or off in real-time without backend changes. Test different user experiences and validate A/B scenarios during development.
-  </Card>
-  <Card title="Permissions" icon="approve-check-circle">
-    Test role-based access control by forcing permissions on or off. Verify authorization logic without switching user accounts.
-  </Card>
-  <Card title="Presets" icon="star">
-    Save complete toolbar configurations as presets. Switch between QA, demo, and debug setups with one click.
-  </Card>
-  <Card title="Custom Tools" icon="puzzle">
-    Build your own tools using the toolbar's extensible architecture. See the [custom tool guide](/ngx-dev-toolbar/guides/custom-tool/).
-  </Card>
-</CardGrid>
-
-## Key Features
-
-- **Zero Production Impact** — toolbar code is tree-shaken out of production builds
-- **Secure Implementation** — only loads in development mode via `isDevMode()`
-- **Persistent Settings** — all overrides are saved to localStorage across sessions
-- **Hidden by Default** — toggle visibility with `Ctrl+Shift+D`
-- **Custom Tools Support** — extend the toolbar with your own tools
+- **Zero production impact** — toolbar code is tree-shaken out of production builds
+- **Secure by default** — only loads when `isDevMode()` is true
+- **Persistent state** — overrides survive reloads via localStorage
+- **Hidden until summoned** — `Ctrl+Shift+D` to toggle
+- **Framework-aware** — designed around Angular 19's signals and standalone components

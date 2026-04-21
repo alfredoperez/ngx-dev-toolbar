@@ -9,8 +9,12 @@ export default defineConfig({
   outDir: '../../dist/apps/docs',
   integrations: [
     starlight({
-      title: 'ngx-dev-toolbar',
+      title: 'Angular Toolbar',
       pagefind: false,
+      components: {
+        Hero: './src/components/Hero.astro',
+        ThemeSelect: './src/components/ThemeSelect.astro',
+      },
       plugins: [starlightLinksValidator({ exclude: ['/ngx-dev-toolbar/demo/'] })],
       social: [
         {
