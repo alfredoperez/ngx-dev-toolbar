@@ -98,46 +98,6 @@ export class PermissionsService {
 
 The toolbar automatically manages loading, success, and error states for each item.
 
-## Grouping
-
-Organize related permissions into collapsible sections by adding an optional `group` field to each permission.
-Groups appear as headers in the toolbar UI and can be expanded or collapsed; collapsed state persists across reloads.
-
-```typescript title="permissions.service.ts"
-this.permissionsService.setAvailableOptions([
-  {
-    id: 'can-add-users',
-    name: 'Add Users',
-    isGranted: false,
-    isForced: false,
-    group: 'Admin', // [!code highlight]
-  },
-  {
-    id: 'can-add-permissions',
-    name: 'Add Permissions',
-    isGranted: false,
-    isForced: false,
-    group: 'Admin', // [!code highlight]
-  },
-  {
-    id: 'can-view-dashboard',
-    name: 'View Dashboard',
-    isGranted: true,
-    isForced: false,
-    group: 'Dashboard', // [!code highlight]
-  },
-]);
-```
-
-**Behavior:**
-
-- Pinned permissions always appear at the top in a dedicated **Pinned** section, regardless of their group
-- Named groups render alphabetically with each group's permissions sorted alphabetically inside
-- Permissions without a `group` field appear under an **Other** section at the bottom
-- Each group header shows the item count and is collapsible
-
-**Backward compatible:** if no permission has a `group` field, the toolbar renders the flat list exactly as before — no headers, no behavioral change.
-
 ## Related Tools
 
 - [Feature Flags Tool](/ngx-dev-toolbar/feature-flags/) — Test feature toggles

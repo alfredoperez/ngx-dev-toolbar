@@ -1,143 +1,10 @@
 {
   "workflow": "sdd",
-  "currentStep": "implement",
+  "currentStep": "plan",
   "currentTask": null,
-  "progress": "code-review",
-  "next": "implement",
-  "updated": "2026-04-21",
-  "last_action": "Added Grouping documentation section to feature-flags.mdx, app-features.mdx, permissions.mdx per user CP1 feedback",
-  "files_modified": [
-    "libs/ngx-dev-toolbar/src/tools/feature-flags-tool/feature-flags.models.ts",
-    "libs/ngx-dev-toolbar/src/tools/app-features-tool/app-features.models.ts",
-    "libs/ngx-dev-toolbar/src/tools/permissions-tool/permissions.models.ts",
-    "libs/ngx-dev-toolbar/src/models/tool-view-state.models.ts",
-    "libs/ngx-dev-toolbar/src/utils/group-items.util.ts",
-    "libs/ngx-dev-toolbar/src/utils/group-items.util.spec.ts",
-    "libs/ngx-dev-toolbar/src/components/list-group/list-group.component.ts",
-    "libs/ngx-dev-toolbar/src/components/list-group/list-group.component.scss",
-    "libs/ngx-dev-toolbar/src/components/list-group/list-group.component.spec.ts",
-    "libs/ngx-dev-toolbar/src/index.ts",
-    "libs/ngx-dev-toolbar/src/tools/feature-flags-tool/feature-flags-tool.component.ts",
-    "libs/ngx-dev-toolbar/src/tools/app-features-tool/app-features-tool.component.ts",
-    "libs/ngx-dev-toolbar/src/tools/permissions-tool/permissions-tool.component.ts",
-    "libs/ngx-dev-toolbar/src/tools/feature-flags-tool/feature-flags-tool.component.spec.ts",
-    "libs/ngx-dev-toolbar/src/tools/permissions-tool/permissions-tool.component.spec.ts",
-    "apps/ngx-dev-toolbar-demo/src/app/services/feature-flags.service.ts",
-    "apps/ngx-dev-toolbar-demo/src/app/services/demo-permissions.service.ts",
-    "apps/ngx-dev-toolbar-demo/src/app/services/app-features-config.service.ts",
-    "apps/docs/src/content/docs/feature-flags.mdx",
-    "apps/docs/src/content/docs/app-features.mdx",
-    "apps/docs/src/content/docs/permissions.mdx"
-  ],
-  "task_summaries": {
-    "T001": {
-      "status": "DONE",
-      "did": "Added optional group?: string field with JSDoc to ToolbarFlag, ToolbarAppFeature, ToolbarPermission",
-      "files": [
-        "libs/ngx-dev-toolbar/src/tools/feature-flags-tool/feature-flags.models.ts",
-        "libs/ngx-dev-toolbar/src/tools/app-features-tool/app-features.models.ts",
-        "libs/ngx-dev-toolbar/src/tools/permissions-tool/permissions.models.ts"
-      ],
-      "concerns": []
-    },
-    "T002": {
-      "status": "DONE",
-      "did": "Added collapsedGroups?: string[] to ToolViewState following the existing pinnedIds optional-array pattern",
-      "files": ["libs/ngx-dev-toolbar/src/models/tool-view-state.models.ts"],
-      "concerns": []
-    },
-    "T003": {
-      "status": "DONE",
-      "did": "Implemented groupItems<T> generic utility partitioning items into pinned/groups/ungrouped using a single-pass Map for O(n) bucketing",
-      "files": ["libs/ngx-dev-toolbar/src/utils/group-items.util.ts"],
-      "concerns": []
-    },
-    "T004": {
-      "status": "DONE",
-      "did": "Added 11 Jest unit tests covering backward-compat, group sort, item sort, mixed grouped/ungrouped, pinned extraction, and pinned alpha sort",
-      "files": ["libs/ngx-dev-toolbar/src/utils/group-items.util.spec.ts"],
-      "concerns": []
-    },
-    "T005": {
-      "status": "DONE_WITH_CONCERNS",
-      "did": "Created ToolbarListGroupComponent with collapsible header, ng-content projection, aria-expanded, and CSS-rendered triangle chevron",
-      "files": [
-        "libs/ngx-dev-toolbar/src/components/list-group/list-group.component.ts",
-        "libs/ngx-dev-toolbar/src/components/list-group/list-group.component.scss"
-      ],
-      "concerns": [
-        "Used a CSS triangle chevron instead of an icon component because IconName enum has no chevron-* entries — adding to icon set would require new SVG asset"
-      ]
-    },
-    "T006": {
-      "status": "DONE",
-      "did": "Added TestBed-based component tests for header text, content projection, collapse hides content, click toggle emits negated value, and aria-expanded reflection",
-      "files": ["libs/ngx-dev-toolbar/src/components/list-group/list-group.component.spec.ts"],
-      "concerns": []
-    },
-    "T007": {
-      "status": "DONE",
-      "did": "Added export * from './components/list-group/list-group.component' to libs/ngx-dev-toolbar/src/index.ts next to existing list-item export",
-      "files": ["libs/ngx-dev-toolbar/src/index.ts"],
-      "concerns": []
-    },
-    "T008": {
-      "status": "DONE",
-      "did": "Refactored feature-flags-tool: added collapsedGroups signal, split filteredFlags into pure filter + groupedFlags + flatFlags computeds, template uses ng-template + NgTemplateOutlet to share list-item block across pinned/groups/other/flat sections",
-      "files": ["libs/ngx-dev-toolbar/src/tools/feature-flags-tool/feature-flags-tool.component.ts"],
-      "concerns": []
-    },
-    "T009": {
-      "status": "DONE",
-      "did": "Mirrored T008 pattern in app-features-tool with feature-named identifiers (groupedFeatures, flatFeatures, featureItem template)",
-      "files": ["libs/ngx-dev-toolbar/src/tools/app-features-tool/app-features-tool.component.ts"],
-      "concerns": []
-    },
-    "T010": {
-      "status": "DONE",
-      "did": "Mirrored T008 pattern in permissions-tool with permission-named identifiers (groupedPermissions, flatPermissions, permissionItem template)",
-      "files": ["libs/ngx-dev-toolbar/src/tools/permissions-tool/permissions-tool.component.ts"],
-      "concerns": []
-    },
-    "T011": {
-      "status": "DONE_WITH_CONCERNS",
-      "did": "Tagged demo flags/features/permissions with groups (Appearance/Dashboard/Experimental, Admin/Content/Dashboard, Reporting/Branding/Communication/Integration). Updated 2 pre-existing component specs that asserted ordering on the now filter-only filteredX computed. Final: 387/387 tests pass, lint clean (15 pre-existing warnings, 0 errors), prod build green.",
-      "files": [
-        "apps/ngx-dev-toolbar-demo/src/app/services/feature-flags.service.ts",
-        "apps/ngx-dev-toolbar-demo/src/app/services/demo-permissions.service.ts",
-        "apps/ngx-dev-toolbar-demo/src/app/services/app-features-config.service.ts",
-        "libs/ngx-dev-toolbar/src/tools/feature-flags-tool/feature-flags-tool.component.spec.ts",
-        "libs/ngx-dev-toolbar/src/tools/permissions-tool/permissions-tool.component.spec.ts"
-      ],
-      "concerns": [
-        "Updated 2 pre-existing component specs to follow renamed computeds — feature-flags spec now asserts on flatFlags() (the no-groups equivalent), permissions spec now uses order-agnostic name comparison since filteredPermissions no longer sorts"
-      ]
-    }
-  },
-  "decisions": [
-    {
-      "task": "T005",
-      "note": "CSS triangle chevron over icon-system addition — keeps change self-contained, no SVG asset pipeline edit"
-    },
-    {
-      "task": "T008",
-      "note": "Used NgTemplateOutlet + single ng-template to dedupe the 17-line list-item block instead of 4× repetition"
-    },
-    {
-      "task": "T008",
-      "note": "Split legacy filteredFlags computed: filter step is now pure filter (private), pinned-first sort moved into flatFlags + groupItems()"
-    }
-  ],
-  "concerns": [
-    {
-      "task": "T005",
-      "note": "CSS triangle chevron used instead of IconName-based icon — note for CP1 if reviewer prefers an icon SVG"
-    },
-    {
-      "task": "T011",
-      "note": "Updated 2 pre-existing component specs (feature-flags + permissions) that were asserting on the legacy filteredX() sort behavior — feature-flags now asserts flatFlags(), permissions uses order-agnostic name comparison"
-    }
-  ],
+  "progress": null,
+  "next": "tasks",
+  "updated": "2026-04-20",
   "selectedAt": "2026-04-20T00:00:00Z",
   "specName": "Tool List Grouping",
   "branch": "main",
@@ -160,21 +27,61 @@
     }
   },
   "transitions": [
-    { "step": "specify", "substep": "parsing", "from": null, "by": "sdd", "at": "2026-04-20T00:00:00Z" },
-    { "step": "specify", "substep": "exploring", "from": "parsing", "by": "sdd", "at": "2026-04-20T00:00:01Z" },
-    { "step": "specify", "substep": "detecting", "from": "exploring", "by": "sdd", "at": "2026-04-20T00:00:02Z" },
-    { "step": "specify", "substep": "writing-spec", "from": "detecting", "by": "sdd", "at": "2026-04-20T00:00:03Z" },
-    { "step": "specify", "substep": null, "from": "writing-spec", "by": "sdd", "at": "2026-04-20T00:00:04Z" },
-    { "step": "plan", "substep": "loading", "from": "specify:null", "by": "sdd", "at": "2026-04-20T00:00:05Z" },
-    { "step": "plan", "substep": "writing-plan", "from": "loading", "by": "sdd", "at": "2026-04-20T00:00:06Z" },
-    { "step": "plan", "substep": null, "from": "writing-plan", "by": "sdd", "at": "2026-04-20T00:00:07Z" },
-    { "step": "tasks", "substep": "loading", "from": { "step": "plan", "substep": null }, "by": "sdd", "at": "2026-04-21T00:00:00Z" },
-    { "step": "tasks", "substep": "writing-tasks", "from": { "step": "tasks", "substep": "loading" }, "by": "sdd", "at": "2026-04-21T00:00:01Z" },
-    { "step": "tasks", "substep": null, "from": { "step": "tasks", "substep": "writing-tasks" }, "by": "sdd", "at": "2026-04-21T00:00:02Z" },
-    { "step": "implement", "substep": "phase1", "from": { "step": "tasks", "substep": null }, "by": "sdd", "at": "2026-04-21T00:00:03Z", "task": "T001" },
-    { "step": "implement", "substep": "phase1", "from": { "step": "implement", "substep": "phase1" }, "by": "sdd", "at": "2026-04-21T00:00:04Z", "task": "T002", "completed": "T001" },
-    { "step": "implement", "substep": "phase1", "from": { "step": "implement", "substep": "phase1" }, "by": "sdd", "at": "2026-04-21T00:00:05Z", "task": "T003", "completed": "T002" },
-    { "step": "implement", "substep": "phase1", "from": { "step": "implement", "substep": "phase1" }, "by": "sdd", "at": "2026-04-21T00:00:06Z", "task": "T005", "completed": "T004" },
-    { "step": "implement", "substep": "code-review", "from": { "step": "implement", "substep": "phase1" }, "by": "sdd", "at": "2026-04-21T00:00:07Z", "completed": "T011" }
+    {
+      "step": "specify",
+      "substep": "parsing",
+      "from": null,
+      "by": "sdd",
+      "at": "2026-04-20T00:00:00Z"
+    },
+    {
+      "step": "specify",
+      "substep": "exploring",
+      "from": "parsing",
+      "by": "sdd",
+      "at": "2026-04-20T00:00:01Z"
+    },
+    {
+      "step": "specify",
+      "substep": "detecting",
+      "from": "exploring",
+      "by": "sdd",
+      "at": "2026-04-20T00:00:02Z"
+    },
+    {
+      "step": "specify",
+      "substep": "writing-spec",
+      "from": "detecting",
+      "by": "sdd",
+      "at": "2026-04-20T00:00:03Z"
+    },
+    {
+      "step": "specify",
+      "substep": null,
+      "from": "writing-spec",
+      "by": "sdd",
+      "at": "2026-04-20T00:00:04Z"
+    },
+    {
+      "step": "plan",
+      "substep": "loading",
+      "from": "specify:null",
+      "by": "sdd",
+      "at": "2026-04-20T00:00:05Z"
+    },
+    {
+      "step": "plan",
+      "substep": "writing-plan",
+      "from": "loading",
+      "by": "sdd",
+      "at": "2026-04-20T00:00:06Z"
+    },
+    {
+      "step": "plan",
+      "substep": null,
+      "from": "writing-plan",
+      "by": "sdd",
+      "at": "2026-04-20T00:00:07Z"
+    }
   ]
 }

@@ -1,4 +1,3 @@
-import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -8,33 +7,29 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ToolbarListGroupComponent } from '../../components/list-group/list-group.component';
-import { ToolbarListItemComponent } from '../../components/list-item/list-item.component';
 import { ToolbarListComponent } from '../../components/list/list.component';
+import { ToolbarListItemComponent } from '../../components/list-item/list-item.component';
 import { ToolbarSelectComponent } from '../../components/select/select.component';
-import { ToolbarToolHeaderComponent } from '../../components/tool-header/tool-header.component';
 import { ToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
+import { ToolbarToolHeaderComponent } from '../../components/tool-header/tool-header.component';
 import { ToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
 import { ToolViewState } from '../../models/tool-view-state.models';
-import { groupItems } from '../../utils/group-items.util';
 import { ToolbarStorageService } from '../../utils/storage.service';
 import { ToolbarInternalPermissionsService } from './permissions-internal.service';
 import {
-  PermissionFilter,
   ToolbarPermission,
+  PermissionFilter,
 } from './permissions.models';
 
 @Component({
   selector: 'ndt-permissions-tool',
   standalone: true,
   imports: [
-    NgTemplateOutlet,
     FormsModule,
     ToolbarToolComponent,
     ToolbarToolHeaderComponent,
     ToolbarSelectComponent,
     ToolbarListComponent,
-    ToolbarListGroupComponent,
     ToolbarListItemComponent,
   ],
   template: `
@@ -62,101 +57,30 @@ import {
           [emptyHint]="'Call setAvailableOptions() to configure permissions'"
           noResultsMessage="No permissions match your filter"
         >
-          @if (hasAnyGroups()) {
-            @if (groupedPermissions().pinned.length) {
-              <ndt-list-group
-                name="Pinned"
-                [count]="groupedPermissions().pinned.length"
-                [collapsed]="isCollapsed('Pinned')"
-                (collapsedChange)="setCollapsed('Pinned', $event)"
-              >
-                @for (
-                  permission of groupedPermissions().pinned;
-                  track permission.id
-                ) {
-                  <ng-container
-                    *ngTemplateOutlet="
-                      permissionItem;
-                      context: { $implicit: permission }
-                    "
-                  />
-                }
-              </ndt-list-group>
-            }
-            @for (group of groupedPermissions().groups; track group.name) {
-              <ndt-list-group
-                [name]="group.name"
-                [count]="group.items.length"
-                [collapsed]="isCollapsed(group.name)"
-                (collapsedChange)="setCollapsed(group.name, $event)"
-              >
-                @for (permission of group.items; track permission.id) {
-                  <ng-container
-                    *ngTemplateOutlet="
-                      permissionItem;
-                      context: { $implicit: permission }
-                    "
-                  />
-                }
-              </ndt-list-group>
-            }
-            @if (groupedPermissions().ungrouped.length) {
-              <ndt-list-group
-                name="Other"
-                [count]="groupedPermissions().ungrouped.length"
-                [collapsed]="isCollapsed('Other')"
-                (collapsedChange)="setCollapsed('Other', $event)"
-              >
-                @for (
-                  permission of groupedPermissions().ungrouped;
-                  track permission.id
-                ) {
-                  <ng-container
-                    *ngTemplateOutlet="
-                      permissionItem;
-                      context: { $implicit: permission }
-                    "
-                  />
-                }
-              </ndt-list-group>
-            }
-          } @else {
-            @for (permission of flatPermissions(); track permission.id) {
-              <ng-container
-                *ngTemplateOutlet="
-                  permissionItem;
-                  context: { $implicit: permission }
-                "
+          @for (permission of filteredPermissions(); track permission.id) {
+            <ndt-list-item
+              [title]="permission.name"
+              [description]="permission.description"
+              [isForced]="permission.isForced"
+              [currentValue]="permission.isGranted"
+              [originalValue]="permission.originalValue"
+              [isPinned]="pinnedIds().has(permission.id)"
+              [copyableId]="permission.id"
+              (pinToggle)="togglePin(permission.id)"
+              [showApply]="hasApplyCallback()"
+              [applyState]="getApplyState(permission.id)"
+              (applyToSource)="onApplyToSource(permission.id, permission.isGranted)"
+            >
+              <ndt-select
+                [value]="getPermissionValue(permission)"
+                [options]="permissionValueOptions"
+                [ariaLabel]="'Override state for ' + permission.name"
+                (valueChange)="onPermissionChange(permission.id, $event ?? '')"
+                size="small"
               />
-            }
+            </ndt-list-item>
           }
         </ndt-list>
-
-        <ng-template #permissionItem let-permission>
-          <ndt-list-item
-            [title]="permission.name"
-            [description]="permission.description"
-            [isForced]="permission.isForced"
-            [currentValue]="permission.isGranted"
-            [originalValue]="permission.originalValue"
-            [isPinned]="pinnedIds().has(permission.id)"
-            [copyableId]="permission.id"
-            (pinToggle)="togglePin(permission.id)"
-            [showApply]="hasApplyCallback()"
-            [applyState]="getApplyState(permission.id)"
-            (applyToSource)="
-              onApplyToSource(permission.id, permission.isGranted)
-            "
-          >
-            <ndt-select
-              [value]="getPermissionValue(permission)"
-              [options]="permissionValueOptions"
-              [ariaLabel]="'Override state for ' + permission.name"
-              (valueChange)="onPermissionChange(permission.id, $event ?? '')"
-              size="small"
-            />
-          </ndt-list-item>
-        </ng-template>
       </div>
     </ndt-toolbar-tool>
   `,
@@ -187,7 +111,6 @@ export class ToolbarPermissionsToolComponent {
   protected readonly activeFilter = signal<PermissionFilter>('all');
   protected readonly searchQuery = signal<string>('');
   protected readonly pinnedIds = signal<Set<string>>(new Set());
-  protected readonly collapsedGroups = signal<Set<string>>(new Set());
 
   constructor() {
     this.loadViewState();
@@ -199,7 +122,6 @@ export class ToolbarPermissionsToolComponent {
         filter: this.activeFilter(),
         sortOrder: 'asc',
         pinnedIds: [...this.pinnedIds()],
-        collapsedGroups: [...this.collapsedGroups()],
       };
       this.storageService.set(this.VIEW_STATE_KEY, state);
     });
@@ -216,9 +138,6 @@ export class ToolbarPermissionsToolComponent {
         }
         if (saved.pinnedIds?.length) {
           this.pinnedIds.set(new Set(saved.pinnedIds));
-        }
-        if (saved.collapsedGroups?.length) {
-          this.collapsedGroups.set(new Set(saved.collapsedGroups));
         }
       }
     } catch {
@@ -238,9 +157,8 @@ export class ToolbarPermissionsToolComponent {
   protected readonly hasNoPermissions = computed(
     () => this.permissions().length === 0
   );
-
-  private readonly filteredPermissions = computed(() => {
-    return this.permissions().filter((permission) => {
+  protected readonly filteredPermissions = computed(() => {
+    const filtered = this.permissions().filter((permission) => {
       const searchTerm = this.searchQuery().toLowerCase();
       const permissionName = permission.name.toLowerCase();
       const permissionDescription = permission.description?.toLowerCase() ?? '';
@@ -258,21 +176,16 @@ export class ToolbarPermissionsToolComponent {
 
       return matchesSearch && matchesFilter;
     });
+
+    const pinned = this.pinnedIds();
+    // Sort pinned first, then alphabetically within each group
+    return filtered.sort((a, b) => {
+      const aPinned = pinned.has(a.id);
+      const bPinned = pinned.has(b.id);
+      if (aPinned !== bPinned) return aPinned ? -1 : 1;
+      return a.name.localeCompare(b.name);
+    });
   });
-
-  protected readonly groupedPermissions = computed(() =>
-    groupItems(this.filteredPermissions(), this.pinnedIds())
-  );
-
-  protected readonly flatPermissions = computed(() => {
-    const { pinned, ungrouped } = this.groupedPermissions();
-    return [...pinned, ...ungrouped];
-  });
-
-  protected readonly hasAnyGroups = computed(
-    () => this.groupedPermissions().groups.length > 0
-  );
-
   protected readonly hasNoFilteredPermissions = computed(
     () => this.filteredPermissions().length === 0
   );
@@ -344,22 +257,6 @@ export class ToolbarPermissionsToolComponent {
         next.delete(permissionId);
       } else {
         next.add(permissionId);
-      }
-      return next;
-    });
-  }
-
-  protected isCollapsed(name: string): boolean {
-    return this.collapsedGroups().has(name);
-  }
-
-  protected setCollapsed(name: string, collapsed: boolean): void {
-    this.collapsedGroups.update((set) => {
-      const next = new Set(set);
-      if (collapsed) {
-        next.add(name);
-      } else {
-        next.delete(name);
       }
       return next;
     });

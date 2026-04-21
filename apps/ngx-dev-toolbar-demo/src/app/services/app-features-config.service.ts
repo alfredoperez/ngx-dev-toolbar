@@ -59,17 +59,6 @@ export class AppFeaturesConfigService {
   });
 
   /**
-   * Group assignments for app features — exercises the new tool grouping UX
-   */
-  private readonly featureGroups: Record<string, string> = {
-    [Feature.Analytics]: 'Reporting',
-    [Feature.BulkExport]: 'Reporting',
-    [Feature.WhiteLabel]: 'Branding',
-    [Feature.Notifications]: 'Communication',
-    [Feature.ApiAccess]: 'Integration',
-  };
-
-  /**
    * Get all features across all tiers (for toolbar display)
    */
   public getAllFeatures() {
@@ -87,7 +76,6 @@ export class AppFeaturesConfigService {
       description: FEATURE_METADATA[id]?.description || '',
       isEnabled: enabledFeatures.includes(id),
       isForced: false,
-      group: this.featureGroups[id],
     }));
   }
 

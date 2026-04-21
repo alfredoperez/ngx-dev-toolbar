@@ -14,7 +14,4 @@ export interface ToolViewState {
 
   /** IDs of pinned items that should appear at the top of the list */
   pinnedIds?: string[];
-
-  /** Names of groups currently collapsed in the UI; persisted to localStorage */
-  collapsedGroups?: string[];
 }

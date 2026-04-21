@@ -90,12 +90,12 @@ describe('ToolbarFeatureFlagsToolComponent', () => {
       expect((component as any).pinnedIds().has('beta')).toBe(false);
     });
 
-    it('flatFlags should sort pinned items first (no-groups backward compat)', () => {
+    it('filteredFlags should sort pinned items first', () => {
       // Arrange: pin 'gamma' so it should appear before 'alpha' and 'beta'
       component.togglePin('gamma');
 
       // Act
-      const result = (component as any).flatFlags();
+      const result = (component as any).filteredFlags();
 
       // Assert: gamma first (pinned), then alpha, beta (alphabetical)
       expect(result[0].id).toBe('gamma');

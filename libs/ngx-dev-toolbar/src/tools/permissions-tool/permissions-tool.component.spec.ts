@@ -180,9 +180,9 @@ describe('ToolbarPermissionsToolComponent', () => {
 
       const filtered = component['filteredPermissions']();
       expect(filtered.length).toBe(2);
-      // Filter is responsible for inclusion only; alphabetical sort happens in groupItems()
-      const names = filtered.map((p) => p.name).sort();
-      expect(names).toEqual(['Delete Posts', 'Edit Posts']);
+      // Sorted alphabetically (D before E)
+      expect(filtered[0].name).toBe('Delete Posts');
+      expect(filtered[1].name).toBe('Edit Posts');
     });
 
     it('filteredPermissions should show all permissions when search query is empty', () => {
