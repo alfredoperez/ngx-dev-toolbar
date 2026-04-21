@@ -37,8 +37,10 @@
   flex-shrink: 0;
 
   h1 {
-    font-size: var(--ndt-font-size-md);
+    font-size: 1.0625rem;
+    font-weight: 700;
     line-height: 1.2;
+    letter-spacing: -0.015em;
     margin: 0;
     color: var(--ndt-text-primary);
   }
