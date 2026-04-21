@@ -36,15 +36,7 @@ import { IconName } from '../icons/icon.models';
         role="img"
       ></span>
       <div class="info">
-        <div class="title-row">
-          <h3>{{ title() }}</h3>
-          @if (isForced()) {
-            <span
-              class="forced-badge"
-              [title]="forcedBadgeTooltip()"
-            >forced</span>
-          }
-        </div>
+        <h3>{{ title() }}</h3>
         @if (description()) {
           <p>{{ description() }}</p>
         }
@@ -187,14 +179,6 @@ export class ToolbarListItemComponent {
   protected statusAriaLabel = computed(() => {
     const current = this.currentValue() ? 'enabled' : 'disabled';
     return this.isForced() ? `${current}, forced` : current;
-  });
-
-  protected forcedBadgeTooltip = computed(() => {
-    const original = this.originalValue();
-    if (original === undefined) {
-      return 'Value overridden by toolbar';
-    }
-    return `Originally ${original ? 'enabled' : 'disabled'}`;
   });
 
   protected readonly copyState = signal<'idle' | 'copied'>('idle');

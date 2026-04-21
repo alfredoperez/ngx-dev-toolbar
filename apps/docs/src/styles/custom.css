@@ -1,11 +1,11 @@
 /* Starlight theme customization for Angular Toolbar docs */
 
 /* ── Color palette ───────────────────────────────────── */
-/* Accent aligns to the library's lime-electric primary (#84cc16) for brand cohesion. */
+/* Accent aligns to the library's Stripe-violet primary (#635BFF) for brand cohesion. */
 :root {
-  --sl-color-accent-low: #1a2308;
-  --sl-color-accent: #84cc16;
-  --sl-color-accent-high: #d9f99d;
+  --sl-color-accent-low: #130f3d;
+  --sl-color-accent: #635BFF;
+  --sl-color-accent-high: #c8c4ff;
   --sl-color-white: #ffffff;
   --sl-color-gray-1: #f0f2f5;
   --sl-color-gray-2: #c4c9d0;
@@ -38,7 +38,7 @@ nav.sidebar-content a[aria-current='page']:hover,
 nav.sidebar-content a[aria-current='page']:focus,
 .sidebar-pane nav a[aria-current='page'],
 .sidebar-pane nav a[aria-current='page']:hover {
-  background-color: rgba(132, 204, 22, 0.12);
+  background-color: rgba(99, 91, 255, 0.14);
   color: var(--sl-color-white);
   font-weight: 600;
 }
@@ -49,7 +49,7 @@ nav.sidebar-content a {
 }
 
 nav.sidebar-content a:hover {
-  background-color: rgba(132, 204, 22, 0.06);
+  background-color: rgba(99, 91, 255, 0.08);
 }
 
 /* Group headings — uppercase, smaller, letter-spaced, WCAG AA contrast */
@@ -66,8 +66,8 @@ nav.sidebar-content a:hover {
 }
 
 .card:hover {
-  border-color: rgba(132, 204, 22, 0.3);
-  box-shadow: 0 2px 12px rgba(132, 204, 22, 0.08);
+  border-color: rgba(99, 91, 255, 0.3);
+  box-shadow: 0 2px 12px rgba(99, 91, 255, 0.08);
 }
 
 /* ── Demo section ────────────────────────────────────── */
@@ -82,9 +82,9 @@ nav.sidebar-content a:hover {
   border-radius: 0.75rem;
   overflow: hidden;
   box-shadow:
-    0 1px 2px rgba(132, 204, 22, 0.04),
+    0 1px 2px rgba(99, 91, 255, 0.05),
     0 8px 32px rgba(0, 0, 0, 0.4),
-    inset 0 0 0 1px rgba(132, 204, 22, 0.06);
+    inset 0 0 0 1px rgba(99, 91, 255, 0.08);
   margin-inline: auto;
   max-width: 560px;
 }
@@ -133,9 +133,9 @@ nav.sidebar-content a:hover {
 .hero img {
   border-radius: 0.875rem;
   box-shadow:
-    0 1px 2px rgba(132, 204, 22, 0.06),
+    0 1px 2px rgba(99, 91, 255, 0.08),
     0 12px 40px rgba(0, 0, 0, 0.45),
-    0 0 0 1px rgba(132, 204, 22, 0.12);
+    0 0 0 1px rgba(99, 91, 255, 0.14);
 }
 
 /* Primary CTA — bigger, weightier, no longer competes with the
