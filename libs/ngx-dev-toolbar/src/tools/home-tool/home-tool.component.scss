@@ -174,12 +174,4 @@
     font-size: var(--ndt-font-size-xs);
   }
 
-  // Kill the box-shadow glow-on-hover on the icon (dark-glow
-  // anti-pattern). Hover color-shift on the whole link already
-  // communicates interactivity.
-  ::ng-deep .link-button:hover .link-button__icon {
-    outline: none;
-    box-shadow: none;
-    background: transparent;
-  }
 }
