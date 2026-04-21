@@ -1,10 +1,11 @@
-/* Starlight theme customization for Angular Toolbar docs */
+/* Starlight theme customization for ngx-dev-toolbar docs.
+   Palette: Stripe-violet accent (#635BFF), slate neutrals.
+   Hero and ThemeSelect styling live in their component overrides. */
 
-/* ── Color palette ───────────────────────────────────── */
-/* Accent aligns to the library's Stripe-violet primary (#635BFF) for brand cohesion. */
+/* ── Dark palette (default) ──────────────────────────── */
 :root {
   --sl-color-accent-low: #130f3d;
-  --sl-color-accent: #635BFF;
+  --sl-color-accent: #635bff;
   --sl-color-accent-high: #c8c4ff;
   --sl-color-white: #ffffff;
   --sl-color-gray-1: #f0f2f5;
@@ -14,79 +15,110 @@
   --sl-color-gray-5: #1e2433;
   --sl-color-gray-6: #131825;
   --sl-color-black: #0d1117;
-  /* System-ui stack — matches the library, avoids reflex fonts, zero load cost */
+
   --sl-font:
     ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
-  --sl-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --sl-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas,
+    monospace;
+}
+
+/* ── Light palette ───────────────────────────────────── */
+:root[data-theme='light'] {
+  --sl-color-white: #0f1424;
+  --sl-color-gray-1: #1a2036;
+  --sl-color-gray-2: #4a5266;
+  --sl-color-gray-3: #6b7280;
+  --sl-color-gray-4: #9ca3af;
+  --sl-color-gray-5: #e4e7ec;
+  --sl-color-gray-6: #f7f8fa;
+  --sl-color-black: #ffffff;
+  --sl-color-accent-low: #e9e7ff;
+  --sl-color-accent: #4f46e5;
+  --sl-color-accent-high: #3a33b8;
+
+  --sl-color-bg: #ffffff;
+  --sl-color-bg-nav: #ffffff;
+  --sl-color-bg-sidebar: #f7f8fa;
+  --sl-color-bg-inline-code: #f0f2f5;
+  --sl-color-text: #0f1424;
+  --sl-color-text-accent: #4f46e5;
+  --sl-color-hairline-shade: #e4e7ec;
+  --sl-color-hairline-light: #eceff3;
+  --sl-color-hairline: #dde1e7;
 }
 
 /* ── Header ──────────────────────────────────────────── */
-/* Flat surface, 1px divider. No glassmorphism. */
 header.header {
   background-color: var(--sl-color-gray-6);
   border-bottom: 1px solid var(--sl-color-gray-5);
 }
 
-/* ── Sidebar ─────────────────────────────────────────── */
+:root[data-theme='light'] header.header {
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--sl-color-hairline);
+}
 
-/* Active page — subtle tint with weight change, no colored stripe.
-   Selectors are intentionally specific to win over Starlight's defaults
-   without needing !important. */
+/* ── Sidebar ─────────────────────────────────────────── */
 nav.sidebar-content a[aria-current='page'],
 nav.sidebar-content a[aria-current='page']:hover,
 nav.sidebar-content a[aria-current='page']:focus,
 .sidebar-pane nav a[aria-current='page'],
 .sidebar-pane nav a[aria-current='page']:hover {
-  background-color: rgba(99, 91, 255, 0.14);
+  background-color: color-mix(in srgb, var(--sl-color-accent) 14%, transparent);
   color: var(--sl-color-white);
   font-weight: 600;
 }
 
-/* Sidebar link hover transition */
 nav.sidebar-content a {
   transition: color 0.15s ease, background-color 0.15s ease;
 }
 
 nav.sidebar-content a:hover {
-  background-color: rgba(99, 91, 255, 0.08);
+  background-color: color-mix(in srgb, var(--sl-color-accent) 8%, transparent);
 }
 
-/* Group headings — uppercase, smaller, letter-spaced, WCAG AA contrast */
 .sidebar-content .top-level > li > details > summary span.large {
   text-transform: uppercase;
   font-size: var(--sl-text-xs);
   letter-spacing: 0.06em;
-  color: var(--sl-color-gray-1);
+  color: var(--sl-color-gray-2);
 }
 
-/* ── Card hover effects ──────────────────────────────── */
+/* ── Card hover (Starlight's default Card component, if used anywhere) ── */
 .card {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
-  border-color: rgba(99, 91, 255, 0.3);
+  border-color: color-mix(in srgb, var(--sl-color-accent) 30%, transparent);
   box-shadow: 0 2px 12px rgba(99, 91, 255, 0.08);
 }
 
-/* ── Demo section ────────────────────────────────────── */
+/* ── Demo container (used on splash for embedded GIFs) ── */
 .demo-section {
-  margin-block: 2rem;
-  text-align: center;
-  padding-inline: clamp(0.5rem, 4vw, 1rem);
+  margin-block: 2.5rem;
+  padding-inline: 0;
 }
 
 .demo-container {
   border: 1px solid var(--sl-color-gray-5);
   border-radius: 0.75rem;
   overflow: hidden;
+  background: var(--sl-color-gray-6);
   box-shadow:
     0 1px 2px rgba(99, 91, 255, 0.05),
     0 8px 32px rgba(0, 0, 0, 0.4),
     inset 0 0 0 1px rgba(99, 91, 255, 0.08);
-  margin-inline: auto;
-  max-width: 560px;
+  max-width: 860px;
+}
+
+:root[data-theme='light'] .demo-container {
+  background: #ffffff;
+  box-shadow:
+    0 1px 2px rgba(99, 91, 255, 0.04),
+    0 10px 30px rgba(17, 24, 39, 0.1),
+    inset 0 0 0 1px rgba(99, 91, 255, 0.08);
 }
 
 .demo-container img,
@@ -98,83 +130,22 @@ nav.sidebar-content a:hover {
 }
 
 .demo-caption {
-  margin-block-start: 0.75rem;
+  margin-block-start: 0.875rem;
   color: var(--sl-color-gray-2);
   font-size: var(--sl-text-sm, 0.875rem);
 }
 
-/* ── Hero refinements ────────────────────────────────── */
-.hero .action.minimal {
-  opacity: 0.8;
-  transition: opacity 0.15s ease;
-}
-
-.hero .action.minimal:hover {
-  opacity: 1;
-}
-
-/* Hero title — give it real presence and rhythm */
-.hero h1 {
-  font-size: clamp(2.75rem, 6vw, 4.75rem);
-  line-height: 1.02;
-  letter-spacing: -0.025em;
-  font-weight: 800;
-  position: relative;
-}
-
-/* Mono eyebrow above the title — anchors "this is a library, not a marketing page" */
-.hero h1::before {
-  content: 'ngx-dev-toolbar · v4';
-  display: block;
-  font-family: var(--sl-font-mono);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--sl-color-accent);
-  margin-bottom: 1.25rem;
-  line-height: 1;
-}
-
-/* Header wordmark — mono, tracked, quieter than the page H1 */
+/* ── Header wordmark ─────────────────────────────────── */
+/* Distinctive proper-case mono wordmark with subtle tracking. */
 header .site-title,
 header a.site-title {
   font-family: var(--sl-font-mono);
   font-size: 0.9375rem;
   font-weight: 600;
   letter-spacing: -0.01em;
-  text-transform: lowercase;
-}
-
-.hero .tagline {
-  font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
-  line-height: 1.55;
-  max-width: 58ch;
-  color: var(--sl-color-gray-2);
-}
-
-/* Hero image — lime-tinted depth so it lifts off the page */
-.hero .hero-html,
-.hero img {
-  border-radius: 0.875rem;
-  box-shadow:
-    0 1px 2px rgba(99, 91, 255, 0.08),
-    0 12px 40px rgba(0, 0, 0, 0.45),
-    0 0 0 1px rgba(99, 91, 255, 0.14);
-}
-
-/* Primary CTA — bigger, weightier, no longer competes with the
-   ghost button on equal footing */
-.hero .action.primary {
-  font-size: 1.0625rem;
-  font-weight: 600;
-  padding: 0.875rem 1.625rem;
-  letter-spacing: -0.005em;
 }
 
 /* ── Content typography — distinct hierarchy steps ──── */
-
-/* h1 (page titles) — significant size jump from body */
 .sl-markdown-content > h1,
 main h1 {
   font-size: clamp(2.25rem, 4vw, 3.25rem);
@@ -184,7 +155,6 @@ main h1 {
   margin-block-end: 1.25rem;
 }
 
-/* h2 — clearly secondary but with breathing room above */
 .sl-markdown-content > h2 {
   font-size: clamp(1.5rem, 2.4vw, 1.875rem);
   letter-spacing: -0.012em;
@@ -195,15 +165,78 @@ main h1 {
   border-block-start: 1px solid var(--sl-color-gray-5);
 }
 
-/* h3 — distinct from h2 without competing */
 .sl-markdown-content > h3 {
   font-size: 1.25rem;
   font-weight: 600;
   margin-block-start: 2rem;
 }
 
-/* Body — slightly more comfortable */
 .sl-markdown-content > p {
   line-height: 1.65;
   max-width: 70ch;
+}
+
+/* ── Scroll-reveal motion ────────────────────────────── */
+/* MOTION_INTENSITY=6: subtle fade-up on h2 + following content blocks
+   using view-timeline where supported, plain animation-delay fallback. */
+@media (prefers-reduced-motion: no-preference) {
+  .sl-markdown-content > h2,
+  .sl-markdown-content > h3 {
+    animation: reveal-up 560ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-timeline: view();
+    animation-range: entry 8% entry 48%;
+  }
+
+  .bento > * {
+    animation: reveal-up 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-timeline: view();
+    animation-range: entry 4% entry 40%;
+  }
+
+  /* Hero copy stagger — applied via :nth-child on Hero.astro's children */
+  .hero-split .hero-copy > * {
+    animation: reveal-up 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc(var(--reveal-index, 0) * 80ms);
+  }
+  .hero-split .hero-copy > :nth-child(1) { --reveal-index: 0; }
+  .hero-split .hero-copy > :nth-child(2) { --reveal-index: 1; }
+  .hero-split .hero-copy > :nth-child(3) { --reveal-index: 2; }
+  .hero-split .hero-copy > :nth-child(4) { --reveal-index: 3; }
+  .hero-split .hero-copy > :nth-child(5) { --reveal-index: 4; }
+
+  .hero-split .hero-asset {
+    animation: reveal-in 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: 180ms;
+  }
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ── Footer ──────────────────────────────────────────── */
+footer.sl-footer {
+  border-top: 1px solid var(--sl-color-gray-5);
+  margin-top: 4rem;
+  padding-block: 1.5rem;
+  color: var(--sl-color-gray-3);
+  font-size: 0.875rem;
 }

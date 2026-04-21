@@ -1,0 +1,180 @@
+---
+// BentoCard — individual tile with icon + title + description, optional link.
+// Labels placed OUTSIDE the visual card surface per skill section 9.A.
+import { Icon } from '@astrojs/starlight/components';
+
+type Props = {
+  title: string;
+  icon?: string;
+  size?: 'featured' | 'wide' | 'medium' | 'small';
+  href?: string;
+  accent?: boolean;
+};
+
+const { title, icon, size = 'small', href, accent = false } = Astro.props;
+const Tag = href ? 'a' : 'article';
+---
+
+<Tag
+  class:list={['bento-card', { 'is-link': href, 'is-accent': accent }]}
+  data-size={size}
+  href={href}
+>
+  <div class="card-surface">
+    {
+      icon && (
+        <div class="card-icon" aria-hidden="true">
+          <Icon name={icon as any} size="1.5rem" />
+        </div>
+      )
+    }
+    <div class="card-body">
+      <h3 class="card-title">{title}</h3>
+      <div class="card-desc">
+        <slot />
+      </div>
+    </div>
+    {
+      href && (
+        <div class="card-arrow" aria-hidden="true">
+          <Icon name="right-arrow" size="1rem" />
+        </div>
+      )
+    }
+  </div>
+</Tag>
+
+<style>
+  .bento-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    min-height: 100%;
+  }
+
+  .card-surface {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: 100%;
+    padding: 1.5rem 1.5rem 1.25rem;
+    background: var(--sl-color-gray-6);
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 1.25rem;
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.15),
+      0 18px 32px -20px rgba(0, 0, 0, 0.35);
+    transition:
+      transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 240ms ease,
+      box-shadow 240ms ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card-surface {
+      transition: none;
+    }
+  }
+
+  .bento-card.is-link:hover .card-surface {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--sl-color-accent) 38%, var(--sl-color-gray-5));
+    box-shadow:
+      0 1px 2px rgba(99, 91, 255, 0.1),
+      0 20px 48px -20px rgba(99, 91, 255, 0.24);
+  }
+
+  .bento-card.is-link:active .card-surface {
+    transform: translateY(-1px);
+  }
+
+  .bento-card.is-accent .card-surface {
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--sl-color-accent) 14%, var(--sl-color-gray-6)) 0%,
+      var(--sl-color-gray-6) 60%
+    );
+    border-color: color-mix(in srgb, var(--sl-color-accent) 28%, var(--sl-color-gray-5));
+  }
+
+  .card-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.625rem;
+    background: color-mix(in srgb, var(--sl-color-accent) 14%, transparent);
+    color: var(--sl-color-accent);
+    flex-shrink: 0;
+  }
+
+  .card-icon :global(svg) {
+    width: 1.125rem;
+    height: 1.125rem;
+    stroke-width: 1.5;
+  }
+
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .card-title {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.012em;
+    color: var(--sl-color-white);
+    margin: 0;
+  }
+
+  .card-desc {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--sl-color-gray-2);
+  }
+
+  .card-desc :global(p) {
+    margin: 0;
+  }
+
+  .card-desc :global(a) {
+    color: var(--sl-color-accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  .card-arrow {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    color: var(--sl-color-gray-3);
+    transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1), color 240ms ease;
+  }
+
+  .bento-card.is-link:hover .card-arrow {
+    color: var(--sl-color-accent);
+    transform: translate(2px, -2px);
+  }
+
+  /* Light-mode tuning */
+  :global([data-theme='light']) .card-surface {
+    background: #ffffff;
+    border-color: var(--sl-color-gray-2);
+    box-shadow:
+      0 1px 2px rgba(17, 24, 39, 0.04),
+      0 14px 30px -18px rgba(17, 24, 39, 0.12);
+  }
+
+  :global([data-theme='light']) .bento-card.is-accent .card-surface {
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--sl-color-accent) 7%, #ffffff) 0%,
+      #ffffff 60%
+    );
+  }
+</style>

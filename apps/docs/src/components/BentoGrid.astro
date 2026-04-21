@@ -1,0 +1,49 @@
+---
+// BentoGrid — asymmetric tile layout replacing the generic CardGrid.
+// Layout pattern (desktop):
+//   Row 1:  [ featured        ][ small ]
+//   Row 2:  [ medium ][ small ][ small ]
+// Collapses to single column on mobile per skill's MOBILE OVERRIDE rule.
+---
+
+<div class="bento">
+  <slot />
+</div>
+
+<style>
+  .bento {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-block: 1.5rem;
+  }
+
+  @media (min-width: 48rem) {
+    .bento {
+      grid-template-columns: repeat(6, 1fr);
+      grid-auto-rows: minmax(200px, auto);
+      gap: 1.25rem;
+    }
+  }
+
+  /* Size variants — consumed via data-size on <BentoCard> children */
+  .bento :global([data-size='featured']) {
+    grid-column: 1 / -1;
+  }
+  .bento :global([data-size='wide']) {
+    grid-column: span 4;
+  }
+  .bento :global([data-size='medium']) {
+    grid-column: span 3;
+  }
+  .bento :global([data-size='small']) {
+    grid-column: span 2;
+  }
+
+  @media (min-width: 48rem) {
+    .bento :global([data-size='featured']) {
+      grid-column: span 4;
+      grid-row: span 1;
+    }
+  }
+</style>
