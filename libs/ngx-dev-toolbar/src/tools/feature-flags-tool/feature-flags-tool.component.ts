@@ -192,7 +192,6 @@ export class ToolbarFeatureFlagsToolComponent {
   } as ToolbarWindowOptions;
 
   protected readonly filterOptions = [
-    { value: 'all', label: 'All Flags' },
     { value: 'forced', label: 'Forced' },
     { value: 'enabled', label: 'Enabled' },
     { value: 'disabled', label: 'Disabled' },

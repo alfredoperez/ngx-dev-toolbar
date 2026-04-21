@@ -139,9 +139,10 @@ describe('ToolbarPermissionsToolComponent', () => {
     });
 
     it('should have filter options configured', () => {
-      expect(component['filterOptions'].length).toBe(4);
-      expect(component['filterOptions'][0].value).toBe('all');
-      expect(component['filterOptions'][1].value).toBe('forced');
+      expect(component['filterOptions'].length).toBe(3);
+      expect(component['filterOptions'][0].value).toBe('forced');
+      expect(component['filterOptions'][1].value).toBe('granted');
+      expect(component['filterOptions'][2].value).toBe('denied');
     });
 
     it('should have permission value options configured', () => {

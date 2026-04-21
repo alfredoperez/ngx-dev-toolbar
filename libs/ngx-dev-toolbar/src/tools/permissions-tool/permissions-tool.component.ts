@@ -200,7 +200,6 @@ export class ToolbarPermissionsToolComponent {
   } as ToolbarWindowOptions;
 
   protected readonly filterOptions = [
-    { value: 'all', label: 'All Permissions' },
     { value: 'forced', label: 'Forced' },
     { value: 'granted', label: 'Granted' },
     { value: 'denied', label: 'Denied' },
