@@ -11,16 +11,16 @@
   gap: var(--ndt-spacing-xs);
   text-decoration: none;
   color: var(--ndt-text-muted);
-  transition: var(--ndt-transition-default);
+  transition: color 0.15s ease;
 
   &:hover {
     color: var(--ndt-text-primary);
+  }
 
-    .link-button__icon {
-      outline: 2px solid var(--ndt-primary);
-      outline-offset: 2px;
-      box-shadow: 0 0 8px var(--ndt-primary);
-    }
+  &:focus-visible {
+    outline: 2px solid rgba(var(--ndt-primary-rgb), 0.5);
+    outline-offset: 2px;
+    border-radius: var(--ndt-border-radius-small);
   }
 
   &__icon {
@@ -31,7 +31,7 @@
     height: 40px;
     border-radius: var(--ndt-border-radius-medium);
     background: var(--ndt-hover-bg);
-    transition: all 0.2s ease-in-out;
+    transition: background-color 0.15s ease;
   }
 
   &__text {

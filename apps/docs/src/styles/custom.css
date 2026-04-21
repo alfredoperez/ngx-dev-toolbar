@@ -1,40 +1,45 @@
 /* Starlight theme customization for Angular Toolbar docs */
 
 /* ── Color palette ───────────────────────────────────── */
+/* Accent aligns to the library's Stripe-violet primary (#635BFF) for brand cohesion. */
 :root {
-  --sl-color-accent-low: #1e1b4b;
-  --sl-color-accent: #6366f1;
-  --sl-color-accent-high: #c7d2fe;
+  --sl-color-accent-low: #130f3d;
+  --sl-color-accent: #635BFF;
+  --sl-color-accent-high: #c8c4ff;
   --sl-color-white: #ffffff;
-  --sl-color-gray-1: #e5e7eb;
-  --sl-color-gray-2: #9ca3af;
-  --sl-color-gray-3: #6b7280;
+  --sl-color-gray-1: #f0f2f5;
+  --sl-color-gray-2: #c4c9d0;
+  --sl-color-gray-3: #8a909a;
   --sl-color-gray-4: #374151;
   --sl-color-gray-5: #1e2433;
   --sl-color-gray-6: #131825;
   --sl-color-black: #0d1117;
-  --sl-font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --sl-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  /* System-ui stack — matches the library, avoids reflex fonts, zero load cost */
+  --sl-font:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  --sl-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
 /* ── Header ──────────────────────────────────────────── */
+/* Flat surface, 1px divider. No glassmorphism. */
 header.header {
-  background-color: rgba(22, 27, 46, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom-color: rgba(99, 102, 241, 0.08);
+  background-color: var(--sl-color-gray-6);
+  border-bottom: 1px solid var(--sl-color-gray-5);
 }
 
 /* ── Sidebar ─────────────────────────────────────────── */
 
-/* Active page — replace bright block with subtle tint + left accent */
+/* Active page — subtle tint with weight change, no colored stripe.
+   Selectors are intentionally specific to win over Starlight's defaults
+   without needing !important. */
 nav.sidebar-content a[aria-current='page'],
 nav.sidebar-content a[aria-current='page']:hover,
-nav.sidebar-content a[aria-current='page']:focus {
-  background-color: rgba(99, 102, 241, 0.12);
-  color: var(--sl-color-accent-high);
-  border-inline-start: 2px solid var(--sl-color-accent);
-  padding-inline-start: calc(var(--sl-sidebar-item-padding-inline) - 2px);
+nav.sidebar-content a[aria-current='page']:focus,
+.sidebar-pane nav a[aria-current='page'],
+.sidebar-pane nav a[aria-current='page']:hover {
+  background-color: rgba(99, 91, 255, 0.14);
+  color: var(--sl-color-white);
   font-weight: 600;
 }
 
@@ -44,15 +49,15 @@ nav.sidebar-content a {
 }
 
 nav.sidebar-content a:hover {
-  background-color: rgba(99, 102, 241, 0.06);
+  background-color: rgba(99, 91, 255, 0.08);
 }
 
-/* Group headings — uppercase, smaller, letter-spaced */
+/* Group headings — uppercase, smaller, letter-spaced, WCAG AA contrast */
 .sidebar-content .top-level > li > details > summary span.large {
   text-transform: uppercase;
   font-size: var(--sl-text-xs);
   letter-spacing: 0.06em;
-  color: var(--sl-color-gray-2);
+  color: var(--sl-color-gray-1);
 }
 
 /* ── Card hover effects ──────────────────────────────── */
@@ -61,34 +66,40 @@ nav.sidebar-content a:hover {
 }
 
 .card:hover {
-  border-color: rgba(99, 102, 241, 0.3);
-  box-shadow: 0 2px 12px rgba(99, 102, 241, 0.08);
+  border-color: rgba(99, 91, 255, 0.3);
+  box-shadow: 0 2px 12px rgba(99, 91, 255, 0.08);
 }
 
 /* ── Demo section ────────────────────────────────────── */
 .demo-section {
   margin-block: 2rem;
   text-align: center;
+  padding-inline: clamp(0.5rem, 4vw, 1rem);
 }
 
 .demo-container {
   border: 1px solid var(--sl-color-gray-5);
   border-radius: 0.75rem;
   overflow: hidden;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    0 1px 2px rgba(99, 91, 255, 0.05),
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 0 0 1px rgba(99, 91, 255, 0.08);
   margin-inline: auto;
-  max-width: 720px;
+  max-width: 560px;
 }
 
-.demo-container img {
+.demo-container img,
+.demo-container > img {
   display: block;
   width: 100%;
+  max-width: 100%;
   height: auto;
 }
 
 .demo-caption {
   margin-block-start: 0.75rem;
-  color: var(--sl-color-gray-3);
+  color: var(--sl-color-gray-2);
   font-size: var(--sl-text-sm, 0.875rem);
 }
 
@@ -100,4 +111,99 @@ nav.sidebar-content a:hover {
 
 .hero .action.minimal:hover {
   opacity: 1;
+}
+
+/* Hero title — give it real presence and rhythm */
+.hero h1 {
+  font-size: clamp(2.75rem, 6vw, 4.75rem);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  font-weight: 800;
+  position: relative;
+}
+
+/* Mono eyebrow above the title — anchors "this is a library, not a marketing page" */
+.hero h1::before {
+  content: 'ngx-dev-toolbar · v4';
+  display: block;
+  font-family: var(--sl-font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sl-color-accent);
+  margin-bottom: 1.25rem;
+  line-height: 1;
+}
+
+/* Header wordmark — mono, tracked, quieter than the page H1 */
+header .site-title,
+header a.site-title {
+  font-family: var(--sl-font-mono);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-transform: lowercase;
+}
+
+.hero .tagline {
+  font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+  line-height: 1.55;
+  max-width: 58ch;
+  color: var(--sl-color-gray-2);
+}
+
+/* Hero image — lime-tinted depth so it lifts off the page */
+.hero .hero-html,
+.hero img {
+  border-radius: 0.875rem;
+  box-shadow:
+    0 1px 2px rgba(99, 91, 255, 0.08),
+    0 12px 40px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(99, 91, 255, 0.14);
+}
+
+/* Primary CTA — bigger, weightier, no longer competes with the
+   ghost button on equal footing */
+.hero .action.primary {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  padding: 0.875rem 1.625rem;
+  letter-spacing: -0.005em;
+}
+
+/* ── Content typography — distinct hierarchy steps ──── */
+
+/* h1 (page titles) — significant size jump from body */
+.sl-markdown-content > h1,
+main h1 {
+  font-size: clamp(2.25rem, 4vw, 3.25rem);
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  line-height: 1.08;
+  margin-block-end: 1.25rem;
+}
+
+/* h2 — clearly secondary but with breathing room above */
+.sl-markdown-content > h2 {
+  font-size: clamp(1.5rem, 2.4vw, 1.875rem);
+  letter-spacing: -0.012em;
+  font-weight: 700;
+  margin-block-start: 3rem;
+  margin-block-end: 0.875rem;
+  padding-block-start: 0.5rem;
+  border-block-start: 1px solid var(--sl-color-gray-5);
+}
+
+/* h3 — distinct from h2 without competing */
+.sl-markdown-content > h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-block-start: 2rem;
+}
+
+/* Body — slightly more comfortable */
+.sl-markdown-content > p {
+  line-height: 1.65;
+  max-width: 70ch;
 }

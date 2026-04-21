@@ -9,7 +9,7 @@ export default defineConfig({
   outDir: '../../dist/apps/docs',
   integrations: [
     starlight({
-      title: 'Angular Toolbar',
+      title: 'ngx-dev-toolbar',
       pagefind: false,
       plugins: [starlightLinksValidator({ exclude: ['/ngx-dev-toolbar/demo/'] })],
       social: [
@@ -43,10 +43,6 @@ export default defineConfig({
       ],
       customCss: [
         './src/styles/custom.css',
-        '@fontsource/plus-jakarta-sans/400.css',
-        '@fontsource/plus-jakarta-sans/600.css',
-        '@fontsource/plus-jakarta-sans/700.css',
-        '@fontsource/plus-jakarta-sans/800.css',
         '@fontsource/jetbrains-mono/400.css',
       ],
       expressiveCode: {

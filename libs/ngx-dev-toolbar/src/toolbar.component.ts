@@ -186,8 +186,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         --ndt-font-size-md: 1rem;
         --ndt-font-size-lg: 1.25rem;
         --ndt-font-size-xl: 2rem;
-        --ndt-primary: #df30d4;
-        --ndt-primary-rgb: 223, 48, 212;
+        --ndt-primary: #635BFF;
+        --ndt-primary-rgb: 99, 91, 255;
         --ndt-text-on-primary: rgb(255, 255, 255);
         --ndt-bg-primary: rgb(255, 255, 255);
         --ndt-bg-gradient: linear-gradient(180deg, rgb(243, 244, 246) 0%, rgba(243, 244, 246, 0.88) 100%);
@@ -212,6 +212,12 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         --ndt-warning-border: rgba(202, 138, 4, 0.2);
         --ndt-error-background: rgb(254, 226, 226);
         --ndt-error-border: rgba(220, 38, 38, 0.2);
+        --ndt-success: rgb(34, 197, 94);
+        --ndt-success-rgb: 34, 197, 94;
+        --ndt-danger: rgb(239, 68, 68);
+        --ndt-danger-rgb: 239, 68, 68;
+        --ndt-forced: #f59e0b;
+        --ndt-forced-rgb: 245, 158, 11;
       }
       .ndt-overlay-panel {
         font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;

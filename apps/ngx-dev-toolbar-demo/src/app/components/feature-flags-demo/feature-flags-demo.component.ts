@@ -203,7 +203,6 @@ import { FeatureFlagsService } from '../../services/feature-flags.service';
       padding: 0.5rem;
       color: #94a3b8;
       font-size: 0.8125rem;
-      border-left: 2px solid #6366f1;
       margin-bottom: 0.5rem;
       padding-left: 0.75rem;
     }
@@ -214,7 +213,7 @@ import { FeatureFlagsService } from '../../services/feature-flags.service';
 
     /* Layout Preview */
     .layout-preview {
-      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      background: var(--demo-primary, #6366f1);
     }
 
     .layout-grid {
@@ -242,7 +241,6 @@ import { FeatureFlagsService } from '../../services/feature-flags.service';
       border-radius: 4px;
       font-size: 0.8125rem;
       color: var(--demo-text, #1e293b);
-      border-left: 2px solid #f59e0b;
     }
 
     /* Notifications Preview */

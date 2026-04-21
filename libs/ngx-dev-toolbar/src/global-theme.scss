@@ -37,8 +37,8 @@
   --ndt-font-size-xl: 2rem;
 
   /* Primary Brand Color */
-  --ndt-primary: #df30d4;
-  --ndt-primary-rgb: 223, 48, 212;
+  --ndt-primary: #635BFF;
+  --ndt-primary-rgb: 99, 91, 255;
   --ndt-text-on-primary: rgb(255, 255, 255);
 
   /* Light Theme (Default) */
@@ -77,6 +77,15 @@
   --ndt-warning-border: rgba(202, 138, 4, 0.2);
   --ndt-error-background: rgb(254, 226, 226);
   --ndt-error-border: rgba(220, 38, 38, 0.2);
+
+  /* Status Colors */
+  --ndt-success: rgb(34, 197, 94);
+  --ndt-success-rgb: 34, 197, 94;
+  --ndt-danger: rgb(239, 68, 68);
+  --ndt-danger-rgb: 239, 68, 68;
+  /* Forced/overridden state — distinct from primary so it always pops */
+  --ndt-forced: #f59e0b;
+  --ndt-forced-rgb: 245, 158, 11;
 }
 
 /* Ensure overlay panels have proper styling */
@@ -97,31 +106,58 @@
   box-sizing: border-box;
 }
 
-/* Slide-in animations for tool overlay windows */
+/* Slide-and-scale entry animations for tool overlay windows.
+   Combining translate + scale with a transform-origin near the
+   toolbar makes the window feel like it pops out of the button
+   that opened it, rather than just appearing. */
 @keyframes ndt-slide-up {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from { transform: translateY(12px) scale(0.94); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
 }
 
 @keyframes ndt-slide-down {
-  from { transform: translateY(-20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from { transform: translateY(-12px) scale(0.94); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
 }
 
 @keyframes ndt-slide-right {
-  from { transform: translateX(-20px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
+  from { transform: translateX(-12px) scale(0.94); opacity: 0; }
+  to { transform: translateX(0) scale(1); opacity: 1; }
 }
 
 @keyframes ndt-slide-left {
-  from { transform: translateX(20px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
+  from { transform: translateX(12px) scale(0.94); opacity: 0; }
+  to { transform: translateX(0) scale(1); opacity: 1; }
 }
 
-.ndt-slide-up { animation: ndt-slide-up 400ms cubic-bezier(0.4, 0, 0.2, 1); }
-.ndt-slide-down { animation: ndt-slide-down 400ms cubic-bezier(0.4, 0, 0.2, 1); }
-.ndt-slide-right { animation: ndt-slide-right 400ms cubic-bezier(0.4, 0, 0.2, 1); }
-.ndt-slide-left { animation: ndt-slide-left 400ms cubic-bezier(0.4, 0, 0.2, 1); }
+/* Exponential ease-out — snappy in, settles out. No bounce. */
+$ndt-window-easing: cubic-bezier(0.22, 1, 0.36, 1);
+
+.ndt-slide-up {
+  animation: ndt-slide-up 280ms $ndt-window-easing;
+  transform-origin: 50% 100%;
+}
+.ndt-slide-down {
+  animation: ndt-slide-down 280ms $ndt-window-easing;
+  transform-origin: 50% 0%;
+}
+.ndt-slide-right {
+  animation: ndt-slide-right 280ms $ndt-window-easing;
+  transform-origin: 0% 50%;
+}
+.ndt-slide-left {
+  animation: ndt-slide-left 280ms $ndt-window-easing;
+  transform-origin: 100% 50%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ndt-slide-up,
+  .ndt-slide-down,
+  .ndt-slide-right,
+  .ndt-slide-left {
+    animation: none;
+  }
+}
 
 /* CDK Overlay backdrop styling */
 .cdk-overlay-backdrop.ndt-overlay-backdrop {

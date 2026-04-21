@@ -128,11 +128,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
       border-radius: 4px;
       font-size: 0.8125rem;
       color: var(--demo-text, #1e293b);
-      border-left: 2px solid #6366f1;
-    }
-
-    .preview-item--green {
-      border-left-color: #22c55e;
     }
 
     .preview-item code {

@@ -4,22 +4,65 @@
   @include devtools.devtools-theme;
 }
 
+// Exponential ease-out — feels deliberate, like an object settling. No bounce.
+$list-item-easing: cubic-bezier(0.22, 1, 0.36, 1);
+
 .list-item {
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
   gap: var(--ndt-spacing-sm);
   background: var(--ndt-background-secondary);
   padding: var(--ndt-spacing-xs) var(--ndt-spacing-sm);
   border-radius: var(--ndt-border-radius-medium);
-  transition: background-color 0.2s ease;
+  transition: background-color 280ms $list-item-easing;
   position: relative;
   z-index: 1;
   flex-shrink: 0;
   overflow: visible;
 }
 
+// Forced state is communicated by the row background tint (ambient,
+// scales to any width, no layout risk from long titles). A subtle
+// amber border adds a shape cue for color-blind users.
 .list-item.list-item--forced {
-  background: rgba(59, 130, 246, 0.05);
+  background: rgba(var(--ndt-forced-rgb), 0.1);
+  box-shadow: inset 0 0 0 1px rgba(var(--ndt-forced-rgb), 0.25);
+}
+
+.list-item > .dot-indicator {
+  flex: 0 0 auto;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  cursor: help;
+  transition:
+    background-color 260ms $list-item-easing,
+    border-color 260ms $list-item-easing,
+    box-shadow 260ms $list-item-easing;
+  margin-top: 7px;
+  box-sizing: border-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .list-item,
+  .list-item > .dot-indicator {
+    transition: none;
+  }
+}
+
+// "On" state: filled circle in success color
+.list-item > .dot-indicator.dot-indicator--on {
+  background: var(--ndt-success);
+  box-shadow: 0 0 0 2px rgba(var(--ndt-success-rgb), 0.2);
+}
+
+// "Off" state: outlined ring in danger color (shape + color distinction for color-blind users)
+.list-item > .dot-indicator.dot-indicator--off {
+  background: transparent;
+  border: 1.5px solid var(--ndt-danger);
+  box-shadow: 0 0 0 2px rgba(var(--ndt-danger-rgb), 0.12);
 }
 
 .list-item .info {
@@ -32,41 +75,16 @@
   font-size: var(--ndt-font-size-sm);
   font-weight: 500;
   color: var(--ndt-text-primary);
-}
-
-.list-item .info .description-wrapper {
-  display: flex;
-  align-items: flex-start;
-  gap: 4px;
-  margin-top: 1px;
-}
-
-.list-item .info .dot-indicator {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  cursor: help;
-  transition: all 0.2s ease;
-  margin-top: 5px;
-}
-
-.list-item .info .dot-indicator.dot-indicator--on {
-  background: rgb(34, 197, 94);
-  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
-}
-
-.list-item .info .dot-indicator.dot-indicator--off {
-  background: rgb(239, 68, 68);
-  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .list-item .info p {
-  margin: 0;
+  margin: 1px 0 0 0;
   font-size: var(--ndt-font-size-xxs);
   color: var(--ndt-text-muted);
-  flex: 1;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -84,9 +102,6 @@
 
 .pin-button {
   flex: 0 0 auto;
-  align-self: flex-start;
-  margin-top: 5px;
-  margin-right: calc(-1 * var(--ndt-spacing-sm) + 4px);
   opacity: 0;
   transition: opacity 0.2s ease;
 }
@@ -110,11 +125,13 @@
   opacity: 1;
 }
 
-.list-item:hover .pin-button {
+.list-item:hover .pin-button,
+.list-item:focus-within .pin-button {
   opacity: 0.5;
 }
 
-.list-item:hover .pin-button:hover {
+.list-item:hover .pin-button:hover,
+.list-item:focus-within .pin-button:focus-visible {
   opacity: 1;
 }
 
@@ -124,8 +141,56 @@
 
 .pin-button--pinned ::ng-deep .icon-button {
   opacity: 1;
-  color: var(--ndt-text-primary);
+  color: var(--ndt-primary);
   background: transparent;
+}
+
+.copy-button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--ndt-text-muted);
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--ndt-border-radius-small);
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+  opacity: 0;
+  transition: opacity 0.2s ease, color 0.15s ease, background-color 0.15s ease;
+
+  &:hover {
+    background: var(--ndt-hover-bg);
+    color: var(--ndt-text-primary);
+  }
+
+  &:focus-visible {
+    opacity: 1;
+    outline: 2px solid rgba(var(--ndt-primary-rgb), 0.5);
+    outline-offset: 1px;
+  }
+
+  .copy-icon {
+    font-family: ui-monospace, monospace;
+  }
+}
+
+.list-item:hover .copy-button,
+.list-item:focus-within .copy-button {
+  opacity: 0.6;
+}
+
+.list-item:hover .copy-button:hover {
+  opacity: 1;
+}
+
+.copy-button--copied {
+  opacity: 1 !important;
+  color: var(--ndt-success);
 }
 
 .apply-button--loading ::ng-deep .icon-button {
@@ -135,16 +200,16 @@
 
 .apply-button--success ::ng-deep .icon-button {
   opacity: 1;
-  color: rgb(34, 197, 94);
-  border-color: rgba(34, 197, 94, 0.3);
-  background: rgba(34, 197, 94, 0.05);
+  color: var(--ndt-success);
+  border-color: rgba(var(--ndt-success-rgb), 0.3);
+  background: rgba(var(--ndt-success-rgb), 0.05);
 }
 
 .apply-button--error ::ng-deep .icon-button {
   opacity: 1;
-  color: rgb(239, 68, 68);
-  border-color: rgba(239, 68, 68, 0.3);
-  background: rgba(239, 68, 68, 0.05);
+  color: var(--ndt-danger);
+  border-color: rgba(var(--ndt-danger-rgb), 0.3);
+  background: rgba(var(--ndt-danger-rgb), 0.05);
 }
 
 .apply-icon {

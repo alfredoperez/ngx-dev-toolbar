@@ -45,10 +45,9 @@ const NUMBER_FORMAT_VALUES = ['locale-default', 'period-comma', 'comma-period', 
   template: `
     <ndt-toolbar-tool toolTitle="i18n" icon="globe" [options]="options">
       <div class="i18n-section">
-        <!-- Formatting Preview (at top for immediate feedback) -->
+        <!-- Formatting Preview (immediate feedback, always visible) -->
         @if (toolConfig().showFormattingPreview !== false) {
-          <div class="i18n-section-header">FORMATTING PREVIEW</div>
-          <div class="i18n-preview">
+          <div class="i18n-preview" aria-label="Formatting preview">
             <div class="i18n-preview-row">
               <span class="preview-label">Number</span>
               <span class="preview-value">{{ previewNumber() }}</span>
@@ -68,7 +67,7 @@ const NUMBER_FORMAT_VALUES = ['locale-default', 'period-comma', 'comma-period', 
           </div>
         }
 
-        <!-- Settings (flat 2-column grid) -->
+        <!-- Core settings: locale, timezone, currency -->
         <div class="i18n-select-grid">
           @if (toolConfig().showLocale !== false) {
             <div class="i18n-select-group">
@@ -106,94 +105,105 @@ const NUMBER_FORMAT_VALUES = ['locale-default', 'period-comma', 'comma-period', 
               />
             </div>
           }
-          @if (toolConfig().showUnits !== false) {
-            <div class="i18n-select-group">
-              <label for="i18n-units">Units</label>
-              <ndt-select
-                id="i18n-units"
-                [value]="activeUnitSystem()"
-                [options]="unitSystemOptions"
-                [size]="'medium'"
-                (valueChange)="onUnitSystemChange($event ?? '')"
-              />
-            </div>
-          }
-          @if (toolConfig().showDateFormat !== false) {
-            <div class="i18n-select-group">
-              <label for="i18n-date-format">Date Format</label>
-              <ndt-select
-                id="i18n-date-format"
-                [value]="activeDateFormat()"
-                [options]="dateFormatOptions"
-                [size]="'medium'"
-                (valueChange)="onDateFormatChange($event ?? '')"
-              />
-            </div>
-          }
-          @if (toolConfig().showNumberFormat !== false) {
-            <div class="i18n-select-group">
-              <label for="i18n-number-format">Number Format</label>
-              <ndt-select
-                id="i18n-number-format"
-                [value]="activeNumberFormat()"
-                [options]="numberFormatOptions"
-                [size]="'medium'"
-                (valueChange)="onNumberFormatChange($event ?? '')"
-              />
-            </div>
-          }
-          @if (toolConfig().showFirstDayOfWeek !== false) {
-            <div class="i18n-select-group">
-              <label for="i18n-first-day">First Day of Week</label>
-              <ndt-select
-                id="i18n-first-day"
-                [value]="activeFirstDayOfWeek()"
-                [options]="firstDayOptions"
-                [size]="'medium'"
-                (valueChange)="onFirstDayOfWeekChange($event ?? '')"
-              />
-            </div>
-          }
         </div>
 
-        <!-- Stress Testing -->
+        <!-- Advanced format options (progressive disclosure) -->
+        @if (hasAdvancedFormatSettings()) {
+          <details class="i18n-disclosure">
+            <summary>Advanced format options</summary>
+            <div class="i18n-select-grid">
+              @if (toolConfig().showUnits !== false) {
+                <div class="i18n-select-group">
+                  <label for="i18n-units">Units</label>
+                  <ndt-select
+                    id="i18n-units"
+                    [value]="activeUnitSystem()"
+                    [options]="unitSystemOptions"
+                    [size]="'medium'"
+                    (valueChange)="onUnitSystemChange($event ?? '')"
+                  />
+                </div>
+              }
+              @if (toolConfig().showDateFormat !== false) {
+                <div class="i18n-select-group">
+                  <label for="i18n-date-format">Date Format</label>
+                  <ndt-select
+                    id="i18n-date-format"
+                    [value]="activeDateFormat()"
+                    [options]="dateFormatOptions"
+                    [size]="'medium'"
+                    (valueChange)="onDateFormatChange($event ?? '')"
+                  />
+                </div>
+              }
+              @if (toolConfig().showNumberFormat !== false) {
+                <div class="i18n-select-group">
+                  <label for="i18n-number-format">Number Format</label>
+                  <ndt-select
+                    id="i18n-number-format"
+                    [value]="activeNumberFormat()"
+                    [options]="numberFormatOptions"
+                    [size]="'medium'"
+                    (valueChange)="onNumberFormatChange($event ?? '')"
+                  />
+                </div>
+              }
+              @if (toolConfig().showFirstDayOfWeek !== false) {
+                <div class="i18n-select-group">
+                  <label for="i18n-first-day">First Day of Week</label>
+                  <ndt-select
+                    id="i18n-first-day"
+                    [value]="activeFirstDayOfWeek()"
+                    [options]="firstDayOptions"
+                    [size]="'medium'"
+                    (valueChange)="onFirstDayOfWeekChange($event ?? '')"
+                  />
+                </div>
+              }
+            </div>
+          </details>
+        }
+
+        <!-- Stress Testing (separate collapsible section) -->
         @if (toolConfig().showStressTesting !== false) {
-          <div class="i18n-section-header">STRESS TESTING</div>
-          <div class="i18n-toggle-section">
-            <div class="i18n-toggle-row">
-              <div class="toggle-info">
-                <span class="toggle-label">Pseudo-Localization</span>
-                <span class="toggle-hint">Detect hardcoded strings</span>
+          <details class="i18n-disclosure">
+            <summary>Stress testing</summary>
+            <div class="i18n-toggle-section">
+              <div class="i18n-toggle-row">
+                <div class="toggle-info">
+                  <span class="toggle-label">Pseudo-Localization</span>
+                  <span class="toggle-hint">Detect hardcoded strings</span>
+                </div>
+                <label class="toggle-switch">
+                  <input
+                    type="checkbox"
+                    [checked]="pseudoLocEnabled()"
+                    (change)="onPseudoLocToggle($event)"
+                  />
+                  <span class="toggle-track"></span>
+                </label>
               </div>
-              <label class="toggle-switch">
-                <input
-                  type="checkbox"
-                  [checked]="pseudoLocEnabled()"
-                  (change)="onPseudoLocToggle($event)"
-                />
-                <span class="toggle-track"></span>
-              </label>
+              @if (pseudoLocEnabled()) {
+                <div class="i18n-pseudo-preview">
+                  {{ pseudoPreview() }}
+                </div>
+              }
+              <div class="i18n-toggle-row">
+                <div class="toggle-info">
+                  <span class="toggle-label">RTL Mirroring</span>
+                  <span class="toggle-hint">Set document direction to RTL</span>
+                </div>
+                <label class="toggle-switch">
+                  <input
+                    type="checkbox"
+                    [checked]="rtlEnabled()"
+                    (change)="onRtlToggle($event)"
+                  />
+                  <span class="toggle-track"></span>
+                </label>
+              </div>
             </div>
-            @if (pseudoLocEnabled()) {
-              <div class="i18n-pseudo-preview">
-                {{ pseudoPreview() }}
-              </div>
-            }
-            <div class="i18n-toggle-row">
-              <div class="toggle-info">
-                <span class="toggle-label">RTL Mirroring</span>
-                <span class="toggle-hint">Set document direction to RTL</span>
-              </div>
-              <label class="toggle-switch">
-                <input
-                  type="checkbox"
-                  [checked]="rtlEnabled()"
-                  (change)="onRtlToggle($event)"
-                />
-                <span class="toggle-track"></span>
-              </label>
-            </div>
-          </div>
+          </details>
         }
       </div>
     </ndt-toolbar-tool>
@@ -260,6 +270,16 @@ export class ToolbarI18nToolComponent {
   // --- Computed ---
 
   toolConfig = computed(() => this.i18nService.toolConfig() as I18nToolConfig);
+
+  hasAdvancedFormatSettings = computed(() => {
+    const cfg = this.toolConfig();
+    return (
+      cfg.showUnits !== false ||
+      cfg.showDateFormat !== false ||
+      cfg.showNumberFormat !== false ||
+      cfg.showFirstDayOfWeek !== false
+    );
+  });
 
   localeOptions = toSignal(
     this.i18nService.getAvailableLocales().pipe(

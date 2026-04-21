@@ -7,11 +7,11 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ToolbarInputComponent } from '../../components/input/input.component';
 import { ToolbarListComponent } from '../../components/list/list.component';
 import { ToolbarListItemComponent } from '../../components/list-item/list-item.component';
 import { ToolbarSelectComponent } from '../../components/select/select.component';
 import { ToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
+import { ToolbarToolHeaderComponent } from '../../components/tool-header/tool-header.component';
 import { ToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
 import { ToolViewState } from '../../models/tool-view-state.models';
 import { ToolbarStorageService } from '../../utils/storage.service';
@@ -38,7 +38,7 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
   imports: [
     FormsModule,
     ToolbarToolComponent,
-    ToolbarInputComponent,
+    ToolbarToolHeaderComponent,
     ToolbarSelectComponent,
     ToolbarListComponent,
     ToolbarListItemComponent,
@@ -51,21 +51,15 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
       [badge]="badgeCount()"
     >
       <div class="container">
-        <div class="tool-header">
-          <ndt-input
-            [value]="searchQuery()"
-            (valueChange)="onSearchChange($event)"
-            placeholder="Search features..."
-          />
-          <div class="filter-wrapper">
-            <ndt-select
-              [value]="activeFilter()"
-              [options]="filterOptions"
-              [size]="'medium'"
-              (valueChange)="onFilterChange($event)"
-            />
-          </div>
-        </div>
+        <ndt-tool-header
+          [(searchQuery)]="searchQuery"
+          [activeFilter]="activeFilter()"
+          (activeFilterChange)="onFilterChange($event)"
+          searchPlaceholder="Search features by name or description"
+          searchAriaLabel="Search app features"
+          filterAriaLabel="Filter app features by state"
+          [filterOptions]="filterOptions"
+        />
 
         <ndt-list
           [hasItems]="!hasNoFeatures()"
@@ -82,6 +76,7 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
               [currentValue]="feature.isEnabled"
               [originalValue]="feature.originalValue"
               [isPinned]="pinnedIds().has(feature.id)"
+              [copyableId]="feature.id"
               (pinToggle)="togglePin(feature.id)"
               [showApply]="hasApplyCallback()"
               [applyState]="getApplyState(feature.id)"
@@ -108,31 +103,6 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
         flex-direction: column;
         height: 100%;
         padding: 0;
-      }
-
-      .tool-header {
-        position: relative;
-        flex-shrink: 0;
-        display: flex;
-        gap: var(--ndt-spacing-sm);
-        margin-bottom: var(--ndt-spacing-sm);
-
-        ndt-input {
-          flex: 1;
-        }
-
-        .filter-wrapper {
-          flex: 0 0 auto;
-          display: flex;
-          align-items: center;
-          border-left: 1px solid var(--ndt-border-primary);
-          padding-left: var(--ndt-spacing-sm);
-
-          ndt-select {
-            flex: 0 0 auto;
-            min-width: 140px;
-          }
-        }
       }
     `,
   ],
@@ -237,7 +207,6 @@ export class ToolbarAppFeaturesToolComponent {
   } as ToolbarWindowOptions;
 
   protected readonly filterOptions = [
-    { value: 'all', label: 'All Features' },
     { value: 'forced', label: 'Forced' },
     { value: 'enabled', label: 'Enabled' },
     { value: 'disabled', label: 'Disabled' },

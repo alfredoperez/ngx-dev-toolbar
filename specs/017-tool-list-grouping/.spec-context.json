@@ -1,0 +1,87 @@
+{
+  "workflow": "sdd",
+  "currentStep": "plan",
+  "currentTask": null,
+  "progress": null,
+  "next": "tasks",
+  "updated": "2026-04-20",
+  "selectedAt": "2026-04-20T00:00:00Z",
+  "specName": "Tool List Grouping",
+  "branch": "main",
+  "createdAt": "2026-04-20T00:00:00Z",
+  "approach": "Shared groupItems utility partitions filtered items into pinned/groups/ungrouped, rendered via a new ToolbarListGroupComponent",
+  "step_summaries": {
+    "specify": {
+      "complexity": "normal",
+      "requirements": 8,
+      "scenarios": 6,
+      "key_finding": "All 3 tools share identical pinned-first sort logic in a computed signal — grouping can be layered into the same computed with a shared helper"
+    },
+    "plan": {
+      "approach_summary": "Shared groupItems utility partitions filtered items into pinned/groups/ungrouped, rendered via a new ToolbarListGroupComponent",
+      "files_planned": 13,
+      "risks": [
+        "Template complexity from nested @for with conditional group headers",
+        "Backward compat regression if groupItems() mishandles the all-ungrouped case"
+      ]
+    }
+  },
+  "transitions": [
+    {
+      "step": "specify",
+      "substep": "parsing",
+      "from": null,
+      "by": "sdd",
+      "at": "2026-04-20T00:00:00Z"
+    },
+    {
+      "step": "specify",
+      "substep": "exploring",
+      "from": "parsing",
+      "by": "sdd",
+      "at": "2026-04-20T00:00:01Z"
+    },
+    {
+      "step": "specify",
+      "substep": "detecting",
+      "from": "exploring",
+      "by": "sdd",
+      "at": "2026-04-20T00:00:02Z"
+    },
+    {
+      "step": "specify",
+      "substep": "writing-spec",
+      "from": "detecting",
+      "by": "sdd",
+      "at": "2026-04-20T00:00:03Z"
+    },
+    {
+      "step": "specify",
+      "substep": null,
+      "from": "writing-spec",
+      "by": "sdd",
+      "at": "2026-04-20T00:00:04Z"
+    },
+    {
+      "step": "plan",
+      "substep": "loading",
+      "from": "specify:null",
+      "by": "sdd",
+      "at": "2026-04-20T00:00:05Z"
+    },
+    {
+      "step": "plan",
+      "substep": "writing-plan",
+      "from": "loading",
+      "by": "sdd",
+      "at": "2026-04-20T00:00:06Z"
+    },
+    {
+      "step": "plan",
+      "substep": null,
+      "from": "writing-plan",
+      "by": "sdd",
+      "at": "2026-04-20T00:00:07Z"
+    }
+  ]
+}

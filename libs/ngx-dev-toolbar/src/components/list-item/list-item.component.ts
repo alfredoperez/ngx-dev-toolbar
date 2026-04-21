@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToolbarIconButtonComponent } from '../icon-button/icon-button.component';
 import { IconName } from '../icons/icon.models';
@@ -26,29 +26,38 @@ import { IconName } from '../icons/icon.models';
   imports: [CommonModule, ToolbarIconButtonComponent],
   template: `
     <div class="list-item" [class.list-item--forced]="isForced()">
-      <ndt-icon-button
-        [icon]="pinIcon()"
-        [ariaLabel]="pinAriaLabel()"
-        variant="ghost"
-        class="pin-button"
-        [class.pin-button--pinned]="isPinned()"
-        (click)="pinToggle.emit(); $event.stopPropagation()"
-      />
+      <span
+        class="dot-indicator"
+        [class.dot-indicator--on]="currentValue()"
+        [class.dot-indicator--off]="!currentValue()"
+        [class.dot-indicator--forced]="isForced()"
+        [title]="tooltipText()"
+        [attr.aria-label]="statusAriaLabel()"
+        role="img"
+      ></span>
       <div class="info">
         <h3>{{ title() }}</h3>
         @if (description()) {
-          <div class="description-wrapper">
-            <span
-              class="dot-indicator"
-              [class.dot-indicator--on]="displayValue()"
-              [class.dot-indicator--off]="!displayValue()"
-              [title]="tooltipText()"
-            ></span>
-            <p>{{ description() }}</p>
-          </div>
+          <p>{{ description() }}</p>
         }
       </div>
       <div class="actions">
+        @if (copyableId()) {
+          <button
+            type="button"
+            class="copy-button"
+            [class.copy-button--copied]="copyState() === 'copied'"
+            [attr.aria-label]="copyAriaLabel()"
+            [title]="copyState() === 'copied' ? 'Copied!' : 'Copy ID'"
+            (click)="copyId($event)"
+          >
+            @if (copyState() === 'copied') {
+              <span aria-hidden="true">✓</span>
+            } @else {
+              <span aria-hidden="true" class="copy-icon">⧉</span>
+            }
+          </button>
+        }
         @if (showApply() && isForced()) {
           <ndt-icon-button
             [icon]="applyState() === 'idle' ? 'export' : undefined"
@@ -65,15 +74,23 @@ import { IconName } from '../icons/icon.models';
                 <span class="apply-spinner"></span>
               }
               @case ('success') {
-                <span class="apply-icon">✓</span>
+                <span class="apply-icon" aria-hidden="true">✓</span>
               }
               @case ('error') {
-                <span class="apply-icon">✕</span>
+                <span class="apply-icon" aria-hidden="true">✕</span>
               }
             }
           </ndt-icon-button>
         }
         <ng-content />
+        <ndt-icon-button
+          [icon]="pinIcon()"
+          [ariaLabel]="pinAriaLabel()"
+          variant="ghost"
+          class="pin-button"
+          [class.pin-button--pinned]="isPinned()"
+          (click)="pinToggle.emit(); $event.stopPropagation()"
+        />
       </div>
     </div>
   `,
@@ -124,6 +141,12 @@ export class ToolbarListItemComponent {
   isPinned = input<boolean>(false);
 
   /**
+   * Optional identifier that can be copied to clipboard (e.g., flag ID).
+   * When provided, renders a copy button in the action row.
+   */
+  copyableId = input<string | undefined>(undefined);
+
+  /**
    * Emits when the user clicks the pin/unpin button
    */
   pinToggle = output<void>();
@@ -140,28 +163,42 @@ export class ToolbarListItemComponent {
   );
 
   /**
-   * Value to display in the dot indicator.
-   * For forced items: shows originalValue
-   * For non-forced items: shows currentValue
-   */
-  protected displayValue = computed(() => {
-    const originalValue = this.originalValue();
-    return this.isForced() && originalValue !== undefined
-      ? originalValue
-      : this.currentValue();
-  });
-
-  /**
-   * Tooltip text explaining the indicator state
+   * Tooltip text explaining the current state, with override context when forced
    */
   protected tooltipText = computed(() => {
-    const value = this.displayValue();
-    const state = value ? 'enabled' : 'disabled';
+    const current = this.currentValue() ? 'enabled' : 'disabled';
 
     if (this.isForced() && this.originalValue() !== undefined) {
-      return `Originally: ${state}`;
+      const original = this.originalValue() ? 'enabled' : 'disabled';
+      return `Currently ${current} (originally ${original})`;
     }
 
-    return `Current state: ${state}`;
+    return `Currently ${current}`;
   });
+
+  protected statusAriaLabel = computed(() => {
+    const current = this.currentValue() ? 'enabled' : 'disabled';
+    return this.isForced() ? `${current}, forced` : current;
+  });
+
+  protected readonly copyState = signal<'idle' | 'copied'>('idle');
+
+  protected copyAriaLabel = computed(() => {
+    const id = this.copyableId();
+    return id ? `Copy ID "${id}" to clipboard` : 'Copy ID';
+  });
+
+  protected async copyId(event: MouseEvent): Promise<void> {
+    event.stopPropagation();
+    const id = this.copyableId();
+    if (!id) return;
+
+    try {
+      await navigator.clipboard.writeText(id);
+      this.copyState.set('copied');
+      setTimeout(() => this.copyState.set('idle'), 1500);
+    } catch {
+      this.copyState.set('idle');
+    }
+  }
 }

@@ -17,6 +17,8 @@
   gap: var(--ndt-spacing-sm);
 
   &__label {
+    flex: 1 1 auto;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: var(--ndt-spacing-xs);
@@ -33,8 +35,10 @@
     }
   }
 
+  // Control is intrinsically sized; space-between on the parent pushes
+  // it to the right edge regardless of the description's length.
   &__control {
-    flex: 1;
+    flex: 0 0 auto;
   }
 }
 
@@ -43,63 +47,131 @@
   gap: var(--ndt-spacing-xs);
   justify-content: flex-end;
 }
+
+// Ghost-style icon buttons in instruction rows — the row text carries
+// the meaning; the button is an affordance, not chrome. No border at
+// rest, subtle hover.
+.instruction__control ::ng-deep .button {
+  border-color: transparent;
+  background: transparent;
+  width: 32px;
+  height: 32px;
+  min-height: 32px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: var(--ndt-hover-bg);
+    border-color: transparent;
+  }
+}
+
+// Danger-zone row: separator above (full-width top border, not a side
+// stripe — banned pattern). Keeps label/control styling the same; the
+// trash icon + confirm dialog do most of the destructive signalling.
+// Quiet danger-red tint on hover only, so muscle memory gets the cue
+// without adding chrome at rest.
+.instruction--danger-zone {
+  margin-top: var(--ndt-spacing-sm);
+  padding-top: var(--ndt-spacing-md);
+  border-top: 1px solid var(--ndt-border-subtle);
+
+  .instruction__control ::ng-deep .button:hover {
+    background: rgba(var(--ndt-danger-rgb), 0.1);
+    color: var(--ndt-danger);
+  }
+}
+
 .settings-container {
   display: flex;
   flex-direction: column;
   gap: var(--ndt-spacing-md);
-
-  .settings-actions {
-    display: flex;
-    gap: var(--ndt-spacing-md);
-
-    > * {
-      width: 50%;
-      min-width: 0;
-    }
-  }
 }
 
 .position-selector {
-  display: flex;
-  gap: var(--ndt-spacing-sm);
+  display: inline-flex;
+  padding: 2px;
+  background: var(--ndt-hover-bg);
+  border-radius: var(--ndt-border-radius-medium);
+  align-self: stretch;
+  width: 100%;
 
   .position-option {
     flex: 1;
-    padding: var(--ndt-spacing-sm) var(--ndt-spacing-md);
-    border: 1px solid var(--ndt-border-primary);
-    border-radius: var(--ndt-border-radius-medium);
+    padding: var(--ndt-spacing-xs) var(--ndt-spacing-sm);
+    border: 0;
     background: transparent;
-    color: var(--ndt-text-secondary);
+    color: var(--ndt-text-muted);
     font-size: var(--ndt-font-size-xs);
+    font-weight: 500;
     font-family: inherit;
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: background-color 0.15s ease, color 0.15s ease;
     text-transform: capitalize;
+    border-radius: calc(var(--ndt-border-radius-medium) - 2px);
+    white-space: nowrap;
 
-    &:hover {
-      background: var(--ndt-hover-bg);
+    &:hover:not(.position-option--active) {
       color: var(--ndt-text-primary);
     }
 
-    &--active {
-      background: var(--ndt-primary);
-      color: var(--ndt-text-on-primary);
-      border-color: var(--ndt-primary);
+    &:focus-visible {
+      outline: 2px solid rgba(var(--ndt-primary-rgb), 0.5);
+      outline-offset: 1px;
+    }
 
-      &:hover {
-        background: var(--ndt-primary);
-        color: var(--ndt-text-on-primary);
-      }
+    &--active {
+      background: var(--ndt-bg-primary);
+      color: var(--ndt-text-primary);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
     }
   }
 }
 
+// Resource strip — plain text links with small inline icons. Drops
+// the icon-tile pattern entirely; a "resource strip" is a row of
+// links, not a row of buttons.
 .footer-links {
   margin-top: auto;
-  padding-top: var(--ndt-spacing-lg);
+  padding-top: var(--ndt-spacing-md);
   border-top: 1px solid var(--ndt-border-subtle);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  gap: var(--ndt-spacing-lg);
+  align-items: center;
+  gap: var(--ndt-spacing-sm);
+  flex-wrap: wrap;
+
+  // Reshape each link-button from "icon tile stacked on label" to
+  // "small icon inline with text" — text-link feel, not button feel.
+  ::ng-deep .link-button {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--ndt-spacing-xs);
+    color: var(--ndt-text-muted);
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: var(--ndt-text-primary);
+    }
+  }
+
+  ::ng-deep .link-button__icon {
+    width: auto;
+    height: auto;
+    background: transparent;
+    padding: 0;
+
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+  ::ng-deep .link-button__text {
+    font-size: var(--ndt-font-size-xs);
+  }
+
 }

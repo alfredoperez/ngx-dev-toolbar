@@ -75,7 +75,7 @@ interface CreatedEntry {
             >
               @for (result of finderResults(); track result.id) {
                 <div class="finder-item">
-                  <a class="finder-item__link">{{ result.name }}</a>
+                  <span class="finder-item__link">{{ result.name }}</span>
                   <span class="finder-item__detail">{{ result.detail }}</span>
                 </div>
               }
@@ -181,7 +181,6 @@ interface CreatedEntry {
         padding: var(--ndt-spacing-xs) var(--ndt-spacing-sm);
         background: var(--ndt-background-secondary);
         border-radius: var(--ndt-border-radius-medium);
-        border-left: 2px solid rgb(34, 197, 94);
         transition: background-color 0.2s ease;
       }
 
