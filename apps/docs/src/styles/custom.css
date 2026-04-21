@@ -81,7 +81,10 @@ nav.sidebar-content a:hover {
   border: 1px solid var(--sl-color-gray-5);
   border-radius: 0.75rem;
   overflow: hidden;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    0 1px 2px rgba(132, 204, 22, 0.04),
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 0 0 1px rgba(132, 204, 22, 0.06);
   margin-inline: auto;
   max-width: 720px;
 }
@@ -106,4 +109,74 @@ nav.sidebar-content a:hover {
 
 .hero .action.minimal:hover {
   opacity: 1;
+}
+
+/* Hero title — give it real presence and rhythm */
+.hero h1 {
+  font-size: clamp(2.75rem, 6vw, 4.75rem);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  font-weight: 800;
+}
+
+.hero .tagline {
+  font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+  line-height: 1.55;
+  max-width: 58ch;
+  color: var(--sl-color-gray-2);
+}
+
+/* Hero image — lime-tinted depth so it lifts off the page */
+.hero .hero-html,
+.hero img {
+  border-radius: 0.875rem;
+  box-shadow:
+    0 1px 2px rgba(132, 204, 22, 0.06),
+    0 12px 40px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(132, 204, 22, 0.12);
+}
+
+/* Primary CTA — bigger, weightier, no longer competes with the
+   ghost button on equal footing */
+.hero .action.primary {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  padding: 0.875rem 1.625rem;
+  letter-spacing: -0.005em;
+}
+
+/* ── Content typography — distinct hierarchy steps ──── */
+
+/* h1 (page titles) — significant size jump from body */
+.sl-markdown-content > h1,
+main h1 {
+  font-size: clamp(2.25rem, 4vw, 3.25rem);
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  line-height: 1.08;
+  margin-block-end: 1.25rem;
+}
+
+/* h2 — clearly secondary but with breathing room above */
+.sl-markdown-content > h2 {
+  font-size: clamp(1.5rem, 2.4vw, 1.875rem);
+  letter-spacing: -0.012em;
+  font-weight: 700;
+  margin-block-start: 3rem;
+  margin-block-end: 0.875rem;
+  padding-block-start: 0.5rem;
+  border-block-start: 1px solid var(--sl-color-gray-5);
+}
+
+/* h3 — distinct from h2 without competing */
+.sl-markdown-content > h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-block-start: 2rem;
+}
+
+/* Body — slightly more comfortable */
+.sl-markdown-content > p {
+  line-height: 1.65;
+  max-width: 70ch;
 }
