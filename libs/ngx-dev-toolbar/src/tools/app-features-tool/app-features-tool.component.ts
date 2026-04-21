@@ -207,7 +207,6 @@ export class ToolbarAppFeaturesToolComponent {
   } as ToolbarWindowOptions;
 
   protected readonly filterOptions = [
-    { value: 'all', label: 'All Features' },
     { value: 'forced', label: 'Forced' },
     { value: 'enabled', label: 'Enabled' },
     { value: 'disabled', label: 'Disabled' },
