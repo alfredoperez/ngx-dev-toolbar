@@ -186,9 +186,9 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         --ndt-font-size-md: 1rem;
         --ndt-font-size-lg: 1.25rem;
         --ndt-font-size-xl: 2rem;
-        --ndt-primary: #df30d4;
-        --ndt-primary-rgb: 223, 48, 212;
-        --ndt-text-on-primary: rgb(255, 255, 255);
+        --ndt-primary: #84cc16;
+        --ndt-primary-rgb: 132, 204, 22;
+        --ndt-text-on-primary: rgb(17, 24, 39);
         --ndt-bg-primary: rgb(255, 255, 255);
         --ndt-bg-gradient: linear-gradient(180deg, rgb(243, 244, 246) 0%, rgba(243, 244, 246, 0.88) 100%);
         --ndt-text-primary: rgb(17, 24, 39);

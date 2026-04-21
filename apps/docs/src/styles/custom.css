@@ -1,11 +1,11 @@
 /* Starlight theme customization for Angular Toolbar docs */
 
 /* ── Color palette ───────────────────────────────────── */
-/* Accent aligns to the library's magenta primary (#df30d4) for brand cohesion. */
+/* Accent aligns to the library's lime-electric primary (#84cc16) for brand cohesion. */
 :root {
-  --sl-color-accent-low: #3b0d3a;
-  --sl-color-accent: #df30d4;
-  --sl-color-accent-high: #f7c2f3;
+  --sl-color-accent-low: #1a2308;
+  --sl-color-accent: #84cc16;
+  --sl-color-accent-high: #d9f99d;
   --sl-color-white: #ffffff;
   --sl-color-gray-1: #f0f2f5;
   --sl-color-gray-2: #c4c9d0;
@@ -30,12 +30,16 @@ header.header {
 
 /* ── Sidebar ─────────────────────────────────────────── */
 
-/* Active page — subtle tint and weight change, no colored stripe */
+/* Active page — subtle tint with weight change, no colored stripe.
+   Selectors are intentionally specific to win over Starlight's defaults
+   without needing !important. */
 nav.sidebar-content a[aria-current='page'],
 nav.sidebar-content a[aria-current='page']:hover,
-nav.sidebar-content a[aria-current='page']:focus {
-  background-color: rgba(223, 48, 212, 0.12);
-  color: var(--sl-color-accent-high);
+nav.sidebar-content a[aria-current='page']:focus,
+.sidebar-pane nav a[aria-current='page'],
+.sidebar-pane nav a[aria-current='page']:hover {
+  background-color: rgba(132, 204, 22, 0.12);
+  color: var(--sl-color-white);
   font-weight: 600;
 }
 
@@ -45,7 +49,7 @@ nav.sidebar-content a {
 }
 
 nav.sidebar-content a:hover {
-  background-color: rgba(223, 48, 212, 0.06);
+  background-color: rgba(132, 204, 22, 0.06);
 }
 
 /* Group headings — uppercase, smaller, letter-spaced, WCAG AA contrast */
@@ -62,8 +66,8 @@ nav.sidebar-content a:hover {
 }
 
 .card:hover {
-  border-color: rgba(223, 48, 212, 0.3);
-  box-shadow: 0 2px 12px rgba(223, 48, 212, 0.08);
+  border-color: rgba(132, 204, 22, 0.3);
+  box-shadow: 0 2px 12px rgba(132, 204, 22, 0.08);
 }
 
 /* ── Demo section ────────────────────────────────────── */

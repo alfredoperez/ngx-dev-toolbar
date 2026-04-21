@@ -90,7 +90,7 @@
 
 .confirm-dialog__btn--danger {
   background: var(--ndt-danger);
-  color: var(--ndt-text-on-primary);
+  color: rgb(255, 255, 255);
 
   &:hover {
     filter: brightness(0.95);
