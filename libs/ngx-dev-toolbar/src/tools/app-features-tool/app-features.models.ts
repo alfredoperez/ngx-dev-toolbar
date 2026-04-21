@@ -52,6 +52,12 @@ export interface ToolbarAppFeature {
    * Used to display what the feature's state was before being overridden
    */
   originalValue?: boolean;
+
+  /**
+   * Optional group name. Items without a group render in an "Other" section.
+   * @example 'Billing', 'Reporting'
+   */
+  group?: string;
 }
 
 /**

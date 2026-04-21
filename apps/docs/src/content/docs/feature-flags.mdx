@@ -148,6 +148,46 @@ If the callback throws, the item shows an error indicator.
 The Feature Flags tool integrates seamlessly with Angular's reactive state management using signals and observables.
 When a flag is toggled in the toolbar, your application receives the updated state through the `getForcedValues()` observable.
 
+## Grouping
+
+Organize related flags into collapsible sections by adding an optional `group` field to each flag.
+Groups appear as headers in the toolbar UI and can be expanded or collapsed; collapsed state persists across reloads.
+
+```typescript title="feature-flag.service.ts"
+this.featureFlagsService.setAvailableOptions([
+  {
+    id: 'dark-mode',
+    name: 'Dark Mode',
+    isEnabled: false,
+    isForced: false,
+    group: 'Appearance', // [!code highlight]
+  },
+  {
+    id: 'new-dashboard',
+    name: 'New Dashboard',
+    isEnabled: false,
+    isForced: false,
+    group: 'Dashboard', // [!code highlight]
+  },
+  {
+    id: 'beta-features',
+    name: 'Beta Features',
+    isEnabled: false,
+    isForced: false,
+    group: 'Experimental', // [!code highlight]
+  },
+]);
+```
+
+**Behavior:**
+
+- Pinned flags always appear at the top in a dedicated **Pinned** section, regardless of their group
+- Named groups render alphabetically with each group's flags sorted alphabetically inside
+- Flags without a `group` field appear under an **Other** section at the bottom
+- Each group header shows the item count and is collapsible
+
+**Backward compatible:** if no flag has a `group` field, the toolbar renders the flat list exactly as before — no headers, no behavioral change.
+
 ## Related Tools
 
 - [Permissions Tool](/ngx-dev-toolbar/permissions/) — Test permission-based access control
