@@ -27,6 +27,15 @@ export class DemoPermissionsService {
     initialValue: [],
   });
 
+  // Group assignments — exercises the new tool grouping UX
+  private readonly groups: Record<string, string> = {
+    'can-add-users': 'Admin',
+    'can-add-permissions': 'Admin',
+    'can-admin': 'Admin',
+    'can-manage-comments': 'Content',
+    'can-view-dashboard': 'Dashboard',
+  };
+
   constructor() {
     // Register permissions with the toolbar when they load
     effect(() => {
@@ -38,6 +47,7 @@ export class DemoPermissionsService {
             name: p.name,
             isGranted: p.granted,
             isForced: false,
+            group: this.groups[p.id],
           }))
         );
       }

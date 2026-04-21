@@ -15,6 +15,8 @@ export interface ToolbarPermission {
   isForced: boolean;
   /** Original value before forcing (only present when isForced is true) */
   originalValue?: boolean;
+  /** Optional group name. Items without a group render in an "Other" section. */
+  group?: string;
 }
 
 /**

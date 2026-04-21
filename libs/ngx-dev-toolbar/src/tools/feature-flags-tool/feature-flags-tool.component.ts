@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,25 +8,29 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ToolbarListComponent } from '../../components/list/list.component';
+import { ToolbarListGroupComponent } from '../../components/list-group/list-group.component';
 import { ToolbarListItemComponent } from '../../components/list-item/list-item.component';
+import { ToolbarListComponent } from '../../components/list/list.component';
 import { ToolbarSelectComponent } from '../../components/select/select.component';
-import { ToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
 import { ToolbarToolHeaderComponent } from '../../components/tool-header/tool-header.component';
+import { ToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
 import { ToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
 import { ToolViewState } from '../../models/tool-view-state.models';
+import { groupItems } from '../../utils/group-items.util';
 import { ToolbarStorageService } from '../../utils/storage.service';
 import { ToolbarInternalFeatureFlagService } from './feature-flags-internal.service';
-import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
+import { FeatureFlagFilter, ToolbarFlag } from './feature-flags.models';
 @Component({
   selector: 'ndt-feature-flags-tool',
   standalone: true,
   imports: [
+    NgTemplateOutlet,
     FormsModule,
     ToolbarToolComponent,
     ToolbarToolHeaderComponent,
     ToolbarSelectComponent,
     ToolbarListComponent,
+    ToolbarListGroupComponent,
     ToolbarListItemComponent,
   ],
   template: `
@@ -52,7 +57,59 @@ import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
           emptyMessage="No flags found"
           noResultsMessage="No flags found matching your filter"
         >
-          @for (flag of filteredFlags(); track flag.id) {
+          @if (hasAnyGroups()) {
+            @if (groupedFlags().pinned.length) {
+              <ndt-list-group
+                name="Pinned"
+                [count]="groupedFlags().pinned.length"
+                [collapsed]="isCollapsed('Pinned')"
+                (collapsedChange)="setCollapsed('Pinned', $event)"
+              >
+                @for (flag of groupedFlags().pinned; track flag.id) {
+                  <ng-container
+                    *ngTemplateOutlet="flagItem; context: { $implicit: flag }"
+                  />
+                }
+              </ndt-list-group>
+            }
+            @for (group of groupedFlags().groups; track group.name) {
+              <ndt-list-group
+                [name]="group.name"
+                [count]="group.items.length"
+                [collapsed]="isCollapsed(group.name)"
+                (collapsedChange)="setCollapsed(group.name, $event)"
+              >
+                @for (flag of group.items; track flag.id) {
+                  <ng-container
+                    *ngTemplateOutlet="flagItem; context: { $implicit: flag }"
+                  />
+                }
+              </ndt-list-group>
+            }
+            @if (groupedFlags().ungrouped.length) {
+              <ndt-list-group
+                name="Other"
+                [count]="groupedFlags().ungrouped.length"
+                [collapsed]="isCollapsed('Other')"
+                (collapsedChange)="setCollapsed('Other', $event)"
+              >
+                @for (flag of groupedFlags().ungrouped; track flag.id) {
+                  <ng-container
+                    *ngTemplateOutlet="flagItem; context: { $implicit: flag }"
+                  />
+                }
+              </ndt-list-group>
+            }
+          } @else {
+            @for (flag of flatFlags(); track flag.id) {
+              <ng-container
+                *ngTemplateOutlet="flagItem; context: { $implicit: flag }"
+              />
+            }
+          }
+        </ndt-list>
+
+        <ng-template #flagItem let-flag>
           <ndt-list-item
             [title]="flag.name"
             [description]="flag.description"
@@ -75,8 +132,7 @@ import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
               size="small"
             />
           </ndt-list-item>
-          }
-        </ndt-list>
+        </ng-template>
       </div>
     </ndt-toolbar-tool>
   `,
@@ -105,6 +161,7 @@ export class ToolbarFeatureFlagsToolComponent {
   protected readonly activeFilter = signal<FeatureFlagFilter>('all');
   protected readonly searchQuery = signal<string>('');
   protected readonly pinnedIds = signal<Set<string>>(new Set());
+  protected readonly collapsedGroups = signal<Set<string>>(new Set());
 
   constructor() {
     this.loadViewState();
@@ -116,6 +173,7 @@ export class ToolbarFeatureFlagsToolComponent {
         filter: this.activeFilter(),
         sortOrder: 'asc',
         pinnedIds: [...this.pinnedIds()],
+        collapsedGroups: [...this.collapsedGroups()],
       };
       this.storageService.set(this.VIEW_STATE_KEY, state);
     });
@@ -133,6 +191,9 @@ export class ToolbarFeatureFlagsToolComponent {
         if (saved.pinnedIds?.length) {
           this.pinnedIds.set(new Set(saved.pinnedIds));
         }
+        if (saved.collapsedGroups?.length) {
+          this.collapsedGroups.set(new Set(saved.collapsedGroups));
+        }
       }
     } catch {
       // Use defaults on error
@@ -149,16 +210,18 @@ export class ToolbarFeatureFlagsToolComponent {
     return count.toString();
   });
   protected readonly hasNoFlags = computed(() => this.flags().length === 0);
-  protected readonly filteredFlags = computed(() => {
-    const filtered = this.flags().filter((flag) => {
+
+  // Filter step — search + filter applied to the raw flag list
+  private readonly filteredFlags = computed(() => {
+    return this.flags().filter((flag) => {
       const searchTerm = this.searchQuery().toLowerCase();
       const flagName = flag.name.toLowerCase();
       const flagDescription = flag.description?.toLowerCase() ?? '';
 
       const matchesSearch =
         !this.searchQuery() ||
-        flagName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        flagDescription.toLowerCase().includes(searchTerm.toLowerCase());
+        flagName.includes(searchTerm) ||
+        flagDescription.includes(searchTerm);
 
       const matchesFilter =
         this.activeFilter() === 'all' ||
@@ -168,16 +231,23 @@ export class ToolbarFeatureFlagsToolComponent {
 
       return matchesSearch && matchesFilter;
     });
-
-    const pinned = this.pinnedIds();
-    // Sort pinned first, then alphabetically within each group
-    return filtered.sort((a, b) => {
-      const aPinned = pinned.has(a.id);
-      const bPinned = pinned.has(b.id);
-      if (aPinned !== bPinned) return aPinned ? -1 : 1;
-      return a.name.localeCompare(b.name);
-    });
   });
+
+  // Grouped view — pinned + named groups + ungrouped
+  protected readonly groupedFlags = computed(() =>
+    groupItems(this.filteredFlags(), this.pinnedIds())
+  );
+
+  // Backward-compat flat list (pinned-first then ungrouped) used when no item has a group
+  protected readonly flatFlags = computed(() => {
+    const { pinned, ungrouped } = this.groupedFlags();
+    return [...pinned, ...ungrouped];
+  });
+
+  protected readonly hasAnyGroups = computed(
+    () => this.groupedFlags().groups.length > 0
+  );
+
   protected readonly hasNoFilteredFlags = computed(
     () => this.filteredFlags().length === 0
   );
@@ -249,6 +319,22 @@ export class ToolbarFeatureFlagsToolComponent {
         next.delete(flagId);
       } else {
         next.add(flagId);
+      }
+      return next;
+    });
+  }
+
+  protected isCollapsed(name: string): boolean {
+    return this.collapsedGroups().has(name);
+  }
+
+  protected setCollapsed(name: string, collapsed: boolean): void {
+    this.collapsedGroups.update((set) => {
+      const next = new Set(set);
+      if (collapsed) {
+        next.add(name);
+      } else {
+        next.delete(name);
       }
       return next;
     });
