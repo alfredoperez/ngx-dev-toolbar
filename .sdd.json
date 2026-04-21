@@ -1,0 +1,11 @@
+{
+  "branchStage": "implement",
+  "branchNameFormat": "{type}/{slug}",
+  "buildCommand": "nx affected -t build",
+  "testCommand": "nx affected -t test",
+  "hooks": {
+    "pre:commit": [
+      { "shell": "npm run code-check", "blocking": true }
+    ]
+  }
+}
