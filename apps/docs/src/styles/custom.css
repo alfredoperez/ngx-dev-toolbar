@@ -86,12 +86,14 @@ nav.sidebar-content a:hover {
     0 8px 32px rgba(0, 0, 0, 0.4),
     inset 0 0 0 1px rgba(132, 204, 22, 0.06);
   margin-inline: auto;
-  max-width: 720px;
+  max-width: 560px;
 }
 
-.demo-container img {
+.demo-container img,
+.demo-container > img {
   display: block;
   width: 100%;
+  max-width: 100%;
   height: auto;
 }
 
