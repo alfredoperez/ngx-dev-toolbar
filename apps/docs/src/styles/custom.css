@@ -119,6 +119,31 @@ nav.sidebar-content a:hover {
   line-height: 1.02;
   letter-spacing: -0.025em;
   font-weight: 800;
+  position: relative;
+}
+
+/* Mono eyebrow above the title — anchors "this is a library, not a marketing page" */
+.hero h1::before {
+  content: 'ngx-dev-toolbar · v4';
+  display: block;
+  font-family: var(--sl-font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sl-color-accent);
+  margin-bottom: 1.25rem;
+  line-height: 1;
+}
+
+/* Header wordmark — mono, tracked, quieter than the page H1 */
+header .site-title,
+header a.site-title {
+  font-family: var(--sl-font-mono);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-transform: lowercase;
 }
 
 .hero .tagline {

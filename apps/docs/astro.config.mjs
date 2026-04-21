@@ -9,7 +9,7 @@ export default defineConfig({
   outDir: '../../dist/apps/docs',
   integrations: [
     starlight({
-      title: 'Angular Toolbar',
+      title: 'ngx-dev-toolbar',
       pagefind: false,
       plugins: [starlightLinksValidator({ exclude: ['/ngx-dev-toolbar/demo/'] })],
       social: [
