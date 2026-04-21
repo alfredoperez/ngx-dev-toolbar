@@ -1,3 +1,20 @@
+## 4.3.0 (2026-04-21)
+
+### Features
+
+- design pass — Stripe-violet brand, unified UX, docs refresh ([#43](https://github.com/alfredoperez/ngx-dev-toolbar/pull/43))
+- **toolbar:** add custom tools API and tabs component ([#41](https://github.com/alfredoperez/ngx-dev-toolbar/pull/41))
+- **toolbar:** add collapsible groups to flag/feature/permission tools ([2e26563](https://github.com/alfredoperez/ngx-dev-toolbar/commit/2e26563))
+- **toolbar:** add collapsible groups to flag/feature/permission tools ([#44](https://github.com/alfredoperez/ngx-dev-toolbar/pull/44))
+
+### Bug Fixes
+
+- **toolbar:** align pin button with list item title ([#42](https://github.com/alfredoperez/ngx-dev-toolbar/pull/42))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 ## 4.2.1 (2026-04-10)
 
 ### Bug Fixes
