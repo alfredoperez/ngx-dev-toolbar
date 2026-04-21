@@ -14,8 +14,10 @@ import {
     <dialog
       #dialog
       class="confirm-dialog"
+      tabindex="-1"
       [class.confirm-dialog--danger]="danger()"
       (click)="onBackdropClick($event)"
+      (keydown.escape)="cancel()"
       (close)="onDialogClose()"
     >
       <div class="confirm-dialog__content">
