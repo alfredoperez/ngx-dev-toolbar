@@ -59,9 +59,6 @@ import { AppFeatureFilter, ToolbarAppFeature } from './app-features.models';
           searchAriaLabel="Search app features"
           filterAriaLabel="Filter app features by state"
           [filterOptions]="filterOptions"
-          [totalCount]="features().length"
-          [filteredCount]="filteredFeatures().length"
-          itemLabel="features"
         />
 
         <ndt-list

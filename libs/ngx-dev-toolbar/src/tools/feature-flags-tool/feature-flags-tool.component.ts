@@ -44,9 +44,6 @@ import { ToolbarFlag, FeatureFlagFilter } from './feature-flags.models';
           searchAriaLabel="Search feature flags"
           filterAriaLabel="Filter feature flags by state"
           [filterOptions]="filterOptions"
-          [totalCount]="flags().length"
-          [filteredCount]="filteredFlags().length"
-          itemLabel="flags"
         />
 
         <ndt-list

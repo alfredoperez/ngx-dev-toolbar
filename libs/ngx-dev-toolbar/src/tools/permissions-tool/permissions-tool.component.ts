@@ -48,9 +48,6 @@ import {
           searchAriaLabel="Search permissions"
           filterAriaLabel="Filter permissions by state"
           [filterOptions]="filterOptions"
-          [totalCount]="permissions().length"
-          [filteredCount]="filteredPermissions().length"
-          itemLabel="permissions"
         />
 
         <ndt-list

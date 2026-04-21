@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   input,
   model,
 } from '@angular/core';
@@ -59,12 +58,6 @@ export interface ToolHeaderFilterOption {
           }
         </div>
       }
-
-      @if (showCount()) {
-        <span class="result-count" aria-live="polite" aria-atomic="true">
-          {{ countLabel() }}
-        </span>
-      }
     </div>
   `,
   styleUrls: ['./tool-header.component.scss'],
@@ -78,26 +71,6 @@ export class ToolbarToolHeaderComponent {
   searchAriaLabel = input<string>('');
   filterOptions = input<ToolHeaderFilterOption[]>([]);
   filterAriaLabel = input<string>('Filter items');
-
-  totalCount = input<number | undefined>(undefined);
-  filteredCount = input<number | undefined>(undefined);
-  itemLabel = input<string>('');
-
-  protected readonly showCount = computed(() => this.totalCount() !== undefined);
-
-  protected readonly countLabel = computed(() => {
-    const total = this.totalCount();
-    const filtered = this.filteredCount();
-    const label = this.itemLabel();
-
-    if (total === undefined) return '';
-
-    if (filtered !== undefined && filtered !== total) {
-      return label ? `${filtered} of ${total} ${label}` : `${filtered} of ${total}`;
-    }
-
-    return label ? `${total} ${label}` : `${total}`;
-  });
 
   protected clearSearch(): void {
     this.searchQuery.set('');
