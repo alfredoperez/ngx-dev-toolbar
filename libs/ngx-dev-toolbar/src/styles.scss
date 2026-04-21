@@ -219,9 +219,9 @@ $z-indices: (
   --ndt-background-secondary: var(--ndt-bg-primary);
   --ndt-background-hover: var(--ndt-hover-bg);
 
-  --ndt-primary: #84cc16;
-  --ndt-primary-rgb: 132, 204, 22;
-  --ndt-text-on-primary: rgb(17, 24, 39);
+  --ndt-primary: #635BFF;
+  --ndt-primary-rgb: 99, 91, 255;
+  --ndt-text-on-primary: #{$color-white};
 
   --ndt-border-color: var(--ndt-border-primary);
 

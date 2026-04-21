@@ -37,9 +37,9 @@
   --ndt-font-size-xl: 2rem;
 
   /* Primary Brand Color */
-  --ndt-primary: #84cc16;
-  --ndt-primary-rgb: 132, 204, 22;
-  --ndt-text-on-primary: rgb(17, 24, 39);
+  --ndt-primary: #635BFF;
+  --ndt-primary-rgb: 99, 91, 255;
+  --ndt-text-on-primary: rgb(255, 255, 255);
 
   /* Light Theme (Default) */
   --ndt-bg-primary: rgb(255, 255, 255);
@@ -83,6 +83,9 @@
   --ndt-success-rgb: 34, 197, 94;
   --ndt-danger: rgb(239, 68, 68);
   --ndt-danger-rgb: 239, 68, 68;
+  /* Forced/overridden state — distinct from primary so it always pops */
+  --ndt-forced: #f59e0b;
+  --ndt-forced-rgb: 245, 158, 11;
 }
 
 /* Ensure overlay panels have proper styling */

@@ -23,7 +23,7 @@ $list-item-easing: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .list-item.list-item--forced {
-  background: rgba(var(--ndt-primary-rgb), 0.06);
+  background: rgba(var(--ndt-forced-rgb), 0.08);
 }
 
 .list-item > .dot-indicator {
@@ -90,8 +90,8 @@ $list-item-easing: cubic-bezier(0.22, 1, 0.36, 1);
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--ndt-primary);
-  background: rgba(var(--ndt-primary-rgb), 0.1);
+  color: var(--ndt-forced);
+  background: rgba(var(--ndt-forced-rgb), 0.14);
   padding: 1px 5px;
   border-radius: var(--ndt-border-radius-small);
   cursor: help;
