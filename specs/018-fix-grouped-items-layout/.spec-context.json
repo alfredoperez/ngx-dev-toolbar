@@ -1,0 +1,268 @@
+{
+  "workflow": "sdd",
+  "currentStep": "implement",
+  "currentTask": null,
+  "progress": "commit-review",
+  "next": "implement",
+  "updated": "2026-04-22",
+  "workingBranch": "fix/018-fix-grouped-items-layout",
+  "last_action": "T002 complete — new regression test 'registers the defensive overlay rule for ndt-list-group' passes; full library test suite (388 tests / 20 suites) stays green.",
+  "files_modified": [
+    "libs/ngx-dev-toolbar/src/global-theme.scss",
+    "libs/ngx-dev-toolbar/src/components/list-group/list-group.component.spec.ts"
+  ],
+  "task_summaries": {
+    "T001": {
+      "status": "DONE",
+      "did": "Appended a defensive-CSS block after the existing .ndt-overlay-panel box-sizing rule in global-theme.scss that re-asserts flex layout for ndt-list-group, .header (row), .content (column), .chevron (inline-block), and .name/.count (inline) when rendered outside Shadow DOM via CDK Overlay. Added contain: layout style on ndt-list-group. Added a leading SCSS comment pointing back to list-group.component.scss per plan Risk #1.",
+      "files": [
+        "libs/ngx-dev-toolbar/src/global-theme.scss"
+      ],
+      "concerns": []
+    },
+    "T002": {
+      "status": "DONE_WITH_CONCERNS",
+      "did": "Added a second describe block 'ToolbarListGroupComponent inside .ndt-overlay-panel (defensive CSS)' with a new OverlayHostComponent and a test that injects the defensive CSS rules into document.head and asserts document.styleSheets contains .ndt-overlay-panel ndt-list-group with flex-direction: column and .header with flex-direction: row. Used the task's documented jsdom fallback (inline comment explains) rather than getComputedStyle since jsdom lacks a layout engine.",
+      "files": [
+        "libs/ngx-dev-toolbar/src/components/list-group/list-group.component.spec.ts"
+      ],
+      "concerns": [
+        "Test asserts the CSS rule exists in document.styleSheets rather than getComputedStyle layout values, because jsdom has no layout engine. The test catches removal/renaming of the defensive block but cannot prove the browser actually renders flex. Manual in-browser verification per plan 'Testing Strategy → Manual' is still required for layout certainty."
+      ]
+    }
+  },
+  "decisions": [
+    "Did not redeclare the .chevron--expanded transform in the overlay block. Rationale: the component rule already fires at identical specificity and wins on declaration order; redeclaring would create the silent-divergence risk flagged in plan Risk #1.",
+    "Chose jsdom stylesheet-enumeration form (task fallback) over getComputedStyle-based flex assertion. Rationale: jsdom has no layout engine — getComputedStyle would return declared values, not computed flex values, making the assertion unreliable."
+  ],
+  "concerns": [
+    {
+      "task": "T002",
+      "note": "Test verifies CSS rule presence, not rendered layout — jsdom limitation. Rendering is covered only by the manual browser-reset check in plan's Testing Strategy."
+    }
+  ],
+  "approach": "Mirror the ndt-list-group layout rules into the existing .ndt-overlay-panel defensive-CSS block in global-theme.scss, using compound selectors whose specificity beats host-app resets like Tailwind Preflight.",
+  "selectedAt": "2026-04-22T12:43:41Z",
+  "specName": "Fix Grouped Items Layout",
+  "branch": "main",
+  "type": "fix",
+  "createdAt": "2026-04-22T12:43:41Z",
+  "auto": true,
+  "step_summaries": {
+    "specify": {
+      "complexity": "normal",
+      "requirements": 8,
+      "scenarios": 5,
+      "key_finding": "Tool overlays attach to document.body via CDK Overlay, so they render outside the toolbar's ShadowDom root — host-app CSS resets can defeat :host layout rules on ndt-list-group; fix belongs in the .ndt-overlay-panel defensive layer in global-theme.scss."
+    },
+    "plan": {
+      "approach_summary": "Mirror the ndt-list-group layout rules into the existing .ndt-overlay-panel defensive-CSS block in global-theme.scss, using compound selectors whose specificity beats host-app resets like Tailwind Preflight.",
+      "files_planned": 2,
+      "risks": [
+        "Specificity collision with future component edits: if list-group.component.scss later switches to display: grid, the overlay block silently keeps forcing display: flex and diverges between in-Shadow and out-of-Shadow contexts. Mitigation: add an SCSS comment pointing back to list-group.component.scss.",
+        "SCSS bundle budget (R007): budget pressure lives in presets-tool.component.scss, not global-theme.scss — adding ~25 lines has no budget effect. Low risk.",
+        "Chevron rotation selector: chevron uses .chevron--expanded class, not aria-expanded — overlay rule must target the class so rotation keeps working outside Shadow DOM."
+      ]
+    }
+  },
+  "stepHistory": {
+    "specify": {
+      "startedAt": "2026-04-22T12:43:41Z",
+      "completedAt": "2026-04-22T13:01:45.108Z"
+    },
+    "plan": {
+      "startedAt": "2026-04-22T13:01:45.111Z",
+      "completedAt": "2026-04-22T13:05:40.416Z"
+    },
+    "tasks": {
+      "startedAt": "2026-04-22T13:05:40.418Z",
+      "completedAt": "2026-04-22T14:03:12.893Z",
+      "status": "ready-to-implement",
+      "substeps": {
+        "generate": {
+          "startedAt": "2026-04-22T13:06:00.000Z",
+          "completedAt": "2026-04-22T13:08:00.000Z"
+        }
+      }
+    },
+    "implement": {
+      "startedAt": "2026-04-22T14:03:12.894Z",
+      "completedAt": null
+    }
+  },
+  "status": "implementing",
+  "step_summaries_tasks": {
+    "phase1_count": 2,
+    "sequential": true,
+    "files_touched": 2
+  },
+  "transitions": [
+    {
+      "step": "specify",
+      "substep": "parsing",
+      "from": null,
+      "by": "sdd",
+      "at": "2026-04-22T12:43:41Z"
+    },
+    {
+      "step": "specify",
+      "substep": "exploring",
+      "from": {
+        "step": "specify",
+        "substep": "parsing"
+      },
+      "by": "sdd",
+      "at": "2026-04-22T12:43:42Z"
+    },
+    {
+      "step": "specify",
+      "substep": "detecting",
+      "from": {
+        "step": "specify",
+        "substep": "exploring"
+      },
+      "by": "sdd",
+      "at": "2026-04-22T12:43:43Z"
+    },
+    {
+      "step": "specify",
+      "substep": "writing-spec",
+      "from": {
+        "step": "specify",
+        "substep": "detecting"
+      },
+      "by": "sdd",
+      "at": "2026-04-22T12:43:44Z"
+    },
+    {
+      "step": "specify",
+      "substep": null,
+      "from": {
+        "step": "specify",
+        "substep": "writing-spec"
+      },
+      "by": "sdd",
+      "at": "2026-04-22T12:43:45Z"
+    },
+    {
+      "step": "specify",
+      "substep": null,
+      "from": {
+        "step": "specify",
+        "substep": null
+      },
+      "by": "extension",
+      "at": "2026-04-22T13:01:45.108Z"
+    },
+    {
+      "step": "plan",
+      "substep": null,
+      "from": {
+        "step": "specify",
+        "substep": null
+      },
+      "by": "extension",
+      "at": "2026-04-22T13:01:45.111Z"
+    },
+    {
+      "step": "plan",
+      "substep": "writing-plan",
+      "from": {
+        "step": "plan",
+        "substep": null
+      },
+      "by": "sdd",
+      "at": "2026-04-22T13:02:10Z"
+    },
+    {
+      "step": "plan",
+      "substep": null,
+      "from": {
+        "step": "plan",
+        "substep": "writing-plan"
+      },
+      "by": "sdd",
+      "at": "2026-04-22T13:02:30Z"
+    },
+    {
+      "step": "plan",
+      "substep": null,
+      "from": {
+        "step": "plan",
+        "substep": null
+      },
+      "by": "extension",
+      "at": "2026-04-22T13:05:40.416Z"
+    },
+    {
+      "step": "tasks",
+      "substep": null,
+      "from": {
+        "step": "plan",
+        "substep": null
+      },
+      "by": "extension",
+      "at": "2026-04-22T13:05:40.418Z"
+    },
+    {
+      "step": "tasks",
+      "substep": "generate",
+      "from": {
+        "step": "tasks",
+        "substep": null
+      },
+      "by": "ai",
+      "at": "2026-04-22T13:06:00.000Z"
+    },
+    {
+      "step": "tasks",
+      "substep": null,
+      "from": {
+        "step": "tasks",
+        "substep": "generate"
+      },
+      "by": "ai",
+      "at": "2026-04-22T13:08:00.000Z"
+    },
+    {
+      "step": "tasks",
+      "substep": null,
+      "from": {
+        "step": "tasks",
+        "substep": null
+      },
+      "by": "extension",
+      "at": "2026-04-22T14:03:12.893Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "from": {
+        "step": "tasks",
+        "substep": null
+      },
+      "by": "extension",
+      "at": "2026-04-22T14:03:12.894Z"
+    },
+    {
+      "step": "implement",
+      "substep": "T001",
+      "from": {
+        "step": "implement",
+        "substep": null
+      },
+      "by": "ai",
+      "at": "2026-04-22T14:05:00.000Z"
+    },
+    {
+      "step": "implement",
+      "substep": "T002",
+      "from": {
+        "step": "implement",
+        "substep": "T001"
+      },
+      "by": "ai",
+      "at": "2026-04-22T14:12:15.000Z"
+    }
+  ]
+}

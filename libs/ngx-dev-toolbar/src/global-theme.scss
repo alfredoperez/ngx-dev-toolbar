@@ -106,6 +106,38 @@
   box-sizing: border-box;
 }
 
+/* Defensive layout for ndt-list-group when rendered inside a CDK overlay panel
+   (outside the toolbar's Shadow DOM). Mirrors the intent of
+   components/list-group/list-group.component.scss so host-app CSS resets
+   (Tailwind Preflight, Normalize, Bootstrap reboot, `* { display: block }`)
+   cannot break the grouped-items layout. Keep these rules in sync if the
+   component stylesheet changes its display model. */
+.ndt-overlay-panel ndt-list-group {
+  display: flex;
+  flex-direction: column;
+  contain: layout style;
+}
+
+.ndt-overlay-panel ndt-list-group .header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.ndt-overlay-panel ndt-list-group .content {
+  display: flex;
+  flex-direction: column;
+}
+
+.ndt-overlay-panel ndt-list-group .chevron {
+  display: inline-block;
+}
+
+.ndt-overlay-panel ndt-list-group .name,
+.ndt-overlay-panel ndt-list-group .count {
+  display: inline;
+}
+
 /* Slide-and-scale entry animations for tool overlay windows.
    Combining translate + scale with a transform-origin near the
    toolbar makes the window feel like it pops out of the button
