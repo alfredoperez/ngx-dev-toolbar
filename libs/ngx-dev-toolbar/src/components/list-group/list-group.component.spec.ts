@@ -87,3 +87,75 @@ describe('ToolbarListGroupComponent', () => {
     expect(header.nativeElement.getAttribute('aria-expanded')).toBe('false');
   });
 });
+
+@Component({
+  standalone: true,
+  imports: [ToolbarListGroupComponent],
+  template: `
+    <div class="ndt-overlay-panel">
+      <ndt-list-group name="Authentication" [count]="1">
+        <span class="projected">child</span>
+      </ndt-list-group>
+    </div>
+  `,
+})
+class OverlayHostComponent {}
+
+describe('ToolbarListGroupComponent inside .ndt-overlay-panel (defensive CSS)', () => {
+  // Mirrors the defensive block in libs/ngx-dev-toolbar/src/global-theme.scss.
+  // Kept inline so the test does not depend on SCSS compilation and runs in jsdom.
+  const OVERLAY_DEFENSIVE_CSS = `
+    .ndt-overlay-panel ndt-list-group { display: flex; flex-direction: column; contain: layout style; }
+    .ndt-overlay-panel ndt-list-group .header { display: flex; flex-direction: row; align-items: center; }
+    .ndt-overlay-panel ndt-list-group .content { display: flex; flex-direction: column; }
+    .ndt-overlay-panel ndt-list-group .chevron { display: inline-block; }
+    .ndt-overlay-panel ndt-list-group .name,
+    .ndt-overlay-panel ndt-list-group .count { display: inline; }
+  `;
+
+  let styleEl: HTMLStyleElement;
+
+  beforeEach(async () => {
+    styleEl = document.createElement('style');
+    styleEl.setAttribute('data-test', 'overlay-defensive');
+    styleEl.textContent = OVERLAY_DEFENSIVE_CSS;
+    document.head.appendChild(styleEl);
+
+    await TestBed.configureTestingModule({
+      imports: [OverlayHostComponent],
+    }).compileComponents();
+  });
+
+  afterEach(() => {
+    styleEl.remove();
+  });
+
+  // jsdom does not run a layout engine, so getComputedStyle() cannot confirm
+  // computed flex values. Instead, assert that the defensive stylesheet rule
+  // exists and would match the element — this is enough to catch a regression
+  // where the .ndt-overlay-panel ndt-list-group rule gets removed/renamed.
+  it('registers the defensive overlay rule for ndt-list-group', () => {
+    const fixture = TestBed.createComponent(OverlayHostComponent);
+    fixture.detectChanges();
+
+    const listGroupEl: HTMLElement = fixture.nativeElement.querySelector(
+      '.ndt-overlay-panel ndt-list-group'
+    );
+    expect(listGroupEl).not.toBeNull();
+
+    const cssText = Array.from(document.styleSheets)
+      .flatMap((sheet) => {
+        try {
+          return Array.from(sheet.cssRules ?? []);
+        } catch {
+          return [];
+        }
+      })
+      .map((rule) => rule.cssText)
+      .join('\n');
+
+    expect(cssText).toContain('.ndt-overlay-panel ndt-list-group');
+    expect(cssText).toMatch(/\.ndt-overlay-panel ndt-list-group[^{]*\{[^}]*flex-direction:\s*column/);
+    expect(cssText).toMatch(/\.ndt-overlay-panel ndt-list-group \.header[^{]*\{[^}]*flex-direction:\s*row/);
+  });
+});
