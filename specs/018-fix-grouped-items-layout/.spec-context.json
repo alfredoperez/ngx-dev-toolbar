@@ -1,9 +1,12 @@
 {
   "workflow": "sdd",
-  "currentStep": "implement",
+  "currentStep": "done",
   "currentTask": null,
-  "progress": "commit-review",
-  "next": "implement",
+  "progress": null,
+  "next": "done",
+  "checkpointStatus": { "commit": true, "pr": true },
+  "prUrl": "https://github.com/alfredoperez/ngx-dev-toolbar/pull/47",
+  "commitSha": "1814ee5",
   "updated": "2026-04-22",
   "workingBranch": "fix/018-fix-grouped-items-layout",
   "last_action": "T002 complete — new regression test 'registers the defensive overlay rule for ndt-list-group' passes; full library test suite (388 tests / 20 suites) stays green.",
@@ -87,10 +90,16 @@
     },
     "implement": {
       "startedAt": "2026-04-22T14:03:12.894Z",
-      "completedAt": null
+      "completedAt": "2026-04-22T14:30:00.000Z",
+      "substeps": {
+        "run-tests": {
+          "startedAt": "2026-04-22T14:10:00.000Z",
+          "completedAt": "2026-04-22T14:11:00.000Z"
+        }
+      }
     }
   },
-  "status": "implementing",
+  "status": "completed",
   "step_summaries_tasks": {
     "phase1_count": 2,
     "sequential": true,
@@ -263,6 +272,26 @@
       },
       "by": "ai",
       "at": "2026-04-22T14:12:15.000Z"
+    },
+    {
+      "step": "implement",
+      "substep": "run-tests",
+      "from": {
+        "step": "implement",
+        "substep": "T002"
+      },
+      "by": "ai",
+      "at": "2026-04-22T14:20:00.000Z"
+    },
+    {
+      "step": "done",
+      "substep": null,
+      "from": {
+        "step": "implement",
+        "substep": "run-tests"
+      },
+      "by": "ai",
+      "at": "2026-04-22T14:30:00.000Z"
     }
   ]
 }
