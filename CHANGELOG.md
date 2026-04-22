@@ -1,3 +1,17 @@
+## 4.3.1 (2026-04-22)
+
+### Bug Fixes
+
+- **toolbar:** preserve grouped items layout in host-app CSS resets ([#47](https://github.com/alfredoperez/ngx-dev-toolbar/pull/47))
+
+### Documentation
+
+- redesign landing page and rebrand to Angular Toolbar ([#45](https://github.com/alfredoperez/ngx-dev-toolbar/pull/45))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 ## 4.3.0 (2026-04-21)
 
 ### Features
