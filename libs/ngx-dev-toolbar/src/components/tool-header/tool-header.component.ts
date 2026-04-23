@@ -71,25 +71,13 @@ export class ToolbarToolHeaderComponent {
   searchAriaLabel = input<string>('');
   filterOptions = input<ToolHeaderFilterOption[]>([]);
   filterAriaLabel = input<string>('Filter items');
-  /**
-   * Value to set when the user clicks an already-active filter chip
-   * (i.e., to "clear" the filter back to a default no-chip state).
-   * Defaults to 'all'.
-   */
-  defaultFilter = input<string>('all');
 
   protected clearSearch(): void {
     this.searchQuery.set('');
   }
 
   protected onFilterClick(value: string): void {
-    // Click an already-active chip to clear it back to the default
-    // (no chip visually selected when activeFilter === defaultFilter).
-    if (this.activeFilter() === value) {
-      this.activeFilter.set(this.defaultFilter());
-    } else {
-      this.activeFilter.set(value);
-    }
+    this.activeFilter.set(value);
   }
 
   protected onFilterKeydown(event: KeyboardEvent, value: string): void {

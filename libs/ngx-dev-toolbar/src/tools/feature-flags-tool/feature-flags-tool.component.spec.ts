@@ -103,6 +103,15 @@ describe('ToolbarFeatureFlagsToolComponent', () => {
       expect(result[2].id).toBe('beta');
     });
 
+    it('clicking the same filter value twice keeps the filter active (regression for the invisible-reset bug)', () => {
+      // Act
+      component.onFilterChange('forced');
+      component.onFilterChange('forced');
+
+      // Assert
+      expect((component as any).activeFilter()).toBe('forced');
+    });
+
     it('should load pinnedIds from saved ToolViewState', () => {
       // Arrange: set up storage mock to return saved state with pinned IDs
       mockStorageService.get.mockReturnValue({
