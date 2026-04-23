@@ -1,3 +1,13 @@
+## 4.3.2 (2026-04-23)
+
+### Features
+
+- **toolbar:** add All chip to tool filter groups ([#49](https://github.com/alfredoperez/ngx-dev-toolbar/pull/49))
+
+### ❤️ Thank You
+
+- Alfredo Perez
+
 ## 4.3.1 (2026-04-22)
 
 ### Bug Fixes
