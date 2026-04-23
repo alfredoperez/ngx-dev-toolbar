@@ -1,0 +1,109 @@
+{
+  "workflow": "sdd",
+  "currentStep": "done",
+  "currentTask": null,
+  "progress": null,
+  "next": "done",
+  "status": "completed",
+  "checkpointStatus": { "commit": true, "pr": true },
+  "prUrl": "https://github.com/alfredoperez/ngx-dev-toolbar/pull/49",
+  "prNumber": 49,
+  "updated": "2026-04-23",
+  "selectedAt": "2026-04-23T12:25:04Z",
+  "specName": "Add All Filter",
+  "branch": "main",
+  "workingBranch": "feat/add-all-filter",
+  "type": "feat",
+  "createdAt": "2026-04-23T12:25:04Z",
+  "approach": "Make the implicit 'all' filter state visible by prepending an All chip to each tool's filterOptions array, then remove the click-to-deselect toggle in the shared ToolbarToolHeaderComponent since the explicit All chip now serves as the reset affordance.",
+  "step_summaries": {
+    "specify": {
+      "complexity": "normal",
+      "requirements": 8,
+      "scenarios": 6,
+      "key_finding": "Three tools share ToolbarToolHeaderComponent but their filterOptions arrays omit 'all'; click-to-deselect resets activeFilter to 'all' which onFilterChange silently drops — the filter sticks while the UI shows no active chip."
+    },
+    "plan": {
+      "approach_summary": "Make the implicit 'all' filter state visible by prepending an All chip to each tool's filterOptions array, then remove the click-to-deselect toggle in the shared ToolbarToolHeaderComponent since the explicit All chip now serves as the reset affordance.",
+      "files_planned": 7,
+      "risks": [
+        "Shared-header behavior change: removing click-to-deselect in ToolbarToolHeaderComponent is a visible UX shift — contained because only the three updated tools consume it."
+      ]
+    }
+  },
+  "task_summaries": {
+    "T001": {
+      "status": "DONE",
+      "did": "Removed click-to-deselect branch in onFilterClick so it always sets activeFilter to the clicked value; deleted the unused defaultFilter input and its doc comment.",
+      "files": ["libs/ngx-dev-toolbar/src/components/tool-header/tool-header.component.ts"],
+      "concerns": []
+    },
+    "T002": {
+      "status": "DONE",
+      "did": "Prepended { value: 'all', label: 'All' } to filterOptions in the Feature Flags tool; added a regression test inside 'component logic' describe that confirms re-clicking the same filter keeps it active.",
+      "files": [
+        "libs/ngx-dev-toolbar/src/tools/feature-flags-tool/feature-flags-tool.component.ts",
+        "libs/ngx-dev-toolbar/src/tools/feature-flags-tool/feature-flags-tool.component.spec.ts"
+      ],
+      "concerns": [
+        "Spec had no filterOptions length/index assertions to update; added new it() inside the existing 'component logic' describe (no filter-focused describe exists in this file)."
+      ]
+    },
+    "T003": {
+      "status": "DONE_WITH_CONCERNS",
+      "did": "Prepended { value: 'all', label: 'All' } to filterOptions in the App Features tool; replaced the stub spec file with a TestBed-based suite including a regression test for re-clicking the same filter.",
+      "files": [
+        "libs/ngx-dev-toolbar/src/tools/app-features-tool/app-features-tool.component.ts",
+        "libs/ngx-dev-toolbar/src/tools/app-features-tool/app-features-tool.component.spec.ts"
+      ],
+      "concerns": [
+        "Initial subagent attempt instantiated the component with `new ToolbarAppFeaturesToolComponent()`, which throws NG0203 because the component uses property-level inject() for internal + storage services. Main thread rewrote the spec using TestBed.configureTestingModule with mocks for ToolbarInternalAppFeaturesService, ToolbarStorageService, and ToolbarStateService — mirrors the pattern already used by feature-flags-tool.component.spec.ts. Pre-existing spec was a stub (only a toBeDefined assertion) — no existing tests were lost."
+      ]
+    },
+    "T004": {
+      "status": "DONE",
+      "did": "Prepended { value: 'all', label: 'All' } to filterOptions in the Permissions tool; updated the hard-coded filterOptions length (3 → 4) and index assertions to reflect the All-first ordering; added a regression test inside the existing 'filter dropdown functionality' describe.",
+      "files": [
+        "libs/ngx-dev-toolbar/src/tools/permissions-tool/permissions-tool.component.ts",
+        "libs/ngx-dev-toolbar/src/tools/permissions-tool/permissions-tool.component.spec.ts"
+      ],
+      "concerns": []
+    }
+  },
+  "files_modified": [
+    "libs/ngx-dev-toolbar/src/components/tool-header/tool-header.component.ts",
+    "libs/ngx-dev-toolbar/src/tools/feature-flags-tool/feature-flags-tool.component.ts",
+    "libs/ngx-dev-toolbar/src/tools/feature-flags-tool/feature-flags-tool.component.spec.ts",
+    "libs/ngx-dev-toolbar/src/tools/app-features-tool/app-features-tool.component.ts",
+    "libs/ngx-dev-toolbar/src/tools/app-features-tool/app-features-tool.component.spec.ts",
+    "libs/ngx-dev-toolbar/src/tools/permissions-tool/permissions-tool.component.ts",
+    "libs/ngx-dev-toolbar/src/tools/permissions-tool/permissions-tool.component.spec.ts"
+  ],
+  "decisions": [
+    "T003 silent fix: replaced bare `new Component()` instantiation with TestBed + mocked providers to match the feature-flags spec pattern. Needed because property-level inject() only resolves inside an injection context."
+  ],
+  "concerns": [
+    { "task": "T002", "note": "New regression test placed in 'component logic' describe block (no filter-focused describe exists). Low-risk organizational choice." },
+    { "task": "T003", "note": "Subagent wrote invalid `new Component()` test; main thread rewrote with TestBed before phase close. Test file pre-existed as stub, so this is a net improvement in coverage." }
+  ],
+  "last_action": "PR #49 opened — feat(toolbar): add All chip to tool filter groups",
+  "transitions": [
+    { "step": "specify", "substep": "parsing", "from": null, "by": "sdd", "at": "2026-04-23T12:25:04Z" },
+    { "step": "specify", "substep": "exploring", "from": { "step": "specify", "substep": "parsing" }, "by": "sdd", "at": "2026-04-23T12:25:05Z" },
+    { "step": "specify", "substep": "detecting", "from": { "step": "specify", "substep": "exploring" }, "by": "sdd", "at": "2026-04-23T12:25:30Z" },
+    { "step": "specify", "substep": "writing-spec", "from": { "step": "specify", "substep": "detecting" }, "by": "sdd", "at": "2026-04-23T12:25:40Z" },
+    { "step": "specify", "substep": null, "from": { "step": "specify", "substep": "writing-spec" }, "by": "sdd", "at": "2026-04-23T12:26:00Z" },
+    { "step": "plan", "substep": "loading", "from": { "step": "specify", "substep": null }, "by": "sdd", "at": "2026-04-23T12:27:00Z" },
+    { "step": "plan", "substep": "writing-plan", "from": { "step": "plan", "substep": "loading" }, "by": "sdd", "at": "2026-04-23T12:27:15Z" },
+    { "step": "plan", "substep": null, "from": { "step": "plan", "substep": "writing-plan" }, "by": "sdd", "at": "2026-04-23T12:27:45Z" },
+    { "step": "tasks", "substep": "loading", "from": { "step": "plan", "substep": null }, "by": "sdd", "at": "2026-04-23T12:28:00Z" },
+    { "step": "tasks", "substep": "writing-tasks", "from": { "step": "tasks", "substep": "loading" }, "by": "sdd", "at": "2026-04-23T12:28:10Z" },
+    { "step": "tasks", "substep": null, "from": { "step": "tasks", "substep": "writing-tasks" }, "by": "sdd", "at": "2026-04-23T12:28:30Z" },
+    { "step": "implement", "substep": "phase1", "from": { "step": "tasks", "substep": null }, "by": "sdd", "at": "2026-04-23T12:29:00Z" },
+    { "step": "implement", "substep": "phase1", "from": { "step": "implement", "substep": "phase1" }, "by": "sdd", "at": "2026-04-23T12:30:00Z" },
+    { "step": "implement", "substep": "phase1", "from": { "step": "implement", "substep": "phase1" }, "by": "sdd", "at": "2026-04-23T12:32:00Z" },
+    { "step": "implement", "substep": "code-review", "from": { "step": "implement", "substep": "phase1" }, "by": "sdd", "at": "2026-04-23T12:34:00Z" },
+    { "step": "implement", "substep": "commit-review", "from": { "step": "implement", "substep": "code-review" }, "by": "sdd", "at": "2026-04-23T12:36:00Z" },
+    { "step": "done", "substep": null, "from": { "step": "implement", "substep": "commit-review" }, "by": "sdd", "at": "2026-04-23T12:40:00Z" }
+  ]
+}

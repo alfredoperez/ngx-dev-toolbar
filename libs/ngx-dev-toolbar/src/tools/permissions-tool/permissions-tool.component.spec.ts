@@ -139,10 +139,11 @@ describe('ToolbarPermissionsToolComponent', () => {
     });
 
     it('should have filter options configured', () => {
-      expect(component['filterOptions'].length).toBe(3);
-      expect(component['filterOptions'][0].value).toBe('forced');
-      expect(component['filterOptions'][1].value).toBe('granted');
-      expect(component['filterOptions'][2].value).toBe('denied');
+      expect(component['filterOptions'].length).toBe(4);
+      expect(component['filterOptions'][0].value).toBe('all');
+      expect(component['filterOptions'][1].value).toBe('forced');
+      expect(component['filterOptions'][2].value).toBe('granted');
+      expect(component['filterOptions'][3].value).toBe('denied');
     });
 
     it('should have permission value options configured', () => {
@@ -245,6 +246,13 @@ describe('ToolbarPermissionsToolComponent', () => {
       const filtered = component['filteredPermissions']();
       expect(filtered.length).toBe(1);
       expect(filtered[0].id).toBe('perm2');
+    });
+
+    it('clicking the same filter value twice keeps the filter active (regression for the invisible-reset bug)', () => {
+      component.onFilterChange('forced');
+      component.onFilterChange('forced');
+
+      expect(component['activeFilter']()).toBe('forced');
     });
   });
 
