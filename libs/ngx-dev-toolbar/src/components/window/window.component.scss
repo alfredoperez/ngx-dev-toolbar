@@ -24,7 +24,11 @@
   color: var(--ndt-text-secondary);
   z-index: #{map.get($z-indices, window)};
   box-shadow: var(--ndt-shadow-window);
-  contain: layout style; // Isolates window from external CSS interference
+  contain: layout style;
+
+  &--compact {
+    padding: var(--ndt-spacing-sm) var(--ndt-spacing-md) var(--ndt-spacing-sm);
+  }
 }
 
 .ndt-header {
@@ -45,12 +49,28 @@
     color: var(--ndt-text-primary);
   }
 
+  // Compact: single-row, smaller title, tight controls.
+  .ndt-window--compact & {
+    align-items: center;
+    min-height: 28px;
+
+    h1 {
+      font-size: var(--ndt-font-size-md);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+  }
+
   &__title {
     display: flex;
     align-items: center;
     gap: var(--ndt-spacing-sm);
     flex-wrap: wrap;
     margin-bottom: var(--ndt-spacing-xs);
+
+    .ndt-window--compact & {
+      margin-bottom: 0;
+    }
 
     .beta-tag {
       font-size: var(--ndt-font-size-xxs, 0.65rem);
@@ -96,6 +116,10 @@
   flex: 1;
   overflow: auto;
   min-height: 0;
+
+  .ndt-window--compact & {
+    padding-top: var(--ndt-spacing-sm);
+  }
 }
 
 .divider {

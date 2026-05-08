@@ -1,0 +1,410 @@
+@use '../../styles' as *;
+@use 'sass:map';
+
+:host {
+  @include devtools-theme;
+  display: block;
+  height: 100%;
+  font-family: $font-family;
+}
+
+.ndt-stream__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 280px;
+  padding: var(--ndt-spacing-lg);
+  text-align: center;
+  color: var(--ndt-text-secondary);
+}
+
+// ── Stream canvas ────────────────────────────────────────────────────────
+.ndt-stream {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ndt-spacing-md);
+  padding-top: var(--ndt-spacing-sm);
+  padding-bottom: var(--ndt-spacing-md);
+  font-size: var(--ndt-font-size-sm);
+  color: var(--ndt-text-secondary);
+  font-variant-numeric: tabular-nums;
+  animation: ndt-stream-fade-in 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+// ── Header (sparkle + title + preamble) ──────────────────────────────────
+.ndt-stream__header {
+  display: flex;
+  gap: var(--ndt-spacing-sm);
+  align-items: flex-start;
+}
+
+.ndt-stream__header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.ndt-stream__title {
+  font-size: var(--ndt-font-size-md);
+  font-weight: 600;
+  color: var(--ndt-text-primary);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.ndt-stream__preamble {
+  font-size: var(--ndt-font-size-xs);
+  color: var(--ndt-text-muted);
+  margin: 0;
+  line-height: 1.55;
+}
+
+.ndt-stream__glyph--sparkle {
+  color: var(--ndt-primary);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+// ── Step list ────────────────────────────────────────────────────────────
+.ndt-stream__steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+// Each step has a vertical thread on the left, running through its glyph
+// and connecting to the next step. CSS-based stagger so the JS can start
+// running the first item immediately on click.
+.ndt-stream__step {
+  position: relative;
+  padding: var(--ndt-spacing-xs) 0 12px 28px;
+  animation: ndt-stream-step-in 240ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--ndt-border-subtle);
+  }
+
+  &:first-child::before { top: 14px; }
+  &:last-child::before { bottom: calc(100% - 14px); }
+
+  // Visual stagger of step entry — happens in CSS, doesn't block JS.
+  &:nth-child(2) { animation-delay: 50ms; }
+  &:nth-child(3) { animation-delay: 100ms; }
+  &:nth-child(4) { animation-delay: 150ms; }
+  &:nth-child(5) { animation-delay: 200ms; }
+  &:nth-child(6) { animation-delay: 250ms; }
+  &:nth-child(7) { animation-delay: 300ms; }
+  &:nth-child(n + 8) { animation-delay: 350ms; }
+}
+
+.ndt-stream__step-row {
+  display: flex;
+  align-items: center;
+  gap: var(--ndt-spacing-sm);
+  position: relative;
+  min-height: 18px;
+}
+
+// Glyph vertically centered against the label-btn (was top-anchored, drifted).
+.ndt-stream__glyph {
+  position: absolute;
+  left: -22px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ndt-bg-primary);
+  border-radius: 50%;
+  z-index: 1;
+
+  svg { overflow: visible; }
+}
+
+.ndt-stream__step--queued .ndt-stream__glyph svg { color: var(--ndt-border-primary); }
+.ndt-stream__step--running .ndt-stream__glyph svg,
+.ndt-stream__step--done .ndt-stream__glyph svg { color: var(--ndt-primary); }
+.ndt-stream__step--error .ndt-stream__glyph svg { color: var(--ndt-danger); }
+
+.ndt-stream__pulse {
+  animation: ndt-stream-pulse 1.4s ease-in-out infinite;
+  transform-origin: center;
+}
+
+// Step label (verb + noun + chevron)
+.ndt-stream__label-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: default;
+  appearance: none;
+  flex: 1;
+  min-width: 0;
+
+  &[disabled] { cursor: default; }
+  &:not([disabled]) { cursor: pointer; }
+
+  &:focus-visible {
+    outline: 2px solid var(--ndt-primary);
+    outline-offset: 3px;
+    border-radius: var(--ndt-border-radius-small);
+  }
+}
+
+.ndt-stream__verb {
+  font-weight: 500;
+  color: var(--ndt-primary);
+  font-size: var(--ndt-font-size-sm);
+  flex-shrink: 0;
+}
+.ndt-stream__step--queued .ndt-stream__verb {
+  color: var(--ndt-text-muted);
+  font-weight: 400;
+}
+.ndt-stream__step--error .ndt-stream__verb {
+  color: var(--ndt-danger);
+}
+
+.ndt-stream__noun {
+  color: var(--ndt-text-primary);
+  font-weight: 400;
+  font-size: var(--ndt-font-size-sm);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+.ndt-stream__step--queued .ndt-stream__noun {
+  color: var(--ndt-text-muted);
+}
+
+.ndt-stream__chevron {
+  color: var(--ndt-text-muted);
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  &--open { transform: rotate(180deg); }
+}
+
+// ── Step description (sub-line below step header) ───────────────────────
+.ndt-stream__step-description {
+  margin: 4px 0 0;
+  font-size: 0.7rem;
+  color: var(--ndt-text-muted);
+  line-height: 1.5;
+  max-width: 60ch;
+}
+
+// ── Per-item rows: two-line layout (title + detail) ──────────────────────
+// Glyph at left, content stack on right. Title contains: verb + name + arrow.
+.ndt-stream__items {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ndt-stream__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 6px 8px;
+  margin: 0 -8px;
+  border-radius: var(--ndt-border-radius-small);
+  animation: ndt-stream-item-in 200ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  &--done:hover {
+    background: var(--ndt-hover-bg);
+
+    .ndt-stream__item-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+
+.ndt-stream__item-glyph {
+  width: 11px;
+  height: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  top: 4px; // optical alignment with title baseline
+}
+
+.ndt-stream__item--running .ndt-stream__item-glyph { color: var(--ndt-primary); }
+.ndt-stream__item--done .ndt-stream__item-glyph { color: var(--ndt-success); }
+.ndt-stream__item--error .ndt-stream__item-glyph { color: var(--ndt-danger); }
+
+// Spinner: continuously rotating arc + faint backing ring.
+.ndt-stream__spinner {
+  animation: ndt-stream-spin 0.9s linear infinite;
+  transform-origin: center;
+}
+
+// ── Right column: title + detail stacked ────────────────────────────────
+.ndt-stream__item-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+  line-height: 1.45;
+}
+
+.ndt-stream__item-title {
+  font-size: var(--ndt-font-size-xs);
+  font-weight: 500;
+  color: var(--ndt-text-primary);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: fit-content;
+  max-width: 100%;
+
+  &--dim .ndt-stream__item-name {
+    color: var(--ndt-text-muted);
+  }
+}
+
+// Verb prefix in the title sentence: brand-colored, sentence case, body weight.
+.ndt-stream__item-verb {
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.ndt-stream__item--running .ndt-stream__item-verb { color: var(--ndt-primary); }
+.ndt-stream__item--done .ndt-stream__item-verb { color: var(--ndt-success); }
+.ndt-stream__item--error .ndt-stream__item-verb { color: var(--ndt-danger); }
+
+// Entity name: dark, slightly heavier on hover when wrapped in a link.
+.ndt-stream__item-name {
+  color: var(--ndt-text-primary);
+  font-weight: 500;
+}
+
+a.ndt-stream__item-title:hover .ndt-stream__item-name {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: var(--ndt-text-primary);
+}
+
+.ndt-stream__item-arrow {
+  display: inline-block;
+  color: var(--ndt-primary);
+  opacity: 0;
+  transform: translateX(-2px);
+  transition: opacity 160ms ease-out, transform 160ms ease-out;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.ndt-stream__item-detail {
+  font-size: 0.7rem;
+  color: var(--ndt-text-muted);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+
+  &--error {
+    color: var(--ndt-danger);
+  }
+}
+
+.ndt-stream__more {
+  padding: 4px 6px 0 22px;
+  font-size: var(--ndt-font-size-xxs);
+  color: var(--ndt-text-muted);
+  font-style: italic;
+}
+
+// ── Final summary ────────────────────────────────────────────────────────
+.ndt-stream__summary {
+  margin: var(--ndt-spacing-xs) 0 0 28px;
+  padding-top: var(--ndt-spacing-sm);
+  border-top: 1px solid var(--ndt-border-subtle);
+  font-size: var(--ndt-font-size-xs);
+  color: var(--ndt-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.ndt-stream__anchor {
+  height: 1px;
+  pointer-events: none;
+}
+
+// ── Animations ───────────────────────────────────────────────────────────
+@keyframes ndt-stream-fade-in {
+  from { opacity: 0; transform: translateY(2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ndt-stream-step-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ndt-stream-item-in {
+  from { opacity: 0; transform: translateX(-2px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes ndt-stream-pulse {
+  0%, 100% { transform: scale(0.85); opacity: 0.7; }
+  50% { transform: scale(1.0); opacity: 1.0; }
+}
+
+@keyframes ndt-stream-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ndt-stream,
+  .ndt-stream__step,
+  .ndt-stream__items,
+  .ndt-stream__item {
+    animation: none;
+  }
+  .ndt-stream__pulse,
+  .ndt-stream__spinner {
+    animation: none;
+  }
+  .ndt-stream__chevron,
+  .ndt-stream__item-arrow {
+    transition: none;
+  }
+}

@@ -77,6 +77,35 @@
       transform: translateY(-50%) translateX(-10px);
     }
   }
+
+  // Sidebar-right position: vertical pill anchored to the top of the right edge.
+  // Companion docked tool windows open to the left of the pill (full-height panel).
+  &--sidebar-right {
+    right: 0;
+    top: 16px;
+    flex-direction: column;
+    width: map.get(devtools.$dimensions, toolbar-height);
+    padding: 2px 0;
+    transform: translateX(calc(100% - #{$peek-amount}));
+
+    &.ndt-toolbar--visible {
+      transform: translateX(-10px);
+    }
+  }
+
+  // Sidebar-left position: mirrored.
+  &--sidebar-left {
+    left: 0;
+    top: 16px;
+    flex-direction: column;
+    width: map.get(devtools.$dimensions, toolbar-height);
+    padding: 2px 0;
+    transform: translateX(calc(-100% + #{$peek-amount}));
+
+    &.ndt-toolbar--visible {
+      transform: translateX(10px);
+    }
+  }
 }
 
 // Typography styles scoped within the toolbar component

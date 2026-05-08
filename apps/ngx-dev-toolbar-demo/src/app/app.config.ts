@@ -31,6 +31,8 @@ export const appConfig: ApplicationConfig = {
       prefix: './assets/i18n-ngx-translate/',
     }),
     provideToolbar({
+      // BISECT: sidebar-right disabled to test if sidebar position math is the bug
+      // position: 'sidebar-right',
       showI18nTool: true,
       showFeatureFlagsTool: true,
       showAppFeaturesTool: true,

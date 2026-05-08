@@ -50,6 +50,8 @@ import { ToolbarPresetsToolComponent } from './tools/presets-tool/presets-tool.c
         [class.ndt-toolbar--right]="state.position() === 'right'"
         [class.ndt-toolbar--bottom]="state.position() === 'bottom'"
         [class.ndt-toolbar--left]="state.position() === 'left'"
+        [class.ndt-toolbar--sidebar-right]="state.position() === 'sidebar-right'"
+        [class.ndt-toolbar--sidebar-left]="state.position() === 'sidebar-left'"
         [class.ndt-toolbar--visible]="state.isVisible()"
         [attr.data-theme]="state.theme()"
         (mouseenter)="onMouseEnter()"

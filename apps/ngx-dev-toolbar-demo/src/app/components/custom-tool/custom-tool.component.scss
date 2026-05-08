@@ -1,0 +1,315 @@
+// Custom Tool — action launcher.
+// Three views: home (action list) → form (drill-in for CREATE) → run (streaming).
+// Defensive CSS: explicit padding/margins/gap; never relies on browser defaults.
+
+:host {
+  display: contents;
+}
+
+.canvas {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow: auto;
+}
+
+// ── Home (action list) ──────────────────────────────────────────────────
+.home {
+  list-style: none;
+  margin: 0;
+  padding: var(--ndt-spacing-sm) 0 var(--ndt-spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ndt-spacing-lg);
+  animation: home-in 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.home__section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.home__section-title {
+  font-size: var(--ndt-font-size-xxs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ndt-text-muted);
+  margin: 0 0 2px 4px;
+}
+
+.home__rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.home__action {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 18px 1fr auto 14px;
+  gap: var(--ndt-spacing-sm);
+  align-items: center;
+  padding: 8px 10px;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  color: var(--ndt-text-primary);
+  border-radius: var(--ndt-border-radius-medium);
+  cursor: pointer;
+  transition: background-color 160ms ease-out;
+
+  &:hover {
+    background: var(--ndt-hover-bg);
+
+    .home__chevron {
+      color: var(--ndt-primary);
+      transform: translateX(2px);
+    }
+
+    .home__glyph {
+      color: var(--ndt-primary);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ndt-primary);
+    outline-offset: -1px;
+  }
+}
+
+.home__glyph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ndt-text-muted);
+  transition: color 160ms ease-out;
+}
+
+.home__label {
+  font-size: var(--ndt-font-size-sm);
+  font-weight: 500;
+  color: var(--ndt-text-primary);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.home__hint {
+  font-size: var(--ndt-font-size-xxs);
+  color: var(--ndt-text-muted);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.home__chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ndt-text-muted);
+  transition: color 160ms ease-out, transform 160ms ease-out;
+}
+
+@keyframes home-in {
+  from { opacity: 0; transform: translateY(2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home { animation: none; }
+  .home__action,
+  .home__chevron,
+  .home__glyph { transition: none; }
+}
+
+// ── Shared sub-screen nav (used by both form and run views) ─────────────
+// One bar at the top with a back link + divider, so every sub-screen reads
+// the same way: "you're inside something, here's how out".
+.tool-subnav {
+  flex-shrink: 0;
+  padding-bottom: var(--ndt-spacing-sm);
+  margin-bottom: var(--ndt-spacing-md);
+  border-bottom: 1px solid var(--ndt-border-subtle);
+}
+
+.tool-subnav__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  margin-left: -8px;
+  border: 0;
+  background: transparent;
+  color: var(--ndt-text-muted);
+  font-size: var(--ndt-font-size-xs);
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: var(--ndt-border-radius-small);
+  transition: color 160ms ease-out, background 160ms ease-out;
+
+  &:hover {
+    color: var(--ndt-text-primary);
+    background: var(--ndt-hover-bg);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ndt-primary);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tool-subnav__back { transition: none; }
+}
+
+// ── Form view (drill-in for CREATE actions) ─────────────────────────────
+// Structure: top subnav → body (title + fields) → bottom CTA.
+.form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  animation: form-in 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.form__body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ndt-spacing-md);
+}
+
+.form__title {
+  margin: 0;
+  font-size: var(--ndt-font-size-md);
+  font-weight: 600;
+  color: var(--ndt-text-primary);
+  letter-spacing: -0.01em;
+}
+
+.form__hint {
+  margin: 0;
+  font-size: var(--ndt-font-size-xs);
+  color: var(--ndt-text-muted);
+  line-height: 1.5;
+}
+
+.form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form__label {
+  font-size: var(--ndt-font-size-xxs);
+  font-weight: 600;
+  color: var(--ndt-text-secondary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.form__count-row {
+  display: flex;
+  align-items: center;
+  gap: var(--ndt-spacing-sm);
+}
+
+.form__count {
+  width: 80px;
+  height: 32px;
+  padding: 0 var(--ndt-spacing-sm);
+  font-size: var(--ndt-font-size-sm);
+  font-weight: 500;
+  color: var(--ndt-text-primary);
+  background: var(--ndt-bg-primary);
+  border: 1px solid var(--ndt-border-primary);
+  border-radius: var(--ndt-border-radius-medium);
+  font-variant-numeric: tabular-nums;
+  text-align: left;
+
+  &:focus {
+    outline: 2px solid var(--ndt-primary);
+    outline-offset: -1px;
+    border-color: transparent;
+  }
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+}
+
+.form__count-math {
+  font-size: var(--ndt-font-size-xs);
+  color: var(--ndt-text-muted);
+  font-variant-numeric: tabular-nums;
+
+  strong {
+    color: var(--ndt-text-primary);
+    font-weight: 600;
+  }
+}
+
+.form__submit-row {
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  padding-top: var(--ndt-spacing-md);
+  margin-top: var(--ndt-spacing-md);
+  border-top: 1px solid var(--ndt-border-subtle);
+}
+
+@keyframes form-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .form { animation: none; }
+}
+
+// ── Run view (streaming) ────────────────────────────────────────────────
+.run {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.run ndt-stream-runner {
+  flex: 1;
+  min-height: 0;
+}
+
+.run__actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: var(--ndt-spacing-md);
+  margin-top: var(--ndt-spacing-md);
+  border-top: 1px solid var(--ndt-border-subtle);
+  flex-shrink: 0;
+  animation: actions-in 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes actions-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .run__actions { animation: none; }
+}
