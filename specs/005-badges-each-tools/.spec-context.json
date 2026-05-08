@@ -1,0 +1,20 @@
+{
+  "workflow": "speckit",
+  "specName": "Badges Each Tools",
+  "branch": "",
+  "currentStep": "specify",
+  "status": "completed",
+  "stepHistory": {},
+  "transitions": [
+    {
+      "step": "specify",
+      "substep": null,
+      "from": {
+        "step": "specify",
+        "substep": null
+      },
+      "by": "extension",
+      "at": "2026-05-08T13:33:21.304Z"
+    }
+  ]
+}

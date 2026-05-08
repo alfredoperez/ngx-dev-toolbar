@@ -9,7 +9,7 @@
   "specName": "Fix Pin Hover Layout",
   "branch": "main",
   "createdAt": "2026-04-14T00:00:00Z",
-  "status": "active",
+  "status": "completed",
   "approach": "Constrain .pin-button to 18x18 in gutter, center vertically, and suppress the nested icon-button ghost hover background so hover effects stay within the pin's own bounds.",
   "last_action": "T003 complete — pin button styling refined and contained in the gutter",
   "files_modified": [
@@ -19,19 +19,25 @@
     "T001": {
       "status": "DONE",
       "did": "Constrained .pin-button to explicit 18x18 box with centered vertical positioning and nested button padding.",
-      "files": ["libs/ngx-dev-toolbar/src/components/list-item/list-item.component.scss"],
+      "files": [
+        "libs/ngx-dev-toolbar/src/components/list-item/list-item.component.scss"
+      ],
       "concerns": []
     },
     "T002": {
       "status": "DONE",
       "did": "Suppressed ndt-icon-button's ghost hover background via ::ng-deep override; hover affordance is now opacity + color only, contained to the icon box. Added pointer-events wrapper isolation.",
-      "files": ["libs/ngx-dev-toolbar/src/components/list-item/list-item.component.scss"],
+      "files": [
+        "libs/ngx-dev-toolbar/src/components/list-item/list-item.component.scss"
+      ],
       "concerns": []
     },
     "T003": {
       "status": "DONE",
       "did": "Kept .pin-button--pinned full-opacity primary-color styling; forced transparent background to match the new hover rules.",
-      "files": ["libs/ngx-dev-toolbar/src/components/list-item/list-item.component.scss"],
+      "files": [
+        "libs/ngx-dev-toolbar/src/components/list-item/list-item.component.scss"
+      ],
       "concerns": []
     }
   },
@@ -49,12 +55,83 @@
     }
   },
   "transitions": [
-    { "step": "specify", "substep": "parsing", "from": null, "by": "sdd", "at": "2026-04-14T00:00:00Z" },
-    { "step": "specify", "substep": "exploring", "from": { "step": "specify", "substep": "parsing" }, "by": "sdd", "at": "2026-04-14T00:00:01Z" },
-    { "step": "specify", "substep": "detecting", "from": { "step": "specify", "substep": "exploring" }, "by": "sdd", "at": "2026-04-14T00:00:02Z" },
-    { "step": "specify", "substep": "writing-spec", "from": { "step": "specify", "substep": "detecting" }, "by": "sdd", "at": "2026-04-14T00:00:03Z" },
-    { "step": "tasks", "substep": null, "from": { "step": "specify", "substep": "writing-spec" }, "by": "sdd", "at": "2026-04-14T00:00:04Z" },
-    { "step": "implement", "substep": "phase1", "from": { "step": "tasks", "substep": null }, "by": "sdd", "at": "2026-04-14T00:00:05Z" },
-    { "step": "implement", "substep": "code-review", "from": { "step": "implement", "substep": "phase1" }, "by": "sdd", "at": "2026-04-14T00:00:06Z" }
-  ]
+    {
+      "step": "specify",
+      "substep": "parsing",
+      "from": null,
+      "by": "sdd",
+      "at": "2026-04-14T00:00:00Z"
+    },
+    {
+      "step": "specify",
+      "substep": "exploring",
+      "from": {
+        "step": "specify",
+        "substep": "parsing"
+      },
+      "by": "sdd",
+      "at": "2026-04-14T00:00:01Z"
+    },
+    {
+      "step": "specify",
+      "substep": "detecting",
+      "from": {
+        "step": "specify",
+        "substep": "exploring"
+      },
+      "by": "sdd",
+      "at": "2026-04-14T00:00:02Z"
+    },
+    {
+      "step": "specify",
+      "substep": "writing-spec",
+      "from": {
+        "step": "specify",
+        "substep": "detecting"
+      },
+      "by": "sdd",
+      "at": "2026-04-14T00:00:03Z"
+    },
+    {
+      "step": "tasks",
+      "substep": null,
+      "from": {
+        "step": "specify",
+        "substep": "writing-spec"
+      },
+      "by": "sdd",
+      "at": "2026-04-14T00:00:04Z"
+    },
+    {
+      "step": "implement",
+      "substep": "phase1",
+      "from": {
+        "step": "tasks",
+        "substep": null
+      },
+      "by": "sdd",
+      "at": "2026-04-14T00:00:05Z"
+    },
+    {
+      "step": "implement",
+      "substep": "code-review",
+      "from": {
+        "step": "implement",
+        "substep": "phase1"
+      },
+      "by": "sdd",
+      "at": "2026-04-14T00:00:06Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "from": {
+        "step": "implement",
+        "substep": null
+      },
+      "by": "extension",
+      "at": "2026-05-08T13:33:21.305Z"
+    }
+  ],
+  "stepHistory": {}
 }

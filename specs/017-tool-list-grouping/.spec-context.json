@@ -5,7 +5,10 @@
   "progress": null,
   "next": "done",
   "updated": "2026-04-21",
-  "checkpointStatus": { "commit": true, "pr": true },
+  "checkpointStatus": {
+    "commit": true,
+    "pr": true
+  },
   "pr": "https://github.com/alfredoperez/ngx-dev-toolbar/pull/44",
   "last_action": "Opened PR #44 after a revert+re-PR workaround (original push to main was rewound via revert commit 72935b3, feat branch cherry-picked as 39ae966)",
   "files_modified": [
@@ -45,19 +48,25 @@
     "T002": {
       "status": "DONE",
       "did": "Added collapsedGroups?: string[] to ToolViewState following the existing pinnedIds optional-array pattern",
-      "files": ["libs/ngx-dev-toolbar/src/models/tool-view-state.models.ts"],
+      "files": [
+        "libs/ngx-dev-toolbar/src/models/tool-view-state.models.ts"
+      ],
       "concerns": []
     },
     "T003": {
       "status": "DONE",
       "did": "Implemented groupItems<T> generic utility partitioning items into pinned/groups/ungrouped using a single-pass Map for O(n) bucketing",
-      "files": ["libs/ngx-dev-toolbar/src/utils/group-items.util.ts"],
+      "files": [
+        "libs/ngx-dev-toolbar/src/utils/group-items.util.ts"
+      ],
       "concerns": []
     },
     "T004": {
       "status": "DONE",
       "did": "Added 11 Jest unit tests covering backward-compat, group sort, item sort, mixed grouped/ungrouped, pinned extraction, and pinned alpha sort",
-      "files": ["libs/ngx-dev-toolbar/src/utils/group-items.util.spec.ts"],
+      "files": [
+        "libs/ngx-dev-toolbar/src/utils/group-items.util.spec.ts"
+      ],
       "concerns": []
     },
     "T005": {
@@ -74,31 +83,41 @@
     "T006": {
       "status": "DONE",
       "did": "Added TestBed-based component tests for header text, content projection, collapse hides content, click toggle emits negated value, and aria-expanded reflection",
-      "files": ["libs/ngx-dev-toolbar/src/components/list-group/list-group.component.spec.ts"],
+      "files": [
+        "libs/ngx-dev-toolbar/src/components/list-group/list-group.component.spec.ts"
+      ],
       "concerns": []
     },
     "T007": {
       "status": "DONE",
       "did": "Added export * from './components/list-group/list-group.component' to libs/ngx-dev-toolbar/src/index.ts next to existing list-item export",
-      "files": ["libs/ngx-dev-toolbar/src/index.ts"],
+      "files": [
+        "libs/ngx-dev-toolbar/src/index.ts"
+      ],
       "concerns": []
     },
     "T008": {
       "status": "DONE",
       "did": "Refactored feature-flags-tool: added collapsedGroups signal, split filteredFlags into pure filter + groupedFlags + flatFlags computeds, template uses ng-template + NgTemplateOutlet to share list-item block across pinned/groups/other/flat sections",
-      "files": ["libs/ngx-dev-toolbar/src/tools/feature-flags-tool/feature-flags-tool.component.ts"],
+      "files": [
+        "libs/ngx-dev-toolbar/src/tools/feature-flags-tool/feature-flags-tool.component.ts"
+      ],
       "concerns": []
     },
     "T009": {
       "status": "DONE",
       "did": "Mirrored T008 pattern in app-features-tool with feature-named identifiers (groupedFeatures, flatFeatures, featureItem template)",
-      "files": ["libs/ngx-dev-toolbar/src/tools/app-features-tool/app-features-tool.component.ts"],
+      "files": [
+        "libs/ngx-dev-toolbar/src/tools/app-features-tool/app-features-tool.component.ts"
+      ],
       "concerns": []
     },
     "T010": {
       "status": "DONE",
       "did": "Mirrored T008 pattern in permissions-tool with permission-named identifiers (groupedPermissions, flatPermissions, permissionItem template)",
-      "files": ["libs/ngx-dev-toolbar/src/tools/permissions-tool/permissions-tool.component.ts"],
+      "files": [
+        "libs/ngx-dev-toolbar/src/tools/permissions-tool/permissions-tool.component.ts"
+      ],
       "concerns": []
     },
     "T011": {
@@ -162,21 +181,161 @@
     }
   },
   "transitions": [
-    { "step": "specify", "substep": "parsing", "from": null, "by": "sdd", "at": "2026-04-20T00:00:00Z" },
-    { "step": "specify", "substep": "exploring", "from": "parsing", "by": "sdd", "at": "2026-04-20T00:00:01Z" },
-    { "step": "specify", "substep": "detecting", "from": "exploring", "by": "sdd", "at": "2026-04-20T00:00:02Z" },
-    { "step": "specify", "substep": "writing-spec", "from": "detecting", "by": "sdd", "at": "2026-04-20T00:00:03Z" },
-    { "step": "specify", "substep": null, "from": "writing-spec", "by": "sdd", "at": "2026-04-20T00:00:04Z" },
-    { "step": "plan", "substep": "loading", "from": "specify:null", "by": "sdd", "at": "2026-04-20T00:00:05Z" },
-    { "step": "plan", "substep": "writing-plan", "from": "loading", "by": "sdd", "at": "2026-04-20T00:00:06Z" },
-    { "step": "plan", "substep": null, "from": "writing-plan", "by": "sdd", "at": "2026-04-20T00:00:07Z" },
-    { "step": "tasks", "substep": "loading", "from": { "step": "plan", "substep": null }, "by": "sdd", "at": "2026-04-21T00:00:00Z" },
-    { "step": "tasks", "substep": "writing-tasks", "from": { "step": "tasks", "substep": "loading" }, "by": "sdd", "at": "2026-04-21T00:00:01Z" },
-    { "step": "tasks", "substep": null, "from": { "step": "tasks", "substep": "writing-tasks" }, "by": "sdd", "at": "2026-04-21T00:00:02Z" },
-    { "step": "implement", "substep": "phase1", "from": { "step": "tasks", "substep": null }, "by": "sdd", "at": "2026-04-21T00:00:03Z", "task": "T001" },
-    { "step": "implement", "substep": "phase1", "from": { "step": "implement", "substep": "phase1" }, "by": "sdd", "at": "2026-04-21T00:00:04Z", "task": "T002", "completed": "T001" },
-    { "step": "implement", "substep": "phase1", "from": { "step": "implement", "substep": "phase1" }, "by": "sdd", "at": "2026-04-21T00:00:05Z", "task": "T003", "completed": "T002" },
-    { "step": "implement", "substep": "phase1", "from": { "step": "implement", "substep": "phase1" }, "by": "sdd", "at": "2026-04-21T00:00:06Z", "task": "T005", "completed": "T004" },
-    { "step": "implement", "substep": "code-review", "from": { "step": "implement", "substep": "phase1" }, "by": "sdd", "at": "2026-04-21T00:00:07Z", "completed": "T011" }
-  ]
+    {
+      "step": "specify",
+      "substep": "parsing",
+      "from": null,
+      "by": "sdd",
+      "at": "2026-04-20T00:00:00Z"
+    },
+    {
+      "step": "specify",
+      "substep": "exploring",
+      "from": "parsing",
+      "by": "sdd",
+      "at": "2026-04-20T00:00:01Z"
+    },
+    {
+      "step": "specify",
+      "substep": "detecting",
+      "from": "exploring",
+      "by": "sdd",
+      "at": "2026-04-20T00:00:02Z"
+    },
+    {
+      "step": "specify",
+      "substep": "writing-spec",
+      "from": "detecting",
+      "by": "sdd",
+      "at": "2026-04-20T00:00:03Z"
+    },
+    {
+      "step": "specify",
+      "substep": null,
+      "from": "writing-spec",
+      "by": "sdd",
+      "at": "2026-04-20T00:00:04Z"
+    },
+    {
+      "step": "plan",
+      "substep": "loading",
+      "from": "specify:null",
+      "by": "sdd",
+      "at": "2026-04-20T00:00:05Z"
+    },
+    {
+      "step": "plan",
+      "substep": "writing-plan",
+      "from": "loading",
+      "by": "sdd",
+      "at": "2026-04-20T00:00:06Z"
+    },
+    {
+      "step": "plan",
+      "substep": null,
+      "from": "writing-plan",
+      "by": "sdd",
+      "at": "2026-04-20T00:00:07Z"
+    },
+    {
+      "step": "tasks",
+      "substep": "loading",
+      "from": {
+        "step": "plan",
+        "substep": null
+      },
+      "by": "sdd",
+      "at": "2026-04-21T00:00:00Z"
+    },
+    {
+      "step": "tasks",
+      "substep": "writing-tasks",
+      "from": {
+        "step": "tasks",
+        "substep": "loading"
+      },
+      "by": "sdd",
+      "at": "2026-04-21T00:00:01Z"
+    },
+    {
+      "step": "tasks",
+      "substep": null,
+      "from": {
+        "step": "tasks",
+        "substep": "writing-tasks"
+      },
+      "by": "sdd",
+      "at": "2026-04-21T00:00:02Z"
+    },
+    {
+      "step": "implement",
+      "substep": "phase1",
+      "from": {
+        "step": "tasks",
+        "substep": null
+      },
+      "by": "sdd",
+      "at": "2026-04-21T00:00:03Z",
+      "task": "T001"
+    },
+    {
+      "step": "implement",
+      "substep": "phase1",
+      "from": {
+        "step": "implement",
+        "substep": "phase1"
+      },
+      "by": "sdd",
+      "at": "2026-04-21T00:00:04Z",
+      "task": "T002",
+      "completed": "T001"
+    },
+    {
+      "step": "implement",
+      "substep": "phase1",
+      "from": {
+        "step": "implement",
+        "substep": "phase1"
+      },
+      "by": "sdd",
+      "at": "2026-04-21T00:00:05Z",
+      "task": "T003",
+      "completed": "T002"
+    },
+    {
+      "step": "implement",
+      "substep": "phase1",
+      "from": {
+        "step": "implement",
+        "substep": "phase1"
+      },
+      "by": "sdd",
+      "at": "2026-04-21T00:00:06Z",
+      "task": "T005",
+      "completed": "T004"
+    },
+    {
+      "step": "implement",
+      "substep": "code-review",
+      "from": {
+        "step": "implement",
+        "substep": "phase1"
+      },
+      "by": "sdd",
+      "at": "2026-04-21T00:00:07Z",
+      "completed": "T011"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "from": {
+        "step": "implement",
+        "substep": null
+      },
+      "by": "extension",
+      "at": "2026-05-08T13:33:21.305Z"
+    }
+  ],
+  "status": "completed",
+  "stepHistory": {}
 }
