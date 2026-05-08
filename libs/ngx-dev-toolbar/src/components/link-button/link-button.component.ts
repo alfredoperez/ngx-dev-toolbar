@@ -13,9 +13,11 @@ import { IconName } from '../icons/icon.models';
       rel="noopener noreferrer"
       class="link-button"
     >
-      <div class="link-button__icon">
-        <ndt-icon [name]="icon()" />
-      </div>
+      @if (icon(); as iconName) {
+        <div class="link-button__icon">
+          <ndt-icon [name]="iconName" />
+        </div>
+      }
       <span class="link-button__text">
         <ng-content></ng-content>
       </span>
@@ -26,5 +28,5 @@ import { IconName } from '../icons/icon.models';
 })
 export class ToolbarLinkButtonComponent {
   readonly url = input.required<string>();
-  readonly icon = input.required<IconName>();
+  readonly icon = input<IconName>();
 }

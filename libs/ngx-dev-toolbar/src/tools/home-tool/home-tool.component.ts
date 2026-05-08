@@ -47,13 +47,13 @@ import { SettingsService } from './settings.service';
                 [value]="state.position()"
                 [options]="positionOptions"
                 ariaLabel="Toolbar position"
-                size="small"
+                size="medium"
                 (valueChange)="onPositionChange($any($event))"
               />
             </div>
           </div>
 
-          <div class="instruction instruction--first-data">
+          <div class="instruction">
             <div class="instruction__label">
               <span class="instruction__label-text">Export Settings</span>
               <span class="instruction__label-description">
@@ -107,7 +107,7 @@ import { SettingsService } from './settings.service';
 
         <div class="footer-links">
           @for (link of links; track link.url) {
-          <ndt-link-button [icon]="link.icon" [url]="link.url">
+          <ndt-link-button [url]="link.url">
             {{ link.label }}
           </ndt-link-button>
           }
@@ -148,18 +148,16 @@ export class ToolbarHomeToolComponent {
     { value: 'bottom', label: 'Bottom' },
     { value: 'left', label: 'Left' },
     { value: 'right', label: 'Right' },
-    { value: 'sidebar-left', label: '◧ Sidebar L' },
-    { value: 'sidebar-right', label: '◨ Sidebar R' },
+    { value: 'sidebar-left', label: 'Sidebar Left' },
+    { value: 'sidebar-right', label: 'Sidebar Right' },
   ];
 
   readonly links = [
     {
-      icon: 'docs',
       url: 'https://alfredoperez.github.io/ngx-dev-toolbar/',
       label: 'Docs',
     },
     {
-      icon: 'lightbulb',
       url: 'https://github.com/alfredoperez/ngx-dev-toolbar/issues/new/choose',
       label: 'Feedback',
     },

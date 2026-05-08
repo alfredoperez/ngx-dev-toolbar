@@ -90,18 +90,8 @@
   gap: var(--ndt-spacing-md);
 }
 
-// Quiet "Layout / Data" divider above the first row of the Data
-// cluster (Export Settings). Mirrors the danger-zone divider but a
-// touch lighter so it groups without shouting.
-.instruction--first-data {
-  margin-top: var(--ndt-spacing-xs);
-  padding-top: var(--ndt-spacing-md);
-  border-top: 1px solid var(--ndt-border-subtle);
-}
-
-// Resource strip — plain text links with small inline icons. Drops
-// the icon-tile pattern entirely; a "resource strip" is a row of
-// links, not a row of buttons.
+// Resource strip — plain text links. Drops the icon-tile pattern
+// entirely; a "resource strip" is a row of links, not a row of buttons.
 .footer-links {
   margin-top: auto;
   padding-top: var(--ndt-spacing-md);
