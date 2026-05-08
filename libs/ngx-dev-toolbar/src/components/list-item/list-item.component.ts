@@ -28,8 +28,8 @@ import { IconName } from '../icons/icon.models';
     <div class="list-item" [class.list-item--forced]="isForced()">
       <span
         class="dot-indicator"
-        [class.dot-indicator--on]="currentValue()"
-        [class.dot-indicator--off]="!currentValue()"
+        [class.dot-indicator--on]="sourceValue()"
+        [class.dot-indicator--off]="!sourceValue()"
         [class.dot-indicator--forced]="isForced()"
         [title]="tooltipText()"
         [attr.aria-label]="statusAriaLabel()"
@@ -163,22 +163,34 @@ export class ToolbarListItemComponent {
   );
 
   /**
+   * Source-of-truth value for the dot indicator. When an item is forced and the
+   * upstream original value is known, surface that; otherwise fall back to
+   * currentValue. Decouples the dot color from the developer's override so the
+   * server-reported state remains visible at a glance.
+   */
+  protected sourceValue = computed(() => {
+    const original = this.originalValue();
+    return this.isForced() && original !== undefined ? original : this.currentValue();
+  });
+
+  /**
    * Tooltip text explaining the current state, with override context when forced
    */
   protected tooltipText = computed(() => {
     const current = this.currentValue() ? 'enabled' : 'disabled';
+    const original = this.originalValue();
 
-    if (this.isForced() && this.originalValue() !== undefined) {
-      const original = this.originalValue() ? 'enabled' : 'disabled';
-      return `Currently ${current} (originally ${original})`;
+    if (this.isForced() && original !== undefined && original !== this.currentValue()) {
+      const originalLabel = original ? 'enabled' : 'disabled';
+      return `Server: ${originalLabel} · Forced: ${current}`;
     }
 
     return `Currently ${current}`;
   });
 
   protected statusAriaLabel = computed(() => {
-    const current = this.currentValue() ? 'enabled' : 'disabled';
-    return this.isForced() ? `${current}, forced` : current;
+    const source = this.sourceValue() ? 'enabled' : 'disabled';
+    return this.isForced() ? `${source}, forced` : source;
   });
 
   protected readonly copyState = signal<'idle' | 'copied'>('idle');

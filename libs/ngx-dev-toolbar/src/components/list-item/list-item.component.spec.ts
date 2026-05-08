@@ -77,4 +77,56 @@ describe('ToolbarListItemComponent', () => {
     const pinButton = fixture.nativeElement.querySelector('.pin-button');
     expect(pinButton.classList.contains('pin-button--pinned')).toBe(false);
   });
+
+  describe('source-value dot indicator', () => {
+    it('renders dot in source style when forced value differs from source', () => {
+      fixture.componentRef.setInput('currentValue', true);
+      fixture.componentRef.setInput('originalValue', false);
+      fixture.componentRef.setInput('isForced', true);
+      fixture.detectChanges();
+
+      const dot = fixture.nativeElement.querySelector('.dot-indicator');
+      expect(dot.classList).toContain('dot-indicator--off');
+      expect(dot.classList).not.toContain('dot-indicator--on');
+      expect(dot.classList).toContain('dot-indicator--forced');
+      expect(dot.getAttribute('title')).toMatch(/Server: disabled · Forced: enabled/);
+      expect(dot.getAttribute('aria-label')).toBe('disabled, forced');
+    });
+
+    it('renders dot in source style and simple tooltip when forced value matches source', () => {
+      fixture.componentRef.setInput('currentValue', true);
+      fixture.componentRef.setInput('originalValue', true);
+      fixture.componentRef.setInput('isForced', true);
+      fixture.detectChanges();
+
+      const dot = fixture.nativeElement.querySelector('.dot-indicator');
+      expect(dot.classList).toContain('dot-indicator--on');
+      expect(dot.classList).toContain('dot-indicator--forced');
+      expect(dot.getAttribute('title')).toBe('Currently enabled');
+      expect(dot.getAttribute('aria-label')).toBe('enabled, forced');
+    });
+
+    it('falls through to currentValue for non-forced items', () => {
+      fixture.componentRef.setInput('currentValue', true);
+      fixture.componentRef.setInput('isForced', false);
+      fixture.detectChanges();
+
+      const dot = fixture.nativeElement.querySelector('.dot-indicator');
+      expect(dot.classList).toContain('dot-indicator--on');
+      expect(dot.classList).not.toContain('dot-indicator--forced');
+      expect(dot.getAttribute('title')).toBe('Currently enabled');
+      expect(dot.getAttribute('aria-label')).toBe('enabled');
+    });
+
+    it('falls back to currentValue when forced but originalValue is undefined', () => {
+      fixture.componentRef.setInput('currentValue', true);
+      fixture.componentRef.setInput('isForced', true);
+      fixture.detectChanges();
+
+      const dot = fixture.nativeElement.querySelector('.dot-indicator');
+      expect(dot.classList).toContain('dot-indicator--on');
+      expect(dot.classList).toContain('dot-indicator--forced');
+      expect(dot.getAttribute('title')).toBe('Currently enabled');
+    });
+  });
 });
