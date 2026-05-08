@@ -90,44 +90,13 @@
   gap: var(--ndt-spacing-md);
 }
 
-.position-selector {
-  display: inline-flex;
-  padding: 2px;
-  background: var(--ndt-hover-bg);
-  border-radius: var(--ndt-border-radius-medium);
-  align-self: stretch;
-  width: 100%;
-
-  .position-option {
-    flex: 1;
-    padding: var(--ndt-spacing-xs) var(--ndt-spacing-sm);
-    border: 0;
-    background: transparent;
-    color: var(--ndt-text-muted);
-    font-size: var(--ndt-font-size-xs);
-    font-weight: 500;
-    font-family: inherit;
-    cursor: pointer;
-    transition: background-color 0.15s ease, color 0.15s ease;
-    text-transform: capitalize;
-    border-radius: calc(var(--ndt-border-radius-medium) - 2px);
-    white-space: nowrap;
-
-    &:hover:not(.position-option--active) {
-      color: var(--ndt-text-primary);
-    }
-
-    &:focus-visible {
-      outline: 2px solid rgba(var(--ndt-primary-rgb), 0.5);
-      outline-offset: 1px;
-    }
-
-    &--active {
-      background: var(--ndt-bg-primary);
-      color: var(--ndt-text-primary);
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
-    }
-  }
+// Quiet "Layout / Data" divider above the first row of the Data
+// cluster (Export Settings). Mirrors the danger-zone divider but a
+// touch lighter so it groups without shouting.
+.instruction--first-data {
+  margin-top: var(--ndt-spacing-xs);
+  padding-top: var(--ndt-spacing-md);
+  border-top: 1px solid var(--ndt-border-subtle);
 }
 
 // Resource strip — plain text links with small inline icons. Drops
@@ -139,9 +108,9 @@
   border-top: 1px solid var(--ndt-border-subtle);
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-  gap: var(--ndt-spacing-sm);
+  gap: var(--ndt-spacing-md);
   flex-wrap: wrap;
 
   // Reshape each link-button from "icon tile stacked on label" to

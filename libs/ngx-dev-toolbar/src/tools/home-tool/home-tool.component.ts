@@ -9,12 +9,13 @@ import { FormsModule } from '@angular/forms';
 import { ToolbarButtonComponent } from '../../components/button/button.component';
 import { ToolbarConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 import { ToolbarLinkButtonComponent } from '../../components/link-button/link-button.component';
+import {
+  SelectOption,
+  ToolbarSelectComponent,
+} from '../../components/select/select.component';
 import { ToolbarToolComponent } from '../../components/toolbar-tool/toolbar-tool.component';
 import { ToolbarWindowOptions } from '../../components/toolbar-tool/toolbar-tool.models';
-import {
-  ToolbarPosition,
-  TOOLBAR_POSITIONS,
-} from '../../models/toolbar-position.model';
+import { ToolbarPosition } from '../../models/toolbar-position.model';
 import { ToolbarStateService } from '../../toolbar-state.service';
 import { ToolbarStorageService } from '../../utils/storage.service';
 import { SettingsService } from './settings.service';
@@ -28,6 +29,7 @@ import { SettingsService } from './settings.service';
     ToolbarButtonComponent,
     ToolbarConfirmDialogComponent,
     ToolbarLinkButtonComponent,
+    ToolbarSelectComponent,
   ],
   template: `
     <ndt-toolbar-tool [options]="options" toolTitle="Home" icon="angular">
@@ -40,21 +42,18 @@ import { SettingsService } from './settings.service';
                 Choose where the toolbar appears on screen
               </span>
             </div>
-          </div>
-          <div class="position-selector">
-            @for (pos of positions; track pos) {
-              <button
-                class="position-option"
-                [class.position-option--active]="state.position() === pos"
-                [attr.aria-pressed]="state.position() === pos"
-                (click)="onPositionChange(pos)"
-              >
-                {{ pos }}
-              </button>
-            }
+            <div class="instruction__control">
+              <ndt-select
+                [value]="state.position()"
+                [options]="positionOptions"
+                ariaLabel="Toolbar position"
+                size="small"
+                (valueChange)="onPositionChange($any($event))"
+              />
+            </div>
           </div>
 
-          <div class="instruction">
+          <div class="instruction instruction--first-data">
             <div class="instruction__label">
               <span class="instruction__label-text">Export Settings</span>
               <span class="instruction__label-description">
@@ -136,7 +135,6 @@ export class ToolbarHomeToolComponent {
 
   readonly badge = input<string | number>();
   readonly title = `Angular Toolbar`;
-  readonly positions = TOOLBAR_POSITIONS;
   readonly options: ToolbarWindowOptions = {
     title: this.title,
     isClosable: true,
@@ -145,31 +143,25 @@ export class ToolbarHomeToolComponent {
     description: '',
   };
 
+  readonly positionOptions: SelectOption[] = [
+    { value: 'top', label: 'Top' },
+    { value: 'bottom', label: 'Bottom' },
+    { value: 'left', label: 'Left' },
+    { value: 'right', label: 'Right' },
+    { value: 'sidebar-left', label: '◧ Sidebar L' },
+    { value: 'sidebar-right', label: '◨ Sidebar R' },
+  ];
+
   readonly links = [
-    {
-      icon: 'bug',
-      url: 'https://github.com/alfredoperez/ngx-dev-toolbar/issues',
-      label: 'Bug report',
-    },
-    {
-      icon: 'lightbulb',
-      url: 'https://github.com/alfredoperez/ngx-dev-toolbar/discussions',
-      label: 'Suggestions',
-    },
     {
       icon: 'docs',
       url: 'https://alfredoperez.github.io/ngx-dev-toolbar/',
       label: 'Docs',
     },
     {
-      icon: 'star',
-      url: 'https://github.com/alfredoperez/ngx-dev-toolbar',
-      label: 'Star on GitHub',
-    },
-    {
-      icon: 'discord',
-      url: 'https://discord.com/invite/angular',
-      label: 'Community',
+      icon: 'lightbulb',
+      url: 'https://github.com/alfredoperez/ngx-dev-toolbar/issues/new/choose',
+      label: 'Feedback',
     },
   ] as const;
 

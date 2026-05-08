@@ -1,0 +1,195 @@
+{
+  "workflow": "sdd",
+  "currentStep": "done",
+  "currentTask": null,
+  "progress": null,
+  "next": "done",
+  "checkpointStatus": { "commit": true, "pr": false },
+  "updated": "2026-05-08",
+  "selectedAt": "2026-05-08T13:40:40Z",
+  "specName": "Home Tool Redesign",
+  "branch": "main",
+  "workingBranch": "feat/022-home-tool-redesign",
+  "type": "feat",
+  "createdAt": "2026-05-08T13:40:40Z",
+  "loadedDomains": [],
+  "approach": "Reshape the Home Tool into a clean settings-row stack with the documented ndt-select position control, fix sidebar-mode tooltip direction with a tooltipDirection mapping, settle the close-button hover, curate a 2-link footer ([Docs, Feedback]), and tighten App Features list rhythm at the boundaries.",
+  "last_action": "All 8 tasks complete. CP1/CP2/CP3 approved. pre:commit hook (npm run code-check) passed. Ready to stage + commit.",
+  "files_modified": [
+    "libs/ngx-dev-toolbar/src/tools/home-tool/home-tool.component.ts",
+    "libs/ngx-dev-toolbar/src/tools/home-tool/home-tool.component.scss",
+    "libs/ngx-dev-toolbar/src/components/tool-button/tool-button.component.ts",
+    "libs/ngx-dev-toolbar/src/components/tool-button/tool-button.component.spec.ts",
+    "libs/ngx-dev-toolbar/src/components/window/window.component.scss",
+    "libs/ngx-dev-toolbar/src/components/list/list.component.scss",
+    "libs/ngx-dev-toolbar/src/components/list-group/list-group.component.scss"
+  ],
+  "decisions": [
+    "Used `.position-segmented` as the new class name (rather than reusing `.position-selector`) to avoid CSS-name overlap with the deleted full-width style.",
+    "Added `flex-wrap: wrap; row-gap: 2px` to `.position-segmented` so the strip degrades to two rows instead of overflowing if the 6 abbreviated keys exceed the right slot at narrow window widths — graceful degradation instead of triggering the ndt-select fallback prematurely.",
+    "Added marker class `.instruction--first-data` on the Export row (T001) for the Layout/Data divider in T002 — robust against row reordering vs. nth-of-type.",
+    "Used parameterized `it.each` for the four cardinal positions in the spec to keep the test file tight while exercising every cardinal.",
+    "Post-screenshot review: replaced the 6-key segmented strip with the documented ndt-select fallback (T006) because the strip's natural width collapsed the label column to ~50px in the medium-size window; ndt-select's 120px min-width restores label breathing room.",
+    "Capitalized position labels in the dropdown (Top/Bottom/Left/Right/Sidebar L/Sidebar R) — easier to scan than the lowercase strip labels.",
+    "Footer URL switched to /issues/new/choose so GitHub presents the issue-template picker (Bug report or Feature request) instead of forcing the user to pre-categorize.",
+    "T007 fixes shared list primitives (list.component.scss + list-group.component.scss), so the rhythm benefit propagates to Feature Flags / Permissions / Presets — a one-line fix that improves four tools at once."
+  ],
+  "concerns": [
+    { "task": "T004", "note": "R006 default-mode header alignment is unverified visually (no browser session in this auto run); reviewer should confirm at CP1 that controls don't feel high above multi-line title blocks." },
+    { "task": "T007", "note": "list-group .content margin-top deletion changes group-header→items spacing in EVERY list-using tool (Feature Flags, App Features, Permissions, Presets). User saw the change on App Features only; reviewer should sanity-check the other three tools don't feel cramped now." }
+  ],
+  "task_summaries": {
+    "T001": {
+      "status": "DONE",
+      "did": "Replaced the .position-selector segmented bar with a .instruction row + compact .position-segmented control inside .instruction__control; trimmed links to [Docs, Bug report]; removed unused TOOLBAR_POSITIONS import; introduced positionItems with abbreviated labels and ◧/◨ glyphs for sidebars.",
+      "files": ["libs/ngx-dev-toolbar/src/tools/home-tool/home-tool.component.ts"],
+      "concerns": []
+    },
+    "T002": {
+      "status": "DONE",
+      "did": "Deleted .position-selector block; added .position-segmented compact strip styles with focus-visible + active states; added .instruction--first-data divider above the Export row; flipped .footer-links from space-between → flex-start with gap=md.",
+      "files": ["libs/ngx-dev-toolbar/src/tools/home-tool/home-tool.component.scss"],
+      "concerns": []
+    },
+    "T003": {
+      "status": "DONE",
+      "did": "Added readonly tooltipDirection computed mapping sidebar-left → 'left', sidebar-right → 'right', cardinals pass-through; switched host class binding to use tooltipDirection() — no SCSS changes since existing cardinal :host(.tooltip-position-left)/(right) rules already point inward.",
+      "files": ["libs/ngx-dev-toolbar/src/components/tool-button/tool-button.component.ts"],
+      "concerns": []
+    },
+    "T004": {
+      "status": "DONE_WITH_CONCERNS",
+      "did": "Option A applied: deleted .control--close:hover { background: var(--ndt-hover-danger); } override so close inherits sibling .control:hover neutral treatment. R006 default-mode header pass: no SCSS edit (task notes it may be no-op) — defer visual confirmation to CP1.",
+      "files": ["libs/ngx-dev-toolbar/src/components/window/window.component.scss"],
+      "concerns": [
+        "R006 default-mode header alignment unverified visually — reviewer should confirm at CP1."
+      ]
+    },
+    "T005": {
+      "status": "DONE",
+      "did": "Created tool-button.component.spec.ts with TestBed setup mocking ToolbarStateService (activeToolId/isVisible/theme signals); 6 Jest cases — 2 sidebar mappings (sidebar-left → 'left', sidebar-right → 'right') verifying both tooltipDirection() return value and host classList; 4 cardinal pass-through cases via it.each. All pass; full 401-test library suite green.",
+      "files": ["libs/ngx-dev-toolbar/src/components/tool-button/tool-button.component.spec.ts"],
+      "concerns": []
+    },
+    "T006": {
+      "status": "DONE",
+      "did": "Swapped .position-segmented strip for <ndt-select> bound to state.position() via [value]+(valueChange). Imported ToolbarSelectComponent + SelectOption; renamed positionItems → positionOptions (Title-Cased labels); deleted .position-segmented SCSS block (~30 lines). onPositionChange retained as the binding sink with $any cast for the string→ToolbarPosition boundary.",
+      "files": [
+        "libs/ngx-dev-toolbar/src/tools/home-tool/home-tool.component.ts",
+        "libs/ngx-dev-toolbar/src/tools/home-tool/home-tool.component.scss"
+      ],
+      "concerns": []
+    },
+    "T007": {
+      "status": "DONE_WITH_CONCERNS",
+      "did": "list.component.scss: added padding-top: var(--ndt-spacing-sm) to .list-container so filter→list = 6px (matches header→filter). list-group.component.scss: deleted margin-top: var(--ndt-spacing-xs) from .content so group-header→items = 4px (host gap is single source of truth). Affects all list-using tools — Feature Flags, App Features, Permissions, Presets.",
+      "files": [
+        "libs/ngx-dev-toolbar/src/components/list/list.component.scss",
+        "libs/ngx-dev-toolbar/src/components/list-group/list-group.component.scss"
+      ],
+      "concerns": [
+        "Spacing change applies to all list-using tools (Feature Flags / Permissions / Presets / App Features); user only audited App Features. Visual regression check needed on the other three."
+      ]
+    },
+    "T008": {
+      "status": "DONE",
+      "did": "Replaced { icon: 'bug', label: 'Bug report', url: .../issues } with { icon: 'lightbulb', label: 'Feedback', url: .../issues/new/choose } in the home-tool links array. Final footer: Docs · Feedback. URL routes through GitHub's issue-template chooser so users pick Bug vs Feature when filing.",
+      "files": ["libs/ngx-dev-toolbar/src/tools/home-tool/home-tool.component.ts"],
+      "concerns": []
+    }
+  },
+  "step_summaries": {
+    "specify": {
+      "complexity": "normal",
+      "requirements": 7,
+      "scenarios": 5,
+      "key_finding": "Tooltip-position mapping in toolbar-tool.component.ts:92-93 sends sidebar-mode tooltips toward the viewport edge (off-screen) — root cause of the sidebar tooltip complaint."
+    },
+    "plan": {
+      "approach_summary": "Reshape the Home Tool into a clean settings-row stack with a compact segmented position control, fix sidebar-mode tooltip direction with a tooltipDirection mapping, settle the close-button hover, and curate a 2-link footer.",
+      "files_planned": 4,
+      "risks": [
+        "Segmented-control width in narrow windows (320px); mitigation = ndt-select fallback already named in modify entry.",
+        "Close-button hover muscle memory: neutral vs soft danger-tint — pick at tasks.",
+        "tooltipDirection mapping must remain the only consumer of the tooltip-position-* class; verify with grep."
+      ],
+      "principles_concerns": 0,
+      "domain_concerns": 0,
+      "significance_score": 1,
+      "adr_drafted": false,
+      "impeccable_audit": {
+        "verdict": "ship-quality skeleton; 7 punch-list edits applied",
+        "edits_applied": [
+          "position control flipped from ndt-select default to compact segmented control with select fallback",
+          ".footer-links justify-content space-between -> flex-start with gap to keep 2 links tight",
+          "R006 header pass refocused on default-mode align-items: flex-start (compact already centered)",
+          "R004 close-button hover surfaced as A (neutral) / B (soft 8% danger tint) decision before tasks",
+          "consolidated two window.component.scss entries into one with two sub-bullets",
+          "added explicit 'cardinal left/right already correct' note to Approach",
+          "recorded significance_score=1, adr_drafted=false"
+        ]
+      }
+    },
+    "tasks": {
+      "task_count": 5,
+      "parallel_group_size": 4,
+      "sequential_tasks": 1,
+      "decisions_settled": [
+        "close-button hover: option A (neutral parity) — delete .control--close:hover override; option B (soft 8% danger tint) recorded as fallback inside T004",
+        "position control: compact segmented control as primary path; ndt-select as documented fallback if 6-key strip overflows narrow widths"
+      ]
+    }
+  },
+  "transitions": [
+    { "step": "specify", "substep": "parsing", "from": null, "by": "sdd", "at": "2026-05-08T13:40:40Z" },
+    { "step": "specify", "substep": "exploring", "from": "parsing", "by": "sdd", "at": "2026-05-08T13:42:00Z" },
+    { "step": "specify", "substep": "detecting", "from": "exploring", "by": "sdd", "at": "2026-05-08T13:44:00Z" },
+    { "step": "specify", "substep": "writing-spec", "from": "detecting", "by": "sdd", "at": "2026-05-08T13:45:00Z" },
+    { "step": "specify", "substep": null, "from": "writing-spec", "by": "sdd", "at": "2026-05-08T13:46:00Z" },
+    { "step": "specify", "substep": null, "from": { "step": "specify", "substep": null }, "by": "extension", "at": "2026-05-08T13:42:34.063Z" },
+    { "step": "plan", "substep": null, "from": { "step": "specify", "substep": null }, "by": "extension", "at": "2026-05-08T13:42:34.066Z" },
+    { "step": "plan", "substep": "writing-plan", "from": { "step": "plan", "substep": null }, "by": "ai", "at": "2026-05-08T13:50:00Z" },
+    { "step": "plan", "substep": "impeccable-audit", "from": { "step": "plan", "substep": "writing-plan" }, "by": "ai", "at": "2026-05-08T13:55:00Z" },
+    { "step": "plan", "substep": null, "from": { "step": "plan", "substep": "impeccable-audit" }, "by": "ai", "at": "2026-05-08T14:00:00Z" },
+    { "step": "plan", "substep": null, "from": { "step": "plan", "substep": null }, "by": "extension", "at": "2026-05-08T13:49:38.336Z" },
+    { "step": "tasks", "substep": null, "from": { "step": "plan", "substep": null }, "by": "extension", "at": "2026-05-08T13:49:38.339Z" },
+    { "step": "tasks", "substep": "loading", "from": { "step": "tasks", "substep": null }, "by": "ai", "at": "2026-05-08T14:10:00Z" },
+    { "step": "tasks", "substep": "generate", "from": { "step": "tasks", "substep": "loading" }, "by": "ai", "at": "2026-05-08T14:11:00Z" },
+    { "step": "tasks", "substep": null, "from": { "step": "tasks", "substep": "generate" }, "by": "ai", "at": "2026-05-08T14:15:00Z" },
+    { "step": "tasks", "substep": null, "from": { "step": "tasks", "substep": null }, "by": "extension", "at": "2026-05-08T13:55:45.478Z" },
+    { "step": "implement", "substep": null, "from": { "step": "tasks", "substep": null }, "by": "extension", "at": "2026-05-08T13:55:45.479Z" },
+    { "step": "implement", "substep": "phase1", "from": { "step": "implement", "substep": null }, "by": "ai", "at": "2026-05-08T14:30:00Z" },
+    { "step": "implement", "substep": "phase1", "from": { "step": "implement", "substep": "phase1" }, "by": "ai", "at": "2026-05-08T14:45:00Z" },
+    { "step": "implement", "substep": "code-review", "from": { "step": "implement", "substep": "phase1" }, "by": "ai", "at": "2026-05-08T15:00:00Z" },
+    { "step": "implement", "substep": "test-results", "from": { "step": "implement", "substep": "code-review" }, "by": "ai", "at": "2026-05-08T15:30:00Z" },
+    { "step": "implement", "substep": "commit-review", "from": { "step": "implement", "substep": "test-results" }, "by": "ai", "at": "2026-05-08T15:45:00Z" },
+    { "step": "implement", "substep": "commit", "from": { "step": "implement", "substep": "commit-review" }, "by": "ai", "at": "2026-05-08T16:00:00Z" },
+    { "step": "done", "substep": null, "from": { "step": "implement", "substep": "commit" }, "by": "ai", "at": "2026-05-08T16:00:00Z" }
+  ],
+  "status": "completed",
+  "stepHistory": {
+    "specify": { "startedAt": "2026-05-08T13:42:34.063Z", "completedAt": "2026-05-08T13:42:34.063Z" },
+    "plan": {
+      "startedAt": "2026-05-08T13:42:34.066Z",
+      "completedAt": "2026-05-08T13:49:38.336Z",
+      "substeps": [
+        { "name": "writing-plan", "startedAt": "2026-05-08T13:50:00Z", "completedAt": "2026-05-08T13:55:00Z" },
+        { "name": "impeccable-audit", "startedAt": "2026-05-08T13:55:00Z", "completedAt": "2026-05-08T14:00:00Z" }
+      ]
+    },
+    "tasks": {
+      "startedAt": "2026-05-08T13:49:38.339Z",
+      "completedAt": "2026-05-08T13:55:45.478Z",
+      "substeps": [
+        { "name": "generate", "startedAt": "2026-05-08T14:10:00Z", "completedAt": "2026-05-08T14:15:00Z" }
+      ]
+    },
+    "implement": {
+      "startedAt": "2026-05-08T13:55:45.479Z",
+      "completedAt": "2026-05-08T16:00:00Z",
+      "substeps": [
+        { "name": "phase1", "startedAt": "2026-05-08T14:30:00Z", "completedAt": "2026-05-08T15:00:00Z" }
+      ]
+    }
+  }
+}

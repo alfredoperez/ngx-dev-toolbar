@@ -14,7 +14,7 @@ import { ToolbarStateService } from '../../toolbar-state.service';
   selector: 'ndt-tool-button',
   standalone: true,
   host: {
-    '[class]': '"tooltip-position-" + position()',
+    '[class]': '"tooltip-position-" + tooltipDirection()',
   },
   template: `
     <button
@@ -68,6 +68,18 @@ export class ToolbarToolButtonComponent {
   readonly isTooltipVisible = computed(
     () => this.tooltip() && !this.isActive() && this.isToolbarVisible()
   );
+
+  // Sidebar positions point tooltips toward the viewport interior by
+  // remapping onto the existing cardinal SCSS rules. Cardinals pass
+  // through unchanged.
+  readonly tooltipDirection = computed(() => {
+    const p = this.position();
+    return p === 'sidebar-left'
+      ? 'left'
+      : p === 'sidebar-right'
+        ? 'right'
+        : p;
+  });
 
   // Properties
   protected readonly tooltipState = signal(false);
