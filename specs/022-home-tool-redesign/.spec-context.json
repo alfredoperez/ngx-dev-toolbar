@@ -4,7 +4,9 @@
   "currentTask": null,
   "progress": null,
   "next": "done",
-  "checkpointStatus": { "commit": true, "pr": false },
+  "checkpointStatus": { "commit": true, "pr": true },
+  "prUrl": "https://github.com/alfredoperez/ngx-dev-toolbar/pull/52",
+  "prNumber": 52,
   "updated": "2026-05-08",
   "selectedAt": "2026-05-08T13:40:40Z",
   "specName": "Home Tool Redesign",
@@ -14,7 +16,7 @@
   "createdAt": "2026-05-08T13:40:40Z",
   "loadedDomains": [],
   "approach": "Reshape the Home Tool into a clean settings-row stack with the documented ndt-select position control, fix sidebar-mode tooltip direction with a tooltipDirection mapping, settle the close-button hover, curate a 2-link footer ([Docs, Feedback]), and tighten App Features list rhythm at the boundaries.",
-  "last_action": "All 8 tasks complete. CP1/CP2/CP3 approved. pre:commit hook (npm run code-check) passed. Ready to stage + commit.",
+  "last_action": "PR #52 opened — feat(toolbar): redesign home tool with settings rows + chrome polish",
   "files_modified": [
     "libs/ngx-dev-toolbar/src/tools/home-tool/home-tool.component.ts",
     "libs/ngx-dev-toolbar/src/tools/home-tool/home-tool.component.scss",
@@ -164,7 +166,8 @@
     { "step": "implement", "substep": "test-results", "from": { "step": "implement", "substep": "code-review" }, "by": "ai", "at": "2026-05-08T15:30:00Z" },
     { "step": "implement", "substep": "commit-review", "from": { "step": "implement", "substep": "test-results" }, "by": "ai", "at": "2026-05-08T15:45:00Z" },
     { "step": "implement", "substep": "commit", "from": { "step": "implement", "substep": "commit-review" }, "by": "ai", "at": "2026-05-08T16:00:00Z" },
-    { "step": "done", "substep": null, "from": { "step": "implement", "substep": "commit" }, "by": "ai", "at": "2026-05-08T16:00:00Z" }
+    { "step": "done", "substep": null, "from": { "step": "implement", "substep": "commit" }, "by": "ai", "at": "2026-05-08T16:00:00Z" },
+    { "step": "done", "substep": "pr-opened", "from": { "step": "done", "substep": null }, "by": "ai", "at": "2026-05-08T16:05:00Z" }
   ],
   "status": "completed",
   "stepHistory": {
