@@ -7,8 +7,10 @@
   "status": "completed",
   "checkpointStatus": {
     "commit": true,
-    "pr": false
+    "pr": true
   },
+  "prUrl": "https://github.com/alfredoperez/ngx-dev-toolbar/pull/51",
+  "prNumber": 51,
   "updated": "2026-05-08",
   "selectedAt": "2026-04-27T00:16:00Z",
   "specName": "Fix Flag Source Display",
@@ -17,7 +19,7 @@
   "type": "fix",
   "createdAt": "2026-04-27T00:16:00Z",
   "approach": "Decouple the dot indicator in ndt-list-item from the forced/effective value so it always renders the upstream source value, while leaving the row tint, select dropdown, and aria semantics untouched.",
-  "last_action": "All 3 tasks complete; CP1+CP3 approved; pre:commit hook (npm run code-check) passed lint+test+build; 012 sidecar deleted (was untracked, no commit); ready to commit and PR.",
+  "last_action": "PR #51 opened — fix(list-item): dot indicator reflects source value, not forced override",
   "files_modified": [
     "libs/ngx-dev-toolbar/src/components/list-item/list-item.component.ts",
     "libs/ngx-dev-toolbar/src/components/list-item/list-item.component.spec.ts"
@@ -258,6 +260,16 @@
       },
       "by": "sdd",
       "at": "2026-05-08T00:04:00Z"
+    },
+    {
+      "step": "done",
+      "substep": "pr-opened",
+      "from": {
+        "step": "done",
+        "substep": null
+      },
+      "by": "sdd",
+      "at": "2026-05-08T00:05:00Z"
     }
   ],
   "stepHistory": {
