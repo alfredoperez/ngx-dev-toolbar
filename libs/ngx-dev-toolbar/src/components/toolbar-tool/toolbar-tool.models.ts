@@ -23,6 +23,12 @@ export interface ToolbarWindowOptions {
     | 'top-right';
   size?: 'small' | 'medium' | 'tall' | 'large';
   isBeta?: boolean;
+  /**
+   * Render the window with a compact, single-row header (no description, no divider).
+   * Defaults to true when the toolbar is in a sidebar position; otherwise false.
+   * Setting this explicitly always wins.
+   */
+  compact?: boolean;
 }
 
 export interface ToolbarToolOptions {

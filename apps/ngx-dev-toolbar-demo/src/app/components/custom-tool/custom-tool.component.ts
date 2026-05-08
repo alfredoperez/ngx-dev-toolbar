@@ -1,279 +1,610 @@
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
   Component,
+  inject,
+  Injector,
   signal,
+  viewChild,
 } from '@angular/core';
 import {
-  SelectOption,
+  nounSingular,
+  StreamRunOptions,
+  StreamStep,
   ToolbarButtonComponent,
-  ToolbarListComponent,
-  ToolbarSelectComponent,
-  ToolbarTabComponent,
-  ToolbarTabsComponent,
+  ToolbarStreamRunnerComponent,
   ToolbarToolComponent,
   ToolbarWindowOptions,
+  wait,
 } from 'ngx-dev-toolbar';
 
-interface FinderResult {
+// ─── Mock data shapes ────────────────────────────────────────────────────
+
+interface MockEntity {
   id: string;
   name: string;
-  detail: string;
 }
 
-const MOCK_ROUTES: FinderResult[] = [
-  { id: 'r1', name: '/dashboard', detail: 'DashboardComponent — lazy loaded' },
-  { id: 'r2', name: '/users', detail: 'UsersListComponent — eager' },
-  { id: 'r3', name: '/users/:id', detail: 'UserDetailComponent — lazy loaded' },
-  { id: 'r4', name: '/settings', detail: 'SettingsComponent — eager' },
-  { id: 'r5', name: '/reports', detail: 'ReportsComponent — lazy loaded' },
-];
+interface RouteEntity {
+  path: string;
+  componentName: string;
+  loading: 'lazy' | 'eager';
+}
 
-const MOCK_ELEMENTS: FinderResult[] = [
-  { id: 'e1', name: '<app-header>', detail: 'AppHeaderComponent — 1 instance' },
-  { id: 'e2', name: '<app-sidebar>', detail: 'SidebarComponent — 1 instance' },
-  { id: 'e3', name: '<ndt-toolbar>', detail: 'ToolbarComponent — 1 instance' },
-  { id: 'e4', name: '<app-card>', detail: 'CardComponent — 12 instances' },
-  { id: 'e5', name: '<app-button>', detail: 'ButtonComponent — 8 instances' },
-];
+interface ElementEntity {
+  selector: string;
+  componentName: string;
+  count: number;
+}
 
-interface CreatedEntry {
+// ─── Bundle definitions (CREATE actions) ─────────────────────────────────
+
+interface BundleDefinition {
   id: string;
-  type: string;
-  name: string;
-  timestamp: string;
+  label: string;
+  preamble: string;
+  typeNames: string;
+  buildSteps: (count: number) => StreamStep<MockEntity>[];
 }
+
+interface EntityStepConfig {
+  label: string;
+  badge: string;
+  prefix: string;
+  count: number;
+  description: string;
+}
+
+function makeEntityStep({
+  label,
+  badge,
+  prefix,
+  count,
+  description,
+}: EntityStepConfig): StreamStep<MockEntity> {
+  const singular = nounSingular(label).toLowerCase();
+  const titleCaseSingular = nounSingular(label);
+  return {
+    label,
+    badge,
+    total: count,
+    description,
+    runItem: async (i) => {
+      // 2–5s per item with jitter for a deliberate "doing it" rhythm.
+      await wait(2000 + Math.random() * 3000);
+      // ~7% simulated failure to demonstrate error handling.
+      if (Math.random() < 0.07) {
+        throw new Error(`Could not save ${singular} ${i + 1}`);
+      }
+      return {
+        id: `${badge.toLowerCase()}-${randomId()}`,
+        name: `${titleCaseSingular} ${i + 1}`,
+      };
+    },
+    link: (item) => `/${prefix}/${item.id}`,
+    describe: (item) => item.name,
+    detail: (item) => `id ${item.id} · seed data ready to query`,
+    placeholderDetail: `Generating ${singular} record…`,
+  };
+}
+
+const BUNDLES: BundleDefinition[] = [
+  {
+    id: 'billing',
+    label: 'Billing data',
+    preamble: 'Customers, invoices, subscriptions, line items, payment methods.',
+    typeNames: 'customers, invoices, subscriptions, line items, payment methods',
+    buildSteps: (n) => [
+      makeEntityStep({
+        label: 'Customers',
+        badge: 'CUSTOMER',
+        prefix: 'billing/customers',
+        count: n,
+        description: 'Active accounts with valid payment methods on file.',
+      }),
+      makeEntityStep({
+        label: 'Invoices',
+        badge: 'INVOICE',
+        prefix: 'billing/invoices',
+        count: n,
+        description: 'A mix of paid, pending, and overdue invoices.',
+      }),
+      makeEntityStep({
+        label: 'Subscriptions',
+        badge: 'SUBSCRIPTION',
+        prefix: 'billing/subscriptions',
+        count: n,
+        description: 'Standard, pro, and enterprise tier subscriptions.',
+      }),
+      makeEntityStep({
+        label: 'Line items',
+        badge: 'LINEITEM',
+        prefix: 'billing/line-items',
+        count: n,
+        description: 'Line items linked to the generated invoices.',
+      }),
+      makeEntityStep({
+        label: 'Payment methods',
+        badge: 'PAYMENT',
+        prefix: 'billing/payment-methods',
+        count: n,
+        description: 'Cards, ACH transfers, and digital wallets for checkout testing.',
+      }),
+    ],
+  },
+  {
+    id: 'retail',
+    label: 'Retail catalog',
+    preamble: 'Categories, products, variants, inventory, suppliers.',
+    typeNames: 'categories, products, variants, inventory, suppliers',
+    buildSteps: (n) => [
+      makeEntityStep({
+        label: 'Categories',
+        badge: 'CATEGORY',
+        prefix: 'retail/categories',
+        count: n,
+        description: 'Top-level taxonomy that organizes the catalog.',
+      }),
+      makeEntityStep({
+        label: 'Products',
+        badge: 'PRODUCT',
+        prefix: 'retail/products',
+        count: n,
+        description: 'SKUs distributed across the generated categories.',
+      }),
+      makeEntityStep({
+        label: 'Variants',
+        badge: 'VARIANT',
+        prefix: 'retail/variants',
+        count: n,
+        description: 'Size and color variants attached to each product.',
+      }),
+      makeEntityStep({
+        label: 'Inventory',
+        badge: 'INVENTORY',
+        prefix: 'retail/inventory',
+        count: n,
+        description: 'Stock levels with mock warehouse locations.',
+      }),
+      makeEntityStep({
+        label: 'Suppliers',
+        badge: 'SUPPLIER',
+        prefix: 'retail/suppliers',
+        count: n,
+        description: 'Vendor records linked to a subset of products.',
+      }),
+    ],
+  },
+  {
+    id: 'onboarding',
+    label: 'User onboarding',
+    preamble: 'Users, sessions, profiles, preferences, invitations.',
+    typeNames: 'users, sessions, profiles, preferences, invitations',
+    buildSteps: (n) => [
+      makeEntityStep({
+        label: 'Users',
+        badge: 'USER',
+        prefix: 'users',
+        count: n,
+        description: 'New accounts in various activation states.',
+      }),
+      makeEntityStep({
+        label: 'Sessions',
+        badge: 'SESSION',
+        prefix: 'sessions',
+        count: n,
+        description: 'Active and expired login sessions across devices.',
+      }),
+      makeEntityStep({
+        label: 'Profiles',
+        badge: 'PROFILE',
+        prefix: 'profiles',
+        count: n,
+        description: 'Avatars, bios, and preferences set for each user.',
+      }),
+      makeEntityStep({
+        label: 'Preferences',
+        badge: 'PREFERENCE',
+        prefix: 'preferences',
+        count: n,
+        description: 'Notification, locale, and display settings per profile.',
+      }),
+      makeEntityStep({
+        label: 'Invitations',
+        badge: 'INVITE',
+        prefix: 'invites',
+        count: n,
+        description: 'Pending invites in different stages of acceptance.',
+      }),
+    ],
+  },
+];
+
+// ─── FIND actions: also use the runner, but as single-step "discoveries" ──
+
+const ROUTES: RouteEntity[] = [
+  { path: '/dashboard', componentName: 'DashboardComponent', loading: 'lazy' },
+  { path: '/users', componentName: 'UsersListComponent', loading: 'eager' },
+  { path: '/users/:id', componentName: 'UserDetailComponent', loading: 'lazy' },
+  { path: '/settings', componentName: 'SettingsComponent', loading: 'eager' },
+  { path: '/reports', componentName: 'ReportsComponent', loading: 'lazy' },
+];
+
+const ELEMENTS: ElementEntity[] = [
+  { selector: '<app-header>', componentName: 'AppHeaderComponent', count: 1 },
+  { selector: '<app-sidebar>', componentName: 'SidebarComponent', count: 1 },
+  { selector: '<ndt-toolbar>', componentName: 'ToolbarComponent', count: 1 },
+  { selector: '<app-card>', componentName: 'CardComponent', count: 12 },
+  { selector: '<app-button>', componentName: 'ButtonComponent', count: 8 },
+];
+
+function buildFindRoutesOptions(): StreamRunOptions {
+  return {
+    title: 'Searching app routes',
+    preamble: `${ROUTES.length} routes registered in the router.`,
+    steps: [{
+      label: 'Routes',
+      verbActive: 'Reading',
+      verbDone: 'Found',
+      total: ROUTES.length,
+      runItem: async (i) => {
+        await wait(120 + Math.random() * 280);
+        return ROUTES[i];
+      },
+      link: (r) => r.path,
+      describe: (r) => r.path,
+      detail: (r) => `${r.componentName} · ${r.loading}-loaded`,
+      placeholderDetail: 'Reading route configuration…',
+    }],
+    pacing: { stepGap: 0 },
+  };
+}
+
+function buildFindElementsOptions(): StreamRunOptions {
+  return {
+    title: 'Inspecting DOM elements',
+    preamble: `${ELEMENTS.length} component types currently mounted.`,
+    steps: [{
+      label: 'Elements',
+      verbActive: 'Inspecting',
+      verbDone: 'Found',
+      total: ELEMENTS.length,
+      runItem: async (i) => {
+        await wait(120 + Math.random() * 280);
+        return ELEMENTS[i];
+      },
+      link: () => '#elements',
+      describe: (el) => el.selector,
+      detail: (el) => `${el.componentName} · ${el.count} instance${el.count === 1 ? '' : 's'}`,
+      placeholderDetail: 'Inspecting element tree…',
+    }],
+    pacing: { stepGap: 0 },
+  };
+}
+
+// ─── Action catalog ──────────────────────────────────────────────────────
+
+type ActionSection = 'create' | 'find';
+type ActionGlyph = 'sparkle' | 'magnifier';
+
+interface ToolAction {
+  id: string;
+  section: ActionSection;
+  glyph: ActionGlyph;
+  label: string;
+  hint: string;
+  /** Drill-in actions need a form for parameters; direct actions run on click. */
+  flow: 'drill' | 'direct';
+  /** Bundle id (for CREATE drill-in actions). */
+  bundleId?: string;
+  /** Run options builder (for direct-run actions). */
+  buildOptions?: () => StreamRunOptions;
+}
+
+const ACTIONS: ToolAction[] = [
+  ...BUNDLES.map((b): ToolAction => ({
+    id: `create-${b.id}`,
+    section: 'create',
+    glyph: 'sparkle',
+    label: b.label,
+    hint: '5 types',
+    flow: 'drill',
+    bundleId: b.id,
+  })),
+  {
+    id: 'find-routes',
+    section: 'find',
+    glyph: 'magnifier',
+    label: 'Routes',
+    hint: `${ROUTES.length} routes`,
+    flow: 'direct',
+    buildOptions: buildFindRoutesOptions,
+  },
+  {
+    id: 'find-elements',
+    section: 'find',
+    glyph: 'magnifier',
+    label: 'DOM elements',
+    hint: `${ELEMENTS.length} types`,
+    flow: 'direct',
+    buildOptions: buildFindElementsOptions,
+  },
+];
+
+// ─── Component ───────────────────────────────────────────────────────────
+
+type View = 'home' | 'form' | 'run';
 
 @Component({
   selector: 'app-custom-tool',
   standalone: true,
   imports: [
     ToolbarToolComponent,
-    ToolbarTabsComponent,
-    ToolbarTabComponent,
-    ToolbarSelectComponent,
     ToolbarButtonComponent,
-    ToolbarListComponent,
+    ToolbarStreamRunnerComponent,
   ],
   template: `
-    <ndt-toolbar-tool [options]="options" toolTitle="Custom Tool" icon="terminal">
-      <div class="container">
-        <ndt-tabs>
-          <ndt-tab label="Finder">
-            <div class="action-row">
-              <ndt-select
-                [options]="finderOptions"
-                [(value)]="finderType"
-                placeholder="What to look for"
-                ariaLabel="Type to search for"
-              />
-              <ndt-button (click)="onFind()">Find</ndt-button>
-            </div>
+    <ndt-toolbar-tool
+      [options]="options"
+      toolTitle="Mock Data"
+      icon="terminal"
+    >
+      <div class="canvas">
+        @switch (view()) {
 
-            <ndt-list
-              [hasItems]="finderResults().length > 0"
-              emptyMessage="Click Find to search"
-            >
-              @for (result of finderResults(); track result.id) {
-                <div class="finder-item">
-                  <span class="finder-item__link">{{ result.name }}</span>
-                  <span class="finder-item__detail">{{ result.detail }}</span>
-                </div>
+          @case ('home') {
+            <ul class="home">
+              @for (section of sectionsInOrder; track section.id) {
+                <li class="home__section">
+                  <h4 class="home__section-title">{{ section.label }}</h4>
+                  <ul class="home__rows">
+                    @for (action of actionsBySection(section.id); track action.id) {
+                      <li>
+                        <button
+                          class="home__action"
+                          type="button"
+                          (click)="onSelectAction(action)"
+                        >
+                          <span class="home__glyph" aria-hidden="true">
+                            @switch (action.glyph) {
+                              @case ('sparkle') {
+                                <svg viewBox="0 0 16 16" width="14" height="14">
+                                  <path d="M8 1.5l1.4 3.6L13 6.5l-3.6 1.4L8 11.5 6.6 7.9 3 6.5l3.6-1.4L8 1.5z M12 10l.6 1.6L14 12.2l-1.4.6L12 14.4l-.6-1.6L10 12.2l1.4-.6L12 10z" fill="currentColor"/>
+                                </svg>
+                              }
+                              @case ('magnifier') {
+                                <svg viewBox="0 0 16 16" width="14" height="14">
+                                  <circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                                  <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                </svg>
+                              }
+                            }
+                          </span>
+                          <span class="home__label">{{ action.label }}</span>
+                          <span class="home__hint">{{ action.hint }}</span>
+                          <span class="home__chevron" aria-hidden="true">
+                            <svg viewBox="0 0 12 12" width="10" height="10">
+                              <path d="M4.5 3 7.5 6 4.5 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                          </span>
+                        </button>
+                      </li>
+                    }
+                  </ul>
+                </li>
               }
-            </ndt-list>
-          </ndt-tab>
+            </ul>
+          }
 
-          <ndt-tab label="Maker">
-            <div class="action-row">
-              <ndt-select
-                [options]="makerOptions"
-                [(value)]="makerType"
-                placeholder="What to create"
-                ariaLabel="Type to create"
-              />
-              <ndt-button (click)="onCreate()">Create</ndt-button>
-            </div>
+          @case ('form') {
+            <div class="form">
+              <div class="tool-subnav">
+                <button
+                  class="tool-subnav__back"
+                  type="button"
+                  (click)="goHome()"
+                  aria-label="Back to actions"
+                >
+                  <svg viewBox="0 0 14 14" width="12" height="12">
+                    <path d="M9 3 5 7 9 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Back to actions
+                </button>
+              </div>
 
-            <ndt-list
-              [hasItems]="createdEntries().length > 0"
-              emptyMessage="Click Create to generate mock data"
-            >
-              @for (entry of createdEntries(); track entry.id) {
-                <div class="maker-item">
-                  <div class="maker-item__header">
-                    <span class="maker-item__badge">{{ entry.type }}</span>
-                    <span class="maker-item__name">{{ entry.name }}</span>
+              <div class="form__body">
+                <h3 class="form__title">{{ selectedBundle()?.label }}</h3>
+                <p class="form__hint">{{ selectedBundle()?.preamble }}</p>
+
+                <div class="form__field">
+                  <label class="form__label" for="count">Items per type</label>
+                  <div class="form__count-row">
+                    <input
+                      id="count"
+                      class="form__count"
+                      type="number"
+                      min="1"
+                      max="50"
+                      [value]="count()"
+                      (input)="onCountChange($event)"
+                      aria-label="Items per type"
+                    />
+                    <span class="form__count-math">
+                      × 5 types = <strong>{{ count() * 5 }}</strong> entities
+                    </span>
                   </div>
-                  <span class="maker-item__timestamp">{{ entry.timestamp }}</span>
+                </div>
+              </div>
+
+              <div class="form__submit-row">
+                <ndt-button (click)="onGenerate()">Generate</ndt-button>
+              </div>
+            </div>
+          }
+
+          @case ('run') {
+            <div class="run">
+              <div class="tool-subnav">
+                <button
+                  class="tool-subnav__back"
+                  type="button"
+                  (click)="goHome()"
+                  aria-label="Back to actions"
+                >
+                  <svg viewBox="0 0 14 14" width="12" height="12">
+                    <path d="M9 3 5 7 9 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Back to actions
+                </button>
+              </div>
+
+              <ndt-stream-runner #runner></ndt-stream-runner>
+
+              @if (!isRunning()) {
+                <div class="run__actions">
+                  <ndt-button (click)="onRunAgain()">Run again</ndt-button>
                 </div>
               }
-            </ndt-list>
-          </ndt-tab>
-        </ndt-tabs>
+            </div>
+          }
+
+        }
       </div>
     </ndt-toolbar-tool>
   `,
-  styles: [
-    `
-      .container {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        padding: 0;
-      }
-
-      .action-row {
-        display: flex;
-        align-items: stretch;
-        gap: var(--ndt-spacing-sm);
-        margin-bottom: var(--ndt-spacing-md);
-        flex-shrink: 0;
-      }
-
-      .action-row ndt-select {
-        flex: 1 1 auto;
-        min-width: 120px;
-        max-width: 200px;
-        display: flex;
-      }
-
-      .action-row ndt-button {
-        flex: 0 0 auto;
-      }
-
-      /* Finder items */
-      .finder-item {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-        padding: var(--ndt-spacing-xs) var(--ndt-spacing-sm);
-        background: var(--ndt-background-secondary);
-        border-radius: var(--ndt-border-radius-medium);
-        transition: background-color 0.2s ease;
-      }
-
-      .finder-item:hover {
-        background: var(--ndt-hover-bg);
-      }
-
-      .finder-item__link {
-        font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
-        font-size: var(--ndt-font-size-xs);
-        font-weight: 500;
-        color: var(--ndt-primary);
-        cursor: pointer;
-        text-decoration: none;
-      }
-
-      .finder-item__link:hover {
-        text-decoration: underline;
-      }
-
-      .finder-item__detail {
-        font-size: var(--ndt-font-size-xxs);
-        color: var(--ndt-text-muted);
-      }
-
-      /* Maker items */
-      .maker-item {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-        padding: var(--ndt-spacing-xs) var(--ndt-spacing-sm);
-        background: var(--ndt-background-secondary);
-        border-radius: var(--ndt-border-radius-medium);
-        transition: background-color 0.2s ease;
-      }
-
-      .maker-item:hover {
-        background: var(--ndt-hover-bg);
-      }
-
-      .maker-item__header {
-        display: flex;
-        align-items: center;
-        gap: var(--ndt-spacing-sm);
-      }
-
-      .maker-item__badge {
-        display: inline-flex;
-        align-items: center;
-        padding: 1px var(--ndt-spacing-xs);
-        font-size: var(--ndt-font-size-xxs);
-        font-weight: 600;
-        color: rgb(34, 197, 94);
-        background: rgba(34, 197, 94, 0.1);
-        border-radius: var(--ndt-border-radius-small);
-        text-transform: uppercase;
-        letter-spacing: 0.02em;
-      }
-
-      .maker-item__name {
-        font-size: var(--ndt-font-size-sm);
-        font-weight: 500;
-        color: var(--ndt-text-primary);
-      }
-
-      .maker-item__timestamp {
-        font-size: var(--ndt-font-size-xxs);
-        color: var(--ndt-text-muted);
-      }
-    `,
-  ],
+  styleUrls: ['./custom-tool.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarCustomToolComponent {
   protected readonly options: ToolbarWindowOptions = {
     id: 'ndt-custom-tool',
-    title: 'Custom Tool',
-    description: 'Find routes & elements, create mock data',
+    title: 'Mock Data',
+    description: 'Find and create test data',
     isClosable: true,
-    size: 'medium',
+    size: 'tall',
   };
 
-  protected readonly finderOptions: SelectOption[] = [
-    { value: 'routes', label: 'Routes' },
-    { value: 'elements', label: 'Elements' },
+  protected readonly sectionsInOrder = [
+    { id: 'create' as const, label: 'Create' },
+    { id: 'find' as const, label: 'Find' },
   ];
 
-  protected readonly makerOptions: SelectOption[] = [
-    { value: 'user', label: 'User' },
-    { value: 'order', label: 'Order' },
-    { value: 'product', label: 'Product' },
-  ];
+  protected readonly view = signal<View>('home');
+  protected readonly selectedActionId = signal<string | null>(null);
+  protected readonly count = signal(10);
+  protected readonly isRunning = signal(false);
 
-  readonly finderType = signal('routes');
-  readonly makerType = signal('user');
-  readonly finderResults = signal<FinderResult[]>([]);
-  readonly createdEntries = signal<CreatedEntry[]>([]);
+  private readonly runner = viewChild<ToolbarStreamRunnerComponent>('runner');
+  private readonly injector = inject(Injector);
 
-  private createdCount = 0;
+  // ── Action lookup helpers ─────────────────────────────────────────────
 
-  onFind() {
-    const type = this.finderType();
-    if (type === 'routes') {
-      this.finderResults.set(MOCK_ROUTES);
-    } else if (type === 'elements') {
-      this.finderResults.set(MOCK_ELEMENTS);
+  protected actionsBySection(section: ActionSection): ToolAction[] {
+    return ACTIONS.filter((a) => a.section === section);
+  }
+
+  protected selectedAction(): ToolAction | null {
+    const id = this.selectedActionId();
+    return id ? ACTIONS.find((a) => a.id === id) ?? null : null;
+  }
+
+  protected selectedBundle(): BundleDefinition | null {
+    const action = this.selectedAction();
+    if (!action || !action.bundleId) return null;
+    return BUNDLES.find((b) => b.id === action.bundleId) ?? null;
+  }
+
+  // ── Navigation ────────────────────────────────────────────────────────
+
+  protected goHome(): void {
+    this.runner()?.reset();
+    this.selectedActionId.set(null);
+    this.view.set('home');
+  }
+
+  protected async onSelectAction(action: ToolAction): Promise<void> {
+    this.selectedActionId.set(action.id);
+    if (action.flow === 'drill') {
+      this.view.set('form');
+    } else {
+      this.view.set('run');
+      this.scheduleRun();
     }
   }
 
-  onCreate() {
-    const type = this.makerType();
-    if (!type) return;
-
-    this.createdCount++;
-    const label = this.makerOptions.find((o) => o.value === type)?.label ?? type;
-    const now = new Date();
-    const timestamp = now.toLocaleTimeString();
-
-    this.createdEntries.update((entries) => [
-      {
-        id: `created-${this.createdCount}`,
-        type: label,
-        name: `Mock ${label} #${this.createdCount}`,
-        timestamp,
-      },
-      ...entries,
-    ]);
+  protected onCountChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const next = Number.parseInt(input.value, 10);
+    if (!Number.isNaN(next) && next > 0) {
+      this.count.set(Math.min(50, next));
+    }
   }
+
+  protected onGenerate(): void {
+    this.view.set('run');
+    this.scheduleRun();
+  }
+
+  protected async onRunAgain(): Promise<void> {
+    // Runner is already mounted from the previous run; no scheduling needed.
+    await this.runOnce();
+  }
+
+  /**
+   * Wait for Angular to render the run view (which mounts the stream-runner)
+   * before kicking off the work. Without this, viewChild is undefined when we
+   * try to call start() and the user sees an empty canvas.
+   */
+  private scheduleRun(): void {
+    afterNextRender(
+      () => { void this.runOnce(); },
+      { injector: this.injector },
+    );
+  }
+
+  // ── Run dispatch ──────────────────────────────────────────────────────
+
+  private async runOnce(): Promise<void> {
+    if (this.isRunning()) return;
+    const action = this.selectedAction();
+    if (!action) return;
+
+    const options = this.buildOptionsForAction(action);
+    if (!options) return;
+
+    this.isRunning.set(true);
+    const runner = this.runner();
+    if (!runner) {
+      this.isRunning.set(false);
+      return;
+    }
+
+    try {
+      await runner.start(options);
+    } finally {
+      this.isRunning.set(false);
+    }
+  }
+
+  private buildOptionsForAction(action: ToolAction): StreamRunOptions | null {
+    if (action.flow === 'direct' && action.buildOptions) {
+      return action.buildOptions();
+    }
+    if (action.flow === 'drill') {
+      const bundle = this.selectedBundle();
+      if (!bundle) return null;
+      return {
+        title: `Generating ${bundle.label.toLowerCase()}`,
+        preamble: bundle.preamble,
+        steps: bundle.buildSteps(this.count()),
+      };
+    }
+    return null;
+  }
+}
+
+// ─── Helpers ─────────────────────────────────────────────────────────────
+
+function randomId(): string {
+  return Math.random().toString(36).slice(2, 8);
 }
