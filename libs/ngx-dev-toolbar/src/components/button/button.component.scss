@@ -51,4 +51,14 @@
   &.small {
     font-size: var(--ndt-font-size-sm);
   }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+
+    &:hover {
+      background: var(--ndt-bg-primary);
+      border-color: var(--ndt-border-primary);
+    }
+  }
 }

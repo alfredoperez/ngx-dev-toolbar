@@ -66,8 +66,6 @@ function makeEntityStep(
 ): StreamStep<MockEntity> {
   const singular = nounSingular(label).toLowerCase();
   const titleCaseSingular = nounSingular(label);
-  // Per-step buffer; fresh per call because buildSteps is invoked on each run.
-  const buffer: MockEntity[] = [];
   return {
     label,
     badge,
@@ -84,10 +82,10 @@ function makeEntityStep(
         id: `${badge.toLowerCase()}-${randomId()}`,
         name: `${titleCaseSingular} ${i + 1}`,
       };
-      buffer.push(entity);
-      if (i === count - 1) {
-        store.addBatch(label, buffer);
-      }
+      // Per-item flush: each successful entity is written immediately so that
+      // a downstream item failure or run cancellation can never lose earlier
+      // successes. Angular signals coalesce writes within a microtask.
+      store.addBatch(label, [entity]);
       return entity;
     },
     link: (item) => `/${prefix}/${item.id}`,
@@ -103,87 +101,81 @@ const BUNDLES: BundleDefinition[] = [
     label: 'Billing data',
     preamble: 'Customers, invoices, subscriptions, line items, payment methods.',
     typeNames: 'customers, invoices, subscriptions, line items, payment methods',
-    buildSteps: (n, store) => {
-      const invoiceBuffer: InvoiceEntity[] = [];
-      return [
-        makeEntityStep(
-          {
-            label: 'Customers',
-            badge: 'CUSTOMER',
-            prefix: 'billing/customers',
-            count: n,
-            description: 'Active accounts with valid payment methods on file.',
-          },
-          store,
-        ),
+    buildSteps: (n, store) => [
+      makeEntityStep(
         {
-          label: 'Invoices',
-          badge: 'INVOICE',
-          total: n,
-          description: 'A mix of paid, pending, and overdue invoices.',
-          runItem: async (i, ctx) => {
-            await wait(2000 + Math.random() * 3000);
-            if (Math.random() < 0.07) {
-              throw new Error(`Could not save invoice ${i + 1}`);
-            }
-            const customers = ctx.prior('Customers') as readonly MockEntity[];
-            const customer = customers.length > 0 ? customers[i % customers.length] : null;
-            const invoice: InvoiceEntity = {
-              id: `invoice-${randomId()}`,
-              name: `Invoice ${i + 1}`,
-              customerId: customer?.id ?? null,
-            };
-            invoiceBuffer.push(invoice);
-            if (i === n - 1) {
-              store.addBatch('Invoices', invoiceBuffer);
-            }
-            return invoice;
-          },
-          link: (item) => {
-            const customerId = (item as InvoiceEntity).customerId;
-            return customerId
-              ? `/billing/customers/${customerId}/invoices/${item.id}`
-              : `/billing/invoices/${item.id}`;
-          },
-          describe: (item) => item.name,
-          detail: (item) => {
-            const cid = (item as InvoiceEntity).customerId;
-            return cid ? `id ${item.id} · for customer ${cid}` : `id ${item.id} · no customer`;
-          },
-          placeholderDetail: 'Generating invoice record…',
+          label: 'Customers',
+          badge: 'CUSTOMER',
+          prefix: 'billing/customers',
+          count: n,
+          description: 'Active accounts with valid payment methods on file.',
         },
-        makeEntityStep(
-          {
-            label: 'Subscriptions',
-            badge: 'SUBSCRIPTION',
-            prefix: 'billing/subscriptions',
-            count: n,
-            description: 'Standard, pro, and enterprise tier subscriptions.',
-          },
-          store,
-        ),
-        makeEntityStep(
-          {
-            label: 'Line items',
-            badge: 'LINEITEM',
-            prefix: 'billing/line-items',
-            count: n,
-            description: 'Line items linked to the generated invoices.',
-          },
-          store,
-        ),
-        makeEntityStep(
-          {
-            label: 'Payment methods',
-            badge: 'PAYMENT',
-            prefix: 'billing/payment-methods',
-            count: n,
-            description: 'Cards, ACH transfers, and digital wallets for checkout testing.',
-          },
-          store,
-        ),
-      ];
-    },
+        store,
+      ),
+      {
+        label: 'Invoices',
+        badge: 'INVOICE',
+        total: n,
+        description: 'A mix of paid, pending, and overdue invoices.',
+        runItem: async (i, ctx) => {
+          await wait(2000 + Math.random() * 3000);
+          if (Math.random() < 0.07) {
+            throw new Error(`Could not save invoice ${i + 1}`);
+          }
+          const customers = ctx.prior('Customers') as readonly MockEntity[];
+          const customer = customers.length > 0 ? customers[i % customers.length] : null;
+          const invoice: InvoiceEntity = {
+            id: `invoice-${randomId()}`,
+            name: `Invoice ${i + 1}`,
+            customerId: customer?.id ?? null,
+          };
+          store.addBatch('Invoices', [invoice]);
+          return invoice;
+        },
+        link: (item) => {
+          const customerId = (item as InvoiceEntity).customerId;
+          return customerId
+            ? `/billing/customers/${customerId}/invoices/${item.id}`
+            : `/billing/invoices/${item.id}`;
+        },
+        describe: (item) => item.name,
+        detail: (item) => {
+          const cid = (item as InvoiceEntity).customerId;
+          return cid ? `id ${item.id} · for customer ${cid}` : `id ${item.id} · no customer`;
+        },
+        placeholderDetail: 'Generating invoice record…',
+      },
+      makeEntityStep(
+        {
+          label: 'Subscriptions',
+          badge: 'SUBSCRIPTION',
+          prefix: 'billing/subscriptions',
+          count: n,
+          description: 'Standard, pro, and enterprise tier subscriptions.',
+        },
+        store,
+      ),
+      makeEntityStep(
+        {
+          label: 'Line items',
+          badge: 'LINEITEM',
+          prefix: 'billing/line-items',
+          count: n,
+          description: 'Line items linked to the generated invoices.',
+        },
+        store,
+      ),
+      makeEntityStep(
+        {
+          label: 'Payment methods',
+          badge: 'PAYMENT',
+          prefix: 'billing/payment-methods',
+          count: n,
+          description: 'Cards, ACH transfers, and digital wallets for checkout testing.',
+        },
+        store,
+      ),
+    ],
   },
   {
     id: 'retail',

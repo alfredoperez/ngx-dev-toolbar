@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   viewChild,
 } from '@angular/core';
 import {
@@ -50,10 +51,10 @@ interface Comment {
           lands.
         </p>
         <div class="showcase-actions">
-          <ndt-button (click)="runQuick()">
+          <ndt-button (click)="runQuick()" [disabled]="isRunning()">
             Quick discovery (single-step)
           </ndt-button>
-          <ndt-button (click)="runChained()">
+          <ndt-button (click)="runChained()" [disabled]="isRunning()">
             Multi-step generation (chaining)
           </ndt-button>
         </div>
@@ -74,6 +75,7 @@ interface Comment {
 })
 export class StreamRunnerDemoComponent {
   private readonly runner = viewChild<ToolbarStreamRunnerComponent>('runner');
+  protected readonly isRunning = computed(() => this.runner()?.isRunning() ?? false);
 
   protected async runQuick(): Promise<void> {
     const step: StreamStep<Ticket> = {
@@ -97,7 +99,13 @@ export class StreamRunnerDemoComponent {
       pacing: { stepGap: 0 },
     };
 
-    await this.runner()?.start(options);
+    const runner = this.runner();
+    if (!runner || runner.isRunning()) return;
+    try {
+      await runner.start(options);
+    } catch (err) {
+      console.error('Stream run failed:', err);
+    }
   }
 
   protected async runChained(): Promise<void> {
@@ -154,6 +162,12 @@ export class StreamRunnerDemoComponent {
       pacing: { stepGap: 100 },
     };
 
-    await this.runner()?.start(options);
+    const runner = this.runner();
+    if (!runner || runner.isRunning()) return;
+    try {
+      await runner.start(options);
+    } catch (err) {
+      console.error('Stream run failed:', err);
+    }
   }
 }
