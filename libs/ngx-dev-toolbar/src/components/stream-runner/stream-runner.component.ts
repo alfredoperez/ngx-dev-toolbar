@@ -258,20 +258,20 @@ export class ToolbarStreamRunnerComponent {
     // (animation-delay on nth-child) so it doesn't block the first runItem.
     this._visibleCount.set(records.length);
 
+    // Per-run cache so ctx.prior() is O(1) per call (NFR001). Each successful
+    // runItem appends to priorCache.get(stepIndex); prior() reads with a single
+    // Map lookup. labelToIndex resolves string keys without scanning records.
+    const priorCache = new Map<number, unknown[]>();
+    const labelToIndex = new Map<string, number>();
+    records.forEach((r) => {
+      priorCache.set(r.index, []);
+      labelToIndex.set(r.step.label, r.index);
+    });
+
     const ctx: StreamRunContext = {
-      // Reads the latest signal value rather than the closure-captured `records`
-      // because updateItem replaces records/items immutably — the local `records`
-      // array's item objects keep their original 'queued' status forever.
       prior: (key) => {
-        const current = this._records();
-        const record =
-          typeof key === 'number'
-            ? current[key]
-            : current.find((r) => r.step.label === key);
-        if (!record) return [];
-        return record.items
-          .filter((it) => it.status === 'done')
-          .map((it) => it.value);
+        const idx = typeof key === 'number' ? key : labelToIndex.get(key);
+        return idx === undefined ? [] : (priorCache.get(idx) ?? []);
       },
     };
 
@@ -299,6 +299,7 @@ export class ToolbarStreamRunnerComponent {
             detail: step.detail?.(value),
             href: step.link?.(value),
           });
+          priorCache.get(stepIndex)!.push(value);
           totalItems++;
         } catch (err) {
           const message = err instanceof Error ? err.message : String(err);
