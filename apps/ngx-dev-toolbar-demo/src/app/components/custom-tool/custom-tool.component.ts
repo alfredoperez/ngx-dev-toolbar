@@ -17,12 +17,17 @@ import {
   ToolbarWindowOptions,
   wait,
 } from 'ngx-dev-toolbar';
+import { MockDataStoreService } from './mock-data-store.service';
 
 // ─── Mock data shapes ────────────────────────────────────────────────────
 
 interface MockEntity {
   id: string;
   name: string;
+}
+
+interface InvoiceEntity extends MockEntity {
+  customerId: string | null;
 }
 
 interface RouteEntity {
@@ -44,7 +49,7 @@ interface BundleDefinition {
   label: string;
   preamble: string;
   typeNames: string;
-  buildSteps: (count: number) => StreamStep<MockEntity>[];
+  buildSteps: (count: number, store: MockDataStoreService) => StreamStep<MockEntity>[];
 }
 
 interface EntityStepConfig {
@@ -55,13 +60,10 @@ interface EntityStepConfig {
   description: string;
 }
 
-function makeEntityStep({
-  label,
-  badge,
-  prefix,
-  count,
-  description,
-}: EntityStepConfig): StreamStep<MockEntity> {
+function makeEntityStep(
+  { label, badge, prefix, count, description }: EntityStepConfig,
+  store: MockDataStoreService,
+): StreamStep<MockEntity> {
   const singular = nounSingular(label).toLowerCase();
   const titleCaseSingular = nounSingular(label);
   return {
@@ -76,10 +78,15 @@ function makeEntityStep({
       if (Math.random() < 0.07) {
         throw new Error(`Could not save ${singular} ${i + 1}`);
       }
-      return {
+      const entity: MockEntity = {
         id: `${badge.toLowerCase()}-${randomId()}`,
         name: `${titleCaseSingular} ${i + 1}`,
       };
+      // Per-item flush: each successful entity is written immediately so that
+      // a downstream item failure or run cancellation can never lose earlier
+      // successes. Angular signals coalesce writes within a microtask.
+      store.addBatch(label, [entity]);
+      return entity;
     },
     link: (item) => `/${prefix}/${item.id}`,
     describe: (item) => item.name,
@@ -94,42 +101,80 @@ const BUNDLES: BundleDefinition[] = [
     label: 'Billing data',
     preamble: 'Customers, invoices, subscriptions, line items, payment methods.',
     typeNames: 'customers, invoices, subscriptions, line items, payment methods',
-    buildSteps: (n) => [
-      makeEntityStep({
-        label: 'Customers',
-        badge: 'CUSTOMER',
-        prefix: 'billing/customers',
-        count: n,
-        description: 'Active accounts with valid payment methods on file.',
-      }),
-      makeEntityStep({
+    buildSteps: (n, store) => [
+      makeEntityStep(
+        {
+          label: 'Customers',
+          badge: 'CUSTOMER',
+          prefix: 'billing/customers',
+          count: n,
+          description: 'Active accounts with valid payment methods on file.',
+        },
+        store,
+      ),
+      {
         label: 'Invoices',
         badge: 'INVOICE',
-        prefix: 'billing/invoices',
-        count: n,
+        total: n,
         description: 'A mix of paid, pending, and overdue invoices.',
-      }),
-      makeEntityStep({
-        label: 'Subscriptions',
-        badge: 'SUBSCRIPTION',
-        prefix: 'billing/subscriptions',
-        count: n,
-        description: 'Standard, pro, and enterprise tier subscriptions.',
-      }),
-      makeEntityStep({
-        label: 'Line items',
-        badge: 'LINEITEM',
-        prefix: 'billing/line-items',
-        count: n,
-        description: 'Line items linked to the generated invoices.',
-      }),
-      makeEntityStep({
-        label: 'Payment methods',
-        badge: 'PAYMENT',
-        prefix: 'billing/payment-methods',
-        count: n,
-        description: 'Cards, ACH transfers, and digital wallets for checkout testing.',
-      }),
+        runItem: async (i, ctx) => {
+          await wait(2000 + Math.random() * 3000);
+          if (Math.random() < 0.07) {
+            throw new Error(`Could not save invoice ${i + 1}`);
+          }
+          const customers = ctx.prior('Customers') as readonly MockEntity[];
+          const customer = customers.length > 0 ? customers[i % customers.length] : null;
+          const invoice: InvoiceEntity = {
+            id: `invoice-${randomId()}`,
+            name: `Invoice ${i + 1}`,
+            customerId: customer?.id ?? null,
+          };
+          store.addBatch('Invoices', [invoice]);
+          return invoice;
+        },
+        link: (item) => {
+          const customerId = (item as InvoiceEntity).customerId;
+          return customerId
+            ? `/billing/customers/${customerId}/invoices/${item.id}`
+            : `/billing/invoices/${item.id}`;
+        },
+        describe: (item) => item.name,
+        detail: (item) => {
+          const cid = (item as InvoiceEntity).customerId;
+          return cid ? `id ${item.id} · for customer ${cid}` : `id ${item.id} · no customer`;
+        },
+        placeholderDetail: 'Generating invoice record…',
+      },
+      makeEntityStep(
+        {
+          label: 'Subscriptions',
+          badge: 'SUBSCRIPTION',
+          prefix: 'billing/subscriptions',
+          count: n,
+          description: 'Standard, pro, and enterprise tier subscriptions.',
+        },
+        store,
+      ),
+      makeEntityStep(
+        {
+          label: 'Line items',
+          badge: 'LINEITEM',
+          prefix: 'billing/line-items',
+          count: n,
+          description: 'Line items linked to the generated invoices.',
+        },
+        store,
+      ),
+      makeEntityStep(
+        {
+          label: 'Payment methods',
+          badge: 'PAYMENT',
+          prefix: 'billing/payment-methods',
+          count: n,
+          description: 'Cards, ACH transfers, and digital wallets for checkout testing.',
+        },
+        store,
+      ),
     ],
   },
   {
@@ -137,42 +182,57 @@ const BUNDLES: BundleDefinition[] = [
     label: 'Retail catalog',
     preamble: 'Categories, products, variants, inventory, suppliers.',
     typeNames: 'categories, products, variants, inventory, suppliers',
-    buildSteps: (n) => [
-      makeEntityStep({
-        label: 'Categories',
-        badge: 'CATEGORY',
-        prefix: 'retail/categories',
-        count: n,
-        description: 'Top-level taxonomy that organizes the catalog.',
-      }),
-      makeEntityStep({
-        label: 'Products',
-        badge: 'PRODUCT',
-        prefix: 'retail/products',
-        count: n,
-        description: 'SKUs distributed across the generated categories.',
-      }),
-      makeEntityStep({
-        label: 'Variants',
-        badge: 'VARIANT',
-        prefix: 'retail/variants',
-        count: n,
-        description: 'Size and color variants attached to each product.',
-      }),
-      makeEntityStep({
-        label: 'Inventory',
-        badge: 'INVENTORY',
-        prefix: 'retail/inventory',
-        count: n,
-        description: 'Stock levels with mock warehouse locations.',
-      }),
-      makeEntityStep({
-        label: 'Suppliers',
-        badge: 'SUPPLIER',
-        prefix: 'retail/suppliers',
-        count: n,
-        description: 'Vendor records linked to a subset of products.',
-      }),
+    buildSteps: (n, store) => [
+      makeEntityStep(
+        {
+          label: 'Categories',
+          badge: 'CATEGORY',
+          prefix: 'retail/categories',
+          count: n,
+          description: 'Top-level taxonomy that organizes the catalog.',
+        },
+        store,
+      ),
+      makeEntityStep(
+        {
+          label: 'Products',
+          badge: 'PRODUCT',
+          prefix: 'retail/products',
+          count: n,
+          description: 'SKUs distributed across the generated categories.',
+        },
+        store,
+      ),
+      makeEntityStep(
+        {
+          label: 'Variants',
+          badge: 'VARIANT',
+          prefix: 'retail/variants',
+          count: n,
+          description: 'Size and color variants attached to each product.',
+        },
+        store,
+      ),
+      makeEntityStep(
+        {
+          label: 'Inventory',
+          badge: 'INVENTORY',
+          prefix: 'retail/inventory',
+          count: n,
+          description: 'Stock levels with mock warehouse locations.',
+        },
+        store,
+      ),
+      makeEntityStep(
+        {
+          label: 'Suppliers',
+          badge: 'SUPPLIER',
+          prefix: 'retail/suppliers',
+          count: n,
+          description: 'Vendor records linked to a subset of products.',
+        },
+        store,
+      ),
     ],
   },
   {
@@ -180,42 +240,57 @@ const BUNDLES: BundleDefinition[] = [
     label: 'User onboarding',
     preamble: 'Users, sessions, profiles, preferences, invitations.',
     typeNames: 'users, sessions, profiles, preferences, invitations',
-    buildSteps: (n) => [
-      makeEntityStep({
-        label: 'Users',
-        badge: 'USER',
-        prefix: 'users',
-        count: n,
-        description: 'New accounts in various activation states.',
-      }),
-      makeEntityStep({
-        label: 'Sessions',
-        badge: 'SESSION',
-        prefix: 'sessions',
-        count: n,
-        description: 'Active and expired login sessions across devices.',
-      }),
-      makeEntityStep({
-        label: 'Profiles',
-        badge: 'PROFILE',
-        prefix: 'profiles',
-        count: n,
-        description: 'Avatars, bios, and preferences set for each user.',
-      }),
-      makeEntityStep({
-        label: 'Preferences',
-        badge: 'PREFERENCE',
-        prefix: 'preferences',
-        count: n,
-        description: 'Notification, locale, and display settings per profile.',
-      }),
-      makeEntityStep({
-        label: 'Invitations',
-        badge: 'INVITE',
-        prefix: 'invites',
-        count: n,
-        description: 'Pending invites in different stages of acceptance.',
-      }),
+    buildSteps: (n, store) => [
+      makeEntityStep(
+        {
+          label: 'Users',
+          badge: 'USER',
+          prefix: 'users',
+          count: n,
+          description: 'New accounts in various activation states.',
+        },
+        store,
+      ),
+      makeEntityStep(
+        {
+          label: 'Sessions',
+          badge: 'SESSION',
+          prefix: 'sessions',
+          count: n,
+          description: 'Active and expired login sessions across devices.',
+        },
+        store,
+      ),
+      makeEntityStep(
+        {
+          label: 'Profiles',
+          badge: 'PROFILE',
+          prefix: 'profiles',
+          count: n,
+          description: 'Avatars, bios, and preferences set for each user.',
+        },
+        store,
+      ),
+      makeEntityStep(
+        {
+          label: 'Preferences',
+          badge: 'PREFERENCE',
+          prefix: 'preferences',
+          count: n,
+          description: 'Notification, locale, and display settings per profile.',
+        },
+        store,
+      ),
+      makeEntityStep(
+        {
+          label: 'Invitations',
+          badge: 'INVITE',
+          prefix: 'invites',
+          count: n,
+          description: 'Pending invites in different stages of acceptance.',
+        },
+        store,
+      ),
     ],
   },
 ];
@@ -300,36 +375,6 @@ interface ToolAction {
   /** Run options builder (for direct-run actions). */
   buildOptions?: () => StreamRunOptions;
 }
-
-const ACTIONS: ToolAction[] = [
-  ...BUNDLES.map((b): ToolAction => ({
-    id: `create-${b.id}`,
-    section: 'create',
-    glyph: 'sparkle',
-    label: b.label,
-    hint: '5 types',
-    flow: 'drill',
-    bundleId: b.id,
-  })),
-  {
-    id: 'find-routes',
-    section: 'find',
-    glyph: 'magnifier',
-    label: 'Routes',
-    hint: `${ROUTES.length} routes`,
-    flow: 'direct',
-    buildOptions: buildFindRoutesOptions,
-  },
-  {
-    id: 'find-elements',
-    section: 'find',
-    glyph: 'magnifier',
-    label: 'DOM elements',
-    hint: `${ELEMENTS.length} types`,
-    flow: 'direct',
-    buildOptions: buildFindElementsOptions,
-  },
-];
 
 // ─── Component ───────────────────────────────────────────────────────────
 
@@ -496,16 +541,139 @@ export class ToolbarCustomToolComponent {
 
   private readonly runner = viewChild<ToolbarStreamRunnerComponent>('runner');
   private readonly injector = inject(Injector);
+  private readonly store = inject(MockDataStoreService);
+
+  // ── Action catalog (instance-scoped so FIND builders can read the store) ─
+
+  private buildActions(): ToolAction[] {
+    return [
+      ...BUNDLES.map((b): ToolAction => ({
+        id: `create-${b.id}`,
+        section: 'create',
+        glyph: 'sparkle',
+        label: b.label,
+        hint: '5 types',
+        flow: 'drill',
+        bundleId: b.id,
+      })),
+      {
+        id: 'find-customers',
+        section: 'find',
+        glyph: 'magnifier',
+        label: 'Customers',
+        hint: 'from billing',
+        flow: 'direct',
+        buildOptions: () => this.buildFindCustomersOptions(),
+      },
+      {
+        id: 'find-categories',
+        section: 'find',
+        glyph: 'magnifier',
+        label: 'Categories',
+        hint: 'from retail',
+        flow: 'direct',
+        buildOptions: () => this.buildFindCategoriesOptions(),
+      },
+      {
+        id: 'find-users',
+        section: 'find',
+        glyph: 'magnifier',
+        label: 'Users',
+        hint: 'from onboarding',
+        flow: 'direct',
+        buildOptions: () => this.buildFindUsersOptions(),
+      },
+      {
+        id: 'find-routes',
+        section: 'find',
+        glyph: 'magnifier',
+        label: 'Routes',
+        hint: `${ROUTES.length} routes`,
+        flow: 'direct',
+        buildOptions: buildFindRoutesOptions,
+      },
+      {
+        id: 'find-elements',
+        section: 'find',
+        glyph: 'magnifier',
+        label: 'DOM elements',
+        hint: `${ELEMENTS.length} types`,
+        flow: 'direct',
+        buildOptions: buildFindElementsOptions,
+      },
+    ];
+  }
+
+  // ── FIND-from-store builders ──────────────────────────────────────────
+
+  private buildFindEntitiesOptions(
+    storeLabel: string,
+    title: string,
+    prefix: string,
+    seedHint: string,
+  ): StreamRunOptions {
+    const items = this.store.entities<MockEntity>(storeLabel);
+    const total = items.length;
+    return {
+      title,
+      preamble:
+        total === 0
+          ? `No ${storeLabel.toLowerCase()} yet — ${seedHint}`
+          : `${total} ${storeLabel.toLowerCase()} in the in-memory store.`,
+      steps: [{
+        label: storeLabel,
+        verbActive: 'Reading',
+        verbDone: 'Found',
+        total,
+        runItem: async (i) => {
+          await wait(120 + Math.random() * 280);
+          return this.store.entities<MockEntity>(storeLabel)[i];
+        },
+        link: (item) => `/${prefix}/${item.id}`,
+        describe: (item) => item.name,
+        detail: (item) => `id ${item.id}`,
+        placeholderDetail: 'Reading entity…',
+      }],
+      pacing: { stepGap: 0 },
+    };
+  }
+
+  private buildFindCustomersOptions(): StreamRunOptions {
+    return this.buildFindEntitiesOptions(
+      'Customers',
+      'Searching customers',
+      'billing/customers',
+      'run CREATE → Billing data to seed data.',
+    );
+  }
+
+  private buildFindCategoriesOptions(): StreamRunOptions {
+    return this.buildFindEntitiesOptions(
+      'Categories',
+      'Searching categories',
+      'retail/categories',
+      'run CREATE → Retail catalog to seed data.',
+    );
+  }
+
+  private buildFindUsersOptions(): StreamRunOptions {
+    return this.buildFindEntitiesOptions(
+      'Users',
+      'Searching users',
+      'users',
+      'run CREATE → User onboarding to seed data.',
+    );
+  }
 
   // ── Action lookup helpers ─────────────────────────────────────────────
 
   protected actionsBySection(section: ActionSection): ToolAction[] {
-    return ACTIONS.filter((a) => a.section === section);
+    return this.buildActions().filter((a) => a.section === section);
   }
 
   protected selectedAction(): ToolAction | null {
     const id = this.selectedActionId();
-    return id ? ACTIONS.find((a) => a.id === id) ?? null : null;
+    return id ? this.buildActions().find((a) => a.id === id) ?? null : null;
   }
 
   protected selectedBundle(): BundleDefinition | null {
@@ -596,7 +764,7 @@ export class ToolbarCustomToolComponent {
       return {
         title: `Generating ${bundle.label.toLowerCase()}`,
         preamble: bundle.preamble,
-        steps: bundle.buildSteps(this.count()),
+        steps: bundle.buildSteps(this.count(), this.store),
       };
     }
     return null;

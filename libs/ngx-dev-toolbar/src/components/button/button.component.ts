@@ -11,6 +11,7 @@ import { IconName } from '../icons/icon.models';
       class="button"
       [attr.aria-label]="ariaLabel()"
       [type]="type()"
+      [disabled]="disabled()"
       [class.button--active]="isActive()"
       [class.button--icon]="variant() === 'icon'"
     >
@@ -33,4 +34,5 @@ export class ToolbarButtonComponent {
   readonly label = input<string>();
   readonly ariaLabel = input<string>();
   readonly isActive = input<boolean>(false);
+  readonly disabled = input<boolean>(false);
 }

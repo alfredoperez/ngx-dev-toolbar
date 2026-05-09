@@ -1,4 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Signal, inject } from '@angular/core';
+import { MockDataStoreService } from '../custom-tool/mock-data-store.service';
+
+type EntityLike = { id: string; name: string };
 
 @Component({
   selector: 'app-custom-tool-demo',
@@ -8,41 +11,35 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
       <div class="demo-header">
         <h2>Custom Tool</h2>
         <p class="demo-description">
-          A demo toolbar tool showcasing the <code>ndt-tabs</code> component with Finder and Maker tabs.
-          Open the <strong>puzzle icon</strong> in the toolbar below to try it.
+          This page mirrors the entities created by the toolbar's <strong>Mock Data</strong> tool.
+          Open the puzzle icon in the toolbar below, run a CREATE bundle, and watch the cards populate live.
         </p>
       </div>
 
       <div class="demo-card-grid">
-        <div class="demo-card">
-          <div class="card-header">
-            <h3>Finder Tab</h3>
+        @for (card of cards; track card.label) {
+          @let items = card.entities();
+          <div class="demo-card" [class.demo-card--empty]="items.length === 0">
+            <div class="card-header">
+              <h3>{{ card.label }}</h3>
+              <span class="card-count">{{ items.length }}</span>
+            </div>
+            @if (items.length > 0) {
+              <ul class="card-preview">
+                @for (item of items.slice(-5); track item.id) {
+                  <li class="preview-item">
+                    <code class="preview-id">{{ item.id }}</code>
+                    <span class="preview-name">{{ item.name }}</span>
+                  </li>
+                }
+              </ul>
+            } @else {
+              <p class="card-empty">
+                Run the toolbar's Mock Data tool to seed <code>{{ card.label.toLowerCase() }}</code>.
+              </p>
+            }
           </div>
-          <p class="card-description">
-            Search for application routes or DOM elements. Select a type from the dropdown
-            and click Find to see mock results.
-          </p>
-          <div class="card-preview">
-            <div class="preview-item"><code>/dashboard</code> — DashboardComponent</div>
-            <div class="preview-item"><code>/users/:id</code> — UserDetailComponent</div>
-            <div class="preview-item"><code>&lt;app-header&gt;</code> — 1 instance</div>
-          </div>
-        </div>
-
-        <div class="demo-card">
-          <div class="card-header">
-            <h3>Maker Tab</h3>
-          </div>
-          <p class="card-description">
-            Generate mock data entries on the fly. Select User, Order, or Product
-            and click Create to build sample records.
-          </p>
-          <div class="card-preview">
-            <div class="preview-item preview-item--green">Mock User #1 — 10:42:15 AM</div>
-            <div class="preview-item preview-item--green">Mock Order #2 — 10:42:18 AM</div>
-            <div class="preview-item preview-item--green">Mock Product #3 — 10:42:21 AM</div>
-          </div>
-        </div>
+        }
       </div>
     </section>
   `,
@@ -92,11 +89,24 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
       border-radius: var(--demo-radius, 8px);
       padding: 1.25rem;
       box-shadow: var(--demo-shadow, 0 1px 3px rgba(0, 0, 0, 0.1));
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, opacity 0.2s;
     }
 
     .demo-card:hover {
       border-color: var(--demo-primary, #6366f1);
+    }
+
+    .demo-card--empty {
+      opacity: 0.7;
+      background: var(--demo-bg, #f8fafc);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
     }
 
     .card-header h3 {
@@ -106,35 +116,67 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
       color: var(--demo-text, #1e293b);
     }
 
-    .card-description {
-      margin: 0.5rem 0 1rem 0;
-      font-size: 0.875rem;
+    .card-count {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.8125rem;
       color: var(--demo-text-muted, #64748b);
-      line-height: 1.5;
+      background: var(--demo-bg, #f1f5f9);
+      padding: 0.125rem 0.5rem;
+      border-radius: 999px;
+      min-width: 1.5rem;
+      text-align: center;
     }
 
     .card-preview {
+      list-style: none;
+      margin: 0;
+      padding: 0;
       display: flex;
       flex-direction: column;
       gap: 0.375rem;
-      padding: 0.75rem;
-      background: var(--demo-bg, #f8fafc);
-      border-radius: 6px;
     }
 
     .preview-item {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
       padding: 0.375rem 0.5rem;
-      background: white;
+      background: var(--demo-bg, #f8fafc);
       border-radius: 4px;
       font-size: 0.8125rem;
       color: var(--demo-text, #1e293b);
+      overflow: hidden;
+      white-space: nowrap;
     }
 
-    .preview-item code {
+    .preview-id {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
       font-size: 0.75rem;
+      color: var(--demo-text-muted, #64748b);
+      flex-shrink: 0;
+    }
+
+    .preview-name {
+      color: var(--demo-text, #1e293b);
+      font-weight: 400;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-empty {
+      margin: 0;
+      font-size: 0.8125rem;
+      color: var(--demo-text-muted, #64748b);
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    .card-empty code {
+      font-style: normal;
       background: var(--demo-bg, #f1f5f9);
       padding: 0.0625rem 0.25rem;
       border-radius: 3px;
+      font-size: 0.75rem;
     }
 
     @media (max-width: 640px) {
@@ -145,4 +187,30 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CustomToolDemoComponent {}
+export class CustomToolDemoComponent {
+  private readonly store = inject(MockDataStoreService);
+
+  protected readonly LABELS: readonly string[] = [
+    'Customers',
+    'Invoices',
+    'Subscriptions',
+    'Line items',
+    'Payment methods',
+    'Categories',
+    'Products',
+    'Variants',
+    'Inventory',
+    'Suppliers',
+    'Users',
+    'Sessions',
+    'Profiles',
+    'Preferences',
+    'Invitations',
+  ];
+
+  protected readonly cards: { label: string; entities: Signal<readonly EntityLike[]> }[] =
+    this.LABELS.map((label) => ({
+      label,
+      entities: this.store.entitiesSignal<EntityLike>(label),
+    }));
+}

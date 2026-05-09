@@ -11,6 +11,7 @@ import { nounSingular, wait } from '../../utils/timing.util';
 import {
   StreamItemRecord,
   StreamPacing,
+  StreamRunContext,
   StreamRunOptions,
   StreamRunResult,
   StreamStepRecord,
@@ -257,6 +258,23 @@ export class ToolbarStreamRunnerComponent {
     // (animation-delay on nth-child) so it doesn't block the first runItem.
     this._visibleCount.set(records.length);
 
+    // Per-run cache so ctx.prior() is O(1) per call (NFR001). Each successful
+    // runItem appends to priorCache.get(stepIndex); prior() reads with a single
+    // Map lookup. labelToIndex resolves string keys without scanning records.
+    const priorCache = new Map<number, unknown[]>();
+    const labelToIndex = new Map<string, number>();
+    records.forEach((r) => {
+      priorCache.set(r.index, []);
+      labelToIndex.set(r.step.label, r.index);
+    });
+
+    const ctx: StreamRunContext = {
+      prior: (key) => {
+        const idx = typeof key === 'number' ? key : labelToIndex.get(key);
+        return idx === undefined ? [] : (priorCache.get(idx) ?? []);
+      },
+    };
+
     const startedAt = performance.now();
     let totalItems = 0;
     let totalErrors = 0;
@@ -273,7 +291,7 @@ export class ToolbarStreamRunnerComponent {
         this.updateItem(stepIndex, itemIndex, { status: 'running' });
 
         try {
-          const value = await step.runItem(itemIndex);
+          const value = await step.runItem(itemIndex, ctx);
           this.updateItem(stepIndex, itemIndex, {
             status: 'done',
             value,
@@ -281,6 +299,7 @@ export class ToolbarStreamRunnerComponent {
             detail: step.detail?.(value),
             href: step.link?.(value),
           });
+          priorCache.get(stepIndex)!.push(value);
           totalItems++;
         } catch (err) {
           const message = err instanceof Error ? err.message : String(err);

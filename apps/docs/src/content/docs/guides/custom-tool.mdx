@@ -240,6 +240,131 @@ export class MultiStepToolComponent {
 - **`ngtStep`** — Structural directive marking each step template
 - **`stepTitle`** — Optional title shown in the header for each step
 
+## Streaming Runner
+
+Reach for `<ndt-stream-runner>` when a tool kicks off a long-running, multi-entity
+creation flow and the user benefits from per-step, per-item progress — for example,
+"generate 50 invoices across 5 entity types" or "seed 100 users, then 500 posts,
+then 1500 comments". The multi-step pattern above is the right call when each view
+is a distinct UI; the streaming runner is the right call when the work itself is
+the UI: a sequence of steps, each producing N items, each item flushed to the view
+as it resolves.
+
+### `StreamStep<T>`
+
+A `StreamStep<T>` describes one phase of the run. The required fields are
+`label: string` (shown in the header), `total: number` (how many items this step
+produces), and `runItem: (index: number, ctx: StreamRunContext) => Promise<T>`
+(invoked once per item; whatever it resolves to is what consumers see). Optional
+fields tune the presentation: `verbActive` and `verbDone` swap the default
+"Creating…" / "Created" verbs; `badge`, `description`, and `link` decorate the
+step header; `describe` and `detail` format each item's primary label and
+secondary line; `placeholderDetail` is shown while an item is still pending.
+
+### Anatomy of a rendered step
+
+Every visible part of a step row comes from a string field on `StreamStep<T>`.
+The runner renders those strings through Angular interpolation, so HTML in the
+returned values is **escaped** — the customization story is "compose the right
+strings and let the runner lay them out", not "return markup". Use `link` to
+turn the title into an anchor; that's the only structural decoration available
+per item.
+
+```ts
+import { StreamStep } from 'ngx-dev-toolbar';
+
+interface User {
+  id: string;
+  name: string;
+  role: 'admin' | 'member';
+}
+
+const usersStep: StreamStep<User> = {
+  // Step header (shown above the per-item list)
+  label: 'Users',                      // "5 users" / "3 of 5 users…"
+  badge: 'USER',                       // small chip rendered next to the header
+  description: 'Active accounts in '
+    + 'various activation states.',    // sub-description under the header
+  total: 5,
+  verbActive: 'Provisioning',          // shown while the step is running
+  verbDone: 'Provisioned',             // shown after the step completes
+
+  // Per-item callback (drives both the data and the rendered row)
+  runItem: async (i) => {
+    await new Promise(r => setTimeout(r, 200));
+    return {
+      id: `user-${i + 1}`,
+      name: `User ${i + 1}`,
+      role: i === 0 ? 'admin' : 'member',
+    };
+  },
+
+  // Visible parts of each item, all built from the resolved value
+  describe: (u) => u.name,             // primary title text
+  detail: (u) => `id ${u.id} · ${u.role}`, // secondary line below the title
+  link: (u) => `/users/${u.id}`,       // makes the title an anchor with a → arrow
+  placeholderDetail: 'Provisioning…',  // detail line shown while an item is pending
+};
+```
+
+What each field controls in the rendered row:
+
+- **Step header** — `verbActive` / `verbDone` flip the verb based on status; `label`
+  appears next to the count (e.g. `Provisioned 5 users`); `badge` is a small chip;
+  `description` is a single muted line below the header.
+- **Per-item title** — `describe(value)` provides the title text. When `link(value)`
+  is set, the title is wrapped in an anchor pointing at that URL with a trailing
+  `→` arrow.
+- **Per-item detail** — `detail(value)` produces the secondary line shown beneath
+  the title once the item resolves. While the item is still pending, `placeholderDetail`
+  is shown instead (default: `"Working…"`).
+- **Per-item icon** — automatically managed by the runner based on item status
+  (`queued` / `running` / `done` / `error`); not consumer-controllable.
+
+For richer formatting (badges per item, multi-line details, inline icons), compose
+the strings yourself — e.g.
+
+```ts
+detail: (u) => `${u.role.toUpperCase()} · last seen ${u.lastSeen}`
+```
+
+Returning HTML or Angular templates is not currently supported.
+
+### `StreamRunOptions`
+
+A run is configured with `StreamRunOptions`: `title` (the run header),
+`preamble` (a short blurb shown above the first step), `steps` (an ordered
+array of `StreamStep`s), and `pacing` (controls inter-item delay so the stream
+feels live rather than instant).
+
+### Chaining steps with `ctx.prior(...)`
+
+`runItem` receives a `StreamRunContext` as its second argument. Call
+`ctx.prior(stepIndexOrLabel)` to read the resolved values from any earlier step
+in the same run — that's how later steps reference entities produced upstream.
+
+```ts
+import { StreamStep, StreamRunContext } from 'ngx-dev-toolbar';
+
+const customersStep: StreamStep<{ id: string }> = {
+  label: 'Customers',
+  total: 5,
+  runItem: async (i) => ({ id: `customer-${i + 1}` }),
+};
+
+const invoicesStep: StreamStep<{ id: string; customerId: string }> = {
+  label: 'Invoices',
+  total: 10,
+  runItem: async (i, ctx) => {
+    const customers = ctx.prior('Customers') as readonly { id: string }[];
+    const customer = customers[i % customers.length];
+    return { id: `invoice-${i + 1}`, customerId: customer.id };
+  },
+};
+```
+
+See the live demo at `/stream-runner` in the demo app for a runnable Authors → Posts → Comments example.
+
 ## Styling
 
 Use the toolbar's design tokens for consistent styling. All tokens use the `--ndt-` prefix:
