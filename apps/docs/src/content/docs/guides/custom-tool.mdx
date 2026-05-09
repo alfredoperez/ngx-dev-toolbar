@@ -322,7 +322,12 @@ What each field controls in the rendered row:
   (`queued` / `running` / `done` / `error`); not consumer-controllable.
 
 For richer formatting (badges per item, multi-line details, inline icons), compose
-the strings yourself — e.g. `detail: (u) => \`\${u.role.toUpperCase()} · last seen \${u.lastSeen}\``.
+the strings yourself — e.g.
+
+```ts
+detail: (u) => `${u.role.toUpperCase()} · last seen ${u.lastSeen}`
+```
+
 Returning HTML or Angular templates is not currently supported.
 
 ### `StreamRunOptions`
