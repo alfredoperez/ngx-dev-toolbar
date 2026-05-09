@@ -4,7 +4,9 @@
   "currentTask": null,
   "progress": null,
   "next": "done",
-  "checkpointStatus": { "commit": false, "pr": false },
+  "checkpointStatus": { "commit": true, "pr": true },
+  "prUrl": "https://github.com/alfredoperez/ngx-dev-toolbar/pull/53",
+  "prNumber": 53,
   "updated": "2026-05-09",
   "selectedAt": "2026-05-08T15:48:06Z",
   "specName": "Mock Tool Polish",
@@ -135,7 +137,7 @@
       "note": "CP1 expansion: added an 'Anatomy of a rendered step' subsection. User asked for HTML title/description support; clarified the runner only takes strings (interpolation escapes HTML) and chose Path A — document the existing API more thoroughly — over Path B (add HTML support, which would be a separate spec)."
     }
   ],
-  "last_action": "CP3 approved — staging and committing feat(toolbar): stream-runner chaining context + mock-data live mirror.",
+  "last_action": "PR #53 opened — feat(toolbar): stream-runner chaining context + mock-data live mirror.",
   "step_summaries": {
     "specify": {
       "complexity": "normal",
@@ -322,6 +324,13 @@
       "from": { "step": "implement", "substep": "commit-review" },
       "by": "sdd",
       "at": "2026-05-09T15:10:00Z"
+    },
+    {
+      "step": "done",
+      "substep": "pr-opened",
+      "from": { "step": "done", "substep": "committing" },
+      "by": "sdd",
+      "at": "2026-05-09T15:15:00Z"
     }
   ],
   "status": "completed",
