@@ -41,4 +41,11 @@ export const appRoutes: Route[] = [
         (m) => m.CustomToolDemoComponent
       ),
   },
+  {
+    path: 'stream-runner',
+    loadComponent: () =>
+      import('./components/stream-runner-demo/stream-runner-demo.component').then(
+        (m) => m.StreamRunnerDemoComponent
+      ),
+  },
 ];

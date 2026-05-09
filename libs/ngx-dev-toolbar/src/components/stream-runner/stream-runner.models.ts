@@ -1,4 +1,14 @@
 /**
+ * Read-only view of items completed in prior steps of the current run.
+ * `prior(0)` returns step 0's resolved values; `prior('Customers')` matches
+ * by `StreamStep.label`. Returns an empty array when the step does not
+ * exist or has no completed items yet.
+ */
+export interface StreamRunContext {
+  prior(stepIndexOrLabel: number | string): readonly unknown[];
+}
+
+/**
  * A single step in a streaming generation. Each step creates `total` items by
  * calling `runItem` once per index. Per-item timing and randomness live in
  * the consumer's `runItem` (await delays, throw to simulate failures).
@@ -19,8 +29,14 @@ export interface StreamStep<T = unknown> {
    * with valid payment methods"). Optional.
    */
   description?: string;
-  /** Creates one item. Owns its own timing (await + random delay) and may throw. */
-  runItem: (index: number) => Promise<T>;
+  /**
+   * Creates one item. Owns its own timing (await + random delay) and may throw.
+   * Receives a `StreamRunContext` as the second arg, which exposes items
+   * completed in earlier steps of the same run. Existing single-arg callbacks
+   * remain valid because the parameter is positional and structurally optional
+   * from the caller's perspective.
+   */
+  runItem: (index: number, ctx: StreamRunContext) => Promise<T>;
   /** Optional deeplink builder. The URL is embedded in the item's title. */
   link?: (item: T) => string;
   /** Optional title builder for each item (defaults to "<singular> <index+1>"). */

@@ -1,0 +1,346 @@
+{
+  "workflow": "sdd",
+  "currentStep": "done",
+  "currentTask": null,
+  "progress": null,
+  "next": "done",
+  "checkpointStatus": { "commit": false, "pr": false },
+  "updated": "2026-05-09",
+  "selectedAt": "2026-05-08T15:48:06Z",
+  "specName": "Mock Tool Polish",
+  "branch": "main",
+  "workingBranch": "feat/023-mock-tool-polish",
+  "type": "feat",
+  "createdAt": "2026-05-08T15:48:06Z",
+  "loadedDomains": [],
+  "approach": "Evolve StreamStep.runItem to accept an optional StreamRunContext that exposes items completed in prior steps of the same run, threaded through the runner without breaking existing single-arg callbacks.",
+  "files_modified": [
+    "libs/ngx-dev-toolbar/src/components/stream-runner/stream-runner.models.ts",
+    "libs/ngx-dev-toolbar/src/components/stream-runner/stream-runner.component.ts",
+    "apps/ngx-dev-toolbar-demo/src/app/components/custom-tool/mock-data-store.service.ts",
+    "apps/ngx-dev-toolbar-demo/src/app/components/custom-tool/custom-tool.component.ts",
+    "apps/ngx-dev-toolbar-demo/src/app/components/custom-tool-demo/custom-tool-demo.component.ts",
+    "apps/ngx-dev-toolbar-demo/src/app/components/stream-runner-demo/stream-runner-demo.component.scss",
+    "apps/ngx-dev-toolbar-demo/src/app/components/stream-runner-demo/stream-runner-demo.component.ts",
+    "apps/ngx-dev-toolbar-demo/src/app/app.routes.ts",
+    "apps/ngx-dev-toolbar-demo/src/app/components/sidebar/sidebar.component.ts",
+    "apps/docs/src/content/docs/guides/custom-tool.mdx"
+  ],
+  "task_summaries": {
+    "T001": {
+      "status": "DONE_WITH_CONCERNS",
+      "did": "Added StreamRunContext interface and evolved StreamStep.runItem signature to (index, ctx) => Promise<T>; JSDoc updated to describe additive positional context arg.",
+      "files": [
+        "libs/ngx-dev-toolbar/src/components/stream-runner/stream-runner.models.ts"
+      ],
+      "concerns": [
+        "Library build (`nx run ngx-dev-toolbar:build`) cannot pass on T001 alone because the runner at stream-runner.component.ts:276 still calls runItem(itemIndex) without ctx. T004 closes this — Group 2 is the gate. The structural assertion of T001 (single-arg consumer callbacks remain assignable) holds: TypeScript's parameter bivariance makes existing demo callers type-compatible."
+      ]
+    },
+    "T002": {
+      "status": "DONE",
+      "did": "Created MockDataStoreService — signal-based in-memory store keyed by step label with addBatch / entities / entitiesSignal / clear; immutable Map updates, no localStorage.",
+      "files": [
+        "apps/ngx-dev-toolbar-demo/src/app/components/custom-tool/mock-data-store.service.ts"
+      ],
+      "concerns": []
+    },
+    "T003": {
+      "status": "DONE",
+      "did": "Created page-level SCSS for stream-runner showcase — .showcase, .showcase-section, .showcase-actions, .showcase-runner with --demo-* tokens and a 640px responsive tweak.",
+      "files": [
+        "apps/ngx-dev-toolbar-demo/src/app/components/stream-runner-demo/stream-runner-demo.component.scss"
+      ],
+      "concerns": []
+    },
+    "T004": {
+      "status": "DONE_WITH_CONCERNS",
+      "did": "Built StreamRunContext in start() and passed it to step.runItem(itemIndex, ctx); imported StreamRunContext type. Library build passes.",
+      "files": [
+        "libs/ngx-dev-toolbar/src/components/stream-runner/stream-runner.component.ts"
+      ],
+      "concerns": [
+        "Silent fix relative to task wording: ctx.prior reads from this._records() (the signal value) rather than the closure-captured local `records` array. Reason: updateItem replaces records/items immutably, so the local array's item objects keep their original 'queued' status forever — reading the closure would always return []. Reading the signal returns the latest state, which is what the spec actually requires."
+      ]
+    },
+    "T005": {
+      "status": "DONE",
+      "did": "Threaded MockDataStoreService through BundleDefinition.buildSteps and makeEntityStep so each step batch-flushes via store.addBatch on the last item; replaced billing's Invoices step with a custom runItem(i, ctx) that reads ctx.prior('Customers') and stamps customerId; added FIND → Customers/Categories/Users actions sharing buildFindEntitiesOptions with empty-state preamble. Demo build passes.",
+      "files": [
+        "apps/ngx-dev-toolbar-demo/src/app/components/custom-tool/custom-tool.component.ts"
+      ],
+      "concerns": [
+        "actionsBySection() and selectedAction() now invoke buildActions() on every call (template re-evaluation). Cheap at current scale; memoize if it becomes hot.",
+        "buildFindEntitiesOptions snapshots store.entities(...).length at click time. If the store mutates mid-run the runner would see a stale total — acceptable since the demo doesn't mutate during a run."
+      ]
+    },
+    "T006": {
+      "status": "DONE",
+      "did": "Replaced the hardcoded Finder/Maker cards with 15 live cards driven by MockDataStoreService.entitiesSignal(), each showing a count badge and the latest 5 id+name rows; muted empty-state with a hint pointing at the toolbar's Mock Data tool.",
+      "files": [
+        "apps/ngx-dev-toolbar-demo/src/app/components/custom-tool-demo/custom-tool-demo.component.ts"
+      ],
+      "concerns": []
+    },
+    "T007": {
+      "status": "DONE",
+      "did": "Created StreamRunnerDemoComponent with two scenarios — runQuick() (single-step, 5 tickets) and runChained() (Authors → Posts → Comments wired through ctx.prior). Library barrel already exports all required types.",
+      "files": [
+        "apps/ngx-dev-toolbar-demo/src/app/components/stream-runner-demo/stream-runner-demo.component.ts"
+      ],
+      "concerns": []
+    },
+    "T008": {
+      "status": "DONE",
+      "did": "Appended /stream-runner lazy route after the custom-tool entry in app.routes.ts; demo build emits the new lazy chunk.",
+      "files": [
+        "apps/ngx-dev-toolbar-demo/src/app/app.routes.ts"
+      ],
+      "concerns": []
+    },
+    "T009": {
+      "status": "DONE",
+      "did": "Added Stream Runner nav entry next to custom-tool in navItems, reusing the existing inline SVG path string from custom-tool to avoid introducing a new icon.",
+      "files": [
+        "apps/ngx-dev-toolbar-demo/src/app/components/sidebar/sidebar.component.ts"
+      ],
+      "concerns": []
+    },
+    "T010": {
+      "status": "DONE",
+      "did": "Inserted a Streaming Runner H2 section in the custom-tool guide; covers StreamStep / StreamRunOptions / StreamRunContext shapes, a customers→invoices chaining example, a /stream-runner pointer, plus an 'Anatomy of a rendered step' subsection (added at CP1) showing how every string field maps to the rendered row and explicitly noting that returned strings are HTML-escaped.",
+      "files": [
+        "apps/docs/src/content/docs/guides/custom-tool.mdx"
+      ],
+      "concerns": []
+    }
+  },
+  "concerns": [
+    {
+      "task": "T001",
+      "note": "Library build fails in isolation — runner call site at stream-runner.component.ts:276 still invokes runItem with one argument. T004 closes this gate."
+    },
+    {
+      "task": "T004",
+      "note": "ctx.prior reads from this._records() rather than the closure-captured `records` (deviation from the task's literal wording). updateItem replaces items immutably, so the local closure would always see status='queued' — the signal read is required for correctness."
+    }
+  ],
+  "decisions": [
+    {
+      "task": "T004",
+      "note": "Skipped R007 (run-level metadata exposure) per task instructions — keeping the API minimal until a real consumer needs it."
+    },
+    {
+      "task": "T010",
+      "note": "CP1 expansion: added an 'Anatomy of a rendered step' subsection. User asked for HTML title/description support; clarified the runner only takes strings (interpolation escapes HTML) and chose Path A — document the existing API more thoroughly — over Path B (add HTML support, which would be a separate spec)."
+    }
+  ],
+  "last_action": "CP3 approved — staging and committing feat(toolbar): stream-runner chaining context + mock-data live mirror.",
+  "step_summaries": {
+    "specify": {
+      "complexity": "normal",
+      "requirements": 7,
+      "scenarios": 5,
+      "key_finding": "Mock-data tool lives in the demo app; only <ndt-stream-runner> is library-exported, and its StreamStep.runItem(index) signature has no slot for prior-step outputs — chaining requires evolving that public API."
+    },
+    "plan": {
+      "approach_summary": "Evolve StreamStep.runItem to accept an optional StreamRunContext that exposes items completed in prior steps of the same run, threaded through the runner without breaking existing single-arg callbacks.",
+      "files_planned": 10,
+      "risks": [
+        "Public-API surface change on StreamStep<T>.runItem — mitigated by additive optional second parameter that is source- and binary-compatible.",
+        "Bursty per-item DOM updates on the demo wrapper (NFR002) — mitigated by batching MockDataStoreService writes per-step rather than per-item.",
+        "FIND fallback ambiguity (R004 hardcoded fallback vs Empty-state scenario hint) — resolved by keeping hardcoded fallback only for entity types that already have one (Routes, DOM elements) and showing empty + hint for new bundle-mirroring FIND types."
+      ],
+      "principles_concerns": 0,
+      "domain_concerns": 0,
+      "significance_score": 1
+    },
+    "tasks": {
+      "task_count": 10,
+      "parallel_count": 9,
+      "groups": 4
+    }
+  },
+  "transitions": [
+    {
+      "step": "specify",
+      "substep": "parsing",
+      "from": null,
+      "by": "sdd",
+      "at": "2026-05-08T15:48:06Z"
+    },
+    {
+      "step": "specify",
+      "substep": "exploring",
+      "from": { "step": "specify", "substep": "parsing" },
+      "by": "sdd",
+      "at": "2026-05-08T15:48:07Z"
+    },
+    {
+      "step": "specify",
+      "substep": "loaded-domains",
+      "from": { "step": "specify", "substep": "exploring" },
+      "by": "sdd",
+      "at": "2026-05-08T15:48:08Z"
+    },
+    {
+      "step": "specify",
+      "substep": "detecting",
+      "from": { "step": "specify", "substep": "loaded-domains" },
+      "by": "sdd",
+      "at": "2026-05-08T15:48:09Z"
+    },
+    {
+      "step": "specify",
+      "substep": "writing-spec",
+      "from": { "step": "specify", "substep": "detecting" },
+      "by": "sdd",
+      "at": "2026-05-08T15:48:10Z"
+    },
+    {
+      "step": "specify",
+      "substep": null,
+      "from": { "step": "specify", "substep": "writing-spec" },
+      "by": "sdd",
+      "at": "2026-05-08T15:48:11Z"
+    },
+    {
+      "step": "specify",
+      "substep": null,
+      "from": { "step": "specify", "substep": null },
+      "by": "extension",
+      "at": "2026-05-08T15:51:20.815Z"
+    },
+    {
+      "step": "plan",
+      "substep": null,
+      "from": { "step": "specify", "substep": null },
+      "by": "extension",
+      "at": "2026-05-08T15:51:20.818Z"
+    },
+    {
+      "step": "plan",
+      "substep": "research",
+      "from": { "step": "plan", "substep": null },
+      "by": "sdd",
+      "at": "2026-05-08T15:53:58Z"
+    },
+    {
+      "step": "plan",
+      "substep": "design",
+      "from": { "step": "plan", "substep": "research" },
+      "by": "sdd",
+      "at": "2026-05-08T15:53:58Z"
+    },
+    {
+      "step": "plan",
+      "substep": null,
+      "from": { "step": "plan", "substep": "design" },
+      "by": "sdd",
+      "at": "2026-05-08T15:55:18Z"
+    },
+    {
+      "step": "tasks",
+      "substep": null,
+      "from": { "step": "plan", "substep": null },
+      "by": "sdd",
+      "at": "2026-05-08T15:59:20Z"
+    },
+    {
+      "step": "tasks",
+      "substep": null,
+      "from": { "step": "tasks", "substep": null },
+      "by": "sdd",
+      "at": "2026-05-08T16:02:05Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "from": { "step": "tasks", "substep": null },
+      "by": "sdd",
+      "at": "2026-05-08T16:11:58Z"
+    },
+    {
+      "step": "implement",
+      "substep": "T001-complete",
+      "from": { "step": "implement", "substep": null },
+      "by": "sdd",
+      "at": "2026-05-08T16:18:00Z"
+    },
+    {
+      "step": "implement",
+      "substep": "group1-complete",
+      "from": { "step": "implement", "substep": "T001-complete" },
+      "by": "sdd",
+      "at": "2026-05-08T16:22:00Z"
+    },
+    {
+      "step": "implement",
+      "substep": "T004-complete",
+      "from": { "step": "implement", "substep": "group1-complete" },
+      "by": "sdd",
+      "at": "2026-05-08T16:25:00Z"
+    },
+    {
+      "step": "implement",
+      "substep": "group3-complete",
+      "from": { "step": "implement", "substep": "T004-complete" },
+      "by": "sdd",
+      "at": "2026-05-08T16:33:00Z"
+    },
+    {
+      "step": "implement",
+      "substep": "phase1-complete",
+      "from": { "step": "implement", "substep": "group3-complete" },
+      "by": "sdd",
+      "at": "2026-05-08T16:38:00Z"
+    },
+    {
+      "step": "implement",
+      "substep": "code-review",
+      "from": { "step": "implement", "substep": "phase1-complete" },
+      "by": "sdd",
+      "at": "2026-05-08T16:38:01Z"
+    },
+    {
+      "step": "implement",
+      "substep": "code-review-fix-T010",
+      "from": { "step": "implement", "substep": "code-review" },
+      "by": "sdd",
+      "at": "2026-05-09T15:00:00Z"
+    },
+    {
+      "step": "implement",
+      "substep": "commit-review",
+      "from": { "step": "implement", "substep": "code-review-fix-T010" },
+      "by": "sdd",
+      "at": "2026-05-09T15:05:00Z"
+    },
+    {
+      "step": "done",
+      "substep": "committing",
+      "from": { "step": "implement", "substep": "commit-review" },
+      "by": "sdd",
+      "at": "2026-05-09T15:10:00Z"
+    }
+  ],
+  "status": "completed",
+  "stepHistory": {
+    "specify": {
+      "startedAt": "2026-05-08T15:49:17.392Z",
+      "completedAt": "2026-05-08T15:51:20.815Z"
+    },
+    "plan": {
+      "startedAt": "2026-05-08T15:51:20.818Z",
+      "completedAt": "2026-05-08T15:55:18Z"
+    },
+    "tasks": {
+      "startedAt": "2026-05-08T15:59:20Z",
+      "completedAt": "2026-05-08T16:02:05Z"
+    },
+    "implement": {
+      "startedAt": "2026-05-08T16:11:58Z",
+      "completedAt": null
+    }
+  }
+}

@@ -11,6 +11,7 @@ import { nounSingular, wait } from '../../utils/timing.util';
 import {
   StreamItemRecord,
   StreamPacing,
+  StreamRunContext,
   StreamRunOptions,
   StreamRunResult,
   StreamStepRecord,
@@ -257,6 +258,23 @@ export class ToolbarStreamRunnerComponent {
     // (animation-delay on nth-child) so it doesn't block the first runItem.
     this._visibleCount.set(records.length);
 
+    const ctx: StreamRunContext = {
+      // Reads the latest signal value rather than the closure-captured `records`
+      // because updateItem replaces records/items immutably — the local `records`
+      // array's item objects keep their original 'queued' status forever.
+      prior: (key) => {
+        const current = this._records();
+        const record =
+          typeof key === 'number'
+            ? current[key]
+            : current.find((r) => r.step.label === key);
+        if (!record) return [];
+        return record.items
+          .filter((it) => it.status === 'done')
+          .map((it) => it.value);
+      },
+    };
+
     const startedAt = performance.now();
     let totalItems = 0;
     let totalErrors = 0;
@@ -273,7 +291,7 @@ export class ToolbarStreamRunnerComponent {
         this.updateItem(stepIndex, itemIndex, { status: 'running' });
 
         try {
-          const value = await step.runItem(itemIndex);
+          const value = await step.runItem(itemIndex, ctx);
           this.updateItem(stepIndex, itemIndex, {
             status: 'done',
             value,
