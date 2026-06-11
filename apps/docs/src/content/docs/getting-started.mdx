@@ -5,7 +5,7 @@ description: A comprehensive development toolbar for Angular applications
 
 ## What is Angular Toolbar?
 
-**Angular Toolbar** (`ngx-dev-toolbar`) is a powerful Angular 19+ library that provides an interactive development toolbar
+**Angular Toolbar** (`ngx-dev-toolbar`) is a powerful Angular library that provides an interactive development toolbar
 for testing and debugging feature flags, language switching, permissions, app features, and more — all without
 modifying your backend or redeploying your application.
 
@@ -16,6 +16,21 @@ Install the package via npm:
 ```bash
 npm install ngx-dev-toolbar
 ```
+
+## Compatibility
+
+The library is AOT-compiled against every supported Angular major in CI. The
+following versions are verified for each release:
+
+| Angular | Status      |
+| ------- | ----------- |
+| 19      | ✅ Verified |
+| 20      | ✅ Verified |
+| 21      | ✅ Verified |
+| 22      | ✅ Verified |
+
+The published package declares an open peer range (`@angular/* >=19.0.0`); the
+matrix above is what backs that claim.
 
 ## Quick Setup
 

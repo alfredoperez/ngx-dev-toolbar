@@ -1,0 +1,71 @@
+name: Compat Matrix
+
+# Runs the demo app against every supported Angular major (19–22) using the
+# LOCALLY built ngx-dev-toolbar. Each sandbox is a full copy of the demo app
+# pinned to a different Angular version; it consumes the library from `dist`
+# (file: + --install-links), runs a production build, and serve-smokes it in a
+# headless browser to confirm the toolbar actually renders.
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Nightly — catches new Angular releases under the open `>=19` peer range.
+    - cron: '0 6 * * *'
+  pull_request:
+    paths:
+      - 'libs/ngx-dev-toolbar/**'
+      - 'sandboxes/**'
+      - 'scripts/verify-compat.mjs'
+      - '.github/workflows/compat.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build-lib:
+    name: Build library
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          # Node 24 satisfies the engine ranges of Angular 19–22 (22 needs >=24.15).
+          node-version: 24
+          cache: 'npm'
+      - run: npm ci
+      - run: npx nx run ngx-dev-toolbar:build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lib-dist
+          path: dist/libs/ngx-dev-toolbar
+          retention-days: 7
+
+  compat:
+    name: Angular ${{ matrix.angular }}
+    needs: build-lib
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        angular: [19, 20, 21, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'npm'
+      # Root install provides the @playwright/test the smoke harness imports
+      # (pinned version, matches the browser installed below) and the nx CLI.
+      - run: npm ci
+      - name: Restore library build
+        uses: actions/download-artifact@v4
+        with:
+          name: lib-dist
+          path: dist/libs/ngx-dev-toolbar
+      - name: Install Playwright chromium
+        run: npx playwright install --with-deps chromium
+      - name: Build + serve-smoke
+        # --no-build: reuse the downloaded dist instead of rebuilding the lib.
+        run: node scripts/verify-compat.mjs --versions ${{ matrix.angular }} --no-build

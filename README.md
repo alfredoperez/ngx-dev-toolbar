@@ -3,9 +3,10 @@
 [![npm version](https://badge.fury.io/js/ngx-dev-toolbar.svg)](https://www.npmjs.com/package/ngx-dev-toolbar)
 [![Downloads](https://img.shields.io/npm/dm/ngx-dev-toolbar.svg)](https://www.npmjs.com/package/ngx-dev-toolbar)
 [![License](https://img.shields.io/npm/l/ngx-dev-toolbar.svg)](https://github.com/alfredoperez/ngx-dev-toolbar/blob/main/LICENSE)
-[![Angular](https://img.shields.io/badge/Angular-19%2B-red)](https://angular.io/)
+[![Angular](https://img.shields.io/badge/Angular-19%20%7C%2020%20%7C%2021%20%7C%2022-red)](https://angular.io/)
+[![Compatibility](https://github.com/alfredoperez/ngx-dev-toolbar/actions/workflows/compat.yml/badge.svg)](https://github.com/alfredoperez/ngx-dev-toolbar/actions/workflows/compat.yml)
 
-A development toolbar for Angular 19+ applications that helps developers interact with the application more efficiently.
+A development toolbar for Angular applications that helps developers interact with the application more efficiently. Verified against Angular 19, 20, 21, and 22.
 
 ![Toolbar Demo](./docs/images/demo.gif)
 
@@ -26,6 +27,23 @@ No more context switching or backend dependencies - everything you need is right
 ```bash
 npm install ngx-dev-toolbar
 ```
+
+## Compatibility
+
+`ngx-dev-toolbar` is continuously verified against every supported Angular major.
+Each release is AOT-compiled against the following versions in CI
+([`compat.yml`](.github/workflows/compat.yml)):
+
+| Angular | Status |
+| ------- | ------ |
+| 19      | ✅ Verified |
+| 20      | ✅ Verified |
+| 21      | ✅ Verified |
+| 22      | ✅ Verified |
+
+The published package declares an open peer range (`@angular/* >=19.0.0`), and the
+compatibility matrix above is what backs that claim. Standalone sandbox apps live in
+[`sandboxes/`](sandboxes/); run `npm run verify:compat` to reproduce locally.
 
 ## Quick Start
 

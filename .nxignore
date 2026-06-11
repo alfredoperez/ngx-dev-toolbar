@@ -1,1 +1,5 @@
 .claude/worktrees
+# Version-compatibility sandboxes are standalone Angular apps with their own
+# package.json/lockfile and a different Angular major each. They must never be
+# inferred as Nx projects or enter the project graph.
+sandboxes

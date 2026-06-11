@@ -1,0 +1,32 @@
+{
+  "name": "ngx-dev-toolbar-sandbox-ng21",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Compatibility sandbox: runs the demo app against Angular 21 with the locally built ngx-dev-toolbar.",
+  "scripts": {
+    "build": "ng build --configuration production",
+    "start": "ng serve"
+  },
+  "dependencies": {
+    "@angular/cdk": "^21.0.0",
+    "@angular/common": "^21.0.0",
+    "@angular/compiler": "^21.0.0",
+    "@angular/core": "^21.0.0",
+    "@angular/forms": "^21.0.0",
+    "@angular/platform-browser": "^21.0.0",
+    "@angular/router": "^21.0.0",
+    "@jsverse/transloco": "^7.5.1",
+    "@ngx-translate/core": "^17.0.0",
+    "@ngx-translate/http-loader": "^17.0.0",
+    "ngx-dev-toolbar": "file:../../dist/libs/ngx-dev-toolbar",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^21.0.0",
+    "@angular/cli": "^21.0.0",
+    "@angular/compiler-cli": "^21.0.0",
+    "typescript": "~5.9.0"
+  }
+}
