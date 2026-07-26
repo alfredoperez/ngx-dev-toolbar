@@ -95,34 +95,6 @@ Reusable components are in `src/components/`:
 - **Window**: Modal-like container with header, description, and closable behavior
 - **Icons**: 20+ SVG icon components with consistent sizing
 
-## Angular Best Practices
-
-### Component Development
-- All components use **standalone: true** (explicitly set for clarity)
-- Use **OnPush change detection** for all components
-- Use **input()** and **output()** functions instead of decorators
-- Prefer **inline templates** for small components
-- Use **Reactive Forms** over Template-driven forms
-- Use **class bindings** instead of ngClass
-- Use **style bindings** instead of ngStyle
-
-### State Management
-- Use **signals** for local component state
-- Use **computed()** for derived state
-- Keep state transformations **pure and predictable**
-- Use **effect()** for side effects (DOM updates, localStorage)
-
-### Component Property Order
-1. Injects
-2. Inputs
-3. Outputs
-4. Signals
-5. Computed values
-6. Other properties
-7. Public methods
-8. Protected methods
-9. Private methods
-
 ## Testing
 
 - Framework: **Jest** (migrated from Vitest)
@@ -173,7 +145,9 @@ The library uses a **hybrid CSS architecture** combining component-scoped styles
 }
 ```
 
-**Reference**: See the defensive CSS patterns and examples above.
+### Design Tokens
+
+All `--ndt-*` CSS custom properties are defined in `libs/ngx-dev-toolbar/src/styles.scss` and `libs/ngx-dev-toolbar/src/global-theme.scss`.
 
 ## Key Integration Points
 
@@ -188,57 +162,13 @@ The library uses a **hybrid CSS architecture** combining component-scoped styles
 
 Reference: See the [Create a Custom Tool](https://alfredoperez.github.io/ngx-dev-toolbar/docs/guides/custom-tool) guide on the documentation website.
 
-### Using in Applications
+### Consumer Configuration
 
-```typescript
-import { ToolbarComponent } from 'ngx-dev-toolbar';
-
-@Component({
-  imports: [ToolbarComponent],
-  template: `<ndt-toolbar [config]="toolbarConfig"></ndt-toolbar>`
-})
-export class AppComponent {
-  toolbarConfig = {
-    enabled: true, // Master switch to enable/disable entire toolbar
-    showI18nTool: true,
-    showFeatureFlagsTool: true,
-    showAppFeaturesTool: true,
-    showPermissionsTool: true,
-    showPresetsTool: true,
-  };
-}
-```
-
-### Toolbar Configuration
-
-The toolbar accepts a `ToolbarConfig` object to control its behavior:
-
-```typescript
-interface ToolbarConfig {
-  enabled?: boolean;              // Master switch (default: true)
-  showI18nTool?: boolean;         // Show/hide i18n tool (default: true)
-  showFeatureFlagsTool?: boolean;
-  showAppFeaturesTool?: boolean;
-  showPermissionsTool?: boolean;
-  showPresetsTool?: boolean;
-}
-```
-
-**Important behavior when `enabled: false`:**
-- Toolbar UI will not render at all
-- All tool services preserve localStorage data but won't return forced values via `getForcedValues()`
-- Developers can still call `setAvailableOptions()` safely (no-op when disabled)
-- When re-enabled, all previously forced values are restored automatically
+The `<ndt-toolbar>` config shape is `ToolbarConfig` — see `libs/ngx-dev-toolbar/src/models/toolbar-config.interface.ts`.
 
 ### Keyboard Shortcuts
 
 - **Ctrl+Shift+D**: Toggle toolbar visibility
-
-### Tool Services API
-
-All tool services follow the `ToolbarService<T>` interface:
-- `setAvailableOptions(options: T[])`: Set options displayed in the tool
-- `getForcedValues(): Observable<T[]>`: Get values overridden through the toolbar
 
 ## Dependencies
 
@@ -258,41 +188,3 @@ All tool services follow the `ToolbarService<T>` interface:
 - Automatic changelog generation
 - GitHub releases created automatically
 - Pre-version command runs `npm run package`
-
-## Design System Variables
-
-```scss
-// Colors
---ndt-background-primary
---ndt-background-secondary
---ndt-text-primary
---ndt-text-secondary
---ndt-text-muted
---ndt-border-primary
-
-// Spacing
---ndt-spacing-xs
---ndt-spacing-sm
---ndt-spacing-md
---ndt-spacing-lg
-
-// Border Radius
---ndt-border-radius-small
---ndt-border-radius-medium
---ndt-border-radius-large
-
-// Font Sizes
---ndt-font-size-xs
---ndt-font-size-sm
---ndt-font-size-md
---ndt-font-size-lg
-```
-
-## Active Technologies
-- TypeScript 5.5, Angular 19.0 + Angular 19.0, Angular CDK 19.0, RxJS 7.8 (005-badges-each-tools)
-- localStorage via `ToolbarStorageService` (prefix: `AngularToolbar.`) (005-badges-each-tools)
-- TypeScript 5.5, Angular 19.0 + Angular CDK 19.0 (overlay positioning), RxJS 7.8 (010-toolbar-positioning)
-- N/A (no data persistence changes) (011-fix-toolbar-tooltips)
-
-## Recent Changes
-- 005-badges-each-tools: Added TypeScript 5.5, Angular 19.0 + Angular 19.0, Angular CDK 19.0, RxJS 7.8
