@@ -19,5 +19,5 @@
       "ngx-dev-toolbar": ["libs/ngx-dev-toolbar/src/index.ts"]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": ["node_modules", "tmp", "sandboxes"]
 }

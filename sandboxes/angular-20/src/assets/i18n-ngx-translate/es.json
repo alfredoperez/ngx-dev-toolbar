@@ -1,0 +1,21 @@
+{
+  "i18nDemo": {
+    "greeting": "¡Bienvenida de nuevo, María!",
+    "description": "Aquí está el resumen de tu cuenta para este período.",
+    "recentOrders": "Pedidos Recientes",
+    "notifications": "Tienes 3 notificaciones nuevas.",
+    "lastUpdated": "Última actualización: hoy",
+    "productCatalog": "Catálogo de Productos",
+    "itemName1": "Auriculares Bluetooth Inalámbricos",
+    "itemDesc1": "Cancelación de ruido, 30 horas de batería",
+    "itemName2": "Silla de Oficina Ergonómica",
+    "itemDesc2": "Soporte lumbar ajustable, malla transpirable",
+    "itemName3": "Monitor Ultra HD 4K",
+    "itemDesc3": "Pantalla de 32 pulgadas, soporte HDR",
+    "addToCart": "Añadir al Carrito",
+    "inStock": "En Stock",
+    "outOfStock": "Agotado",
+    "reviews": "reseñas",
+    "freeShipping": "Envío gratis en pedidos de más de {{amount}}"
+  }
+}

@@ -6,6 +6,11 @@ tmp
 out-tsc
 .astro/
 
+# Version-compatibility sandboxes: the demo-app copy + per-version package.json/
+# angular.json/tsconfig ARE committed; generated install/build output is not.
+# (node_modules, dist, .angular, out-tsc are already covered by the globs above.)
+sandboxes/**/package-lock.json
+
 # dependencies
 node_modules
 
@@ -57,3 +62,6 @@ Thumbs.db
 .worktrees/
 .security-key
 logs/security/
+
+# Serena MCP local cache (not part of the project)
+.serena/

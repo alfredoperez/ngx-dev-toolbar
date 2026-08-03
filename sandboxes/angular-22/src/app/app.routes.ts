@@ -1,0 +1,51 @@
+import { Route } from '@angular/router';
+
+export const appRoutes: Route[] = [
+  {
+    path: '',
+    redirectTo: 'feature-flags',
+    pathMatch: 'full',
+  },
+  {
+    path: 'feature-flags',
+    loadComponent: () =>
+      import('./components/feature-flags-demo/feature-flags-demo.component').then(
+        (m) => m.FeatureFlagsDemoComponent
+      ),
+  },
+  {
+    path: 'permissions',
+    loadComponent: () =>
+      import('./components/permission-demo/permission-demo.component').then(
+        (m) => m.PermissionDemoComponent
+      ),
+  },
+  {
+    path: 'app-features',
+    loadComponent: () =>
+      import('./components/app-features-demo/app-features-demo.component').then(
+        (m) => m.AppFeaturesDemoComponent
+      ),
+  },
+  {
+    path: 'i18n',
+    loadComponent: () =>
+      import('./components/i18n-demo/i18n-demo.component').then(
+        (m) => m.I18nDemoComponent
+      ),
+  },
+  {
+    path: 'custom-tool',
+    loadComponent: () =>
+      import('./components/custom-tool-demo/custom-tool-demo.component').then(
+        (m) => m.CustomToolDemoComponent
+      ),
+  },
+  {
+    path: 'stream-runner',
+    loadComponent: () =>
+      import('./components/stream-runner-demo/stream-runner-demo.component').then(
+        (m) => m.StreamRunnerDemoComponent
+      ),
+  },
+];

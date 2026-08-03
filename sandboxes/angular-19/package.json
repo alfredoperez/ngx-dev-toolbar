@@ -1,0 +1,32 @@
+{
+  "name": "ngx-dev-toolbar-sandbox-ng19",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Compatibility sandbox: runs the demo app against Angular 19 with the locally built ngx-dev-toolbar.",
+  "scripts": {
+    "build": "ng build --configuration production",
+    "start": "ng serve"
+  },
+  "dependencies": {
+    "@angular/cdk": "^19.0.0",
+    "@angular/common": "^19.0.0",
+    "@angular/compiler": "^19.0.0",
+    "@angular/core": "^19.0.0",
+    "@angular/forms": "^19.0.0",
+    "@angular/platform-browser": "^19.0.0",
+    "@angular/router": "^19.0.0",
+    "@jsverse/transloco": "^7.5.1",
+    "@ngx-translate/core": "^17.0.0",
+    "@ngx-translate/http-loader": "^17.0.0",
+    "ngx-dev-toolbar": "file:../../dist/libs/ngx-dev-toolbar",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^19.0.0",
+    "@angular/cli": "^19.0.0",
+    "@angular/compiler-cli": "^19.0.0",
+    "typescript": "~5.6.0"
+  }
+}

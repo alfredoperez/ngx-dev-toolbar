@@ -1,0 +1,21 @@
+{
+  "i18nDemo": {
+    "greeting": "Welcome back, Maria!",
+    "description": "Here's your account overview for this period.",
+    "recentOrders": "Recent Orders",
+    "notifications": "You have 3 new notifications.",
+    "lastUpdated": "Last updated: today",
+    "productCatalog": "Product Catalog",
+    "itemName1": "Wireless Bluetooth Headphones",
+    "itemDesc1": "Noise-cancelling, 30-hour battery life",
+    "itemName2": "Ergonomic Office Chair",
+    "itemDesc2": "Adjustable lumbar support, breathable mesh",
+    "itemName3": "4K Ultra HD Monitor",
+    "itemDesc3": "32-inch display, HDR support",
+    "addToCart": "Add to Cart",
+    "inStock": "In Stock",
+    "outOfStock": "Out of Stock",
+    "reviews": "reviews",
+    "freeShipping": "Free shipping on orders over {{amount}}"
+  }
+}
