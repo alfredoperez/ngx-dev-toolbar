@@ -98,8 +98,27 @@ const MIME = {
 function serveStatic(rootDir) {
   return new Promise((resolvePort) => {
     const server = createServer((req, res) => {
-      const urlPath = decodeURIComponent((req.url || '/').split('?')[0]);
-      let filePath = join(rootDir, urlPath);
+      const rawUrl = req.url || '/';
+      let urlPath;
+      try {
+        urlPath = decodeURIComponent(rawUrl.split('?')[0]);
+      } catch {
+        res.writeHead(400);
+        res.end('bad request');
+        return;
+      }
+
+      // Prevent path traversal outside rootDir.
+      const candidatePath = resolve(rootDir, `.${urlPath}`);
+      const rootPrefixPosix = rootDir.endsWith('/') ? rootDir : `${rootDir}/`;
+      const rootPrefixWin = rootDir.endsWith('\\') ? rootDir : `${rootDir}\\`;
+      const isInsideRoot =
+        candidatePath === rootDir ||
+        candidatePath.startsWith(rootPrefixPosix) ||
+        candidatePath.startsWith(rootPrefixWin);
+
+      let filePath = isInsideRoot ? candidatePath : join(rootDir, 'index.html');
+
       try {
         if (existsSync(filePath) && statSync(filePath).isFile()) {
           // serve as-is
