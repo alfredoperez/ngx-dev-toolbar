@@ -34,9 +34,17 @@ const DIST_LIB = join(ROOT, 'dist', 'libs', 'ngx-dev-toolbar');
 const args = process.argv.slice(2);
 const noBuild = args.includes('--no-build');
 const skipSmoke = args.includes('--skip-smoke');
-const versionsArg = args.includes('--versions') ? args[args.indexOf('--versions') + 1] : null;
+
+const versionsFlagIndex = args.indexOf('--versions');
+const versionsArg = versionsFlagIndex !== -1 ? args[versionsFlagIndex + 1] : null;
+
+if (versionsFlagIndex !== -1 && (!versionsArg || versionsArg.startsWith('--'))) {
+  console.error('Missing value for --versions (expected e.g. "19" or "19,20").');
+  process.exit(1);
+}
+
 const requested = versionsArg
-  ? versionsArg.split(',').map((v) => v.trim())
+  ? versionsArg.split(',').map((v) => v.trim()).filter(Boolean)
   : discoverSandboxVersions();
 
 function discoverSandboxVersions() {
